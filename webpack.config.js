@@ -7,6 +7,9 @@ const plugins = [];
 const devMode = process.env.NODE_ENV === 'development';
 const prodMode = process.env.NODE_ENV === 'production';
 
+const PROXY_HOST = process.env.PROXY_HOST;
+const PROXY_PORT = process.env.PROXY_PORT;
+
 if (prodMode) {
     plugins.push(new MinifyPlugin());
 }
@@ -94,7 +97,7 @@ module.exports = {
         port: 8080,
         proxy: {
             '/api': {
-                target: 'http://localhost:3000',
+                target: `http://${PROXY_HOST}:${PROXY_PORT}`,
                 pathRewrite: { '^/api': '' },
             },
         },
