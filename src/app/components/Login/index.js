@@ -8,11 +8,12 @@ import styles from './login.scss';
 class Login extends React.PureComponent {
 
     onSubmit = (e) => {
+        const { login, password } = this.state;
         e.preventDefault();
-
+        this.props.onSubmit({ login, password })
     };
 
-    inputValue = (event, valuePath) => this.setState({[valuePath]: _.get(event, 'currentTarget.value', '')});
+    inputValue = (event, valuePath) => this.setState({ [valuePath]: _.get(event, 'currentTarget.value', '') });
 
     render() {
         return <div className={styles.loginContainer}>
@@ -26,12 +27,14 @@ class Login extends React.PureComponent {
                         <Input
                             placeholder={ls('LOGIN_LOGIN', 'Логин')}
                             name="login"
+                            required
                             className={styles.inputField}
                             onChange={(event) => this.inputValue(event, 'login')}
                         />
                         <Input
                             type="password"
                             name="password"
+                            required
                             placeholder={ls('LOGIN_PASSWD', 'Пароль')}
                             className={styles.inputField}
                             onChange={(event) => this.inputValue(event, 'password')}

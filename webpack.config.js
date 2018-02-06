@@ -17,7 +17,16 @@ module.exports = {
     },
     devtool: devMode ? 'inline-sourcemap' : 'source-map',
     module: {
-        loaders: [
+        loaders: [{
+            enforce: 'pre',
+            test: /\.js$/,
+            exclude: /node_modules/,
+            use: [
+                {
+                    loader: 'eslint-loader',
+                },
+            ],
+        },
             { test: /\.(js|jsx)$/, loader: "babel-loader" },
             {
                 test: /\.global\.(scss)$/,
