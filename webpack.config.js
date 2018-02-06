@@ -1,33 +1,39 @@
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const MinifyPlugin = require("babel-minify-webpack-plugin");
+const MinifyPlugin = require('babel-minify-webpack-plugin');
 
 const plugins = [];
-const devMode = process.env.WEBPACK_ENV === 'development';
-const prodMode = process.env.WEBPACK_ENV === 'production';
+const devMode = process.env.NODE_ENV === 'development';
+const prodMode = process.env.NODE_ENV === 'production';
 
-prodMode && plugins.push(new MinifyPlugin());
+if (prodMode) {
+    plugins.push(new MinifyPlugin());
+}
 
 module.exports = {
-    entry: "./src/app/app.js",
+    entry: ['babel-polyfill', './src/app/app.js'],
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: "app.js"
+        filename: 'app.js',
     },
-    devtool: devMode ? 'inline-sourcemap' : 'source-map',
+    devtool: devMode && 'inline-sourcemap',
     module: {
-        loaders: [{
-            enforce: 'pre',
-            test: /\.js$/,
-            exclude: /node_modules/,
-            use: [
-                {
-                    loader: 'eslint-loader',
+        rules: [
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader',
+                options: {
+                    emitWarning: true,
                 },
-            ],
-        },
-            { test: /\.(js|jsx)$/, loader: "babel-loader" },
+            },
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: ['babel-loader'],
+            },
             {
                 test: /\.global\.(scss)$/,
                 loader: ExtractTextPlugin.extract({
@@ -37,10 +43,10 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[local]'
-                        }
-                    }, 'sass-loader']
-                })
+                            localIdentName: '[local]',
+                        },
+                    }, 'sass-loader'],
+                }),
             },
             {
                 test: /\.(scss)$/,
@@ -52,26 +58,26 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[hash:base64]-[name]-[local]'
-                        }
-                    }, 'sass-loader']
-                })
+                            localIdentName: '[hash:base64]-[name]-[local]',
+                        },
+                    }, 'sass-loader'],
+                }),
             },
             {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: 'css-loader',
-                })
+                }),
             },
-        ]
+        ],
     },
     resolve: {
-        extensions: ['.js', '.jsx', '.scss'],
+        extensions: ['.js', '.jsx', '.scss', '.css'],
         modules: ['node_modules'],
         alias: {
             i18n: path.resolve(__dirname, './src/i18n/'),
-        }
+        },
     },
     plugins: [
         ...plugins,
@@ -79,18 +85,18 @@ module.exports = {
             'src/static/index.html',
         ]),
         new ExtractTextPlugin('styles.css', {
-            allChunks: true
+            allChunks: true,
         }),
     ],
     devServer: {
-        contentBase: path.join(__dirname, "build"),
+        contentBase: path.join(__dirname, 'build'),
         compress: true,
         port: 8080,
         proxy: {
-            "/api": {
-                target: "http://localhost:3000",
-                pathRewrite: { "^/api": "" }
-            }
-        }
-    }
+            '/api': {
+                target: 'http://localhost:3000',
+                pathRewrite: { '^/api': '' },
+            },
+        },
+    },
 };

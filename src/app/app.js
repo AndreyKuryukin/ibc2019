@@ -1,27 +1,31 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Switch, Route }from 'react-router';
-import { BrowserRouter } from 'react-router-dom'
-import styles from './style.global.scss'
+import { Switch, Route } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
+
+import styles from './style.global.scss';
 
 import Login from './components/Login';
 
 
 class App extends React.PureComponent {
     render() {
-        return <Switch>
-            <Route path="/" component={Login}/>
-        </Switch>
+        return (
+            <Switch>
+                <Route path="/" component={Login} />
+            </Switch>
+        );
     }
 }
 
 const renderRootComponent = () => {
     ReactDOM.render(
         <BrowserRouter>
-            <App/>
+            <App />
         </BrowserRouter>,
-        document.getElementById('container'));
+        document.getElementById('container')
+    );
 };
 
 renderRootComponent();
