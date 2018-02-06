@@ -9,10 +9,20 @@ import styles from './login.scss';
 class Login extends React.PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func,
-    }
+        login: PropTypes.string,
+        password: PropTypes.string,
+    };
 
     static defaultProps = {
         onSubmit: () => null,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            login: props.login,
+            password: props.password,
+        }
     }
 
     onSubmit = (e) => {
@@ -38,6 +48,7 @@ class Login extends React.PureComponent {
                                 name="login"
                                 required
                                 className={styles.inputField}
+                                value={this.state.login}
                                 onChange={event => this.inputValue(event, 'login')}
                             />
                             <Input
@@ -46,6 +57,7 @@ class Login extends React.PureComponent {
                                 required
                                 placeholder={ls('LOGIN_PASSWD', 'Пароль')}
                                 className={styles.inputField}
+                                value={this.state.password}
                                 onChange={event => this.inputValue(event, 'password')}
                             />
                         </FormGroup>

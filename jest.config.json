@@ -1,0 +1,24 @@
+{
+    "verbose": false,
+    "collectCoverage": true,
+    "setupTestFrameworkScriptFile": "./node_modules/jest-enzyme/lib/index.js",
+    "moduleNameMapper": {
+        "\\.(css|png)$": "identity-obj-proxy",
+        "^.+\\.(scss)$": "babel-jest"
+    },
+    "collectCoverageFrom": [
+        "!**/node_modules/**",
+        "src/app/**/*.js"
+    ],
+    "setupFiles": [
+        "jest-localstorage-mock"
+    ],
+    "testMatch": [
+        "**/?(*.)(spec|test).js?(x)"
+    ],
+    "coverageReporters": [
+        "json",
+        "lcov", "text", "html"
+    ]
+}
+
