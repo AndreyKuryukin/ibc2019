@@ -1,29 +1,36 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Switch, Route } from 'react-router';
+import { Route, Switch } from 'react-router';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+
 import 'bootstrap/dist/css/bootstrap.css';
 
-import styles from './style.global.scss';
-
-import Login from './components/Login';
+import Login from './modules/login/containers';
+import rootReducer from './reducers';
 
 
 class App extends React.PureComponent {
     render() {
         return (
             <Switch>
-                <Route path="/" component={Login} />
+                <Route path="/" component={Login}/>
             </Switch>
         );
     }
 }
 
+const store = createStore(rootReducer);
+
 const renderRootComponent = () => {
     ReactDOM.render(
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>,
+        <Provider store={store}>
+            <BrowserRouter>
+                <App/>
+            </BrowserRouter>
+        </Provider>,
         document.getElementById('container')
     );
 };

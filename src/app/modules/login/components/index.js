@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Badge, Button, Form, FormGroup, Input } from 'reactstrap';
 import _ from 'lodash';
 
-import ls from '../../../i18n';
+import ls from '../../../../i18n';
 import styles from './login.scss';
 
 class Login extends React.PureComponent {
