@@ -46,7 +46,7 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[local]',
+                            localIdentName: '[hash:base64]-[name]-[local]',
                         },
                     }, 'sass-loader'],
                 }),
@@ -61,7 +61,7 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[hash:base64]-[name]-[local]',
+                            localIdentName: '[local]',
                         },
                     }, 'sass-loader'],
                 }),
@@ -92,6 +92,7 @@ module.exports = {
         }),
     ],
     devServer: {
+        historyApiFallback: true,
         contentBase: path.join(__dirname, 'build'),
         compress: true,
         port: 8080,

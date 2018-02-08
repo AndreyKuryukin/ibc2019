@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button, Form, FormGroup, Input } from 'reactstrap';
 import _ from 'lodash';
-
+import {TextField} from 'qreact';
 import ls from '../../../../i18n';
 import styles from './login.scss';
+
+console.log(TextField);
 
 class Login extends React.PureComponent {
     static propTypes = {
@@ -36,35 +37,32 @@ class Login extends React.PureComponent {
     render() {
         return (
             <div className={styles.loginContainer}>
-                <div className={styles.loginPanel}>
-                    <h1>SQ <Badge color="secondary">M</Badge></h1>
-                    <Form
-                        className={styles.loginForm}
+                <div>
+                    <h1>SQM</h1>
+                    <form
                         onSubmit={this.onSubmit}
                     >
-                        <FormGroup>
-                            <Input
-                                placeholder={ls('LOGIN_LOGIN', 'Логин')}
+
+                            <TextField
+                                id="sidhfuisudhf"
+                                label={ls('LOGIN_LOGIN', 'Логин')}
                                 name="login"
-                                required
-                                className={styles.inputField}
                                 value={this.state.login}
                                 onChange={event => this.inputValue(event, 'login')}
                             />
-                            <Input
+                            <TextField
+                                id="dsrfgdfsg"
                                 type="password"
                                 name="password"
-                                required
-                                placeholder={ls('LOGIN_PASSWD', 'Пароль')}
-                                className={styles.inputField}
+                                label={ls('LOGIN_PASSWD', 'Пароль')}
                                 value={this.state.password}
                                 onChange={event => this.inputValue(event, 'password')}
                             />
-                        </FormGroup>
-                        <Button type="submit" color="primary">
+
+                        <button type="submit" color="primary">
                             {ls('LOGIN_SUBMIT', 'Вход')}
-                        </Button>
-                    </Form>
+                        </button>
+                    </form>
                 </div>
             </div>);
     }

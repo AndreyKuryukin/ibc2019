@@ -16,7 +16,7 @@ class App extends React.PureComponent {
     render() {
         return (
             <Switch>
-                <Route path="/" component={Login}/>
+                <Route path="/login" component={Login}/>
             </Switch>
         );
     }
