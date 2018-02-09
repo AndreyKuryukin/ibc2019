@@ -57,7 +57,7 @@
     "lodash": "^4.17.5",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
-    "qreact": "git+http://194.226.54.10/qligent/frontend-libs/qreact.git",
+    "qreact": "git+ssh://194.226.54.10/qligent/frontend-libs/qreact.git",
     "react": "15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
