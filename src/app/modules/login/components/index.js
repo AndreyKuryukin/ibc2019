@@ -1,11 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import {TextField} from 'qreact';
+import { Button, Field, TextInput } from 'qreact';
 import ls from '../../../../i18n';
 import styles from './login.scss';
-
-console.log(TextField);
 
 class Login extends React.PureComponent {
     static propTypes = {
@@ -37,31 +35,49 @@ class Login extends React.PureComponent {
     render() {
         return (
             <div className={styles.loginContainer}>
-                <div>
+                <div className={styles.loginPanel}>
                     <h1>SQM</h1>
                     <form
                         onSubmit={this.onSubmit}
+                        className={styles.loginForm}
                     >
 
-                            <TextField
-                                id="sidhfuisudhf"
-                                label={ls('LOGIN_LOGIN', 'Логин')}
+                        <Field
+                            label={ls('LOGIN_LOGIN', 'Логин')}
+                            labelWidth={100}
+                            className={styles.field}
+                        >
+                            <TextInput
+                                id="login"
                                 name="login"
                                 value={this.state.login}
                                 onChange={event => this.inputValue(event, 'login')}
                             />
-                            <TextField
-                                id="dsrfgdfsg"
+                        </Field>
+                        <Field
+                            label={ls('LOGIN_LOGIN', 'Логин')}
+                            labelWidth={100}
+                            className={styles.field}
+                        >
+                            <TextInput
+                                id="password"
                                 type="password"
                                 name="password"
                                 label={ls('LOGIN_PASSWD', 'Пароль')}
                                 value={this.state.password}
                                 onChange={event => this.inputValue(event, 'password')}
                             />
-
-                        <button type="submit" color="primary">
-                            {ls('LOGIN_SUBMIT', 'Вход')}
-                        </button>
+                        </Field>
+                        <Field
+                            labelWidth={100}
+                            className={styles.field}
+                        >
+                            <Button
+                                type="submit"
+                                color="primary"
+                                text={ls('LOGIN_SUBMIT', 'Вход')}
+                            />
+                        </Field>
                     </form>
                 </div>
             </div>);
