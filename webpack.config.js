@@ -69,9 +69,13 @@ module.exports = {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: 'css-loader',
+                    use: ['css-loader','resolve-url-loader'],
                 }),
             },
+            {
+                test: /\.(jpe?g|png|gif|svg)$/i,
+                loaders: [ 'url', 'img' ]
+            }
         ],
     },
     resolve: {
