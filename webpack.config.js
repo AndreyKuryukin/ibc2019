@@ -67,6 +67,20 @@ module.exports = {
             },
             {
                 test: /\.css$/,
+                loaders: [
+                    'style-loader?sourceMap',
+                    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+                    'resolve-url-loader',
+                ],
+                include: [
+                    path.resolve(__dirname, 'node_modules'),
+                ],
+            },
+            {
+                test: /\.css$/,
+                exclude: [
+                    path.resolve(__dirname, 'node_modules'),
+                ],
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: ['css-loader','resolve-url-loader'],
