@@ -1,5 +1,4 @@
-FROM npm:5.5.1
-FROM node:8.8.1
+FROM node:8.9.4-alpine
 
 RUN apk update
 RUN apk add nginx
