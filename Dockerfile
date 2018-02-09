@@ -2,6 +2,8 @@ FROM node:8.9.4-alpine
 
 RUN apk update
 RUN apk add nginx
+RUN apk add --no-cache bash git openssh
+COPY id_rsa_fe ~/.ssh/id_rsa  
 
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
@@ -11,13 +13,11 @@ RUN mkdir /proj/
 RUN mkdir /proj/build
 COPY src /proj
 COPY .babelrc /proj
-COPY .eslintrc /proj
+COPY .eslintrc.js /proj
 COPY package.json /proj
 COPY webpack.config.js /proj
 
-RUN cd /proj
-RUN npm install
-RUN npm run build
+RUN cd /proj && npm install && npm run build
 
 RUN mkdir /www/
 COPY build/index.html /www
