@@ -1,9 +1,11 @@
+@import "../../../vars";
+
 .loginContainer {
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: black;
+  background-color: $background-color;
   justify-content: center;
   .loginPanel {
     h1 {
@@ -24,6 +26,8 @@
     justify-content: center;
     flex-direction: column;
     background-color: #333333;
+
+
     .field {
       margin-top: 4px;
     }
