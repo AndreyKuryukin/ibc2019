@@ -18,12 +18,7 @@ COPY .eslintrc.js /proj
 COPY package.json /proj
 COPY webpack.config.js /proj
 
-RUN cd /proj && ls && npm install && npm run build
-
-RUN mkdir /www/
-COPY build/index.html /www
-COPY build/styles.css /www
-COPY build/app.js /www
+RUN cd /proj && ls && npm install && npm run build &&  mkdir /www && cp  /proj/build/index.html /www && cp  /proj/build/styles.css /www && cp  /proj/build/app.js /www
 
 EXPOSE 8085
 CMD nginx -g "daemon off;"
