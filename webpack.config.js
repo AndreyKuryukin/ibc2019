@@ -62,7 +62,7 @@ module.exports = {
                             importLoaders: 1,
                             localIdentName: '[local]',
                         },
-                    }, 'sass-loader'],
+                    }, 'sass-loader', 'resolve-url-loader'],
                 }),
             },
             {
