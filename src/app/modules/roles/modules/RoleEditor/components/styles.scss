@@ -1,0 +1,13 @@
+.field {
+  text-align: left;
+}
+.field:first-child {
+  margin-bottom: 5px;
+}
+.textarea {
+  background: #000;
+  color: #fff;
+  resize: vertical;
+  border: 0;
+  padding: 3px 5px;
+}
