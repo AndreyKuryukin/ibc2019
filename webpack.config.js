@@ -47,7 +47,7 @@ module.exports = {
                             importLoaders: 1,
                             localIdentName: '[hash:base64]-[name]-[local]',
                         },
-                    }, 'sass-loader'],
+                    }, 'resolve-url-loader', 'sass-loader?sourceMap'],
                 }),
             },
             {
@@ -62,14 +62,14 @@ module.exports = {
                             importLoaders: 1,
                             localIdentName: '[local]',
                         },
-                    }, 'sass-loader'],
+                    }, 'resolve-url-loader', 'sass-loader?sourceMap'],
                 }),
             },
             {
                 test: /\.css$/,
                 loaders: [
                     'style-loader?sourceMap',
-                    'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]',
+                    'css-loader?modules&importLoaders=1&localIdentName=[local]',
                     'resolve-url-loader',
                 ],
                 include: [
@@ -83,12 +83,12 @@ module.exports = {
                 ],
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader','resolve-url-loader'],
+                    use: ['css-loader', 'resolve-url-loader'],
                 }),
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
-                loaders: [ 'url', 'img' ]
+                loaders: [ 'url-loader', 'img-loader' ]
             }
         ],
     },

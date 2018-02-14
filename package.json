@@ -14,7 +14,7 @@
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-eslint": "^8.2.1",
-    "babel-jest": "^22.1.0",
+    "babel-jest": "^22.2.2",
     "babel-minify-webpack-plugin": "^0.2.0",
     "babel-plugin-transform-async-to-generator": "6.24.1",
     "babel-plugin-transform-class-properties": "6.24.1",
@@ -22,7 +22,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-stage-2": "^6.24.1",
     "concurrently": "^3.5.1",
-    "copy-webpack-plugin": "^4.3.1",
+    "copy-webpack-plugin": "^4.4.1",
     "cross-env": "^5.1.3",
     "css-loader": "^0.28.8",
     "enzyme": "^3.3.0",
@@ -35,8 +35,9 @@
     "eslint-plugin-react": "^7.6.1",
     "express": "^4.16.2",
     "extract-text-webpack-plugin": "^3.0.2",
+    "img-loader": "^2.0.1",
     "istanbul": "^0.4.5",
-    "jest": "^22.1.4",
+    "jest": "^22.3.0",
     "jest-enzyme": "^4.2.0",
     "jest-localstorage-mock": "^2.2.0",
     "node-sass": "^4.7.2",
@@ -51,7 +52,7 @@
     "babel": "^6.23.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^6.1.2",
-    "babel-plugin-transform-react-remove-prop-types": "0.4.8",
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.8",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "body-parser": "^1.18.2",
@@ -59,7 +60,7 @@
     "lodash": "^4.17.5",
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
-    "qreact": "git+http://192.168.192.133/qligent/frontend-libs/qreact.git",
+    "qreact": "git+http://gitlab.qligent.ru/qligent/frontend-libs/qreact.git",
     "react": "15.6.1",
     "react-dom": "^15.6.1",
     "react-redux": "^5.0.6",
@@ -68,6 +69,6 @@
     "react-transition-group": "^2.2.1",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.11.0"
   }
 }
