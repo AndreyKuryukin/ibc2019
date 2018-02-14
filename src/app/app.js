@@ -6,7 +6,8 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
 import './style.global.scss';
-import './images.scss';
+import './images.global.scss';
+import './modal.scss';
 
 import Login from './modules/login/containers';
 import Roles from './modules/roles/components';

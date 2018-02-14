@@ -36,8 +36,16 @@ const mapStateToProps = () => ({
     counters: false,
 });
 
-const OttProblemsTable = connect(
+const mapDispatchToProps = dispatch => ({
+    onTableDataChange: ({ checked, isAllChecked }) => {
+        console.log(isAllChecked);
+        console.log(checked);
+    },
+});
+
+const RolesTable = connect(
     mapStateToProps,
+    mapDispatchToProps,
 )(Table);
 
-export default OttProblemsTable;
+export default RolesTable;
