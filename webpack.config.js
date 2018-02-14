@@ -18,7 +18,7 @@ module.exports = {
     entry: ['babel-polyfill', './src/app/app.js'],
     output: {
         path: path.resolve(__dirname, 'build'),
-        filename: 'app.js',
+        filename: 'app.js'
     },
     devtool: devMode && 'inline-sourcemap',
     module: {
@@ -45,7 +45,7 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[hash:base64]-[name]-[local]',
+                            localIdentName: '[local]',
                         },
                     }, 'resolve-url-loader', 'sass-loader?sourceMap'],
                 }),
@@ -60,30 +60,16 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[local]',
+                            localIdentName: '[hash:base64]-[name]-[local]',
                         },
                     }, 'resolve-url-loader', 'sass-loader?sourceMap'],
                 }),
             },
             {
                 test: /\.css$/,
-                loaders: [
-                    'style-loader?sourceMap',
-                    'css-loader?modules&importLoaders=1&localIdentName=[local]',
-                    'resolve-url-loader',
-                ],
-                include: [
-                    path.resolve(__dirname, 'node_modules'),
-                ],
-            },
-            {
-                test: /\.css$/,
-                exclude: [
-                    path.resolve(__dirname, 'node_modules'),
-                ],
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader', 'resolve-url-loader'],
+                    use: ['resolve-url-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
                 }),
             },
             {
