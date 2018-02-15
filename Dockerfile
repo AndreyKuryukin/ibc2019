@@ -2,7 +2,7 @@ FROM node:8.9.4
 
 RUN apt-get update
 RUN apt-get install -y nginx
-RUN apt-get install -y bash git libpng-dev
+RUN apt-get install -y git libpng-dev
 COPY id_rsa_fe /root/.ssh/id_rsa
 RUN chmod 600 /root/.ssh/id_rsa
 
@@ -23,7 +23,7 @@ RUN ls /proj/src/resources/img/checkbox/ && ls /proj/src/resources/img/common/
 RUN npm config set registry "https://registry.npmjs.org/"
 RUN npm config list && npm -version && node --version
 
-RUN /bin/bash -c " cd /proj && npm install && npm run build &&  mkdir /www && cp  /proj/build/index.html /www && cp  /proj/build/styles.css /www && cp  /proj/build/app.js /www"
+RUN cd /proj && npm install && npm run build &&  mkdir /www && cp  /proj/build/index.html /www && cp  /proj/build/styles.css /www && cp  /proj/build/app.js /www
 
 EXPOSE 8085
 CMD nginx -g "daemon off;"
