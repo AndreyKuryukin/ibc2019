@@ -54,24 +54,24 @@ class Login extends React.PureComponent {
                     >
 
                         <Field
+                            id={'login'}
                             label={ls('LOGIN_LOGIN', 'Логин')}
                             labelWidth={100}
                             className={styles.field}
                         >
                             <TextInput
-                                id="login"
                                 name="login"
                                 value={this.state.login}
                                 onChange={event => this.inputValue(event, 'login')}
                             />
                         </Field>
                         <Field
+                            id="password"
                             label={ls('LOGIN_PASSWD', 'Пароль')}
                             labelWidth={100}
                             className={styles.field}
                         >
                             <TextInput
-                                id="password"
                                 type="password"
                                 name="password"
                                 value={this.state.password}
