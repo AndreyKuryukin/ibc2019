@@ -100,9 +100,8 @@ module.exports = {
         compress: true,
         port: 8080,
         proxy: {
-            '/api': {
+            '/api/v1': {
                 target: `http://${PROXY_HOST}:${PROXY_PORT}`,
-                pathRewrite: { '^/api': '' },
             },
         },
     },

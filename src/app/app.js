@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Route, Switch } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import { Switch } from 'react-router';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
@@ -19,7 +19,8 @@ class App extends React.PureComponent {
         return (
             <Switch>
                 <Route path="/login" component={Login}/>
-                <Route path="/roles" component={Roles}/>
+                <Route path="/roles" component={Roles} />
+                <Route path="/roles/:action/:id" component={Roles} />
             </Switch>
         );
     }

@@ -71,6 +71,7 @@
     "react-transition-group": "^2.2.1",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
-    "webpack": "^3.11.0"
+    "webpack": "^3.11.0",
+    "reselect": "^3.0.1"
   }
 }

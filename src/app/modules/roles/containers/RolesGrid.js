@@ -1,20 +1,17 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { Grid } from 'qreact';
-import RolesControls from './RolesControls';
-import RolesTable from './RolesTable';
+import Grid from '../components/RolesGrid';
+import { fetchListOfRoles } from '../actions';
 
-const mapStateToProps = () => ({
-    controls: (
-        <RolesControls />
-    ),
-    table: (
-        <RolesTable />
-    ),
+const mapDispatchToProps = dispatch => ({
+    onMount: () => {
+        fetchListOfRoles(dispatch, 'username');
+    }
 });
 
 const RolesGrid = connect(
-    mapStateToProps,
+    null,
+    mapDispatchToProps,
 )(Grid);
 
 export default RolesGrid;

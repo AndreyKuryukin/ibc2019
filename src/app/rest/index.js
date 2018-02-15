@@ -20,7 +20,7 @@ export const composeUrl = (url, params = {}) =>
     _.reduce(params, (result, value, key) => result.replace(`:${key}`, value), url);
 
 export default {
-    get: (url, params) => request(composeUrl(url, params.urlParams), {method: 'GET', params: config.queryParams}),
+    get: (url, params, config = {}) => request(composeUrl(url, params.urlParams), {method: 'GET', params: config.queryParams}),
     put: (url, data, config = {}) => request(composeUrl(url, config.urlParams), {method: 'PUT', data, params: config.queryParams}),
     post: (url, data, config = {}) => request(composeUrl(url, config.urlParams), {method: 'POST', data, params: config.queryParams}),
     delete: (url, data, config = {}) => request(composeUrl(url, config.urlParams), {method: 'DELETE', data, params: config.queryParams}),
