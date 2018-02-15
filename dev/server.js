@@ -4,19 +4,29 @@ const _ = require('lodash');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
-app.post('/login', (req, res) => {
-    const login = _.get(req.body, 'login');
-    const passwd = _.get(req.body, 'passwd');
-    if (login === passwd) {
-        res.redirect('/app')
-    } else {
-        res.status = 401;
-        res.end();
-    }
-});
+const plugins = [
+    './login'
+];
+
+
+const plugIn = (app, plugins) => {
+    plugins.forEach((pluginPath) => {
+        try {
+            const plugin = require(pluginPath);
+            if (plugin && typeof plugin === 'function') {
+                plugin(app);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+    })
+};
+
+plugIn(app, plugins);
+
 
 app.listen(8081, () => {
     console.log('listening 8081')
 });
-
