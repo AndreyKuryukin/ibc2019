@@ -2,37 +2,37 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import LoginComponent from '../components';
-import { signInSuccess } from "../actions/index";
-import { signIn } from "../../../rest/index";
+import { signInSuccess } from '../actions/index';
+import { signIn } from '../../../rest/index';
 
 
 class Login extends React.PureComponent {
     constructor() {
         super();
-        this.state = {}
+        this.state = {};
     }
 
     onSubmit = (...loginPassword) => {
-        this.setState({loading: true});
+        this.setState({ loading: true });
         signIn(...loginPassword)
-            .then(userName => {
-                this.setState({loading: false});
-                this.props.onLoginSuccess(userName)
+            .then((userName) => {
+                this.setState({ loading: false });
+                this.props.onLoginSuccess(userName);
             });
     };
 
     render() {
-        return <LoginComponent
+        return (<LoginComponent
             onSubmit={this.onSubmit}
             loading={this.state.loading}
-        />;
+        />);
     }
 }
 
-const mapStateToProps = (state) => ({});
+const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
-    onLoginSuccess: (...success) => dispatch(signInSuccess(...success))
+    onLoginSuccess: (...success) => dispatch(signInSuccess(...success)),
 });
 
 export default connect(

@@ -50,7 +50,7 @@ class RolesControls extends React.PureComponent {
                     <Control>
                         <Icon
                             icon="delete-btn"
-                            disabled={true}
+                            disabled
                             onClick={() => {}}
                         />
                     </Control>
@@ -58,7 +58,7 @@ class RolesControls extends React.PureComponent {
                 <Search
                     onChange={this.props.onSearchTextChange}
                     className={styles.search}
-                    placeholder={'Поиск'}
+                    placeholder="Поиск"
                 />
             </Controls>
         );

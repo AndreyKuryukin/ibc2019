@@ -13,8 +13,6 @@ const mapStateToProps = () => ({
     ),
 });
 
-const RolesListGrid = connect(
-    mapStateToProps,
-)(Grid);
+const RolesListGrid = connect(mapStateToProps, )(Grid);
 
 export default RolesListGrid;

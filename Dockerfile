@@ -18,7 +18,9 @@ COPY .eslintrc.js /proj
 COPY package.json /proj
 COPY webpack.config.js /proj
 
-RUN cd /proj && ls && npm install && npm run build &&  mkdir /www && cp  /proj/build/index.html /www && cp  /proj/build/styles.css /www && cp  /proj/build/app.js /www
+RUN ls /proj/src/resources/img/checkbox/ && ls /proj/src/resources/img/common/
+
+RUN cd /proj && npm install && npm run build &&  mkdir /www && cp  /proj/build/index.html /www && cp  /proj/build/styles.css /www && cp  /proj/build/app.js /www
 
 EXPOSE 8085
 CMD nginx -g "daemon off;"

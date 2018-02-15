@@ -15,50 +15,50 @@ class RoleEditor extends React.PureComponent {
     render() {
         return (
             <Modal
-                title={'Создание новой роли'}
+                title="Создание новой роли"
                 width={400}
                 onSubmit={() => {}}
                 onCancel={() => {}}
                 onClose={() => {}}
-                submitLabel={'ОК'}
-                cancelLabel={'Отменить'}
+                submitLabel="ОК"
+                cancelLabel="Отменить"
                 bodyStyle={{ overflow: 'visible' }}
                 submitDisabled={false}
                 cancelDisabled={false}
                 active={this.props.active}
             >
                 <Panel
-                    title={'Главная информация'}
+                    title="Главная информация"
                     vertical
                     noScroll
                 >
                     <Field
-                        label={'Имя роли'}
+                        label="Имя роли"
                         labelWidth={200}
                         className={styles.field}
                     >
                         <TextInput
                             id="name"
                             name="name"
-                            value={''}
+                            value=""
                             onChange={() => {}}
                         />
                     </Field>
                     <Field
-                        label={'Копировать разрешение из'}
+                        label="Копировать разрешение из"
                         labelWidth={200}
                         className={styles.field}
                     >
                         <TextInput
                             id="source"
                             name="source"
-                            value={''}
+                            value=""
                             onChange={() => {}}
                         />
                     </Field>
                 </Panel>
                 <Panel
-                    title={'Разрешения'}
+                    title="Разрешения"
                     vertical
                     noScroll
                     style={{ height: 300 }}
@@ -66,14 +66,14 @@ class RoleEditor extends React.PureComponent {
                     <RolesListGrid />
                 </Panel>
                 <Panel
-                    title={'Комментарий'}
+                    title="Комментарий"
                     vertical
                     noScroll
                 >
                     <TextInputTypeahead
                         id="role-comment"
                         className={styles.textarea}
-                        value={''}
+                        value=""
                         onChange={() => {}}
                         maxlength={255}
                         multiline
@@ -81,7 +81,7 @@ class RoleEditor extends React.PureComponent {
                     />
                 </Panel>
             </Modal>
-        )
+        );
     }
 }
 

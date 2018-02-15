@@ -20,8 +20,8 @@ class Login extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            language: 'ru'
-        }
+            language: 'ru',
+        };
     }
 
     onSubmit = (e) => {
@@ -32,15 +32,13 @@ class Login extends React.PureComponent {
 
     inputValue = (event, valuePath) => this.setState({ [valuePath]: _.get(event, 'currentTarget.value', '') });
 
-    getLanguageOptions = () => {
-        return [{
-            value: 'ru',
-            text: ls('RUSSIAN_LANGUAGE', 'Русский')
-        }, {
-            value: 'en',
-            text: ls('ENGLISH_LANGUAGE', 'English')
-        }]
-    }
+    getLanguageOptions = () => [{
+        value: 'ru',
+        text: ls('RUSSIAN_LANGUAGE', 'Русский'),
+    }, {
+        value: 'en',
+        text: ls('ENGLISH_LANGUAGE', 'English'),
+    }]
 
     render() {
         return (
@@ -82,9 +80,9 @@ class Login extends React.PureComponent {
                             options={this.getLanguageOptions()}
                             classname={styles.fieldInput}
                             width={94}
-                            onChange={value => this.setState({language: value})}
+                            onChange={value => this.setState({ language: value })}
                             value={this.state.language}
-                            style={{marginTop: 4, marginLeft: 47}}
+                            style={{ marginTop: 4, marginLeft: 47 }}
                         />
 
                         <Button

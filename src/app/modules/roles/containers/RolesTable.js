@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { Table } from 'qreact';
 import { selectRolesData } from '../selectors';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     id: 'roles-table',
     data: selectRolesData(state),
     scheme: {

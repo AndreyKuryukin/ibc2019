@@ -18,7 +18,7 @@ class App extends React.PureComponent {
     render() {
         return (
             <Switch>
-                <Route path="/login" component={Login}/>
+                <Route path="/login" component={Login} />
                 <Route path="/roles" component={Roles} />
                 <Route path="/roles/:action/:id" component={Roles} />
             </Switch>
@@ -32,7 +32,7 @@ const renderRootComponent = () => {
     ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
-                <App/>
+                <App />
             </BrowserRouter>
         </Provider>,
         document.getElementById('container')

@@ -20,7 +20,7 @@ export const fetchListOfRoles = async (dispatch, login) => {
             const { data: roles } = await rest.get('/api/v1/role/user/:login', { urlParams });
             dispatch(fetchListOfRolesSuccess(roles));
         }
-    } catch(e) {
+    } catch (e) {
         console.error('Error during fetching list of roles', e);
         dispatch({ type: FETCH_LIST_OF_ROLES_ERROR });
     }
@@ -46,7 +46,7 @@ export const fetchRole = async (dispatch, id) => {
             const role = await rest.get('/api/v1/role/:roleId', { urlParams });
             dispatch(fetchRoleSuccess(role));
         }
-    } catch(e) {
+    } catch (e) {
         console.error('Error during fetching role', e);
         dispatch({ type: FETCH_ROLE_ERROR });
     }
@@ -70,7 +70,7 @@ export const deleteRole = async (dispatch, id) => {
         };
         await rest.delete('/api/v1/role/:roleId', { urlParams });
         dispatch(deleteRoleSuccess(id));
-    } catch(e) {
+    } catch (e) {
         console.error('Error during deleting role', e);
         dispatch({ type: DELETE_ROLE_ERROR });
     }
@@ -86,7 +86,7 @@ const addRole = async (dispatch, role) => {
     try {
         const createdRole = await rest.post('/api/v1/role');
         dispatch(createRole(createdRole));
-    } catch(e) {
+    } catch (e) {
         console.error('Error during creating role', e);
     }
 };
@@ -101,7 +101,7 @@ const putRole = async (dispatch, role) => {
     try {
         const updatedRole = await rest.put('/api/v1/role');
         dispatch(updateRole(updatedRole));
-    } catch(e) {
+    } catch (e) {
         console.error('Error during updating role', e);
     }
 };

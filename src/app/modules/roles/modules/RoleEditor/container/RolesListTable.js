@@ -6,10 +6,10 @@ const mapStateToProps = () => ({
     id: 'roles-list-table',
     data: [{
         id: 1,
-        name: 'Role1'
+        name: 'Role1',
     }, {
         id: 2,
-        name: 'Role2'
+        name: 'Role2',
     }],
     scheme: {
         columns: [{
@@ -24,8 +24,6 @@ const mapStateToProps = () => ({
     counters: false,
 });
 
-const RolesListTable = connect(
-    mapStateToProps,
-)(Table);
+const RolesListTable = connect(mapStateToProps, )(Table);
 
 export default RolesListTable;

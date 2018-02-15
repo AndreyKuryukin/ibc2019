@@ -63,15 +63,15 @@
     "path": "^0.12.7",
     "prop-types": "^15.6.0",
     "qreact": "git+http://gitlab.qligent.ru/qligent/frontend-libs/qreact.git",
-    "react": "15.6.1",
-    "react-dom": "^15.6.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
     "react-redux": "^5.0.6",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
     "react-transition-group": "^2.2.1",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
-    "webpack": "^3.11.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "webpack": "^3.11.0"
   }
 }
