@@ -30,6 +30,7 @@ module.exports = {
                 loader: 'eslint-loader',
                 options: {
                     emitWarning: true,
+                    quiet: true,
                 },
             },
             {
@@ -69,7 +70,7 @@ module.exports = {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['resolve-url-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
+                    use: ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
                 }),
             },
             {
@@ -79,6 +80,7 @@ module.exports = {
         ],
     },
     resolve: {
+        symlinks: false,
         extensions: ['.js', '.jsx', '.scss', '.css'],
         modules: ['node_modules'],
         alias: {

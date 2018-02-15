@@ -2,19 +2,40 @@ import React from 'react';
 import { connect } from 'react-redux';
 
 import LoginComponent from '../components';
+import { signInSuccess } from "../actions/index";
+import { signIn } from "../../../rest/index";
 
-const mapStateToProps = (state) => ({
-    login: 'SuperAdmin',
-    password: 'sa',
-});
+
+class Login extends React.PureComponent {
+    constructor() {
+        super();
+        this.state = {}
+    }
+
+    onSubmit = (...loginPassword) => {
+        this.setState({loading: true});
+        signIn(...loginPassword)
+            .then(userName => {
+                this.setState({loading: false});
+                this.props.onLoginSuccess(userName)
+            });
+    };
+
+    render() {
+        return <LoginComponent
+            onSubmit={this.onSubmit}
+            loading={this.state.loading}
+        />;
+    }
+}
+
+const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = dispatch => ({
-    onSubmit: () => {}
+    onLoginSuccess: (...success) => dispatch(signInSuccess(...success))
 });
 
-const Login = connect(
+export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(LoginComponent);
-
-export default Login;
+)(Login);
