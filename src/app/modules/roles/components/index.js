@@ -19,6 +19,7 @@ class Roles extends React.PureComponent {
         return (
             <div className={styles.rolesWrapper}>
                 <RolesGrid />
+                {/*<RoleEditor active={true} roleId={1}/>*/}
                 <RoleEditor active={true} />
             </div>
         );

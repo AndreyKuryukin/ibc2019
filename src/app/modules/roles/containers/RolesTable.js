@@ -19,13 +19,6 @@ const mapStateToProps = (state) => ({
                 link: `/roles/edit/${row.id}`,
             }),
         }, {
-            title: 'Количество пользователей',
-            columnKey: 'number',
-            width: '1fr',
-            searchable: true,
-            sortable: true,
-            resizable: true,
-        }, {
             title: 'Комментарий',
             columnKey: 'description',
             width: '2fr',

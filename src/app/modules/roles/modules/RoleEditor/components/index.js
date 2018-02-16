@@ -11,11 +11,18 @@ const EMPTY_OPTION = ['', ''];
 class RoleEditor extends React.PureComponent {
     static propTypes = {
         roleId: PropTypes.number,
-        role: PropTypes.object,
+        role: PropTypes.object.isRequired,
         active: PropTypes.bool,
-        onSubmit: PropTypes.func,
+        onSubmit: PropTypes.func.isRequired,
         sourceOptions: PropTypes.array,
         subjectsByRole: PropTypes.object,
+    };
+
+    static defaultProps = {
+        roleId: null,
+        active: false,
+        sourceOptions: [],
+        subjectsByRole: null,
     };
 
     constructor(props) {
@@ -23,6 +30,20 @@ class RoleEditor extends React.PureComponent {
 
         this.state = {
             role: props.role,
+        }
+    }
+
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.role !== nextProps.role) {
+            this.setState({
+                role: nextProps.role,
+            });
         }
     }
 
@@ -35,7 +56,7 @@ class RoleEditor extends React.PureComponent {
         };
 
         if (key === 'source') {
-            role.subjects = this.props.subjectsByRole[value];
+            role.subjects = _.get(this.props.subjectsByRole, `${value}`, role.subjects);
         }
 
         this.setState({
@@ -48,7 +69,7 @@ class RoleEditor extends React.PureComponent {
             const role = {
                 ...this.state.role,
             };
-            delete role['source'];
+            delete role.source;
             this.props.onSubmit(this.props.roleId, role);
         }
     }

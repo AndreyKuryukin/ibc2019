@@ -1,4 +1,4 @@
-import { FETCH_LIST_OF_ROLES_SUCCESS, CREATE_ROLE } from '../actions';
+import { FETCH_LIST_OF_ROLES_SUCCESS, CREATE_ROLE, UPDATE_ROLE } from '../actions';
 
 const initialState = {
     list: [],
@@ -31,8 +31,16 @@ export default (state = initialState, action) => {
                 list,
             };
         }
+        case UPDATE_ROLE: {
+            const { role } = action.payload;
+            const byId = { ...state.byId, [role.id]: role };
 
+            return {
+                ...state,
+                byId,
+            };
+        }
         default:
             return state;
     }
-}
+};

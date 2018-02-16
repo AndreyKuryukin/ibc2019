@@ -16,21 +16,35 @@ app.post('/login', (req, res) => {
     }
 });
 
+/* ROLES */
+const rolesById = {
+    1: {
+        id: 1,
+        name: 'SuperAdmin',
+        number: '1',
+        description: 'Comment for SuperAdmin',
+        subjects: ['ALERTS']
+    },
+    2: {
+        id: 2,
+        name: `User`,
+        number: '4',
+        description: 'Usual role',
+        subjects: ['MAIN', 'CHARTS']
+    }
+};
 app.get('/api/v1/role/user/:login', (req, res) => {
     if (req.params.login) {
-        res.send([{
-            id: 1,
-            name: 'SuperAdmin',
-            number: '1',
-            description: 'Comment for SuperAdmin',
-            subjects: ['ALERTS']
-        }, {
-            id: 2,
-            name: `User`,
-            number: '4',
-            description: 'Usual role',
-            subjects: ['MAIN', 'CHARTS']
-        }]);
+        res.send(_.values(rolesById));
+    } else {
+        res.status = 401;
+        res.end();
+    }
+});
+
+app.get('/api/v1/role/:id', (req, res) => {
+    if (req.params.id) {
+        res.send(rolesById[req.params.id]);
     } else {
         res.status = 401;
         res.end();

@@ -1,10 +1,11 @@
 import { FETCH_SUBJECTS_SUCCESS } from '../actions/subjects';
+import { FETCH_ROLE_SUCCESS } from '../actions';
 
 const initialState = {
     role: {
         name: '',
         description: '',
-        number: 0,
+        number: '0',
         source: '',
         subjects: [],
     },
@@ -13,6 +14,14 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
+        case FETCH_ROLE_SUCCESS:
+            return {
+                ...state,
+                role: {
+                    ...state.role,
+                    ...action.payload.role,
+                },
+            };
         case FETCH_SUBJECTS_SUCCESS: {
             return {
                 ...state,
@@ -22,4 +31,4 @@ export default (state = initialState, action) => {
         default:
             return state;
     }
-}
+};

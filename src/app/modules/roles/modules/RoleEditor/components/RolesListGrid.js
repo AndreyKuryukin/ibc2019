@@ -22,8 +22,6 @@ class RolesListGrid extends React.PureComponent {
         }
     }
 
-
-
     onSearchTextChange = (searchText) => {
         this.setState({
             searchText,
