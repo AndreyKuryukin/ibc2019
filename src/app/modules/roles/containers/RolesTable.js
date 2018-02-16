@@ -1,9 +1,8 @@
-import React from 'react';
 import { connect } from 'react-redux';
 import { Table } from 'qreact';
 import { selectRolesData } from '../selectors';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     id: 'roles-table',
     data: selectRolesData(state),
     scheme: {
@@ -19,13 +18,6 @@ const mapStateToProps = (state) => ({
                 link: `/roles/edit/${row.id}`,
             }),
         }, {
-            title: 'Количество пользователей',
-            columnKey: 'number',
-            width: '1fr',
-            searchable: true,
-            sortable: true,
-            resizable: true,
-        }, {
             title: 'Комментарий',
             columnKey: 'description',
             width: '2fr',
@@ -39,8 +31,9 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
-    onTableDataChange: ({ isAllChecked }) => {
-        props.onCheckAll(isAllChecked);
+    onTableDataChange: ({ checked, isAllChecked }) => {
+        const checkedIds = checked.map(row => row.id);
+        props.onCheck(isAllChecked, checkedIds);
     },
 });
 

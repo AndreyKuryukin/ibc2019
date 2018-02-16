@@ -8,15 +8,21 @@ class RolesControls extends React.PureComponent {
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
+        isAllChecked: PropTypes.bool,
         onDelete: PropTypes.func,
         onAdd: PropTypes.func,
-        isAllChecked: PropTypes.bool,
-        checkedRoles: PropTypes.array,
-        isAnyChecked: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        isAllChecked: false,
+        onSearchTextChange: () => null,
+        onCheckAll: () => null,
+        onDelete: () => null,
+        onAdd: () => null,
     };
 
     render() {
-        const { isAllChecked } = this.props;
+        const { isAllChecked, onDelete } = this.props;
         return (
             <Controls>
                 <Left>
@@ -46,15 +52,14 @@ class RolesControls extends React.PureComponent {
                     <Control>
                         <Icon
                             icon="delete-btn"
-                            disabled={true}
-                            onClick={() => {}}
+                            onClick={onDelete}
                         />
                     </Control>
                 </Left>
                 <Search
                     onChange={this.props.onSearchTextChange}
                     className={styles.search}
-                    placeholder={'Поиск'}
+                    placeholder="Поиск"
                 />
             </Controls>
         );

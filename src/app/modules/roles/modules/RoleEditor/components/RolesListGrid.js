@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel } from 'qreact';
-import RolesListControls from '../containers/RolesListControls';
+import RolesListControls from './RolesListControls/RolesListControls';
 import RolesListTable from '../containers/RolesListTable';
 
 class RolesListGrid extends React.PureComponent {
@@ -9,7 +9,15 @@ class RolesListGrid extends React.PureComponent {
         onMount: PropTypes.func,
         onCheckRows: PropTypes.func,
         checked: PropTypes.array,
+        isLoading: PropTypes.bool,
     }
+
+    static defaultProps = {
+        checked: null,
+        isLoading: false,
+        onCheckRows: () => null,
+        onMount: () => null,
+    };
 
     state = {
         searchText: '',
@@ -21,8 +29,6 @@ class RolesListGrid extends React.PureComponent {
             this.props.onMount();
         }
     }
-
-
 
     onSearchTextChange = (searchText) => {
         this.setState({
@@ -38,7 +44,7 @@ class RolesListGrid extends React.PureComponent {
 
     render() {
         const { searchText, isAllChecked } = this.state;
-        const { checked, onCheckRows } = this.props;
+        const { checked, onCheckRows, isLoading } = this.props;
         return (
             <Panel
                 noScroll
@@ -55,6 +61,7 @@ class RolesListGrid extends React.PureComponent {
                     onCheckAll={this.onCheckAll}
                     onCheckRows={onCheckRows}
                     isAllChecked={isAllChecked}
+                    isLoading={isLoading}
                     checked={checked}
                 />
             </Panel>

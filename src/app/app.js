@@ -16,7 +16,7 @@ import rootReducer from './reducers';
 class App extends React.PureComponent {
     render() {
         return (
-            <div>
+            <div style={{ height: '100%' }}>
                 <Route path="/login" component={Login} />
                 <Route path="/roles" component={Roles} />
                 <Route path="/roles/:action/:id" component={Roles} />

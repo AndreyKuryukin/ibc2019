@@ -11,11 +11,20 @@ const EMPTY_OPTION = ['', ''];
 class RoleEditor extends React.PureComponent {
     static propTypes = {
         roleId: PropTypes.number,
-        role: PropTypes.object,
+        role: PropTypes.object.isRequired,
         active: PropTypes.bool,
-        onSubmit: PropTypes.func,
+        onSubmit: PropTypes.func.isRequired,
+        onMount: PropTypes.func,
         sourceOptions: PropTypes.array,
         subjectsByRole: PropTypes.object,
+    };
+
+    static defaultProps = {
+        roleId: null,
+        active: false,
+        sourceOptions: [],
+        subjectsByRole: null,
+        onMount: () => null,
     };
 
     constructor(props) {
@@ -23,6 +32,20 @@ class RoleEditor extends React.PureComponent {
 
         this.state = {
             role: props.role,
+        };
+    }
+
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.role !== nextProps.role) {
+            this.setState({
+                role: nextProps.role,
+            });
         }
     }
 
@@ -35,7 +58,7 @@ class RoleEditor extends React.PureComponent {
         };
 
         if (key === 'source') {
-            role.subjects = this.props.subjectsByRole[value];
+            role.subjects = _.get(this.props.subjectsByRole, `${value}`, role.subjects);
         }
 
         this.setState({
@@ -48,34 +71,35 @@ class RoleEditor extends React.PureComponent {
             const role = {
                 ...this.state.role,
             };
-            delete role['source'];
+            delete role.source;
             this.props.onSubmit(this.props.roleId, role);
         }
     }
 
     render() {
+        const { roleId } = this.props;
         return (
             <Modal
-                title={'Создание новой роли'}
+                title={roleId ? 'Редактирование роли' : 'Создание новой роли'}
                 width={400}
                 onSubmit={this.onSubmit}
                 onCancel={() => {}}
                 onClose={() => {}}
-                submitLabel={'ОК'}
-                cancelLabel={'Отменить'}
+                submitLabel="ОК"
+                cancelLabel="Отменить"
                 bodyStyle={{ overflow: 'visible' }}
                 submitDisabled={false}
                 cancelDisabled={false}
                 active={this.props.active}
             >
                 <Panel
-                    title={'Главная информация'}
+                    title="Главная информация"
                     vertical
                     noScroll
                 >
                     <Field
                         id="name"
-                        label={'Имя роли'}
+                        label="Имя роли"
                         labelWidth={200}
                         className={styles.field}
                     >
@@ -88,7 +112,7 @@ class RoleEditor extends React.PureComponent {
                     </Field>
                     <Field
                         id="source"
-                        label={'Копировать разрешение из'}
+                        label="Копировать разрешение из"
                         labelWidth={200}
                         className={styles.field}
                     >
@@ -101,7 +125,7 @@ class RoleEditor extends React.PureComponent {
                     </Field>
                 </Panel>
                 <Panel
-                    title={'Разрешения'}
+                    title="Разрешения"
                     vertical
                     noScroll
                     style={{ height: 300 }}
@@ -112,7 +136,7 @@ class RoleEditor extends React.PureComponent {
                     />
                 </Panel>
                 <Panel
-                    title={'Комментарий'}
+                    title="Комментарий"
                     vertical
                     noScroll
                 >
@@ -127,7 +151,7 @@ class RoleEditor extends React.PureComponent {
                     />
                 </Panel>
             </Modal>
-        )
+        );
     }
 }
 
