@@ -15,9 +15,10 @@ class Login extends React.PureComponent {
     onSubmit = (...loginPassword) => {
         this.setState({ loading: true });
         signIn(...loginPassword)
-            .then((userName) => {
-                this.setState({ loading: false });
+            .then(userName => {
+                this.setState({loading: false});
                 this.props.onLoginSuccess(userName);
+                window.location.href = '/roles'
             });
     };
 
