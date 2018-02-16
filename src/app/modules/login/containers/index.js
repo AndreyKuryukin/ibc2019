@@ -17,7 +17,8 @@ class Login extends React.PureComponent {
         signIn(...loginPassword)
             .then(userName => {
                 this.setState({loading: false});
-                this.props.onLoginSuccess(userName)
+                this.props.onLoginSuccess(userName);
+                window.location.href = '/roles'
             });
     };
 
