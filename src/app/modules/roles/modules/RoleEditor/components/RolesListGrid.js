@@ -1,12 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Panel } from 'qreact';
-import RolesControls from '../containers/RolesControls';
-import RolesTable from '../containers/RolesTable';
+import RolesListControls from '../containers/RolesListControls';
+import RolesListTable from '../containers/RolesListTable';
 
-class RolesGrid extends React.PureComponent {
+class RolesListGrid extends React.PureComponent {
     static propTypes = {
         onMount: PropTypes.func,
+        onCheckRows: PropTypes.func,
+        checked: PropTypes.array,
     }
 
     state = {
@@ -34,26 +36,29 @@ class RolesGrid extends React.PureComponent {
 
     render() {
         const { searchText, isAllChecked } = this.state;
+        const { checked, onCheckRows } = this.props;
         return (
             <Panel
-                title="Роли"
                 noScroll
                 vertical
             >
-                <RolesControls
+                <RolesListControls
                     isAllChecked={isAllChecked}
                     searchText={searchText}
                     onSearchTextChange={this.onSearchTextChange}
                     onCheckAll={this.onCheckAll}
                 />
-                <RolesTable
+                <RolesListTable
                     searchText={searchText}
                     onCheckAll={this.onCheckAll}
+                    onCheckRows={onCheckRows}
                     isAllChecked={isAllChecked}
+                    checked={checked}
                 />
             </Panel>
         );
     }
 }
 
-export default RolesGrid;
+export default RolesListGrid;
+
