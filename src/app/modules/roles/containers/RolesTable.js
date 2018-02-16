@@ -38,10 +38,9 @@ const mapStateToProps = (state) => ({
     counters: false,
 });
 
-const mapDispatchToProps = dispatch => ({
-    onTableDataChange: ({ checked, isAllChecked }) => {
-        console.log(isAllChecked);
-        console.log(checked);
+const mapDispatchToProps = (dispatch, props) => ({
+    onTableDataChange: ({ isAllChecked }) => {
+        props.onCheckAll(isAllChecked);
     },
 });
 

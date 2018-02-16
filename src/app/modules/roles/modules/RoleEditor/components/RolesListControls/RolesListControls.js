@@ -6,29 +6,20 @@ import styles from './styles.scss';
 
 class RolesListControls extends React.PureComponent {
     static propTypes = {
-        onSearch: PropTypes.func.isRequired,
-        onCheckAll: PropTypes.func.isRequired,
-        onUncheckAll: PropTypes.func.isRequired,
-        checkedAll: PropTypes.bool,
-        checkedRoles: PropTypes.array,
+        onSearchTextChange: PropTypes.func,
+        onCheckAll: PropTypes.func,
+        isAllChecked: PropTypes.bool,
         searchText: PropTypes.string,
     };
 
-    onCheckAll = (isChecked) => {
-        console.log(isChecked);
-    }
-
-    onSearchChange = (text) => {
-        console.log(text);
-    }
-
     render() {
+        const { isAllChecked } = this.props;
         return (
             <Controls>
                 <Left>
                     <Control>
                         <Checkbox
-                            id="roles-all"
+                            id="permissions-all"
                             style={{
                                 display: 'flex',
                                 justifyContent: 'center',
@@ -38,13 +29,13 @@ class RolesListControls extends React.PureComponent {
                                 cursor: 'pointer',
                                 marginBottom: 0,
                             }}
-                            onChange={this.onCheckAll}
-                            checked={false}
+                            onChange={this.props.onCheckAll}
+                            checked={isAllChecked}
                         />
                     </Control>
                 </Left>
                 <Search
-                    onChange={this.onSearchChange}
+                    onChange={this.props.onSearchTextChange}
                     className={styles.search}
                     placeholder={'Поиск'}
                 />

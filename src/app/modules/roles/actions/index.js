@@ -84,7 +84,7 @@ const createRole = role => ({
 
 const addRole = async (dispatch, role) => {
     try {
-        const createdRole = await rest.post('/api/v1/role');
+        const { data: createdRole } = await rest.post('/api/v1/role', role);
         dispatch(createRole(createdRole));
     } catch(e) {
         console.error('Error during creating role', e);
@@ -99,7 +99,7 @@ const updateRole = role => ({
 
 const putRole = async (dispatch, role) => {
     try {
-        const updatedRole = await rest.put('/api/v1/role');
+        const updatedRole = await rest.put('/api/v1/role', role);
         dispatch(updateRole(updatedRole));
     } catch(e) {
         console.error('Error during updating role', e);

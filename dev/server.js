@@ -21,16 +21,38 @@ app.get('/api/v1/role/user/:login', (req, res) => {
         res.send([{
             id: 1,
             name: 'SuperAdmin',
-            description: 'Comment for SuperAdmin'
+            number: '1',
+            description: 'Comment for SuperAdmin',
+            subjects: ['ALERTS']
         }, {
             id: 2,
-            name: `${req.params.login} role`,
-            description: 'Your role'
+            name: `User`,
+            number: '4',
+            description: 'Usual role',
+            subjects: ['MAIN', 'CHARTS']
         }]);
     } else {
         res.status = 401;
         res.end();
     }
+});
+
+app.post('/api/v1/role', (req, res) => {
+    res.send(Object.assign(
+        {},
+        req.body,
+        {
+            id: Date.now()
+        }
+    ));
+});
+
+app.put('/api/v1/role', (req, res) => {
+    res.send(req.body);
+});
+
+app.get('/api/v1/subjects', (req, res) => {
+    res.send(['MAIN', 'ALERTS', 'CHARTS']);
 });
 
 app.listen(8081, () => {

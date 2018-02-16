@@ -6,7 +6,7 @@ import { fetchListOfRoles } from '../actions';
 const mapDispatchToProps = dispatch => ({
     onMount: () => {
         fetchListOfRoles(dispatch, 'username');
-    }
+    },
 });
 
 const RolesGrid = connect(

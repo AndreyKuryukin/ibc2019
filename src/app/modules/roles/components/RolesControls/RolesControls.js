@@ -6,21 +6,17 @@ import styles from './styles.scss';
 
 class RolesControls extends React.PureComponent {
     static propTypes = {
-        onSearchTextChange: PropTypes.func.isRequired,
-        onCheckAll: PropTypes.func.isRequired,
-        onUncheckAll: PropTypes.func.isRequired,
-        onDelete: PropTypes.func.isRequired,
+        onSearchTextChange: PropTypes.func,
+        onCheckAll: PropTypes.func,
+        onDelete: PropTypes.func,
         onAdd: PropTypes.func,
-        checkedAll: PropTypes.bool,
+        isAllChecked: PropTypes.bool,
         checkedRoles: PropTypes.array,
         isAnyChecked: PropTypes.bool,
     };
 
-    onCheckAll = (isChecked) => {
-        console.log(isChecked);
-    }
-
     render() {
+        const { isAllChecked } = this.props;
         return (
             <Controls>
                 <Left>
@@ -36,8 +32,8 @@ class RolesControls extends React.PureComponent {
                                 cursor: 'pointer',
                                 marginBottom: 0,
                             }}
-                            onChange={this.onCheckAll}
-                            checked={false}
+                            onChange={this.props.onCheckAll}
+                            checked={isAllChecked}
                         />
                     </Control>
                     <Control>
