@@ -1,16 +1,61 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+var path = require('path');
+const proxy = require('express-http-proxy');
+const querystring = require('querystring');
+const request = require('request');
+
 const _ = require('lodash');
 
+const PROXY_HOST = process.env.PROXY_HOST;
+const PROXY_PORT = process.env.PROXY_PORT || 8080;
+
+const PORT = process.env.PROXY_PORT || 8088;
+
+const USER_NAME = process.env.USER_NAME || 'User';
+const PASSWORD = process.env.PASSWORD || 'User';
+
+const AUTHORIZATION_PATH = 'api/v1/authorize';
+
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded());
+app.use(bodyParser.json({
+    limit: '50mb',
+}));
+app.use(bodyParser.urlencoded({
+    extended: true,
+}));
+app.set('etag', false);
+app.set('port', (PORT));
 
 const plugins = [
     './login'
 ];
 
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Cache-Control', 'no-cache');
+    next();
+});
 
+
+function useStatic() {
+    const buildPath = path.resolve(__dirname, '../build');
+    app.use('/*.css', function (req, res) {
+        res.sendFile(path.resolve(__dirname, '../build/styles.css'));
+    });
+    app.use('/*.js', function (req, res) {
+        res.sendFile(path.resolve(__dirname, '../build/app.js'));
+    });
+
+    app.use('/*', express.static(buildPath, {
+        index: 'index.html',
+    }));
+
+    app.listen(PORT, () => {
+        console.log(`Listening on ${app.get('port')}`);
+    })
+}
+;
 const plugIn = (app, plugins) => {
     plugins.forEach((pluginPath) => {
         try {
@@ -24,62 +69,61 @@ const plugIn = (app, plugins) => {
     })
 };
 
-plugIn(app, plugins);
+function getToken(headers) {
+    return headers['Authorization'];
+}
 
+function authorize(hostname, port) {
+    return new Promise((resolve, reject) => {
+        const form = {
+            login: USER_NAME,
+            password: PASSWORD,
+        };
+        const formData = querystring.stringify(form);
+        const contentLength = formData.length;
+        const authUrl = `http://${hostname}:${port}/${AUTHORIZATION_PATH}`;
 
-/* ROLES */
-const rolesById = {
-    1: {
-        id: 1,
-        name: 'SuperAdmin',
-        number: '1',
-        description: 'Comment for SuperAdmin',
-        subjects: ['ALERTS']
-    },
-    2: {
-        id: 2,
-        name: `User`,
-        number: '4',
-        description: 'Usual role',
-        subjects: ['MAIN', 'CHARTS']
-    }
-};
-app.get('/api/v1/role/user/:login', (req, res) => {
-    if (req.params.login) {
-        res.send(_.values(rolesById));
-    } else {
-        res.status = 401;
-        res.end();
-    }
-});
+        request({
+            headers: {
+                'Content-Length': contentLength,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            uri: authUrl,
+            body: formData,
+            method: 'POST',
+        }, (err, res) => {
+            if (!err && res.statusCode === 200) {
+                resolve(getToken(res.headers));
+            } else {
+                reject(err);
+            }
+        });
+    });
+}
 
-app.get('/api/v1/role/:id', (req, res) => {
-    if (req.params.id) {
-        res.send(rolesById[req.params.id]);
-    } else {
-        res.status = 401;
-        res.end();
-    }
-});
-
-app.post('/api/v1/role', (req, res) => {
-    res.send(Object.assign(
-        {},
-        req.body,
-        {
-            id: Date.now()
+if (PROXY_HOST) {
+    authorize(PROXY_HOST, PROXY_PORT).then((token) => {
+        if (token) {
+            console.log(`Authorization success on ${PROXY_HOST}:${PROXY_PORT} token: "${token}"`);
         }
-    ));
-});
-
-app.put('/api/v1/role', (req, res) => {
-    res.send(req.body);
-});
-
-app.get('/api/v1/subjects', (req, res) => {
-    res.send(['MAIN', 'ALERTS', 'CHARTS']);
-});
-
-app.listen(8081, () => {
-    console.log('listening 8081')
-});
+        const target = `http://${PROXY_HOST}:${PROXY_PORT}/qos/`;
+        const config = {
+            proxyReqPathResolver: (req) => {
+                return target + require('url').parse(req.originalUrl).path;
+            },
+            proxyReqOptDecorator: (proxyReqOpts) => {
+                proxyReqOpts.headers['Authorize'] = token;
+                return proxyReqOpts;
+            },
+        };
+        app.use('/api/*', proxy(target, config));
+        app.use('/api/rest/*', proxy(target, config));
+        useStatic();
+        console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);
+    }).catch((e) => {
+        console.error(`problem with request: ${e.message}`);
+    });
+} else {
+    plugIn(app, plugins);
+    useStatic();
+}

@@ -23,17 +23,17 @@ module.exports = {
     devtool: devMode && 'inline-sourcemap',
     module: {
         rules: [
-            // {
-            //     enforce: 'pre',
-            //     test: /\.js$/,
-            //     exclude: /node_modules/,
-            //     loader: 'eslint-loader',
-            //     options: {
-            //         emitWarning: true,
-            //         quiet: true,
-            //         fix: true,
-            //     },
-            // },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader',
+                options: {
+                    emitWarning: true,
+                    quiet: true,
+                    fix: true,
+                },
+            },
             {
                 test: /\.js$/,
                 loader: ['babel-loader'],
@@ -97,15 +97,4 @@ module.exports = {
             allChunks: true,
         }),
     ],
-    devServer: {
-        historyApiFallback: true,
-        contentBase: path.join(__dirname, 'build'),
-        compress: true,
-        port: 8080,
-        proxy: {
-            '/api/v1': {
-                target: `http://${PROXY_HOST}:${PROXY_PORT}`,
-            },
-        },
-    },
 };
