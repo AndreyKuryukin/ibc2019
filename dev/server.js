@@ -9,6 +9,7 @@ const _ = require('lodash');
 
 const PROXY_HOST = process.env.PROXY_HOST;
 const PROXY_PORT = process.env.PROXY_PORT || 8080;
+const AUTHORIZE = process.env.AUTHORIZE === 'true';
 
 const PORT = process.env.PROXY_PORT || 8088;
 
@@ -70,11 +71,12 @@ const plugIn = (app, plugins) => {
 };
 
 function getToken(headers) {
-    return headers['Authorization'];
+    return headers['authorization'];
 }
 
 function authorize(hostname, port) {
-    return new Promise((resolve, reject) => {
+    return AUTHORIZE ? new Promise((resolve, reject) => {
+        console.log('Authorisation ...')
         const form = {
             login: USER_NAME,
             password: PASSWORD,
@@ -98,7 +100,7 @@ function authorize(hostname, port) {
                 reject(err);
             }
         });
-    });
+    }) : Promise.resolve(null);
 }
 
 if (PROXY_HOST) {
@@ -106,18 +108,17 @@ if (PROXY_HOST) {
         if (token) {
             console.log(`Authorization success on ${PROXY_HOST}:${PROXY_PORT} token: "${token}"`);
         }
-        const target = `http://${PROXY_HOST}:${PROXY_PORT}/qos/`;
+        const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
         const config = {
             proxyReqPathResolver: (req) => {
                 return target + require('url').parse(req.originalUrl).path;
             },
             proxyReqOptDecorator: (proxyReqOpts) => {
-                proxyReqOpts.headers['Authorize'] = token;
+                proxyReqOpts.headers['authorization'] = token;
                 return proxyReqOpts;
             },
         };
         app.use('/api/*', proxy(target, config));
-        app.use('/api/rest/*', proxy(target, config));
         useStatic();
         console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);
     }).catch((e) => {

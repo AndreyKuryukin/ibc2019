@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import _ from 'lodash';
 import { Button, Field, Select, TextInput } from 'qreact';
 import ls from '../../../../i18n';
 import styles from './login.scss';
@@ -30,7 +29,7 @@ class Login extends React.PureComponent {
         this.props.onSubmit(login, password);
     };
 
-    inputValue = (event, valuePath) => this.setState({ [valuePath]: _.get(event, 'currentTarget.value', '') });
+    inputValue = (value, valuePath) => this.setState({ [valuePath]: value });
 
     getLanguageOptions = () => [{
         value: 'ru',
@@ -72,7 +71,7 @@ class Login extends React.PureComponent {
                                 type="password"
                                 name="password"
                                 value={this.state.password}
-                                onChange={event => this.inputValue(event, 'password')}
+                                onChange={(event) => { console.log(event); this.inputValue(event, 'password'); }}
                             />
                         </Field>
 
