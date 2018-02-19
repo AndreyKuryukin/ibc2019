@@ -10,7 +10,6 @@ class RolesControls extends React.PureComponent {
         onCheckAll: PropTypes.func,
         isAllChecked: PropTypes.bool,
         onDelete: PropTypes.func,
-        onAdd: PropTypes.func,
     };
 
     static defaultProps = {
@@ -18,8 +17,11 @@ class RolesControls extends React.PureComponent {
         onSearchTextChange: () => null,
         onCheckAll: () => null,
         onDelete: () => null,
-        onAdd: () => null,
     };
+
+    onAdd = () => {
+        window.location.href = '/roles/add';
+    }
 
     render() {
         const { isAllChecked, onDelete } = this.props;
@@ -46,7 +48,7 @@ class RolesControls extends React.PureComponent {
                         <Icon
                             icon="create-btn"
                             disabled={false}
-                            onClick={() => {}}
+                            onClick={this.onAdd}
                         />
                     </Control>
                     <Control>

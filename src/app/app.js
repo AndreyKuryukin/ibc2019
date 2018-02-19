@@ -17,9 +17,8 @@ class App extends React.PureComponent {
     render() {
         return (
             <div style={{ height: '100%' }}>
-                <Route path="/login" component={Login} />
-                <Route path="/roles" component={Roles} />
-                <Route path="/roles/:action/:id" component={Roles} />
+                <Route path="/login" component={Login} key="login" />
+                <Route path="/roles/:action?/:id?" component={Roles} key="roles" />
             </div>
         );
     }

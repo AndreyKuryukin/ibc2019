@@ -1,3 +1,5 @@
+const _ = require('lodash');
+
 module.exports = (app) => {
     const rolesById = {
         1: {
@@ -51,8 +53,7 @@ module.exports = (app) => {
         res.send(['MAIN', 'ALERTS', 'CHARTS']);
     });
 
-    app.listen(8081, () => {
-        console.log('listening 8081')
+    app.delete('/api/v1/role', (req, res) => {
+        res.end();
     });
-
 };

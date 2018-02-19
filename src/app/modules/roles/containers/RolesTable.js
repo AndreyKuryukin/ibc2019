@@ -15,6 +15,9 @@ const mapStateToProps = state => ({
             sortable: true,
             resizable: true,
             mapRowToParams: row => ({
+                onClick: () => {
+                    window.location.href = `/roles/edit/${row.id}`;
+                },
                 link: `/roles/edit/${row.id}`,
             }),
         }, {
