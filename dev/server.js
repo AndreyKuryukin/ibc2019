@@ -28,7 +28,8 @@ app.set('etag', false);
 app.set('port', (PORT));
 
 const plugins = [
-    './login'
+    './login',
+    './roles'
 ];
 
 app.use((req, res, next) => {

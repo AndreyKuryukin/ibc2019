@@ -1,14 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Modal, Panel, Field, TextInput, TextInputTypeahead, Select } from 'qreact';
+import { Modal, Panel, Field, TextInputTypeahead, Select } from 'qreact';
 import RolesListGrid from '../containers/RolesListGrid';
 
 import styles from './styles.scss';
 
 const EMPTY_OPTION = ['', ''];
+const textInputStyle = {
+    background: '#000',
+    border: 0,
+    color: '#fff',
+    padding: '0 5px',
+};
+
 
 class RoleEditor extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    }
+
     static propTypes = {
         roleId: PropTypes.number,
         role: PropTypes.object.isRequired,
@@ -76,6 +87,10 @@ class RoleEditor extends React.PureComponent {
         }
     }
 
+    onClose = () => {
+        this.context.history.push('/roles');
+    }
+
     render() {
         const { roleId } = this.props;
         return (
@@ -83,8 +98,8 @@ class RoleEditor extends React.PureComponent {
                 title={roleId ? 'Редактирование роли' : 'Создание новой роли'}
                 width={400}
                 onSubmit={this.onSubmit}
-                onCancel={() => {}}
-                onClose={() => {}}
+                onCancel={this.onClose}
+                onClose={this.onClose}
                 submitLabel="ОК"
                 cancelLabel="Отменить"
                 bodyStyle={{ overflow: 'visible' }}
@@ -103,9 +118,9 @@ class RoleEditor extends React.PureComponent {
                         labelWidth={200}
                         className={styles.field}
                     >
-                        <TextInput
+                        <TextInputTypeahead
                             id="name"
-                            name="name"
+                            style={textInputStyle}
                             value={this.getRoleProperty('name', '')}
                             onChange={value => this.setRoleProperty('name', value)}
                         />
