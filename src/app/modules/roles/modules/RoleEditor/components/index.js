@@ -30,7 +30,7 @@ class RoleEditor extends React.PureComponent {
 
         this.state = {
             role: props.role,
-        }
+        };
     }
 
     componentDidMount() {

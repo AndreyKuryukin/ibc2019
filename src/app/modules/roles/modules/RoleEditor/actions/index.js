@@ -20,7 +20,7 @@ export const fetchRole = async (dispatch, id) => {
             const { data: role } = await rest.get('/api/v1/role/:roleId', { urlParams });
             dispatch(fetchRoleSuccess(role));
         }
-    } catch(e) {
+    } catch (e) {
         console.error('Error during fetching role', e);
         dispatch({ type: FETCH_ROLE_ERROR });
     }

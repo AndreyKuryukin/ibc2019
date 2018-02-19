@@ -51,7 +51,7 @@ class Login extends React.PureComponent {
                     >
 
                         <Field
-                            id={'login'}
+                            id="login"
                             label={ls('LOGIN_LOGIN', 'Логин')}
                             labelWidth={100}
                             className={styles.field}

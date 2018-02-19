@@ -15,7 +15,7 @@ export const fetchSubjects = async (dispatch) => {
     try {
         const { data: subjects } = await rest.get('/api/v1/subjects');
         dispatch(fetchSubjectsSuccess(subjects));
-    } catch(e) {
+    } catch (e) {
         console.error('Error during fetching subjects', e);
         dispatch({ type: FETCH_SUBJECTS_ERROR });
     }

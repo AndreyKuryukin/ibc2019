@@ -10,7 +10,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 const RolesGrid = connect(
-    null,
+    () => ({}),
     mapDispatchToProps,
 )(Grid);
 
