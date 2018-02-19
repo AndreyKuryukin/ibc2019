@@ -5,8 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --config=./jest.config.json",
-    "dev": "cross-env PROXY_HOST=localhost PROXY_PORT=8081 NODE_ENV=development webpack-dev-server",
-    "dev-local": "concurrently --kill-others \"cross-env PROXY_HOST=localhost PROXY_PORT=8081 NODE_ENV=development webpack-dev-server\" \"nodemon dev/server.js\"",
+    "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --progress --colors --watch\" \"nodemon dev/server.js\"",
     "build": "cross-env NODE_ENV=production webpack --bail"
   },
   "author": "",
@@ -34,6 +33,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.6.1",
     "express": "^4.16.2",
+    "express-http-proxy": "^1.1.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "img-loader": "^2.0.1",
     "istanbul": "^0.4.5",
@@ -41,7 +41,7 @@
     "jest-enzyme": "^4.2.0",
     "jest-localstorage-mock": "^2.2.0",
     "node-sass": "^4.7.2",
-    "nodemon": "^1.14.12",
+    "nodemon": "^1.15.0",
     "postcss-loader": "^2.1.0",
     "resolve-url-loader": "^2.2.1",
     "sass-loader": "^6.0.6",
@@ -71,7 +71,7 @@
     "react-transition-group": "^2.2.1",
     "reactstrap": "^4.8.0",
     "redux": "^3.7.2",
-    "webpack": "^3.11.0",
-    "reselect": "^3.0.1"
+    "reselect": "^3.0.1",
+    "webpack": "^3.11.0"
   }
 }

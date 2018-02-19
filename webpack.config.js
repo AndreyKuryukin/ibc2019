@@ -30,6 +30,8 @@ module.exports = {
                 loader: 'eslint-loader',
                 options: {
                     emitWarning: true,
+                    quiet: true,
+                    fix: true,
                 },
             },
             {
@@ -69,7 +71,7 @@ module.exports = {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['resolve-url-loader', 'css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
+                    use: ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
                 }),
             },
             {
@@ -79,6 +81,7 @@ module.exports = {
         ],
     },
     resolve: {
+        symlinks: prodMode,
         extensions: ['.js', '.jsx', '.scss', '.css'],
         modules: ['node_modules'],
         alias: {
@@ -94,15 +97,4 @@ module.exports = {
             allChunks: true,
         }),
     ],
-    devServer: {
-        historyApiFallback: true,
-        contentBase: path.join(__dirname, 'build'),
-        compress: true,
-        port: 8080,
-        proxy: {
-            '/api/v1': {
-                target: `http://${PROXY_HOST}:${PROXY_PORT}`,
-            },
-        },
-    },
 };

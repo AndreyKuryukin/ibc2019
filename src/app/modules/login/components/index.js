@@ -10,6 +10,7 @@ class Login extends React.PureComponent {
         onSubmit: PropTypes.func,
         login: PropTypes.string,
         password: PropTypes.string,
+        loading: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -19,29 +20,25 @@ class Login extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            login: props.login,
-            password: props.password,
-            language: 'ru'
-        }
+            language: 'ru',
+        };
     }
 
     onSubmit = (e) => {
         const { login, password } = this.state;
         e.preventDefault();
-        this.props.onSubmit({ login, password });
+        this.props.onSubmit(login, password);
     };
 
     inputValue = (event, valuePath) => this.setState({ [valuePath]: _.get(event, 'currentTarget.value', '') });
 
-    getLanguageOptions = () => {
-        return [{
-            value: 'ru',
-            text: ls('RUSSIAN_LANGUAGE', 'Русский')
-        }, {
-            value: 'en',
-            text: ls('ENGLISH_LANGUAGE', 'English')
-        }]
-    }
+    getLanguageOptions = () => [{
+        value: 'ru',
+        text: ls('RUSSIAN_LANGUAGE', 'Русский'),
+    }, {
+        value: 'en',
+        text: ls('ENGLISH_LANGUAGE', 'English'),
+    }]
 
     render() {
         return (
@@ -54,7 +51,7 @@ class Login extends React.PureComponent {
                     >
 
                         <Field
-                            id={'login'}
+                            id="login"
                             label={ls('LOGIN_LOGIN', 'Логин')}
                             labelWidth={100}
                             className={styles.field}
@@ -82,10 +79,10 @@ class Login extends React.PureComponent {
                         <Select
                             options={this.getLanguageOptions()}
                             classname={styles.fieldInput}
-                            width={100}
-                            onChange={value => this.setState({language: value})}
+                            width={94}
+                            onChange={value => this.setState({ language: value })}
                             value={this.state.language}
-                            style={{marginTop: 4, marginLeft: 47}}
+                            style={{ marginTop: 4, marginLeft: 47 }}
                         />
 
                         <Button
