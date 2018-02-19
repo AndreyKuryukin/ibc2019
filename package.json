@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "jest --config=./jest.config.json",
-    "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --progress --colors --watch\" \"nodemon dev/server.js\"",
+    "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --progress --colors --watch\" \"cross-env PROXY_HOST=localhost nodemon dev/server.js\"",
     "build": "cross-env NODE_ENV=production webpack --bail"
   },
   "author": "",
