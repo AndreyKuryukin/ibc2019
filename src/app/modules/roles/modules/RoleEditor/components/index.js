@@ -16,6 +16,10 @@ const textInputStyle = {
 
 
 class RoleEditor extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    }
+
     static propTypes = {
         roleId: PropTypes.number,
         role: PropTypes.object.isRequired,
@@ -84,7 +88,7 @@ class RoleEditor extends React.PureComponent {
     }
 
     onClose = () => {
-        window.location.href = '/roles';
+        this.context.history.push('/roles');
     }
 
     render() {

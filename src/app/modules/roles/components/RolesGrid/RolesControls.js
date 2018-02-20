@@ -5,6 +5,10 @@ import { Checkbox, Icon, TextInputTypeahead as Search } from 'qreact';
 import styles from './styles.scss';
 
 class RolesControls extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    }
+
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
@@ -20,7 +24,7 @@ class RolesControls extends React.PureComponent {
     };
 
     onAdd = () => {
-        window.location.href = '/roles/add';
+        this.context.history.push('/roles/add');
     }
 
     render() {

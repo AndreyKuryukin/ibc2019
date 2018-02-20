@@ -8,6 +8,10 @@ import { fetchRoleSuccess } from '../actions';
 import rest from '../../../../../rest';
 
 class RoleEditor extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    }
+
     static propTypes = {
         roleId: PropTypes.number,
         onUpdateRoleSuccess: PropTypes.func,
@@ -41,7 +45,7 @@ class RoleEditor extends React.PureComponent {
             const callback = roleId ? this.props.onUpdateRoleSuccess : this.props.onCreateRoleSuccess;
             const role = response.data;
             callback(role);
-            window.location.href = '/roles';
+            this.context.history.push('/roles');
         };
 
         submit('/api/v1/role', roleData)
@@ -64,6 +68,7 @@ const mapStateToProps = state => ({
     sourceOptions: selectSourceOptions(state),
     subjectsByRole: selectSubjectsByRole(state),
 });
+
 const mapDispatchToProps = dispatch => ({
     onFetchRoleSuccess: role => dispatch(fetchRoleSuccess(role)),
     onCreateRoleSuccess: role => dispatch(createRole(role)),

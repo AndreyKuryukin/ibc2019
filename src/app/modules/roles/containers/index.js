@@ -1,17 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import GridComponent from '../components/RolesGrid';
 import { fetchListOfRolesSuccess, deleteRoleSuccess } from '../actions';
 import rest from '../../../rest';
+import { selectRolesData } from '../selectors';
+import RolesComponent from '../components';
 
-class Grid extends React.PureComponent {
+class Roles extends React.PureComponent {
     static propTypes = {
+        match: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired,
+        rolesData: PropTypes.array,
         onFetchRolesSuccess: PropTypes.func,
         onDeleteRolesSuccess: PropTypes.func,
     };
 
     static defaultProps = {
+        rolesData: [],
         onFetchRolesSuccess: () => null,
         onDeleteRolesSuccess: () => null,
     };
@@ -24,7 +29,7 @@ class Grid extends React.PureComponent {
         };
     }
 
-    onChildMount = () => {
+    onRolesMount = () => {
         this.setState({ isLoading: true });
         const urlParams = {
             login: 'username',
@@ -40,9 +45,8 @@ class Grid extends React.PureComponent {
 
     onDeleteRoles = (ids) => {
         this.setState({ isLoading: true });
-        const data = { ids };
 
-        rest.delete('/api/v1/role', data)
+        rest.delete('/api/v1/role', { ids })
             .then(() => {
                 this.props.onDeleteRolesSuccess(ids);
                 this.setState({ isLoading: false });
@@ -51,23 +55,28 @@ class Grid extends React.PureComponent {
 
     render() {
         return (
-            <GridComponent
+            <RolesComponent
+                match={this.props.match}
+                history={this.props.history}
+                rolesData={this.props.rolesData}
+                onMount={this.onRolesMount}
+                onDeleteRoles={this.onDeleteRoles}
                 isLoading={this.state.isLoading}
-                onMount={this.onChildMount}
-                onDelete={this.onDeleteRoles}
             />
         );
     }
 }
+
+const mapStateToProps = state => ({
+    rolesData: selectRolesData(state),
+});
 
 const mapDispatchToProps = dispatch => ({
     onFetchRolesSuccess: roles => dispatch(fetchListOfRolesSuccess(roles)),
     onDeleteRolesSuccess: ids => dispatch(deleteRoleSuccess(ids)),
 });
 
-const RolesGrid = connect(
-    () => ({}),
+export default connect(
+    mapStateToProps,
     mapDispatchToProps,
-)(Grid);
-
-export default RolesGrid;
+)(Roles);
