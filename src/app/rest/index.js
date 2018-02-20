@@ -35,7 +35,7 @@ export const composeUrl = (url, params = {}) =>
     _.reduce(params, (result, value, key) => result.replace(`:${key}`, value), url);
 
 export default {
-    get: (url, params, config = {}) => request(composeUrl(url, params.urlParams), {
+    get: (url, params = {}, config = {}) => request(composeUrl(url, params.urlParams), {
         method: 'GET',
         params: config.queryParams,
     }),

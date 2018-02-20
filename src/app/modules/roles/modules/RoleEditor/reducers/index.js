@@ -1,5 +1,4 @@
-import { FETCH_SUBJECTS_SUCCESS } from '../actions/subjects';
-import { FETCH_ROLE_SUCCESS } from '../actions';
+import { FETCH_ROLE_SUCCESS, FETCH_SUBJECTS_SUCCESS } from '../actions';
 
 const initialState = {
     role: {
@@ -22,12 +21,11 @@ export default (state = initialState, action) => {
                     ...action.payload.role,
                 },
             };
-        case FETCH_SUBJECTS_SUCCESS: {
+        case FETCH_SUBJECTS_SUCCESS:
             return {
                 ...state,
                 subjects: action.payload.subjects,
             };
-        }
         default:
             return state;
     }

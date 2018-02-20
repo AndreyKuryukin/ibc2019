@@ -5,18 +5,30 @@ import { Checkbox, Icon, TextInputTypeahead as Search } from 'qreact';
 import styles from './styles.scss';
 
 class RolesControls extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    }
+
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
-        onDelete: PropTypes.func,
-        onAdd: PropTypes.func,
         isAllChecked: PropTypes.bool,
-        checkedRoles: PropTypes.array,
-        isAnyChecked: PropTypes.bool,
+        onDelete: PropTypes.func,
     };
 
+    static defaultProps = {
+        isAllChecked: false,
+        onSearchTextChange: () => null,
+        onCheckAll: () => null,
+        onDelete: () => null,
+    };
+
+    onAdd = () => {
+        this.context.history.push('/roles/add');
+    }
+
     render() {
-        const { isAllChecked } = this.props;
+        const { isAllChecked, onDelete } = this.props;
         return (
             <Controls>
                 <Left>
@@ -40,14 +52,13 @@ class RolesControls extends React.PureComponent {
                         <Icon
                             icon="create-btn"
                             disabled={false}
-                            onClick={() => {}}
+                            onClick={this.onAdd}
                         />
                     </Control>
                     <Control>
                         <Icon
                             icon="delete-btn"
-                            disabled
-                            onClick={() => {}}
+                            onClick={onDelete}
                         />
                     </Control>
                 </Left>

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Controls, { Control, Left } from 'qreact/lib/Table/Controls/Controls';
-import { Checkbox, Icon, TextInputTypeahead as Search } from 'qreact';
+import { Checkbox, TextInputTypeahead as Search } from 'qreact';
 import styles from './styles.scss';
 
 class RolesListControls extends React.PureComponent {
@@ -9,7 +9,12 @@ class RolesListControls extends React.PureComponent {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
         isAllChecked: PropTypes.bool,
-        searchText: PropTypes.string,
+    };
+
+    static defaultProps = {
+        isAllChecked: false,
+        onSearchTextChange: () => null,
+        onCheckAll: () => null,
     };
 
     render() {
