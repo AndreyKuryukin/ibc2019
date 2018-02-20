@@ -2,9 +2,11 @@ import axios from 'axios';
 import _ from 'lodash';
 import { LOGIN_REQUEST, LOGIN_SUCCESS_RESPONSE, SIGN_IN_URL } from '../costants/login';
 
+axios.defaults.headers.common.authorization = localStorage.getItem('jwtToken');
+
 export const request = (url, params) => new Promise((resolve, reject) => {
-    axios({ ...params, url })
-        .then(response => resolve({ data: _.get(response, 'data') }))
+    axios({ ...params, baseURL: window.location.origin, url })
+        .then(response => resolve({ data: _.get(response, 'data'), headers: _.get(response, 'headers') }))
         .catch((error) => {
             const errors = _.get(error, 'response.data.errors');
             const errCode = _.get(error, 'response.status');
@@ -20,16 +22,17 @@ export const request = (url, params) => new Promise((resolve, reject) => {
 
 export const signIn = (login, password) => request(SIGN_IN_URL, {
     method: 'POST',
-    headers: { 'Content-type': 'application/x-www-form-urlencoded' },
+    headers: { 'Content-type': 'application/json' },
     data: {
         [LOGIN_REQUEST.LOGIN]: login,
         [LOGIN_REQUEST.PASSWORD]: password,
     },
 }).then((response) => {
-    const token = response.data[LOGIN_SUCCESS_RESPONSE.TOKEN];
+
+    const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];
     const userName = response.data[LOGIN_SUCCESS_RESPONSE.USER_NAME];
     localStorage.setItem('jwtToken', token);
-    axios.defaults.headers.common.Authorization = 'Bearer ' + localStorage.getItem('jwtToken');
+    axios.defaults.headers.common.Authorization = localStorage.getItem('jwtToken');
     return userName;
 });
 

@@ -31,7 +31,6 @@ module.exports = {
                 options: {
                     emitWarning: true,
                     quiet: true,
-                    fix: true,
                 },
             },
             {
