@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Modal, Panel, Field, TextInputTypeahead, Select } from 'qreact';
-import RolesListGrid from '../containers/RolesListGrid';
+import PermissionList from './PermissionList';
 
 import styles from './styles.scss';
 
@@ -25,7 +25,6 @@ class RoleEditor extends React.PureComponent {
         role: PropTypes.object.isRequired,
         active: PropTypes.bool,
         onSubmit: PropTypes.func.isRequired,
-        onMount: PropTypes.func,
         sourceOptions: PropTypes.array,
         subjectsByRole: PropTypes.object,
     };
@@ -35,7 +34,6 @@ class RoleEditor extends React.PureComponent {
         active: false,
         sourceOptions: [],
         subjectsByRole: null,
-        onMount: () => null,
     };
 
     constructor(props) {
@@ -46,11 +44,6 @@ class RoleEditor extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
-        }
-    }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.role !== nextProps.role) {
@@ -92,7 +85,7 @@ class RoleEditor extends React.PureComponent {
     }
 
     render() {
-        const { roleId } = this.props;
+        const { roleId, onFetchSubjectsSuccess, subjectsData } = this.props;
         return (
             <Modal
                 title={roleId ? 'Редактирование роли' : 'Создание новой роли'}
@@ -145,9 +138,11 @@ class RoleEditor extends React.PureComponent {
                     noScroll
                     style={{ height: 300 }}
                 >
-                    <RolesListGrid
+                    <PermissionList
                         checked={this.getRoleProperty('subjects')}
                         onCheckRows={ids => this.setRoleProperty('subjects', ids)}
+                        onFetchSubjectsSuccess={onFetchSubjectsSuccess}
+                        subjectsData={subjectsData}
                     />
                 </Panel>
                 <Panel

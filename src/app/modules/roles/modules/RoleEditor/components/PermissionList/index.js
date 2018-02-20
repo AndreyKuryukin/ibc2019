@@ -1,14 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import { Panel } from 'qreact';
-import { fetchSubjectsSuccess } from '../actions';
-import rest from '../../../../../rest';
-import { selectSubjects } from '../selectors';
-import RolesListTable from '../components/RolesListGrid/RolesListTable';
-import RolesListControls from '../components/RolesListGrid/RolesListControls';
+import RolesListTable from './Table';
+import RolesListControls from './Controls';
 
-class Grid extends React.PureComponent {
+class RolesListGrid extends React.PureComponent {
     static propTypes = {
         subjectsData: PropTypes.array,
         checked: PropTypes.array,
@@ -34,13 +30,7 @@ class Grid extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.setState({ isLoading: true });
-        rest.get('/api/v1/subjects')
-            .then((response) => {
-                const subjects = response.data;
-                this.props.onFetchSubjectsSuccess(subjects);
-                this.setState({ isLoading: false });
-            });
+
     }
 
     onCheck = (isAllChecked, checkedIds) => {
@@ -91,18 +81,5 @@ class Grid extends React.PureComponent {
         );
     }
 }
-
-const mapStateToProps = state => ({
-    subjectsData: selectSubjects(state),
-});
-
-const mapDispatchToProps = dispatch => ({
-    onFetchSubjectsSuccess: subjects => dispatch(fetchSubjectsSuccess(subjects)),
-});
-
-const RolesListGrid = connect(
-    mapStateToProps,
-    mapDispatchToProps,
-)(Grid);
 
 export default RolesListGrid;

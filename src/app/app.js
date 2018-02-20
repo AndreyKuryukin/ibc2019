@@ -18,6 +18,7 @@ class App extends React.Component {
         return (
             <div style={{ height: '100%' }}>
                 <Route path="/login" component={Login} />
+                <Route path="/roles" component={Roles} exact/>
                 <Route path="/roles/:action?/:id?" component={Roles} />
             </div>
         );
