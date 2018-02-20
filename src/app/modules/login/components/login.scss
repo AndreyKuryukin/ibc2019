@@ -1,41 +1,30 @@
-@import "../../../vars";
+@import "../../../style.global";
 
 .loginContainer {
   height: 100%;
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: $background-color;
+  background-color: $white;
   justify-content: center;
-  .loginPanel {
-    h1 {
-      margin: 8px;
-      color: white;
-    }
-    button {
-      margin-top: 24px;
-      width: 60px;
-      display: block;
-    }
-  }
   .loginForm {
     width: 300px;
-    height: 200px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    background-color: #333333;
-
-
-    .field {
-      margin-top: 4px;
+    button {
+      width: 100%;
+      margin-top: 16px;
     }
   }
 }
 
-.fieldInput {
-  margin-top: 4px
+.errorGroup {
+  width: 100%;
+  > * {
+    margin-top: 8px
+  }
 }
 
 
