@@ -1,6 +1,3 @@
-* {
-  box-sizing: border-box;
-}
 html, body{
   height: 100% !important;
   width: 100% !important;
@@ -23,21 +20,5 @@ body{
   flex-direction: column;
 }
 
-.hidden {
-  display: none!important;
-  visibility: hidden!important;
-}
-
-/* Checkbox */
-.checkbox-input:before, .radio-input:before {
-  content: "";
-  display: inline-block;
-  width: 12px;
-  height: 12px;
-}
-.checkbox-input:before {background: url(../resources/img/checkbox/checkbox_empty.png) no-repeat 0 0}
-input[type=checkbox]:checked + .checkbox-input:before {background: url(../resources/img/checkbox/checkbox_on.png) no-repeat 0 0}
-input[type=checkbox]:disabled + .checkbox-input:before {background: url(../resources/img/checkbox/checkbox_empty_locked.png) no-repeat 0 0; cursor: not-allowed}
-input[type=checkbox]:checked:disabled + .checkbox-input:before {background: url(../resources/img/checkbox/checkbox_on_locked.png) no-repeat 0 0; cursor: not-allowed}
-
 @import "vars";
+@import '~bootstrap/scss/bootstrap';

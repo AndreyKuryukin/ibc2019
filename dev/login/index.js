@@ -1,6 +1,19 @@
 module.exports = (app) => {
-    app.post('/login/api/v1/auth/login', (req, res) => {
+    app.post('/api/v1/auth/login', (req, res) => {
         console.log( req.body );
-        res.send({userName: 'USER', jwtToken: 'eiwuric7f3q48on57c83574938459c839'})
+        res.status(400);
+        res.send({
+            errors: [{
+                type: 'VALIDATION',
+                severity: 'CRITICAL',
+                target: 'login',
+                title: 'Неверный логин'
+            },{
+                type: 'VALIDATION',
+                severity: 'CRITICAL',
+                target: 'password',
+                title: 'Неверный пароль'
+            }]
+        })
     })
 };

@@ -8,14 +8,8 @@ export const request = (url, params) => new Promise((resolve, reject) => {
     axios({ ...params, baseURL: window.location.origin, url })
         .then(response => resolve({ data: _.get(response, 'data'), headers: _.get(response, 'headers') }))
         .catch((error) => {
-            const errors = _.get(error, 'response.data.errors');
-            const errCode = _.get(error, 'response.status');
-            if (errCode === 400 && errors) {
-                resolve(_.get(error, 'response.data'));
-            } else {
-                // todo: handle different kinds of errors
-                reject();
-            }
+            const response = _.get(error, 'response');
+            reject(response);
         });
 });
 

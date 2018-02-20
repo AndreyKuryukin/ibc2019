@@ -8,8 +8,9 @@ import './style.global.scss';
 import './images.global.scss';
 import './modal.scss';
 
+
 import Login from './modules/login/containers';
-import Roles from './modules/roles/components';
+// import Roles from './modules/roles/components';
 import rootReducer from './reducers';
 
 
@@ -18,8 +19,8 @@ class App extends React.PureComponent {
         return (
             <div style={{ height: '100%' }}>
                 <Route path="/login" component={Login} />
-                <Route path="/roles" component={Roles} />
-                <Route path="/roles/:action/:id" component={Roles} />
+                {/*<Route path="/roles" component={Roles} />*/}
+                {/*<Route path="/roles/:action/:id" component={Roles} />*/}
             </div>
         );
     }

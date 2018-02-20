@@ -7,8 +7,6 @@ const plugins = [];
 const devMode = process.env.NODE_ENV === 'development';
 const prodMode = process.env.NODE_ENV === 'production';
 
-const PROXY_HOST = process.env.PROXY_HOST;
-const PROXY_PORT = process.env.PROXY_PORT;
 
 if (prodMode) {
     plugins.push(new MinifyPlugin());
@@ -23,22 +21,10 @@ module.exports = {
     devtool: devMode && 'inline-sourcemap',
     module: {
         rules: [
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'eslint-loader',
-                options: {
-                    emitWarning: true,
-                    quiet: true,
-                },
-            },
-            {
-                test: /\.js$/,
-                loader: ['babel-loader'],
-            },
+            { test: /\.js$/, loader: "babel-loader" },
             {
                 test: /\.global\.(scss)$/,
+                exclude: /node_modules/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
                     use: [{
@@ -46,10 +32,10 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[local]',
-                        },
-                    }, 'resolve-url-loader', 'sass-loader?sourceMap'],
-                }),
+                            localIdentName: '[local]'
+                        }
+                    }, 'sass-loader']
+                })
             },
             {
                 test: /\.(scss)$/,
@@ -61,17 +47,18 @@ module.exports = {
                         options: {
                             modules: true,
                             importLoaders: 1,
-                            localIdentName: '[hash:base64]-[name]-[local]',
-                        },
-                    }, 'resolve-url-loader', 'sass-loader?sourceMap'],
-                }),
+                            localIdentName: '[hash:base64]-[name]-[local]'
+                        }
+                    }, 'sass-loader']
+                })
             },
             {
                 test: /\.css$/,
+                include: /node_modules/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
-                }),
+                    use: 'css-loader',
+                })
             },
             {
                 test: /\.(jpe?g|png|gif|svg)$/i,
@@ -81,7 +68,7 @@ module.exports = {
     },
     resolve: {
         symlinks: prodMode,
-        extensions: ['.js', '.jsx', '.scss', '.css'],
+        extensions: ['.js', '.jsx', '.scss'],
         modules: ['node_modules'],
         alias: {
             i18n: path.resolve(__dirname, './src/i18n/'),
