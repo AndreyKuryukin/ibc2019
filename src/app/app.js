@@ -10,6 +10,7 @@ import './modal.scss';
 
 import Login from './modules/login/containers';
 import Roles from './modules/roles/containers';
+import Users from './modules/users/container';
 import rootReducer from './reducers';
 
 
@@ -20,6 +21,7 @@ class App extends React.Component {
                 <Route path="/login" component={Login} />
                 <Route path="/roles" component={Roles} exact/>
                 <Route path="/roles/:action?/:id?" component={Roles} />
+                <Route path="/users/:action?/:id?" component={Users} />
             </div>
         );
     }

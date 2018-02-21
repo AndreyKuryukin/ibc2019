@@ -30,7 +30,8 @@ app.set('port', (PORT));
 
 const plugins = [
     './login',
-    './roles'
+    './roles',
+    './users'
 ];
 
 app.use((req, res, next) => {
