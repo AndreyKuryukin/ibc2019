@@ -1,10 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from 'qreact';
 import styles from './styles.scss';
 import RoleEditor from '../modules/RoleEditor/containers';
-import RolesTable from './RolesGrid/RolesTable';
-import RolesControls from './RolesGrid/RolesControls';
+import RolesTable from './RolesGrid/Table';
+import RolesControls from './RolesGrid/Controls';
 
 class Roles extends React.Component {
     static childContextTypes = {
@@ -86,30 +85,23 @@ class Roles extends React.Component {
 
         const isEditorActive = params.action === 'edit' || params.action === 'add';
         const roleId = params.id ? Number(params.id) : null;
-
         return (
             <div className={styles.rolesWrapper}>
-                <Panel
-                    title="Роли"
-                    noScroll
-                    vertical
-                >
-                    <RolesControls
-                        isAllChecked={isAllChecked}
-                        searchText={searchText}
-                        onSearchTextChange={this.onSearchTextChange}
-                        onCheckAll={this.onCheck}
-                        onDelete={this.onDeleteRoles}
-                    />
-                    <RolesTable
-                        searchText={searchText}
-                        isAllChecked={isAllChecked}
-                        preloader={isLoading}
-                        checked={checkedIds}
-                        onTableDataChange={this.onTableDataChange}
-                        data={rolesData}
-                    />
-                </Panel>
+                <RolesControls
+                    isAllChecked={isAllChecked}
+                    searchText={searchText}
+                    onSearchTextChange={this.onSearchTextChange}
+                    onCheckAll={this.onCheck}
+                    onDelete={this.onDeleteRoles}
+                />
+                <RolesTable
+                    searchText={searchText}
+                    isAllChecked={isAllChecked}
+                    preloader={isLoading}
+                    checked={checkedIds}
+                    onTableDataChange={this.onTableDataChange}
+                    data={rolesData}
+                />
                 {isEditorActive && <RoleEditor
                     active={isEditorActive}
                     roleId={roleId}

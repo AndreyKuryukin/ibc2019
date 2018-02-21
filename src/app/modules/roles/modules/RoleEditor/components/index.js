@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Modal, Panel, Field, TextInputTypeahead, Select } from 'qreact';
-import PermissionList from './PermissionList';
+import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import Select from '../../../../../components/Select';
 
 import styles from './styles.scss';
+import ls from "i18n";
 
 const EMPTY_OPTION = ['', ''];
 const textInputStyle = {
@@ -85,81 +86,24 @@ class RoleEditor extends React.PureComponent {
     }
 
     render() {
+
         const { roleId, onFetchSubjectsSuccess, subjectsData } = this.props;
         return (
-            <Modal
-                title={roleId ? 'Редактирование роли' : 'Создание новой роли'}
-                width={400}
-                onSubmit={this.onSubmit}
-                onCancel={this.onClose}
-                onClose={this.onClose}
-                submitLabel="ОК"
-                cancelLabel="Отменить"
-                bodyStyle={{ overflow: 'visible' }}
-                submitDisabled={false}
-                cancelDisabled={false}
-                active={this.props.active}
-            >
-                <Panel
-                    title="Главная информация"
-                    vertical
-                    noScroll
-                >
-                    <Field
-                        id="name"
-                        label="Имя роли"
-                        labelWidth={200}
-                        className={styles.field}
-                    >
-                        <TextInputTypeahead
-                            id="name"
-                            style={textInputStyle}
-                            value={this.getRoleProperty('name', '')}
-                            onChange={value => this.setRoleProperty('name', value)}
-                        />
-                    </Field>
-                    <Field
-                        id="source"
-                        label="Копировать разрешение из"
-                        labelWidth={200}
-                        className={styles.field}
-                    >
-                        <Select
-                            id="source"
-                            options={[EMPTY_OPTION, ...this.props.sourceOptions]}
-                            value={this.getRoleProperty('source', '')}
-                            onChange={value => this.setRoleProperty('source', value)}
-                        />
-                    </Field>
-                </Panel>
-                <Panel
-                    title="Разрешения"
-                    vertical
-                    noScroll
-                    style={{ height: 300 }}
-                >
-                    <PermissionList
-                        checked={this.getRoleProperty('subjects')}
-                        onCheckRows={ids => this.setRoleProperty('subjects', ids)}
-                        onFetchSubjectsSuccess={onFetchSubjectsSuccess}
-                        subjectsData={subjectsData}
+            <Modal isOpen={this.props.active}>
+                <ModalHeader
+                    toggle={this.onClose}>{roleId ? 'Редактирование роли' : 'Создание новой роли'}</ModalHeader>
+                <ModalBody className={styles.modalBody}>
+                    <Input placeholder={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}/>
+                    <Select type="select"
+                            placeholder={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
+                            options={[{value: 1, title: 'erere'}]}
                     />
-                </Panel>
-                <Panel
-                    title="Комментарий"
-                    vertical
-                    noScroll
-                >
-                    <TextInputTypeahead
-                        id="role-comment"
-                        className={styles.textarea}
-                        value={this.getRoleProperty('description', '')}
-                        onChange={value => this.setRoleProperty('description', value)}
-                        maxlength={255}
-                        multiline
-                        rows={6}
-                    />
-                </Panel>
+                    <Input type="textarea" placeholder={ls('NEW_ROLE_COMMENT_PLACEHOLDER', 'Комментарий')}/>
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
+                    <Button color="primary">{ls('NEW_ROLE_SUBMIT', 'Создать')}</Button>
+                </ModalFooter>
             </Modal>
         );
     }

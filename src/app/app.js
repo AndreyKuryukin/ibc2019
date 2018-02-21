@@ -11,15 +11,17 @@ import './modal.scss';
 import Login from './modules/login/containers';
 import Roles from './modules/roles/containers';
 import rootReducer from './reducers';
+import PageWrapper from "./components/PageWrapper/index";
 
 
 class App extends React.Component {
     render() {
         return (
             <div style={{ height: '100%' }}>
-                <Route path="/login" component={Login} />
-                <Route path="/roles" component={Roles} exact/>
-                <Route path="/roles/:action?/:id?" component={Roles} />
+                <Route path="/login" render={props => {props.location.title = 'Логин'; return <Login {...props}/>}} />
+                <Route path="/pw" component={PageWrapper} />
+                <Route path="/roles/" component={Roles} exact/>
+                <Route path="/roles/:action?" component={Roles} exact />
             </div>
         );
     }
@@ -31,10 +33,12 @@ const renderRootComponent = () => {
     ReactDOM.render(
         <Provider store={store}>
             <BrowserRouter>
-                <App />
+                <PageWrapper>
+                   <App />
+                </PageWrapper>
             </BrowserRouter>
         </Provider>,
-        document.getElementById('container')
+        document.getElementById('app-root')
     );
 };
 

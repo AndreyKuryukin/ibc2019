@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
+import styles from './styles.scss';
 
 const propTypes = {
     children: PropTypes.node,
@@ -76,6 +77,7 @@ class Input extends React.Component {
 
         const classes = mapToCssModules(classNames(
             className,
+            styles.placeholder,
             valid === false && 'is-invalid',
             valid && 'is-valid',
             bsSize ? `form-control-${bsSize}` : false,

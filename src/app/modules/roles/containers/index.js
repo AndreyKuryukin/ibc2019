@@ -7,6 +7,10 @@ import { selectRolesData } from '../selectors';
 import RolesComponent from '../components';
 
 class Roles extends React.PureComponent {
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -29,6 +33,10 @@ class Roles extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        this.context.navBar.setPageTitle('Роли');
+    }
+
     onRolesMount = () => {
         this.setState({ isLoading: true });
         const urlParams = {
@@ -41,7 +49,7 @@ class Roles extends React.PureComponent {
                 this.props.onFetchRolesSuccess(roles);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
     onDeleteRoles = (ids) => {
         this.setState({ isLoading: true });
@@ -51,7 +59,7 @@ class Roles extends React.PureComponent {
                 this.props.onDeleteRolesSuccess(ids);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
     render() {
         return (

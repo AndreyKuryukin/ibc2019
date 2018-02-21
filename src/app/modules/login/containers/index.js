@@ -1,6 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
+import PropTypes from 'prop-types';
+
 
 import LoginComponent from '../components';
 import { signInSuccess } from '../actions/index';
@@ -9,6 +11,15 @@ import { ERRORS } from "../../../costants/errors";
 
 
 class Login extends React.PureComponent {
+
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+
+    componentDidMount() {
+         this.context.navBar.hide();
+    }
+
     constructor() {
         super();
         this.state = {};
@@ -20,7 +31,7 @@ class Login extends React.PureComponent {
             .then((userName) => {
                 this.setState({ loading: false });
                 this.props.onLoginSuccess(userName);
-                window.location.href = '/roles';
+                this.props.history.push('/roles');
             }).catch((error) => {
             this.setState({ errors: _.get(error, `data.${ERRORS}`) });
         });

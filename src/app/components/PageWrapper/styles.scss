@@ -1,0 +1,37 @@
+@import "../../style.global";
+
+.pageWrapper {
+  height: 100%;
+  .navBar {
+    .menuWrapper {
+      display: inline-flex;
+      .menuFix {
+        top: 10px !important;
+      }
+      .pageTitle {
+        margin-left: 12px;
+        color: $gray-500
+      }
+    }
+    &:after {
+      content: "";
+      border-bottom: 1px solid $gray-400;
+      margin-top: 0.7em;
+      width: 100%;
+    }
+  }
+  .pageContent {
+    height: 100%;
+    padding: 0.5rem 1rem;
+  }
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+
+
+

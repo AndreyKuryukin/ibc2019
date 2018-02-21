@@ -1,0 +1,5 @@
+@import "../../style.global";
+
+.placeholder::-webkit-input-placeholder {
+  color: $placeholder;
+}
