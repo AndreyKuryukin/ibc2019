@@ -14,14 +14,14 @@ class RolesControls extends React.PureComponent {
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
-        onDelete: PropTypes.func,
+        onRemove: PropTypes.func,
         checkedIds: PropTypes.array,
     };
 
     static defaultProps = {
         onSearchTextChange: () => null,
         onCheckAll: () => null,
-        onDelete: () => null,
+        onRemove: () => null,
     };
 
     onAdd = () => {
@@ -31,10 +31,6 @@ class RolesControls extends React.PureComponent {
     onSerchTextChange = (event) => {
         this.props.onSearchTextChange(event.currentTarget.value)
     };
-
-    onRemove = () => {
-
-    }
 
     render() {
         const { checkedIds } = this.props;
@@ -50,7 +46,7 @@ class RolesControls extends React.PureComponent {
                     <Button
                         color="link"
                         disabled={_.isEmpty(checkedIds)}
-                        onClick={this.onRemove()}>
+                        onClick={this.props.onRemove}>
                         {ls('ROLES_PEMOVE_TITLE', 'Удалить')}
                     </Button>
                 </div>

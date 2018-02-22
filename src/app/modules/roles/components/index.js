@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Button, Modal, ModalBody, ModalFooter } from 'reactstrap';
+
 import styles from './styles.scss';
 import RoleEditor from '../modules/RoleEditor/containers';
 import RolesTable from './Table';
 import RolesControls from './Controls';
+import ls from "i18n";
 
 class Roles extends React.Component {
     static childContextTypes = {
@@ -16,14 +19,14 @@ class Roles extends React.Component {
         rolesData: PropTypes.array,
         isLoading: PropTypes.bool,
         onMount: PropTypes.func,
-        onDeleteRoles: PropTypes.func,
+        onRemove: PropTypes.func,
     };
 
     static defaultProps = {
         rolesData: [],
         isLoading: false,
         onMount: () => null,
-        onDeleteRoles: () => null,
+        onRemove: () => null,
     };
 
     constructor(props) {
@@ -33,6 +36,7 @@ class Roles extends React.Component {
             searchText: '',
             isAllChecked: false,
             checkedIds: [],
+            showRemoveConfirmation: false
         };
     }
 
@@ -52,23 +56,32 @@ class Roles extends React.Component {
         this.setState({ checkedIds });
     }
 
-    onDeleteRoles = () => {
-        if (typeof this.props.onDeleteRoles === 'function') {
-            this.props.onDeleteRoles(this.state.checkedIds);
-        }
-    }
+    onRemoveConfirm = () => {
+        this.props.onRemove(this.state.checkedIds);
+        this.removeConfirmToggle()
+    };
+
+    removeConfirmToggle = () => {
+        this.setState({ showRemoveConfirmation: !this.state.showRemoveConfirmation });
+    };
+
 
     onSearchTextChange = (searchText) => {
         this.setState({
             searchText,
         });
-    }
+    };
 
+    composeRemoveConfirmMessage = (checkedIds, rolesData) => {
+       const roles = checkedIds.map(id => rolesData.find(role => role.id === id).name).join(', ');
+       return ls('REMOVE_ROLES_CONFIRM_TEXT', 'Удалить роли: {{roles}}?').replace('{{roles}}', roles)
+    };
 
     render() {
         const {
             searchText,
             checkedIds,
+            showRemoveConfirmation
         } = this.state;
         const { match, rolesData, isLoading } = this.props;
         const { params } = match;
@@ -80,7 +93,7 @@ class Roles extends React.Component {
                     checkedIds={checkedIds}
                     searchText={searchText}
                     onSearchTextChange={this.onSearchTextChange}
-                    onDelete={this.onDeleteRoles}
+                    onRemove={this.removeConfirmToggle}
                 />
                 <RolesTable
                     searchText={searchText}
@@ -92,6 +105,17 @@ class Roles extends React.Component {
                     active={isEditorActive}
                     roleId={roleId}
                 />}
+                <Modal isOpen={showRemoveConfirmation} toggle={this.removeConfirmToggle}>
+                    <ModalBody>
+                        {this.composeRemoveConfirmMessage(checkedIds, rolesData)}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button color="link"
+                                onClick={this.removeConfirmToggle}>{ls('GENERAL_CANCEL', 'Отмена')}</Button>
+                        <Button color="danger" onClick={this.onRemoveConfirm}>{ls('GENERAL_REMOVE', 'Удалить')}</Button>
+
+                    </ModalFooter>
+                </Modal>
             </div>
         );
     }

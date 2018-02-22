@@ -108,6 +108,7 @@ class UsersTable extends React.PureComponent {
 
         return (
             <Table
+                selectable
                 data={this.props.data}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

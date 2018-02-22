@@ -11,7 +11,7 @@ import RolesTable from './RolesTable';
 class UserEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         userId: PropTypes.number,
@@ -68,6 +68,7 @@ class UserEditor extends React.PureComponent {
     }
 
     onSubmit = () => {
+        const user = _.omit(this.state.user, 'confirm');
         if (typeof this.props.onSubmit === 'function') {
             this.props.onSubmit(this.props.userId, this.state.user);
         }
