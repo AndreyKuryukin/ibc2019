@@ -7,6 +7,10 @@ import { fetchUsersSuccess } from '../actions';
 import { selectUsersData } from '../selectors';
 
 class Users extends React.PureComponent {
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -25,6 +29,10 @@ class Users extends React.PureComponent {
         this.state = {
             isLoading: false,
         };
+    }
+
+    componentDidMount() {
+        this.context.navBar.setPageTitle('Пользователи');
     }
 
     onUsersMount = () => {

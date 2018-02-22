@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button, Form, FormFeedback, FormGroup } from 'reactstrap';
+import { Badge, Button, Form, FormFeedback, FormGroup, Alert } from 'reactstrap';
 
 import Input from '../../../components/Input';
 import _ from 'lodash';
@@ -13,6 +13,7 @@ class Login extends React.PureComponent {
         onSubmit: PropTypes.func,
         loading: PropTypes.bool,
         errors: PropTypes.array,
+        loginFailed: PropTypes.bool
     };
 
     static defaultProps = {
@@ -44,6 +45,7 @@ class Login extends React.PureComponent {
     }];
 
     render() {
+        const {loginFailed} = this.props;
         return (
             <div className={styles.loginContainer}>
                 <div>
@@ -52,6 +54,9 @@ class Login extends React.PureComponent {
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
                     >
+                        {loginFailed && <Alert color="danger" className={styles.errorMessage}>
+                            {ls('LOGIN_FAILED_MESSAGE', 'Неверные данные')}
+                        </Alert>}
                         <ErrorWrapper
                             errors={this.props.errors}
                             className={styles.errorGroup}

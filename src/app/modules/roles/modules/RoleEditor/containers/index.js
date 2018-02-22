@@ -32,7 +32,7 @@ class RoleEditor extends React.PureComponent {
                 roleId: this.props.roleId,
             };
             this.setState({ isLoading: true });
-            Promise.all([rest.get('/api/v1/role/:roleId', { urlParams }), rest.get('/api/v1/subjects')])
+            Promise.all([rest.get('/api/v1/role/:roleId', { urlParams }), rest.get('/api/v1/subject')])
                 .then(([roleResponse, subjectResponse]) => {
                     const role = roleResponse.data;
                     const subjects = subjectResponse.data;
@@ -45,7 +45,7 @@ class RoleEditor extends React.PureComponent {
                 })
             ;
         } else {
-            rest.get('/api/v1/subjects')
+            rest.get('/api/v1/subject')
                 .then(response => {
                     this.setState({ isLoading: false });
                     this.props.onFetchSubjectsSuccess(response.data);

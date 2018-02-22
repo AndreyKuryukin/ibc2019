@@ -17,7 +17,7 @@ class Login extends React.PureComponent {
     };
 
     componentDidMount() {
-         this.context.navBar.hide();
+        this.context.navBar.hide();
     }
 
     constructor() {
@@ -33,7 +33,7 @@ class Login extends React.PureComponent {
                 this.props.onLoginSuccess(userName);
                 this.props.history.push('/roles');
             }).catch((error) => {
-            this.setState({ errors: _.get(error, `data.${ERRORS}`) });
+            this.setState({ errors: _.get(error, `data.${ERRORS}`), loginFailed: true });
         });
     };
 
@@ -42,6 +42,7 @@ class Login extends React.PureComponent {
             onSubmit={this.onSubmit}
             loading={this.state.loading}
             errors={this.state.errors}
+            loginFailed={this.state.loginFailed}
         />);
     }
 }

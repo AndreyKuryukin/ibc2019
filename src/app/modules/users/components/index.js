@@ -54,9 +54,9 @@ class Users extends React.PureComponent {
         return (
             <div className={styles.usersWrapper}>
                 <div className={styles.controlsWrapper}>
-                    <Button outline color="primary" onClick={this.onAdd}>Add</Button>
-                    <Button outline color="primary">Block</Button>
-                    <Button outline color="primary">Unblock</Button>
+                    <Button color="primary" onClick={this.onAdd}>Add</Button>
+                    <Button color="primary">Block</Button>
+                    <Button color="primary">Unblock</Button>
                 </div>
                 <UsersTable
                     data={this.props.usersData}

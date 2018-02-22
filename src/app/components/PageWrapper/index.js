@@ -13,16 +13,16 @@ class PageWrapper extends React.Component {
         navBar: PropTypes.object.isRequired,
     };
 
-    static propTypes = {};
-
-    static defaultProps = {};
-
     getChildContext = () => ({
         navBar: {
             setPageTitle: this.setPageTitle,
             hide: this.hide,
         }
     });
+
+    static propTypes = {};
+
+    static defaultProps = {};
 
     constructor(props) {
         super(props);
