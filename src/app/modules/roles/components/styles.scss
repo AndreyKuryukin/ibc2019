@@ -9,3 +9,19 @@
   background-color: $white;
 }
 
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .buttonGroup {
+    display: inline-flex;
+    * {
+      margin: 0.5em 0.5em 0.5em 0;
+    }
+  }
+  .search {
+    width: 20em;
+    font-size: 1.3rem;
+    height: 2em;
+  }
+}

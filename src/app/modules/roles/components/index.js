@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
 import RoleEditor from '../modules/RoleEditor/containers';
-import RolesTable from './RolesGrid/Table';
-import RolesControls from './RolesGrid/Controls';
+import RolesTable from './Table';
+import RolesControls from './Controls';
 
 class Roles extends React.Component {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         match: PropTypes.object.isRequired,

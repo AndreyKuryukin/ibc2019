@@ -8,7 +8,7 @@ import ls from "i18n";
 class RolesControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         onSearchTextChange: PropTypes.func,
@@ -28,6 +28,10 @@ class RolesControls extends React.PureComponent {
         this.context.history.push('/roles/add');
     };
 
+    onSerchTextChange = (event) => {
+        this.props.onSearchTextChange(event.currentTarget.value)
+    };
+
     render() {
         const { isAllChecked, onDelete } = this.props;
         return (
@@ -44,7 +48,10 @@ class RolesControls extends React.PureComponent {
                         {ls('ROLES_PEMOVE_TITLE', 'Удалить')}
                     </Button>
                 </div>
-                <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')} className={styles.search}/>
+                <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
+                       className={styles.search}
+                       onChange={this.onSerchTextChange}
+                />
             </div>
         );
     }
