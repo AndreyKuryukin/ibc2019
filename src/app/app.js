@@ -10,6 +10,7 @@ import './modal.scss';
 
 import Login from './modules/login/containers';
 import Roles from './modules/roles/containers';
+import Users from './modules/users/container';
 import rootReducer from './reducers';
 import PageWrapper from "./components/PageWrapper/index";
 
@@ -19,9 +20,8 @@ class App extends React.Component {
         return (
             <div style={{ height: '100%' }}>
                 <Route path="/login" render={props => {props.location.title = 'Логин'; return <Login {...props}/>}} />
-                <Route path="/pw" component={PageWrapper} />
-                <Route path="/roles/" component={Roles} exact/>
                 <Route path="/roles/:action?" component={Roles} exact />
+                <Route path="/users/:action?/:id?" component={Users} />
             </div>
         );
     }

@@ -1,0 +1,14 @@
+.usersWrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  padding: 10px;
+}
+.controlsWrapper {
+  padding: 10px 0;
+  button:not(:last-of-type) {
+    margin-right: 5px;
+  }
+}
