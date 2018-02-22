@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
-import Modal from '../../../components/Modal';
 import { Button } from 'reactstrap';
+import UserEditor from '../modules/UserEditor/containers';
 import UsersTable from './UsersTable';
 
 class Users extends React.PureComponent {
@@ -40,10 +40,6 @@ class Users extends React.PureComponent {
         this.props.history.push('/users/add');
     }
 
-    onClose = () => {
-        this.props.history.goBack();
-    }
-
     render() {
         const { match } = this.props;
         const { params } = match;
@@ -61,14 +57,10 @@ class Users extends React.PureComponent {
                 <UsersTable
                     data={this.props.usersData}
                 />
-                {isEditorActive && <Modal
-                    isOpen={isEditorActive}
-                    title="Создание пользователя"
-                    onClose={this.onClose}
-                    onSubmit={this.onSubmit}
-                >
-                    <div>qwedsa</div>
-                </Modal>}
+                {isEditorActive && <UserEditor
+                    active={isEditorActive}
+                    userId={userId}
+                />}
             </div>
         );
     }

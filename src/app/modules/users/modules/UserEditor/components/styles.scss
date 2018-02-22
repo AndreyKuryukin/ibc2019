@@ -1,0 +1,20 @@
+.roleEditorContent {
+  display: flex;
+  flex-direction: row;
+  .userForm {
+    width: 300px;
+    input:not(:last-of-type) {
+      margin-bottom: 10px;
+    }
+    input[type="checkbox"] {
+      position: relative;
+      margin-left: 0;
+      margin-top: 0;
+    }
+  }
+  .userRoles {
+    display: flex;
+    flex-grow: 1;
+    margin-left: 10px;
+  }
+}

@@ -9,12 +9,14 @@ class Modal extends React.PureComponent {
         className: PropTypes.string,
         onSubmit: PropTypes.func,
         onClose: PropTypes.func,
+        size: PropTypes.string,
     }
 
     static defaultProps = {
         isOpen: false,
         title: '',
         className: '',
+        size: '',
         onSubmit: () => null,
         onClose: () => null,
     };
@@ -26,9 +28,10 @@ class Modal extends React.PureComponent {
             onSubmit,
             onClose,
             className,
+            size,
         } = this.props;
         return (
-            <ReactstrapModal isOpen={isOpen} toggle={onClose} className={className}>
+            <ReactstrapModal isOpen={isOpen} toggle={onClose} className={className} size={size}>
                 <ModalHeader toggle={onClose}>{title}</ModalHeader>
                 <ModalBody>
                     {this.props.children}
