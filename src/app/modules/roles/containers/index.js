@@ -1,12 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { fetchListOfRolesSuccess, deleteRoleSuccess } from '../actions';
+import { deleteRoleSuccess, fetchListOfRolesSuccess } from '../actions';
 import rest from '../../../rest';
 import { selectRolesData } from '../selectors';
 import RolesComponent from '../components';
 
 class Roles extends React.PureComponent {
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -29,29 +33,29 @@ class Roles extends React.PureComponent {
         };
     }
 
-    onRolesMount = () => {
-        this.setState({ isLoading: true });
-        const urlParams = {
-            login: 'username',
-        };
+    componentDidMount() {
+        this.context.navBar.setPageTitle('Роли');
+    }
 
-        rest.get('/api/v1/role/user/:login', { urlParams })
+    fetchRoles = () => {
+        this.setState({ isLoading: true });
+        rest.get('/api/v1/role/all')
             .then((response) => {
                 const roles = response.data;
                 this.props.onFetchRolesSuccess(roles);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
-    onDeleteRoles = (ids) => {
+    onRemove = (ids) => {
         this.setState({ isLoading: true });
-
-        rest.delete('/api/v1/role', { ids })
-            .then(() => {
-                this.props.onDeleteRolesSuccess(ids);
-                this.setState({ isLoading: false });
-            });
-    }
+        Promise.all(
+            ids.map(id => rest.delete('/api/v1/role/:roleId', {}, { urlParams: { roleId: id } }))
+        ).then(([...ids]) => {
+            this.props.onDeleteRolesSuccess(ids);
+            this.setState({ isLoading: false });
+        })
+    };
 
     render() {
         return (
@@ -59,8 +63,8 @@ class Roles extends React.PureComponent {
                 match={this.props.match}
                 history={this.props.history}
                 rolesData={this.props.rolesData}
-                onMount={this.onRolesMount}
-                onDeleteRoles={this.onDeleteRoles}
+                onMount={this.fetchRoles}
+                onRemove={this.onRemove}
                 isLoading={this.state.isLoading}
             />
         );

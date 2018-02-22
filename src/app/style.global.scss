@@ -13,12 +13,20 @@ body{
   font-size: 14px;
 }
 
-.container {
+.app-root {
   height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;
 }
 
+
+
 @import "vars";
 @import '~bootstrap/scss/bootstrap';
+
+input::-webkit-input-placeholder,
+textarea::-webkit-input-placeholder
+{
+  color: $placeholder !important;
+}

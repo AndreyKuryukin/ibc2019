@@ -1,13 +1,12 @@
-.field {
-  text-align: left;
+@import "../../../../../vars";
+
+.modalBody {
+  * {
+    margin-top: 8px;
+  }
 }
-.field:first-child {
-  margin-bottom: 5px;
+
+.selectPlaceholder {
+  color: $placeholder;
 }
-.textarea {
-  background: #000;
-  color: #fff;
-  resize: vertical;
-  border: 0;
-  padding: 3px 5px;
-}
+

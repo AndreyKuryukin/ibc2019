@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import RoleEditorComponent from '../components';
-import { selectSelectedRole, selectSourceOptions, selectSubjectsByRole, selectSubjects } from '../selectors';
+import { selectSelectedRole, selectSourceOptions, selectSubjects, selectSubjectsByRole } from '../selectors';
 import { createRole, updateRole } from '../../../actions';
 import { fetchRoleSuccess, fetchSubjectsSuccess } from '../actions';
 import rest from '../../../../../rest';
@@ -32,7 +32,7 @@ class RoleEditor extends React.PureComponent {
                 roleId: this.props.roleId,
             };
             this.setState({ isLoading: true });
-            Promise.all([rest.get('/api/v1/role/:roleId', { urlParams }), rest.get('/api/v1/subjects')])
+            Promise.all([rest.get('/api/v1/role/:roleId', { urlParams }), rest.get('/api/v1/subject')])
                 .then(([roleResponse, subjectResponse]) => {
                     const role = roleResponse.data;
                     const subjects = subjectResponse.data;
@@ -44,6 +44,12 @@ class RoleEditor extends React.PureComponent {
                     this.setState({ isLoading: false });
                 })
             ;
+        } else {
+            rest.get('/api/v1/subject')
+                .then(response => {
+                    this.setState({ isLoading: false });
+                    this.props.onFetchSubjectsSuccess(response.data);
+                })
         }
     }
 

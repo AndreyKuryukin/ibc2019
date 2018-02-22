@@ -11,7 +11,7 @@ const PROXY_HOST = process.env.PROXY_HOST;
 const PROXY_PORT = process.env.PROXY_PORT || 8080;
 const AUTHORIZE = process.env.AUTHORIZE === 'true';
 
-const PORT = process.env.PROXY_PORT || 8088;
+const PORT = process.env.PORT || 8088;
 
 const USER_NAME = process.env.USER_NAME || 'User';
 const PASSWORD = process.env.PASSWORD || 'User';
@@ -30,7 +30,8 @@ app.set('port', (PORT));
 
 const plugins = [
     './login',
-    './roles'
+    './roles',
+    './users'
 ];
 
 app.use((req, res, next) => {
@@ -114,10 +115,10 @@ if (PROXY_HOST) {
             proxyReqPathResolver: (req) => {
                 return target + require('url').parse(req.originalUrl).path;
             },
-            proxyReqOptDecorator: (proxyReqOpts) => {
-                proxyReqOpts.headers['authorization'] = token;
-                return proxyReqOpts;
-            },
+            // proxyReqOptDecorator: (proxyReqOpts) => {
+            //     proxyReqOpts.headers['Authorization'] = token;
+            //     return proxyReqOpts;
+            // },
         };
         app.use('/api/*', proxy(target, config));
         useStatic();

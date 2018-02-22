@@ -1,18 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Modal, Panel, Field, TextInputTypeahead, Select } from 'qreact';
-import PermissionList from './PermissionList';
+import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+
+import Select from '../../../../../components/Select';
+
+import PermissionList from './PermissionList'
 
 import styles from './styles.scss';
-
-const EMPTY_OPTION = ['', ''];
-const textInputStyle = {
-    background: '#000',
-    border: 0,
-    color: '#fff',
-    padding: '0 5px',
-};
+import ls from "i18n";
 
 
 class RoleEditor extends React.PureComponent {
@@ -26,21 +22,25 @@ class RoleEditor extends React.PureComponent {
         active: PropTypes.bool,
         onSubmit: PropTypes.func.isRequired,
         sourceOptions: PropTypes.array,
+        subjectsData: PropTypes.array,
         subjectsByRole: PropTypes.object,
     };
 
     static defaultProps = {
         roleId: null,
+        role: {},
         active: false,
+        onSubmit: () => {
+        },
         sourceOptions: [],
-        subjectsByRole: null,
+        subjectsData: [],
+        subjectsByRole: {}
     };
 
     constructor(props) {
         super(props);
-
         this.state = {
-            role: props.role,
+            role: props.roleId ? props.role : {},
         };
     }
 
@@ -53,113 +53,77 @@ class RoleEditor extends React.PureComponent {
         }
     }
 
-    getRoleProperty = (key, defaultValue) => _.get(this.state.role, key, defaultValue);
-
     setRoleProperty = (key, value) => {
         const role = {
             ...this.state.role,
             [key]: value,
         };
-
-        if (key === 'source') {
-            role.subjects = _.get(this.props.subjectsByRole, `${value}`, role.subjects);
-        }
-
         this.setState({
             role,
         });
-    }
+    };
+
+    copySubjectsFromRole = (roleId) => {
+        if (!_.isUndefined(roleId)) {
+            let subjects = this.props.subjectsByRole[roleId];
+            if (!_.isArray(subjects)) {
+                subjects = [];
+            }
+            this.setRoleProperty('subjects', subjects)
+        } else {
+            this.setRoleProperty('subjects', [])
+        }
+    };
 
     onSubmit = () => {
-        if (typeof this.props.onSubmit === 'function') {
-            const role = {
-                ...this.state.role,
-            };
-            delete role.source;
-            this.props.onSubmit(this.props.roleId, role);
-        }
-    }
+        this.props.onSubmit(this.props.roleId, this.state.role);
+    };
 
     onClose = () => {
+        this.setState({role: {}});
         this.context.history.push('/roles');
-    }
+    };
+
+    onCheck = (checkedIds) => {
+        this.setRoleProperty('subjects', checkedIds);
+    };
+
+    getSourceOptions = (sourceOptions) => sourceOptions.map(opt => ({value: opt[0], title: opt[1]}));
 
     render() {
-        const { roleId, onFetchSubjectsSuccess, subjectsData } = this.props;
+
+        const { roleId, subjectsData, sourceOptions} = this.props;
+        const { role } = this.state;
+        const submitTitle = roleId ? ls('EDIT_ROLE_SUBMIT', 'Сохранить') : ls('NEW_ROLE_SUBMIT', 'Создать')
         return (
-            <Modal
-                title={roleId ? 'Редактирование роли' : 'Создание новой роли'}
-                width={400}
-                onSubmit={this.onSubmit}
-                onCancel={this.onClose}
-                onClose={this.onClose}
-                submitLabel="ОК"
-                cancelLabel="Отменить"
-                bodyStyle={{ overflow: 'visible' }}
-                submitDisabled={false}
-                cancelDisabled={false}
-                active={this.props.active}
-            >
-                <Panel
-                    title="Главная информация"
-                    vertical
-                    noScroll
-                >
-                    <Field
-                        id="name"
-                        label="Имя роли"
-                        labelWidth={200}
-                        className={styles.field}
-                    >
-                        <TextInputTypeahead
-                            id="name"
-                            style={textInputStyle}
-                            value={this.getRoleProperty('name', '')}
-                            onChange={value => this.setRoleProperty('name', value)}
-                        />
-                    </Field>
-                    <Field
-                        id="source"
-                        label="Копировать разрешение из"
-                        labelWidth={200}
-                        className={styles.field}
-                    >
-                        <Select
-                            id="source"
-                            options={[EMPTY_OPTION, ...this.props.sourceOptions]}
-                            value={this.getRoleProperty('source', '')}
-                            onChange={value => this.setRoleProperty('source', value)}
-                        />
-                    </Field>
-                </Panel>
-                <Panel
-                    title="Разрешения"
-                    vertical
-                    noScroll
-                    style={{ height: 300 }}
-                >
-                    <PermissionList
-                        checked={this.getRoleProperty('subjects')}
-                        onCheckRows={ids => this.setRoleProperty('subjects', ids)}
-                        onFetchSubjectsSuccess={onFetchSubjectsSuccess}
-                        subjectsData={subjectsData}
+            <Modal isOpen={this.props.active}>
+                <ModalHeader
+                    toggle={this.onClose}>{roleId ? 'Редактирование роли' : 'Создание новой роли'}</ModalHeader>
+                <ModalBody className={styles.modalBody}>
+                    <Input placeholder={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                           value={role.name}
+                           onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
                     />
-                </Panel>
-                <Panel
-                    title="Комментарий"
-                    vertical
-                    noScroll
-                >
-                    <TextInputTypeahead
-                        id="role-comment"
-                        className={styles.textarea}
-                        value={this.getRoleProperty('description', '')}
-                        onChange={value => this.setRoleProperty('description', value)}
-                        maxlength={255}
-                        multiline
-                        rows={6}
+                    <Select type="select"
+                            placeholder={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
+                            options={this.getSourceOptions(sourceOptions)}
+                            onChange={this.copySubjectsFromRole}
                     />
-                </Panel>
+                    <PermissionList subjectsData={subjectsData}
+                                    onCheck={this.onCheck}
+                                    checked={role.subjects}
+                    />
+                    <Input type="textarea"
+                           value={role.description}
+                           placeholder={ls('NEW_ROLE_COMMENT_PLACEHOLDER', 'Комментарий')}
+                           onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
+
+                    />
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
+                    <Button color="primary" onClick={this.onSubmit}>{submitTitle}</Button>
+                </ModalFooter>
             </Modal>
         );
     }

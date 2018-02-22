@@ -17,13 +17,8 @@ module.exports = (app) => {
             subjects: ['MAIN', 'CHARTS']
         }
     };
-    app.get('/api/v1/role/user/:login', (req, res) => {
-        if (req.params.login) {
-            res.send(_.values(rolesById));
-        } else {
-            res.status = 401;
-            res.end();
-        }
+    app.get('/api/v1/role/all', (req, res) => {
+        res.send(_.values(rolesById));
     });
 
     app.get('/api/v1/role/:id', (req, res) => {
