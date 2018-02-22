@@ -20,7 +20,7 @@ class App extends React.Component {
         return (
             <div style={{ height: '100%' }}>
                 <Route path="/login" render={props => {props.location.title = 'Логин'; return <Login {...props}/>}} />
-                <Route path="/roles/:action?" component={Roles} exact />
+                <Route path="/roles/:action?/:id?" component={Roles} />
                 <Route path="/users/:action?/:id?" component={Users} />
             </div>
         );

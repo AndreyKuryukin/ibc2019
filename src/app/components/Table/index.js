@@ -2,13 +2,15 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as ReactstrapTable } from 'reactstrap';
 
+import styles from './styles.scss';
+
 class Table extends React.PureComponent {
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
         data: [],
@@ -18,14 +20,14 @@ class Table extends React.PureComponent {
     };
 
     render() {
-        const { data, columns, headerRowRender, bodyRowRender } = this.props;
+        const { data, columns, headerRowRender, bodyRowRender, ...rest } = this.props;
 
         return (
-            <ReactstrapTable striped>
+            <ReactstrapTable striped {...rest}>
                 <thead>
                     <tr>
                         {columns.map(column => (
-                            <td key={column.name}>{headerRowRender(column)}</td>
+                            <th className={styles.thFix} key={column.name}>{headerRowRender(column)}</th>
                         ))}
                     </tr>
                 </thead>

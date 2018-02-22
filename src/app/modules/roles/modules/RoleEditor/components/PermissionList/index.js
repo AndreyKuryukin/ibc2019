@@ -1,83 +1,117 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Panel } from 'qreact';
-import RolesListTable from './Table';
-import RolesListControls from './Controls';
+
+import { DefaultCell, LinkCell,CheckedCell } from '../../../../../../components/Table/Cells';
+
+import Table from '../../../../../../components/Table';
+import ls from "i18n";
 
 class RolesListGrid extends React.PureComponent {
     static propTypes = {
         subjectsData: PropTypes.array,
+        onCheck: PropTypes.func,
         checked: PropTypes.array,
-        onCheckRows: PropTypes.func,
-        onFetchSubjectsSuccess: PropTypes.func,
     };
 
     static defaultProps = {
         subjectsData: [],
-        checked: [],
-        onFetchSubjectsSuccess: () => null,
-        onCheckRows: () => null,
+        onCheck: () => null
     };
 
     constructor(props) {
         super(props);
-
         this.state = {
-            searchText: '',
-            isAllChecked: false,
-            isLoading: false,
+            checked: props.checked || [],
         };
     }
 
-    componentDidMount() {
-
+    componentWillReceiveProps(nextProps) {
+        if (this.props.checked !== nextProps.checked) {
+            this.setState({
+                checked: nextProps.checked
+            });
+        }
     }
 
-    onCheck = (isAllChecked, checkedIds) => {
-        if (Array.isArray(checkedIds)) {
-            this.props.onCheckRows(checkedIds);
+
+    onCheck = (value, node) => {
+        let checked = [];
+        if (node) {
+            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
+        } else {
+            checked = value ? this.props.subjectsData.map(node => node.id) : [];
         }
 
-        this.setState({ isAllChecked });
-    }
+         this.props.onCheck(checked);
 
-    onSearchTextChange = (searchText) => {
         this.setState({
-            searchText,
+            checked,
         });
     }
 
-    onTableDataChange = ({ checked, isAllChecked }) => {
-        const checkedIds = checked.map(row => row.id);
-        this.onCheck(isAllChecked, checkedIds);
+    headerRowRender = (column) => {
+        switch (column.name) {
+            case 'checked': {
+                const isAllChecked = this.props.subjectsData.length !== 0 && this.state.checked.length === this.props.subjectsData.length;
+                return (
+                    <CheckedCell
+                        onChange={this.onCheck}
+                        style={{ marginLeft: 0 }}
+                        value={isAllChecked}
+                    />
+                );
+            }
+            default:
+                return (
+                    <DefaultCell
+                        content={column.title}
+                    />
+                );
+        }
+    };
+
+    bodyRowRender = (column, node) => {
+        const text = node[column.name];
+        switch (column.name) {
+            case 'checked': {
+                const isRowChecked = this.state.checked.findIndex(id => node.id === id) !== -1;
+                return (
+                    <CheckedCell
+                        onChange={(value) => this.onCheck(value, node)}
+                        style={{ marginLeft: 0 }}
+                        value={isRowChecked}
+                    />
+                );
+            }
+            case 'name':
+                return (
+                    <DefaultCell
+                        content={text}
+                    />
+                );
+        }
     }
 
+    getColumns = () => ([{
+        name: 'checked',
+    }, {
+        title: 'Название',
+        name: 'name'
+    }
+    ]);
+
     render() {
-        const {
-            searchText,
-            isAllChecked,
-            isLoading,
-        } = this.state;
+        const { subjectsData } = this.props;
         return (
-            <Panel
-                noScroll
-                vertical
-            >
-                <RolesListControls
-                    isAllChecked={isAllChecked}
-                    searchText={searchText}
-                    onSearchTextChange={this.onSearchTextChange}
-                    onCheckAll={this.onCheck}
+            <div>
+                <h6>{ls('ROLE_EDITOR_SUBJECTS_TITLE', 'Разрешения')}</h6>
+                <Table headerRowRender={this.headerRowRender}
+                       bodyRowRender={this.bodyRowRender}
+                       data={subjectsData}
+                       columns={this.getColumns()}
+                       size="sm"
                 />
-                <RolesListTable
-                    searchText={searchText}
-                    isAllChecked={isAllChecked}
-                    preloader={isLoading}
-                    checked={this.props.checked}
-                    onTableDataChange={this.onTableDataChange}
-                    data={this.props.subjectsData}
-                />
-            </Panel>
+            </div>
         );
     }
 }

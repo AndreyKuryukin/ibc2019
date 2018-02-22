@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input } from 'reactstrap'
+import _ from 'lodash';
 
 import styles from './styles.scss';
 import ls from "i18n";
@@ -13,12 +14,11 @@ class RolesControls extends React.PureComponent {
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
-        isAllChecked: PropTypes.bool,
         onDelete: PropTypes.func,
+        checkedIds: PropTypes.array,
     };
 
     static defaultProps = {
-        isAllChecked: false,
         onSearchTextChange: () => null,
         onCheckAll: () => null,
         onDelete: () => null,
@@ -32,8 +32,12 @@ class RolesControls extends React.PureComponent {
         this.props.onSearchTextChange(event.currentTarget.value)
     };
 
+    onRemove = () => {
+
+    }
+
     render() {
-        const { isAllChecked, onDelete } = this.props;
+        const { checkedIds } = this.props;
         return (
             <div className={styles.controls}>
                 <div className={styles.buttonGroup}>
@@ -44,7 +48,9 @@ class RolesControls extends React.PureComponent {
                         {ls('ROLES_ADD_TITLE', 'Добавить')}
                     </Button>
                     <Button
-                        color="link">
+                        color="link"
+                        disabled={_.isEmpty(checkedIds)}
+                        onClick={this.onRemove()}>
                         {ls('ROLES_PEMOVE_TITLE', 'Удалить')}
                     </Button>
                 </div>

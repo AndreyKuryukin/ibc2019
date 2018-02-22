@@ -1,39 +1,51 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Table } from 'reactstrap';
+import _ from 'lodash';
+
+import Table from '../../../components/Table';
+import { DefaultCell, LinkCell,CheckedCell } from '../../../components/Table/Cells';
 
 class RolesTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
-        onTableDataChange: PropTypes.func,
-        isAllChecked: PropTypes.bool,
         preloader: PropTypes.bool,
-        checked: PropTypes.array,
+        onCheck: PropTypes.func,
     }
 
     static defaultProps = {
         data: [],
         searchText: '',
-        onTableDataChange: () => null,
-        isAllChecked: false,
         preloader: false,
-        checked: [],
+        onCheck: () => null,
     };
 
-    renderHeader = columns =>
-        <thead>
-        <tr>
-            {columns.map(col => <th key={`col-${col.name}`}>{col.title}</th>)}
-        </tr>
-        </thead>;
+    constructor(props) {
+        super(props);
 
-    renderRow = (node, columns = []) =>
-        <tr key={`node-${node.id}`}>
-            {columns.map((col) => <td key={`node-${node.id}-${col.name}`}>{node[col.name]}</td>)}
-        </tr>;
+        this.state = {
+            checked: [],
+        };
+    }
+
+    onCheck = (value, node) => {
+        let checked = [];
+        if (node) {
+            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
+        } else {
+            checked = value ? this.props.data.map(node => node.id) : [];
+        }
+
+        this.props.onCheck(checked);
+
+        this.setState({
+            checked,
+        });
+    }
 
     getColumns = () => ([{
+        name: 'checked',
+    }, {
         title: 'Название',
         name: 'name'
     }, {
@@ -42,17 +54,67 @@ class RolesTable extends React.PureComponent {
     }
     ]);
 
-    filter = (data, columns, serchText) => data.filter(node => columns.map(col => col.name).find(name => node[name].indexOf(serchText) !== -1));
+    headerRowRender = (column) => {
+        switch (column.name) {
+            case 'checked': {
+                const isAllChecked = this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
+                return (
+                    <CheckedCell
+                        onChange={this.onCheck}
+                        style={{ marginLeft: 0 }}
+                        value={isAllChecked}
+                    />
+                );
+            }
+            default:
+                return (
+                    <DefaultCell
+                        content={column.title}
+                    />
+                );
+        }
+    }
+
+    bodyRowRender = (column, node) => {
+        const text = node[column.name];
+        switch (column.name) {
+            case 'checked': {
+                const isRowChecked = this.state.checked.includes(node.id);
+                return (
+                    <CheckedCell
+                        onChange={(value) => this.onCheck(value, node)}
+                        style={{ marginLeft: 0 }}
+                        value={isRowChecked}
+                    />
+                );
+            }
+            case 'name':
+                return (
+                    <LinkCell
+                        href={`/roles/edit/${node.id}`}
+                        content={text}
+                    />
+                );
+            default:
+                return (
+                    <DefaultCell
+                        content={text}
+                    />
+                );
+        }
+    }
+
+    filter = (data, columns, searchText) => data.filter(node => columns.map(col => col.name).find(name => node[name].indexOf(searchText) !== -1));
 
     render() {
-        const {data, searchText} = this.props;
+        const { data, searchText } = this.props;
         const columns = this.getColumns();
         const resultData = searchText ? this.filter(data, columns, this.props.searchText) : data;
         return (
-            <Table striped>
-                {this.renderHeader(columns)}
-                {resultData.map(node => this.renderRow(node, columns))}
-            </Table>
+            <Table headerRowRender={this.headerRowRender}
+                   bodyRowRender={this.bodyRowRender}
+                   data={resultData}
+                   columns={columns}/>
         );
     }
 }

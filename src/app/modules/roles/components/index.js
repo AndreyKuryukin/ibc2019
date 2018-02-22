@@ -48,13 +48,8 @@ class Roles extends React.Component {
         }
     }
 
-    onCheck = (isAllChecked, checkedIds) => {
-        const checkedInfo = { isAllChecked };
-        if (Array.isArray(checkedIds)) {
-            checkedInfo.checkedIds = checkedIds;
-        }
-
-        this.setState({ ...checkedInfo });
+    onCheck = (checkedIds) => {
+        this.setState({ checkedIds });
     }
 
     onDeleteRoles = () => {
@@ -69,38 +64,29 @@ class Roles extends React.Component {
         });
     }
 
-    onTableDataChange = ({ checked, isAllChecked }) => {
-        const checkedIds = checked.map(row => row.id);
-        this.onCheck(isAllChecked, checkedIds);
-    }
 
     render() {
         const {
             searchText,
-            isAllChecked,
             checkedIds,
         } = this.state;
         const { match, rolesData, isLoading } = this.props;
         const { params } = match;
-
         const isEditorActive = params.action === 'edit' || params.action === 'add';
         const roleId = params.id ? Number(params.id) : null;
         return (
             <div className={styles.rolesWrapper}>
                 <RolesControls
-                    isAllChecked={isAllChecked}
+                    checkedIds={checkedIds}
                     searchText={searchText}
                     onSearchTextChange={this.onSearchTextChange}
-                    onCheckAll={this.onCheck}
                     onDelete={this.onDeleteRoles}
                 />
                 <RolesTable
                     searchText={searchText}
-                    isAllChecked={isAllChecked}
                     preloader={isLoading}
-                    checked={checkedIds}
-                    onTableDataChange={this.onTableDataChange}
                     data={rolesData}
+                    onCheck={this.onCheck}
                 />
                 {isEditorActive && <RoleEditor
                     active={isEditorActive}
