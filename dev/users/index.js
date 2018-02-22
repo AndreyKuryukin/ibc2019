@@ -31,4 +31,31 @@ module.exports = (app) => {
     app.get('/api/v1/user/all', (req, res) => {
         res.send(_.values(usersById));
     });
+
+    app.get('/api/v1/user/:id', (req, res) => {
+        if (req.params.id) {
+            res.send(usersById[req.params.id]);
+        } else {
+            res.status = 401;
+            res.end();
+        }
+    });
+
+    app.post('/api/v1/user', (req, res) => {
+        res.send(Object.assign(
+            {},
+            req.body,
+            {
+                id: Date.now()
+            }
+        ));
+    });
+
+    app.put('/api/v1/user', (req, res) => {
+        res.send(req.body);
+    });
+
+    app.delete('/api/v1/user/:id', (req, res) => {
+        res.end();
+    });
 };
