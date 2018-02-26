@@ -10,11 +10,11 @@ import { createUser, fetchRolesSuccess, fetchUserSuccess, updateUser } from '../
 class UserEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         userId: PropTypes.string,
-    }
+    };
 
     static defaultProps = {
         userId: null,
@@ -43,7 +43,7 @@ class UserEditor extends React.PureComponent {
                     this.props.onFetchUserSuccess(user);
                 }
             });
-    }
+    };
 
     onSubmit = (userId, userData) => {
         const submit = userId ? rest.put : rest.post;
