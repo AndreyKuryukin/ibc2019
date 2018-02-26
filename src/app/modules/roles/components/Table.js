@@ -47,14 +47,24 @@ class RolesTable extends React.PureComponent {
         name: 'checked',
     }, {
         title: 'Название',
-        name: 'name'
+        name: 'name',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        },
     }, {
         title: 'Описание',
-        name: 'description'
+        name: 'description',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        },
     }
     ]);
 
-    headerRowRender = (column) => {
+    headerRowRender = (column, sortDirection) => {
         switch (column.name) {
             case 'checked': {
                 const isAllChecked = this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
@@ -70,6 +80,7 @@ class RolesTable extends React.PureComponent {
                 return (
                     <DefaultCell
                         content={column.title}
+                        sortDirection={sortDirection}
                     />
                 );
         }
@@ -109,7 +120,7 @@ class RolesTable extends React.PureComponent {
     render() {
         const { data, searchText } = this.props;
         const columns = this.getColumns();
-        const resultData = searchText ? this.filter(data, columns, this.props.searchText) : data;
+        const resultData = searchText ? this.filter(data, columns.filter(col => !!col.searchable), this.props.searchText) : data;
         return (
             <Table headerRowRender={this.headerRowRender}
                    bodyRowRender={this.bodyRowRender}
