@@ -26,20 +26,21 @@ class UserEditor extends React.PureComponent {
 
     onChildMount = () => {
         const queries = [];
+        queries.push(rest.get('/api/v1/role/all'));
         if (this.props.userId) {
-            queries.push(rest.get('/api/v1/role/user/:userId', { urlParams: { userId: this.props.userId} }));
             queries.push(rest.get('/api/v1/user/:id', { urlParams: { id: this.props.userId } }));
-        } else {
-            queries.push(rest.get('/api/v1/role/all'));
+            queries.push(rest.get('/api/v1/role/user/:userId', { urlParams: { userId: this.props.userId} }));
         }
 
         Promise.all(queries)
-            .then(([rolesResponse, userResponse]) => {
+            .then(([rolesResponse, userResponse, userRolesResponse]) => {
                 const roles = rolesResponse.data;
                 const user = userResponse ? userResponse.data : null;
+                const userRoles = userRolesResponse ? userRolesResponse.data : [];
 
                 this.props.onFetchRolesSuccess(roles);
                 if (user) {
+                    user.roles = userRoles;
                     this.props.onFetchUserSuccess(user);
                 }
             });
