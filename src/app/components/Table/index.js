@@ -141,7 +141,7 @@ class Table extends React.PureComponent {
 
     render() {
         const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
-        const { data, selected, sort } = this.state;
+        const { data = [], selected, sort } = this.state;
         return (
             <ReactstrapTable striped bordered {...rest}>
                 <thead>

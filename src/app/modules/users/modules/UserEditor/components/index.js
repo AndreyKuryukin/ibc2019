@@ -111,7 +111,7 @@ class UserEditor extends React.PureComponent {
                             name="confirm"
                             type="password"
                             value={this.getUserProperty('confirm', '')}
-                            placeholder={'Пароль'}
+                            placeholder={'Подтвердите пароль'}
                             onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
                         />
                         <Input
@@ -125,12 +125,6 @@ class UserEditor extends React.PureComponent {
                             value={this.getUserProperty('last_name', '')}
                             placeholder={'Фамилия'}
                             onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="second-name"
-                            value={this.getUserProperty('second_name', '')}
-                            placeholder={'Отчество'}
-                            onChange={event => this.setUserProperty('second_name', _.get(event, 'target.value'))}
                         />
                         <Input
                             name="email"
