@@ -5,17 +5,37 @@
   width: 100%;
   display: flex;
   align-items: center;
-  background-color: $white;
+  background: $white;
   justify-content: center;
-  .loginForm {
-    width: 300px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    button {
+  &:before {
+    content: "";
+    background: url(../../../../resources/img/russia.png) no-repeat center;
+    background-size: contain;
+    opacity: 0.3;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    position: absolute;
+    z-index: 1;
+  }
+  .formContainer {
+    z-index: 2;
+    .loginForm {
+      width: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      button {
+        width: 100%;
+        margin-top: 16px;
+      }
+    }
+    .shield {
+      background: url(../../../../resources/img/logo-rt.png)  no-repeat left;
+      height: 60px;
       width: 100%;
-      margin-top: 16px;
     }
   }
 }

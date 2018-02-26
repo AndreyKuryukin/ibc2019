@@ -7,12 +7,10 @@ module.exports = (app) => {
                 type: 'VALIDATION',
                 severity: 'CRITICAL',
                 target: 'login',
-                title: 'Неверный логин'
             },{
                 type: 'VALIDATION',
                 severity: 'CRITICAL',
                 target: 'password',
-                title: 'Неверный пароль'
             }]
         })
     })

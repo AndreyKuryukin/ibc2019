@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 
 import Table from '../../../components/Table';
-import { DefaultCell, LinkCell,CheckedCell } from '../../../components/Table/Cells';
+import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
 
 class RolesTable extends React.PureComponent {
     static propTypes = {
@@ -115,7 +115,11 @@ class RolesTable extends React.PureComponent {
         }
     }
 
-    filter = (data, columns, searchText) => data.filter(node => columns.map(col => col.name).find(name => node[name].indexOf(searchText) !== -1));
+    filter = (data, columns, searchText) => {
+        const cleanColomns = columns.filter(col => col.name !== 'checked');
+        return data.filter(
+            node => cleanColomns.map(col => col.name).find(name => node[name].indexOf(searchText) !== -1))
+    };
 
     render() {
         const { data, searchText } = this.props;

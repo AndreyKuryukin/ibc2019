@@ -48,14 +48,14 @@ class Login extends React.PureComponent {
         const {loginFailed} = this.props;
         return (
             <div className={styles.loginContainer}>
-                <div>
-                    <h1><Badge color="primary">SQM</Badge></h1>
+                <div className={styles.formContainer}>
+                    <div className={styles.shield}/>
                     <Form
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
                     >
                         {loginFailed && <Alert color="danger" className={styles.errorMessage}>
-                            {ls('LOGIN_FAILED_MESSAGE', 'Неверные данные')}
+                            {ls('LOGIN_FAILED_MESSAGE', 'Логин и пароль не совпадают')}
                         </Alert>}
                         <ErrorWrapper
                             errors={this.props.errors}
@@ -79,16 +79,6 @@ class Login extends React.PureComponent {
                                 onChange={(event) => this.inputValue(event, 'password')}
                             />
 
-                            <Input
-                                type="select"
-                                name="language"
-                                value={this.state.language}
-                                onChange={(event) => this.inputValue(event, 'language')}
-                                id="language"
-                            >
-                                {this.getLanguageOptions().map(opt => <option key={`opt-${opt.value}`}
-                                                                              value={opt.value}>{opt.text}</option>)}
-                            </Input>
                         </ErrorWrapper>
                         <Button
                             type="submit"
