@@ -28,7 +28,7 @@ class RolesControls extends React.PureComponent {
         this.context.history.push('/roles/add');
     };
 
-    onSerchTextChange = (event) => {
+    onSearchTextChange = (event) => {
         this.props.onSearchTextChange(event.currentTarget.value)
     };
 
@@ -52,7 +52,7 @@ class RolesControls extends React.PureComponent {
                 </div>
                 <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
                        className={styles.search}
-                       onChange={this.onSerchTextChange}
+                       onChange={this.onSearchTextChange}
                 />
             </div>
         );

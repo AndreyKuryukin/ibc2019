@@ -19,7 +19,7 @@ class ErrorWrapper extends React.PureComponent {
         const result = [];
         result.push({...child, props: {...child.props, valid: false}});
         const errorText = <FormFeedback key={`feedback-${key}`}>
-            {error[ERROR.TITLE] || ls('DEFAULT_FIELD_ERROR_TEXT', 'Это поле заполнено неверно')}
+            {error[ERROR.TITLE]}
         </FormFeedback>;
         result.push(errorText);
         return result

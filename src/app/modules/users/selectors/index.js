@@ -8,7 +8,7 @@ const selectUsersList = createSelector(
     users => users.list.map(id => users.byId[id]),
 );
 
-const formatActiveStatus = disabled => disabled ? 'No' : 'Yes';
+const formatActiveStatus = disabled => disabled ? 'Нет' : 'Да';
 
 const getUserRow = user => ({
     id: user.id,

@@ -24,19 +24,19 @@ class UsersTable extends React.PureComponent {
     getColumns = () => [{
         name: 'checked',
     }, {
-        title: 'Login',
+        title: 'Логин',
         name: 'login',
     }, {
-        title: 'Name',
+        title: 'Имя',
         name: 'name',
     }, {
         title: 'Email',
         name: 'email',
     }, {
-        title: 'Phone number',
+        title: 'Номер телефона',
         name: 'phone',
     }, {
-        title: 'Active',
+        title: 'Активен',
         name: 'active',
     }];
 
