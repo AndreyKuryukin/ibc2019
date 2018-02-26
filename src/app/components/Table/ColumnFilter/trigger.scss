@@ -1,0 +1,20 @@
+.columnFilterTrigger {
+  display: flex;
+  width: 20px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  border-left: 1px solid #dee2e6;
+  background: transparent;
+  align-items: center;
+  justify-content: center;
+}
+.columnFilterTrigger:before {
+  content: '';
+  display: block;
+  position: absolute;
+  border-top: 6px solid #dee2e6;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+}
