@@ -51,4 +51,6 @@ module.exports = (app) => {
     app.delete('/api/v1/role', (req, res) => {
         res.end();
     });
+
+    app.get('/api/v1')
 };

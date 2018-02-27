@@ -1,12 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as ReactstrapTable } from 'reactstrap';
+import _ from 'lodash';
 import styles from './styles.scss';
 import { naturalSort } from '../../util/sort';
 import HeaderCell from './HeaderCell';
 import Immutable from 'immutable';
 
 class Table extends React.PureComponent {
+    static childContextTypes = {
+        sort: PropTypes.func,
+    }
+
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
@@ -33,7 +38,7 @@ class Table extends React.PureComponent {
         super(props);
 
         this.state = {
-            data: [],
+            data: props.data,
             cntrlIsPressed: false,
             selected: [],
             sort: {
@@ -42,6 +47,12 @@ class Table extends React.PureComponent {
             },
             columnFilterValues: Immutable.Map(),
         }
+    }
+
+    getChildContext() {
+        return {
+            sort: this.sort,
+        };
     }
 
     componentDidMount() {
@@ -100,7 +111,7 @@ class Table extends React.PureComponent {
         const { by, direction } = this.state.sort;
         const nextDirection = (direction === 'asc' && by === columnName) ? 'desc' : 'asc';
 
-        const sortedData = naturalSort(this.state.data, [nextDirection], node => [node[columnName]]);
+        const sortedData = naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`)]);
 
         this.setState({
             sort: {
@@ -145,20 +156,21 @@ class Table extends React.PureComponent {
         return (
             <ReactstrapTable striped bordered {...rest}>
                 <thead>
-                <tr>
-                    {columns.map(column => {
-                        const direction = column.name === sort.by ? sort.direction : null;
-                        return (
-                            <HeaderCell
-                                key={column.name}
-                                filterable={!!column.filter}
-                                headerRowRender={() => headerRowRender(column, direction)}
-                                onClick={() => this.onHeaderCellClick(column)}
-                                onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
-                            />
-                        );
-                    })}
-                </tr>
+                    <tr>
+                        {columns.map(column => {
+                            return (
+                                <HeaderCell
+                                    key={column.name}
+                                    filterable={!!column.filter}
+                                    headerRowRender={() => headerRowRender(column, sort)}
+                                    onClick={() => this.onHeaderCellClick(column)}
+                                    onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
+                                >
+                                    {headerRowRender(column, sort)}
+                                </HeaderCell>
+                            );
+                        })}
+                    </tr>
                 </thead>
                 <tbody>
                 {data.map(node => (
