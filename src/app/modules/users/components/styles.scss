@@ -4,11 +4,11 @@
   flex-direction: column;
   height: 100%;
   width: 100%;
-  padding: 10px;
 }
 .controlsWrapper {
-  padding: 10px 0;
+  padding: 10px;
+  font-size: 2rem;
   button:not(:last-of-type) {
-    margin-right: 5px;
+    margin-right: 1em;
   }
 }

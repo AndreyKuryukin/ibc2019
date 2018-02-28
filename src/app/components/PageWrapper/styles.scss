@@ -3,21 +3,31 @@
 .pageWrapper {
   height: 100%;
   .navBar {
+    color: $white;
     .menuWrapper {
       display: inline-flex;
+      flex: 3;
       .menuFix {
         top: 10px !important;
       }
       .pageTitle {
-        margin-left: 12px;
-        color: $gray-500
+        width: 100%;
+        display: inline;
+        text-align: center;
+      }
+      .qLogo {
+        //background: url(../../../resources/img/logo-rt.png);
+        //background-size: cover;
+        height: 3em;
+        width: 14em;
+        &:hover {
+          cursor: pointer;
+        }
       }
     }
-    &:after {
-      content: "";
-      border-bottom: 1px solid $gray-400;
-      margin-top: 0.7em;
-      width: 100%;
+    .leftPanel {
+      text-align: right;
+      flex: 1;
     }
   }
   .pageContent {
