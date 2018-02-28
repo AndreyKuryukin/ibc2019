@@ -79,6 +79,7 @@ class UserEditor extends React.PureComponent {
             active,
             userId,
             rolesList,
+            user
         } = this.props;
         return (
             <Modal
@@ -148,6 +149,8 @@ class UserEditor extends React.PureComponent {
                     <div className={styles.userRoles}>
                         <RolesTable
                             data={rolesList}
+                            user={user}
+                            onCheck={checked => this.setUserProperty('roles', checked)}
                         />
                     </div>
                 </div>

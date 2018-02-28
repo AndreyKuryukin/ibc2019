@@ -17,6 +17,7 @@ COPY .babelrc /proj
 COPY .eslintrc.js /proj
 COPY package.json /proj
 COPY webpack.config.js /proj
+COPY post.build.js /proj
 
 RUN ls /proj/src/resources/img/checkbox/ && ls /proj/src/resources/img/common/
 

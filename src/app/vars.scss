@@ -1,7 +1,26 @@
-
+// COLORS
 $blue: #00aae7;
 $orange: #ff6000;
 $placeholder: #aaa;
+
+$dark-blue: #005E80;
+
+// VARS
+$border-radius: 0;
+
+// MODAL
+$modal-content-bg: $dark-blue;
+$table-bg: white;
+
+//TABLE
+$table-cell-padding: 0.25rem;
+
+//INPUT
+$input-border-color: $dark-blue !default;
+$input-border-width: 1px;
+
+
+@import '~bootstrap/scss/bootstrap.scss';
 
 
 
