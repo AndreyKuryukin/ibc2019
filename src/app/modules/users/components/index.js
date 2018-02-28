@@ -45,7 +45,7 @@ class Users extends React.PureComponent {
         const { params } = match;
 
         const isEditorActive = params.action === 'edit' || params.action === 'add';
-        const userId = params.id ? Number(params.id) : null;
+        const userId = params.id ? String(params.id) : null;
 
         return (
             <div className={styles.usersWrapper}>

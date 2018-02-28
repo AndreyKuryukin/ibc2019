@@ -1,0 +1,30 @@
+image: docker:latest
+services:
+  - docker:dind
+
+stages:
+  - package
+
+variables:
+  DOCKER_DRIVER: overlay
+  SPRING_PROFILES_ACTIVE: dev
+  REPOSITORY_URL: 730874227725.dkr.ecr.us-east-1.amazonaws.com/sqm/frontend
+
+docker-package:
+  image: docker:latest
+#  only:
+#  - master
+#  except:
+#  - branches
+  stage: package
+  script:
+  - apk add --no-cache curl jq python py-pip
+  - pip install awscli
+  - $(aws ecr get-login --no-include-email --region us-east-1)
+  - export FRONTEND_VERSION=$(cat ./package.json | grep version | sed 's/.*\-\([0-9]\{1\}\.[0-9]\{1\}\.[0-9]\{1\}\).*/\1/')
+  - docker build -t $REPOSITORY_URL:FRONTEND_VERSION .
+  - docker push $REPOSITORY_URL
+
+  environment:
+    name: review/$CI_COMMIT_REF_NAME
+    url: https://$CI_ENVIRONMENT_SLUG.example.com
