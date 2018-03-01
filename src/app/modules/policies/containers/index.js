@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PoliciesComponent from '../components';
+import { fetchPoliciesSuccess } from '../actions';
+import rest from '../../../rest';
 
 class Policies extends React.PureComponent {
     static contextTypes = {
@@ -33,7 +35,14 @@ class Policies extends React.PureComponent {
     }
 
     fetchPolicies = () => {
-        console.log('fetchPolicies');
+        this.setState({ isLoading: true });
+
+        rest.get('/api/v1/policy/all')
+            .then((response) => {
+                const policies = response.data;
+                this.props.onFetchPoliciesSuccess(policies);
+                this.setState({ isLoading: false });
+            });
     }
 
     render() {
@@ -50,39 +59,15 @@ class Policies extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    policiesData: [{
-        id: 1,
-        name: 'Волга',
-        condition: 'Условие',
-        agregation: 'Функция агрегации',
-        agregation_interval: {
-            call: 'Вызов 1',
-            ending: 'Окончание 1',
-        },
-        threshold: {
-            call: 'Вызов 1',
-            ending: 'Окончание 1',
-        },
-        scope: 'Область действия'
-    }, {
-        id: 2,
-        name: 'Болга',
-        condition: 'Условие',
-        agregation: 'Агрегация',
-        agregation_interval: {
-            call: 'Вызов 2',
-            ending: 'Окончание 2',
-        },
-        threshold: {
-            call: 'Вызов 2',
-            ending: 'Окончание 2',
-        },
-        scope: 'Область действия'
-    }],
+    policiesData: (() => {
+        const {list, byId} = state.policies.policies;
+
+        return list.map(id => byId[id]);
+    })(),
 });
 
 const mapDispatchToProps = dispatch => ({
-    onFetchPoliciesSuccess: () => null,
+    onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
 });
 
 export default connect(

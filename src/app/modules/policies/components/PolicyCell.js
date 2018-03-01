@@ -44,7 +44,7 @@ class PolicyCell extends React.PureComponent {
                             onClick={() => this.onColumnClick(name)}
                         >
                             {sortDirection && <span>{sortDirection === 'asc' ? '\u2B07' : '\u2B06'}</span>}
-                            <div>{title}</div>
+                            {title ? <div>{title}</div> : <div>&nbsp;</div>}
                         </div>
                     )})
                 }

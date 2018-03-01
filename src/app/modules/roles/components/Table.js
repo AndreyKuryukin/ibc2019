@@ -126,7 +126,7 @@ class RolesTable extends React.PureComponent {
     render() {
         const { data, searchText } = this.props;
         const columns = this.getColumns();
-        const resultData = searchText ? this.filter(data, columns, this.props.searchText) : data;
+        const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table headerRowRender={this.headerRowRender}
                    bodyRowRender={this.bodyRowRender}
