@@ -44,7 +44,7 @@ module.exports = (app) => {
         res.send(req.body);
     });
 
-    app.get('/api/v1/subjects', (req, res) => {
+    app.get('/api/v1/subject', (req, res) => {
         res.send(['MAIN', 'ALERTS', 'CHARTS']);
     });
 

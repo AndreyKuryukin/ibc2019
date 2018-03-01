@@ -68,7 +68,7 @@ export default class Example extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={this.props.className}>
                 <Nav tabs >
                     {this.renderTabs(this.props.children)}
                 </Nav>

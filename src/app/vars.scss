@@ -26,15 +26,18 @@ $modal-content-bg: $dark-blue;
 $table-bg: $white;
 
 //TABLE
-$table-cell-padding: 0.25rem;
+$table-cell-padding: 0.4em;
 $table-border-width: 0;
 $table-border-color: transparent;
 $table-thead-font-weight: normal;
 $table-left-border: 1px $light-grey solid;
+$table-hover-bg: #E2E2E2;
+$table-accent-bg: #F2F2F2;
 
 //INPUT
 $input-border-color: $dark-blue;
 $input-border-width: 1px;
+$form-check-input-margin-y: .2em;
 
 @import "~bootstrap/scss/functions";
 @import '~bootstrap/scss/variables';

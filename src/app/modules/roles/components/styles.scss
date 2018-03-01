@@ -1,4 +1,8 @@
-@import "../../../style";
+@import "../../../vars";
+
+.rolesContainer {
+  padding: 1em;
+}
 
 .rolesWrapper {
   display: flex;
@@ -10,18 +14,17 @@
 }
 
 .controls {
+  padding: 10px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   .buttonGroup {
     display: inline-flex;
-    * {
-      margin: 0.5em 0.5em 0.5em 0;
+    button:not(:last-of-type) {
+      margin-right: 1em;
     }
   }
   .search {
     width: 20em;
-    font-size: 1.3rem;
-    height: 2em;
   }
 }

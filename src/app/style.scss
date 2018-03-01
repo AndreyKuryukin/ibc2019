@@ -1,7 +1,6 @@
 @import "vars";
 @import "~bootstrap/scss/bootstrap";
 
-
 html, body {
   height: 100% !important;
   width: 100% !important;
@@ -10,13 +9,11 @@ html, body {
   min-height: 100%;
 }
 
-
-
 body {
   font-family: Tahoma, Arial, sans-serif;
-  line-height: 1em ;
+  line-height: 1em;
   font-weight: normal !important;
-  padding: .5em;
+  padding: 0;
 }
 
 .app-root {
@@ -49,12 +46,21 @@ thead {
   color: $white;
   background: #0e0e0e; /* Old browsers */
   background: -moz-linear-gradient(top, #0e0e0e 0%, #474747 33%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(top, #0e0e0e 0%,#474747 33%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(to bottom, #0e0e0e 0%,#474747 33%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -webkit-linear-gradient(top, #0e0e0e 0%, #474747 33%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #0e0e0e 0%, #474747 33%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
-th {
-  font-weight: $table-thead-font-weight;
+.table {
+  margin-bottom: 0;
+  tr {
+    &:hover {
+      opacity: 0.9;
+    }
+  }
+
+  th {
+    font-weight: $table-thead-font-weight;
+  }
 }
 
 .table-bordered {
@@ -62,7 +68,6 @@ th {
     border-right: $table-left-border;
   }
 }
-
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
