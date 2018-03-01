@@ -15,35 +15,46 @@ class PoliciesTable extends React.PureComponent {
         preloader: PropTypes.bool,
     }
 
+    static defaultProps = {
+        data: [],
+        searchText: '',
+        preloader: false,
+    }
+
     getColumns = () => [{
         title: ls('POLICIES_NAME_COLUMN_TITLE', 'Название'),
         name: 'name',
         sortable: true,
         searchable: true,
-    }, {
-        title: ls('POLICIES_CONDITION_COLUMN_TITLE', 'Условие'),
-        name: 'condition',
-        sortable: true,
-        searchable: true,
-    }, {
-        title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
-        name: 'agregation',
-        sortable: true,
-        searchable: true,
         filter: {
             type: 'text',
         },
-    }, {
-        title: ls('POLICIES_AGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
-        name: 'agregation_interval',
+    },
+    // {
+    //     title: ls('POLICIES_CONDITION_COLUMN_TITLE', 'Условие'),
+    //     name: 'condition',
+    //     sortable: true,
+    //     searchable: true,
+    // }, {
+    //     title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
+    //     name: 'agregation',
+    //     sortable: true,
+    //     searchable: true,
+    //     filter: {
+    //         type: 'text',
+    //     },
+    // },
+    {
+        title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
+        name: 'aggregation_interval',
         sortable: true,
         searchable: true,
         columns: [{
-            title: ls('POLICIES_CALL_COLUMN_TITLE', 'Вызов'),
-            name: 'call',
+            title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
+            name: 'rise_duration',
         }, {
-            title: ls('POLICIES_ENDING_COLUMN_TITLE', 'Окончание'),
-            name: 'ending',
+            title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
+            name: 'cease_duration',
         }],
     }, {
         title: ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
@@ -51,29 +62,31 @@ class PoliciesTable extends React.PureComponent {
         sortable: true,
         searchable: true,
         columns: [{
-            title: ls('POLICIES_CALL_COLUMN_TITLE', 'Вызов'),
-            name: 'call',
+            title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
+            name: 'rise_value',
         }, {
-            title: ls('POLICIES_ENDING_COLUMN_TITLE', 'Окончание'),
-            name: 'ending',
+            title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
+            name: 'cease_value',
         }],
-    }, {
-        title: ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
-        name: 'scope',
-        sortable: true,
-        searchable: true,
-    }];
+    },
+    // {
+    //     title: ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
+    //     name: 'scope',
+    //     sortable: true,
+    //     searchable: true,
+    // }
+    ];
 
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
 
         switch(column.name) {
-            case 'agregation_interval':
+            case 'aggregation_interval':
             case 'threshold':
                 return (
                     <PolicyCell
                         title={column.title}
-                        name={column.name}
+                        name="threshold"
                         columns={column.columns}
                         sort={sort}
                     />
@@ -97,11 +110,11 @@ class PoliciesTable extends React.PureComponent {
                         content={node[column.name]}
                     />
                 );
-            case 'agregation_interval':
+            case 'aggregation_interval':
             case 'threshold':
                 return (
                     <PolicyCell
-                        columns={column.columns.map(col => ({ title: _.get(node, `${column.name}.${col.name}`, ''), name: col.name }))}
+                        columns={column.columns.map(col => ({ title: _.get(node, `threshold.${col.name}`, ''), name: col.name }))}
                     />
                 );
             default:
@@ -120,7 +133,7 @@ class PoliciesTable extends React.PureComponent {
             node => searchableColumns.reduce((result, nextColumn) => {
                 let value = node[nextColumn.name];
                 let isValid = search(value, searchText);
-                if (nextColumn.name === 'agregation_interval' || nextColumn.name === 'threshold') {
+                if (nextColumn.name === 'aggregation_interval' || nextColumn.name === 'threshold') {
                     isValid = nextColumn.columns.reduce(
                         (valid, nextCol) => valid || search(_.get(value, `${nextCol.name}`), searchText),
                         false);

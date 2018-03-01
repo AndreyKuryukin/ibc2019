@@ -20,6 +20,7 @@ class PolicyEditor extends React.PureComponent {
         policy: PropTypes.object,
         active: PropTypes.bool,
         onSubmit: PropTypes.func,
+        onClose: PropTypes.func,
         onMount: PropTypes.func,
     };
 
@@ -28,8 +29,17 @@ class PolicyEditor extends React.PureComponent {
         policy: null,
         active: false,
         onSubmit: () => null,
+        onClose: () => null,
         onMount: () => null,
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            policy: props.policy,
+        };
+    }
 
     componentDidMount() {
         if (typeof this.props.onMount === 'function') {
@@ -37,12 +47,39 @@ class PolicyEditor extends React.PureComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.policy !== nextProps.policy) {
+            this.setState({
+                policy: nextProps.policy,
+            });
+        }
+    }
+
+    getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
+
+    setPolicyProperty = (key, value) => {
+        const policyValues = _.set({}, key, value);
+        const policy = _.merge(
+            {},
+            this.state.policy,
+            policyValues,
+        );
+
+        this.setState({
+            policy,
+        });
+    }
+
     onClose = () => {
         this.context.history.push('/policies');
+        this.props.onClose();
     }
 
     onSubmit = () => {
-        console.log('onSubmit');
+        if (typeof this.props.onSubmit === 'function') {
+            // this.props.onSubmit(this.props.userId, this.state.user);
+            this.props.onSubmit(this.props.policyId, this.state.policy);
+        }
     }
 
     render() {
@@ -54,7 +91,10 @@ class PolicyEditor extends React.PureComponent {
                 <ModalBody>
                     <div className={styles.roleEditorContent}>
                         <div className={styles.roleEditorColumn}>
-                            <Configuration />
+                            <Configuration
+                                getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
+                                setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
+                            />
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
                                 <div className={styles.panelBody}>
@@ -88,27 +128,27 @@ class PolicyEditor extends React.PureComponent {
                                     <Row>
                                         <Col sm={6}>
                                             <Field
-                                                id="interval"
+                                                id="cease_duration"
                                                 labelText="Интервал агрегации:"
                                             >
                                                 <Input
-                                                    id="interval"
-                                                    name="interval"
-                                                    value={''}
-                                                    onChange={() => {}}
+                                                    id="cease_duration"
+                                                    name="cease_duration"
+                                                    value={this.getPolicyProperty('threshold.cease_duration')}
+                                                    onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
                                         </Col>
                                         <Col sm={6}>
                                             <Field
-                                                id="threshold"
+                                                id="cease_value"
                                                 labelText="Порог:"
                                             >
                                                 <Input
-                                                    id="threshold"
-                                                    name="threshold"
-                                                    value={''}
-                                                    onChange={() => {}}
+                                                    id="cease_value"
+                                                    name="cease_value"
+                                                    value={this.getPolicyProperty('threshold.cease_value')}
+                                                    onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
                                         </Col>

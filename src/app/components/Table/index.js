@@ -158,10 +158,8 @@ class Table extends React.PureComponent {
         return (
             <ReactstrapTable striped bordered {...rest} className="table-hover">
                 <thead>
-
-                    {columns.map(column => {
-
-                        return (
+                    <tr>
+                        {columns.map(column => (
                             <HeaderCell
                                 key={column.name}
                                 filterable={!!column.filter}
@@ -169,11 +167,10 @@ class Table extends React.PureComponent {
                                 onClick={() => this.onHeaderCellClick(column)}
                                 onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
                             >
-                                    {headerRowRender(column, sort)}
-                                </HeaderCell>
-                        );
-                    })}
-
+                                {headerRowRender(column, sort)}
+                            </HeaderCell>
+                        ))}
+                    </tr>
                 </thead>
                 <tbody>
                 {data.map(node => (

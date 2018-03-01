@@ -59,11 +59,7 @@ class Policies extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    policiesData: (() => {
-        const {list, byId} = state.policies.policies;
-
-        return list.map(id => byId[id]);
-    })(),
+    policiesData: state.policies.policies.list,
 });
 
 const mapDispatchToProps = dispatch => ({

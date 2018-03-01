@@ -6,13 +6,25 @@ module.exports = (app) => {
             id: 1,
             name: 'Policy',
             notification_template: 'Счётчик',
-            type: 'SIMPLE'
+            type: 'SIMPLE',
+            threshold: {
+                rise_value: '0',
+                rise_duration: '1',
+                cease_value: '3',
+                cease_duration: '4'
+            }
         },
         2: {
             id: 2,
             name: 'Шаблон',
             notification_template: 'Шаблон уведомлений',
-            type: 'SIMPLE'
+            type: 'SIMPLE',
+            threshold: {
+                rise_value: '1',
+                rise_duration: '2',
+                cease_value: '2',
+                cease_duration: '3'
+            }
         }
     };
     app.get('/api/v1/policy/all', (req, res) => {
