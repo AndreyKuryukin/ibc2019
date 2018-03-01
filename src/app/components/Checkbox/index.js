@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
 
-class CheckedCell extends React.PureComponent {
+class Checkbox extends React.PureComponent {
     static propTypes = {
         value: PropTypes.bool,
         style: PropTypes.object,
@@ -33,4 +33,4 @@ class CheckedCell extends React.PureComponent {
     }
 }
 
-export default CheckedCell;
+export default Checkbox;

@@ -146,6 +146,7 @@ class Table extends React.PureComponent {
         return (
             <ReactstrapTable striped bordered {...rest} className="table-hover">
                 <thead>
+                <tr>
                     {columns.map(column => {
                         const direction = column.name === sort.by ? sort.direction : null;
                         return (
@@ -158,6 +159,7 @@ class Table extends React.PureComponent {
                             />
                         );
                     })}
+                </tr>
                 </thead>
                 <tbody>
                 {data.map(node => (

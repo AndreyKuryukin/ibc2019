@@ -41,7 +41,7 @@ class RolesTable extends React.PureComponent {
         this.setState({
             checked,
         });
-    }
+    };
 
     getColumns = () => ([{
         name: 'checked',

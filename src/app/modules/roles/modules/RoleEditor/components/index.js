@@ -122,7 +122,7 @@ class RoleEditor extends React.PureComponent {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="primary" onClick={this.onSubmit}>{submitTitle}</Button>
+                    <Button color="action" onClick={this.onSubmit}>{submitTitle}</Button>
                 </ModalFooter>
             </Modal>
         );

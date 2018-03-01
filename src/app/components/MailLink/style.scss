@@ -1,0 +1,8 @@
+@import '../../scss/vars';
+
+.mailLink {
+  color: $blue;
+  &:hover {
+    color: $border-blue;
+  }
+}

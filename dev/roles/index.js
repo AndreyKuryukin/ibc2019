@@ -44,6 +44,10 @@ module.exports = (app) => {
         res.send(req.body);
     });
 
+    app.get('/api/v1/role/user/:id', (req, res) => {
+        res.send([]);
+    });
+
     app.get('/api/v1/subject', (req, res) => {
         res.send(['MAIN', 'ALERTS', 'CHARTS']);
     });

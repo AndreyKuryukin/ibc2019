@@ -1,3 +1,7 @@
+.usersContainer {
+  padding: 1em;
+}
+
 .usersWrapper {
   display: flex;
   flex-grow: 1;
@@ -5,10 +9,19 @@
   height: 100%;
   width: 100%;
 }
+
 .controlsWrapper {
   padding: 10px;
-  font-size: 2rem;
-  button:not(:last-of-type) {
-    margin-right: 1em;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  .addButton {
+    background: url(../../../../resources/img/add_new_over.png);
+    &:hover {
+      background: url(../../../../resources/img/add_new.png);
+    }
+  }
+  .search {
+    width: 20em;
   }
 }

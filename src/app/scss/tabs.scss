@@ -1,0 +1,14 @@
+.nav-tabs {
+  border-bottom: 0;
+  .nav-item {
+    margin-bottom: 0;
+  }
+  .nav-link {
+    cursor: pointer;
+    background-color: $light-blue;
+    border-left: 0;
+    &.active {
+      background-color: $white !important;
+    }
+  }
+}

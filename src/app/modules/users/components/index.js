@@ -1,11 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
-import { Button } from 'reactstrap';
 import ls from 'i18n';
 import TabPanel from '../../../components/TabPanel';
 import UserEditor from '../modules/UserEditor/containers';
 import UsersTable from './UsersTable';
+import Icon from "../../../components/Icon/Icon";
+import Input from "../../../components/Input/index";
 
 class Users extends React.PureComponent {
     static childContextTypes = {
@@ -51,18 +52,26 @@ class Users extends React.PureComponent {
 
         return (
             <TabPanel onTabClick={(tabId) => history && history.push(`${tabId}`)}
-                      activeTabId="/users">
+                      activeTabId="/users"
+                      className={styles.usersContainer}>
                 <div className={styles.usersWrapper}
                      id="/users"
                      tabTitle={ls('USERS_TAB_TITLE', 'Пользователи')}>
+
                     <div className={styles.controlsWrapper}>
-                        <Button color="primary" onClick={this.onAdd}>Добавить</Button>
-                        <Button color="primary">Заблокировать</Button>
-                        <Button color="primary">Разблокировать</Button>
+                        <Icon icon={styles.addButton} onClick={this.onAdd}/>
+                        <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
+                               className={styles.search}
+                               onChange={this.onSearchTextChange}
+                        />
                     </div>
+
                     <UsersTable
                         data={this.props.usersData}
+                        onCheckAll={(allChecked) => {
+                        }}
                     />
+
                     {isEditorActive && <UserEditor
                         active={isEditorActive}
                         userId={userId}

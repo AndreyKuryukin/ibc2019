@@ -30,7 +30,10 @@ class UsersTable extends React.PureComponent {
         }
     }
 
-    getUserRoleIds = (user = {}) => _.get(user, 'roles', []).map(role => role.id);
+    getUserRoleIds = (user = {}) => {
+        console.log(_.get(user, 'roles', []));
+        return _.get(user, 'roles', []).map(role => role.id);
+    }
 
     getColumns = () => [{
         name: 'checked',

@@ -9,24 +9,36 @@ $border-blue: #206A8F;
 $blue: #00aae7;
 $light-blue: #B3D1E0;
 
+$theme-colors: map-merge((
+        "action":    $orange,
+), ());
+
+//LINK
+$link-color: $white;
+$link-decoration: underline;
+
+  //BODY
 $body-bg: $dark-blue;
 
 //TABS
 //$nav-tabs-border-color: $white;
 $nav-tabs-link-hover-border-color: transparent $dark-blue;
+$nav-link-padding-y: .3rem;
+$nav-link-padding-x: .3rem;
 $nav-tabs-border-width: 1px;
 $nav-tabs-link-secondary-bg: $light-blue;
 $nav-tabs-link-active-border-color: transparent $dark-blue;
 
 // COMMONS
 $border-radius: 0;
+$border-radius-lg: 0;
 
 // MODAL
 $modal-content-bg: $dark-blue;
 $table-bg: $white;
 
 //TABLE
-$table-cell-padding: 0.4em;
+$table-cell-padding: 0.3em;
 $table-border-width: 0;
 $table-border-color: transparent;
 $table-thead-font-weight: normal;
@@ -35,13 +47,19 @@ $table-hover-bg: #E2E2E2;
 $table-accent-bg: #F2F2F2;
 
 //INPUT
-$input-border-color: $dark-blue;
+$input-border-color: #E1EBF0;
 $input-border-width: 1px;
 $form-check-input-margin-y: .2em;
+$input-line-height: 1;
+
+//BUTTONS
+$btn-line-height: 1;
+
 
 @import "~bootstrap/scss/functions";
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';
+
 
 
 
