@@ -107,7 +107,7 @@ class RolesListGrid extends React.PureComponent {
                 <h6>{ls('ROLE_EDITOR_SUBJECTS_TITLE', 'Разрешения')}</h6>
                 <Table headerRowRender={this.headerRowRender}
                        bodyRowRender={this.bodyRowRender}
-                       data={subjectsData}
+                       data={subjectsData.map(subject => ({ id: subject, name: subject }))}
                        columns={this.getColumns()}
                        size="sm"
                 />

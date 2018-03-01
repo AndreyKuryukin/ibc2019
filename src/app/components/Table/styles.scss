@@ -1,8 +1,12 @@
+@import '../../vars';
+
 .thFix {
     position: relative;
     vertical-align: top !important;
 }
 
 .selected {
-    background-color: lightgreen;
+    background-color: $orange !important;
+    color: $white !important;;
 }
+

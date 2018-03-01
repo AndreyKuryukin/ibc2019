@@ -4,7 +4,7 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import './style.global.scss';
+import './style.scss';
 
 import Login from './modules/login/containers';
 import Roles from './modules/roles/containers';

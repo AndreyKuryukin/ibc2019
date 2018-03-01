@@ -5,6 +5,7 @@ import styles from './styles.scss';
 import { naturalSort } from '../../util/sort';
 import HeaderCell from './HeaderCell';
 import Immutable from 'immutable';
+import classnames from "classnames";
 
 class Table extends React.PureComponent {
     static propTypes = {
@@ -91,9 +92,9 @@ class Table extends React.PureComponent {
     };
 
     onRowClick = (node) => {
-        if (this.state.cntrlIsPressed) {
-            this.setState({ selected: [...this.state.selected, node.id] });
-        }
+        // if (this.state.cntrlIsPressed) {
+            this.setState({ selected:  node.id });
+        // }
     }
 
     sort = (columnName) => {
@@ -143,9 +144,8 @@ class Table extends React.PureComponent {
         const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
-            <ReactstrapTable striped bordered {...rest}>
+            <ReactstrapTable striped bordered {...rest} className="table-hover">
                 <thead>
-                <tr>
                     {columns.map(column => {
                         const direction = column.name === sort.by ? sort.direction : null;
                         return (
@@ -158,13 +158,12 @@ class Table extends React.PureComponent {
                             />
                         );
                     })}
-                </tr>
                 </thead>
                 <tbody>
                 {data.map(node => (
                     <tr key={node.id}
                         onClick={() => this.onRowClick(node)}
-                        className={(selected.findIndex(id => node.id === id) !== -1) && styles.selected}
+                        className={classnames({[styles.selected]: selected === node.id }) }
                     >
                         {columns.map(column => (
                             <td key={column.name}>

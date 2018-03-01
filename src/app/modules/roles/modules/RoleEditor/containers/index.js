@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import RoleEditorComponent from '../components';
 import { selectSelectedRole, selectSourceOptions, selectSubjects, selectSubjectsByRole } from '../selectors';
 import { createRole, updateRole } from '../../../actions';
@@ -80,7 +81,7 @@ const mapStateToProps = state => ({
     role: selectSelectedRole(state),
     sourceOptions: selectSourceOptions(state),
     subjectsByRole: selectSubjectsByRole(state),
-    subjectsData: selectSubjects(state),
+    subjectsData: _.get(state, 'roles.editor.subjects', []),
 });
 
 const mapDispatchToProps = dispatch => ({
