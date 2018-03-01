@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar, NavbarBrand, NavbarToggler } from 'reactstrap';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar, Button } from 'reactstrap';
 
 import styles from './styles.scss';
 import { withRouter } from "react-router-dom";
@@ -60,17 +60,20 @@ class PageWrapper extends React.Component {
                     })}>
                 <div className={styles.menuWrapper}>
                     <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
-                        <DropdownToggle tag="span"
+                        <DropdownToggle tag="div"
                                         onClick={this.toggle}
                                         data-toggle="dropdown"
                                         aria-expanded={this.state.isOpen}>
-                            <NavbarToggler onClick={this.toggle} className="mr-2"/>
+                            <div onClick={this.toggle} className={styles.qLogo}><h3>Q'ligent logo</h3></div>
                         </DropdownToggle>
                         <DropdownMenu className={styles.menuFix}>
                             {this.renderMenuItems(this.props.menu)}
                         </DropdownMenu>
                     </Dropdown>
-                    <h3 className={styles.pageTitle}>{this.state.pageTitle}</h3>
+                    <div className={styles.pageTitle}><h3>{this.state.pageTitle}</h3></div>
+                </div>
+                <div className={styles.leftPanel}>
+                    <a href="/users/username">Username</a>
                 </div>
             </Navbar>
             <div className={styles.pageContent}>
@@ -83,7 +86,6 @@ class PageWrapper extends React.Component {
 const mapStateToProps = state => ({
     menu: state.user.menu,
 });
-
 
 
 export default withRouter(connect(mapStateToProps, null)(PageWrapper));

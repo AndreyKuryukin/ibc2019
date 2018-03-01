@@ -1,26 +1,47 @@
 // COLORS
-$blue: #00aae7;
 $orange: #ff6000;
 $placeholder: #aaa;
+$white: #fff;
+$light-grey: #E9E9E9;
 
-$dark-blue: #005E80;
+$dark-blue: #015680;
+$border-blue: #206A8F;
+$blue: #00aae7;
+$light-blue: #B3D1E0;
 
-// VARS
+$body-bg: $dark-blue;
+
+//TABS
+//$nav-tabs-border-color: $white;
+$nav-tabs-link-hover-border-color: transparent $dark-blue;
+$nav-tabs-border-width: 1px;
+$nav-tabs-link-secondary-bg: $light-blue;
+$nav-tabs-link-active-border-color: transparent $dark-blue;
+
+// COMMONS
 $border-radius: 0;
 
 // MODAL
 $modal-content-bg: $dark-blue;
-$table-bg: white;
+$table-bg: $white;
 
 //TABLE
-$table-cell-padding: 0.25rem;
+$table-cell-padding: 0.4em;
+$table-border-width: 0;
+$table-border-color: transparent;
+$table-thead-font-weight: normal;
+$table-left-border: 1px $light-grey solid;
+$table-hover-bg: #E2E2E2;
+$table-accent-bg: #F2F2F2;
 
 //INPUT
-$input-border-color: $dark-blue !default;
+$input-border-color: $dark-blue;
 $input-border-width: 1px;
+$form-check-input-margin-y: .2em;
 
-
-@import '~bootstrap/scss/bootstrap.scss';
+@import "~bootstrap/scss/functions";
+@import '~bootstrap/scss/variables';
+@import '~bootstrap/scss/mixins';
 
 
 
