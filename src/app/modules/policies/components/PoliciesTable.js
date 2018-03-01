@@ -122,7 +122,7 @@ class PoliciesTable extends React.PureComponent {
                 let isValid = search(value, searchText);
                 if (nextColumn.name === 'agregation_interval' || nextColumn.name === 'threshold') {
                     isValid = nextColumn.columns.reduce(
-                        (valid, nextCol) => valid || search(value[nextCol.name], searchText),
+                        (valid, nextCol) => valid || search(_.get(value, `${nextCol.name}`), searchText),
                         false);
                 }
                 return result || isValid;

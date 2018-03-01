@@ -1,3 +1,5 @@
+@import '../../../../../vars';
+
 .roleEditorContent {
   display: flex;
   flex-direction: row;
@@ -6,18 +8,29 @@
     flex-direction: column;
     width: 50%;
   }
+  .roleEditorColumn:first-child {
+    margin-right: 1px;
+  }
 }
 
 .panel {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  padding: 10px;
-  > * {
-    margin-bottom: 10px;
+  background: $white;
+  .panelHeader {
+    padding: 10px;
+    background: $light-grey;
+    color: $dark-blue;
   }
-  > *:last-child {
-    margin-bottom: 0;
+  .panelBody {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    padding: 10px;
+    > div:not(:last-child) {
+      margin-bottom: 10px;
+    }
   }
 }
 
@@ -37,7 +50,7 @@
       .parameters {
         width: 95%;
         float: left;
-        > select {
+        > div:first-child {
           margin-bottom: 5px;
         }
       }

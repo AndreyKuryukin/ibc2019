@@ -7,6 +7,7 @@ import { naturalSort } from '../../util/sort';
 import HeaderCell from './HeaderCell';
 import Immutable from 'immutable';
 import classnames from "classnames";
+import search from '../../util/search';
 
 class Table extends React.PureComponent {
     static childContextTypes = {
@@ -140,7 +141,7 @@ class Table extends React.PureComponent {
             if (columnFilterValues.size === 0) return true;
 
             return columnFilterValues.entrySeq().reduce((result, [key, values]) =>
-                result && values.reduce((columnResult, nextValue) => columnResult || node[key].indexOf(nextValue) !== -1, false),
+                result && values.reduce((columnResult, nextValue) => columnResult || search(node[key], nextValue), false),
             true);
         };
 

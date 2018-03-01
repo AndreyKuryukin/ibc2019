@@ -56,40 +56,64 @@ class PolicyEditor extends React.PureComponent {
                         <div className={styles.roleEditorColumn}>
                             <Configuration />
                             <div className={styles.panel}>
-                                <h6>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
-                                <Select
-                                    type="select"
-                                    placeholder={ls('POLICY_EDITOR_FIELD', 'Поле')}
-                                    options={[]}
-                                    onChange={() => {}}
-                                />
-                                <Select
-                                    type="select"
-                                    placeholder={ls('POLICY_EDITOR_FIELD', 'Поле')}
-                                    options={[]}
-                                    onChange={() => {}}
-                                />
+                                <h6 className={styles.panelHeader}>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
+                                <div className={styles.panelBody}>
+                                    <Field
+                                        id="iField"
+                                        inputWidth="100%"
+                                    >
+                                        <Select
+                                            id="iField"
+                                            type="select"
+                                            options={[]}
+                                            onChange={() => {}}
+                                        />
+                                    </Field>
+                                    <Field
+                                        id="jField"
+                                        inputWidth="100%"
+                                    >
+                                        <Select
+                                            id="jField"
+                                            type="select"
+                                            options={[]}
+                                            onChange={() => {}}
+                                        />
+                                    </Field>
+                                </div>
                             </div>
                             <div className={styles.panel}>
-                                <h6>{ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}</h6>
-                                <Row>
-                                    <Col sm={6}>
-                                        <Input
-                                            name="interval"
-                                            value={''}
-                                            placeholder={ls('POLICY_EDITOR_AGREGATION_INTERVAL_FIELD', 'Интервал агрегации')}
-                                            onChange={() => {}}
-                                        />
-                                    </Col>
-                                    <Col sm={6}>
-                                        <Input
-                                            name="threshold"
-                                            value={''}
-                                            placeholder={ls('POLICY_EDITOR_THRESHOLD_FIELD', 'Порог')}
-                                            onChange={() => {}}
-                                        />
-                                    </Col>
-                                </Row>
+                                <h6 className={styles.panelHeader}>{ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}</h6>
+                                <div className={styles.panelBody}>
+                                    <Row>
+                                        <Col sm={6}>
+                                            <Field
+                                                id="interval"
+                                                labelText="Интервал агрегации:"
+                                            >
+                                                <Input
+                                                    id="interval"
+                                                    name="interval"
+                                                    value={''}
+                                                    onChange={() => {}}
+                                                />
+                                            </Field>
+                                        </Col>
+                                        <Col sm={6}>
+                                            <Field
+                                                id="threshold"
+                                                labelText="Порог:"
+                                            >
+                                                <Input
+                                                    id="threshold"
+                                                    name="threshold"
+                                                    value={''}
+                                                    onChange={() => {}}
+                                                />
+                                            </Field>
+                                        </Col>
+                                    </Row>
+                                </div>
                             </div>
                         </div>
                         <div className={styles.roleEditorColumn}>

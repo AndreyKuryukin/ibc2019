@@ -12,8 +12,9 @@ class Configuration extends React.PureComponent {
     render() {
         return (
             <div className={styles.panel}>
-                <h6>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
-                <Field
+                <h6 className={styles.panelHeader}>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
+                <div className={styles.panelBody}>
+                    <Field
                     id="name"
                     labelText="Имя:"
                 >
@@ -24,42 +25,61 @@ class Configuration extends React.PureComponent {
                         onChange={() => {}}
                     />
                 </Field>
-                <Field
-                    id="agregation"
-                    labelText="Фукнция агрегации:"
-                    required
-                >
-                    <Select
+                    <Field
                         id="agregation"
-                        type="select"
-                        options={[]}
-                        onChange={() => {}}
-                    />
-                </Field>
-                <Row>
-                    <Col sm={6}>
-                        <Input
-                            name="interval"
-                            value={''}
-                            placeholder={ls('POLICY_EDITOR_AGREGATION_INTERVAL_FIELD', 'Интервал агрегации')}
+                        labelText="Фукнция агрегации:"
+                        required
+                    >
+                        <Select
+                            id="agregation"
+                            type="select"
+                            options={[]}
                             onChange={() => {}}
                         />
-                    </Col>
-                    <Col sm={6}>
+                    </Field>
+                    <Row>
+                        <Col sm={6}>
+                            <Field
+                                id="interval"
+                                labelText="Интервал агрегации:"
+                            >
+                                <Input
+                                    id="interval"
+                                    name="interval"
+                                    value={''}
+                                    onChange={() => {}}
+                                />
+                            </Field>
+                        </Col>
+                        <Col sm={6}>
+                            <Field
+                                id="threshold"
+                                labelText="Порог:"
+                            >
+                                <Input
+                                    id="threshold"
+                                    name="threshold"
+                                    value={''}
+                                    onChange={() => {}}
+                                />
+                            </Field>
+                        </Col>
+                    </Row>
+                    <Field
+                        id="message"
+                        labelText="Текст сообщения:"
+                        labelWidth="100%"
+                        inputWidth="100%"
+                        labelAlign="right"
+                    >
                         <Input
-                            name="threshold"
+                            id="message"
+                            type="textarea"
                             value={''}
-                            placeholder={ls('POLICY_EDITOR_THRESHOLD_FIELD', 'Порог')}
                             onChange={() => {}}
                         />
-                    </Col>
-                </Row>
-                <Input
-                    type="textarea"
-                    value={''}
-                    placeholder={ls('POLICY_EDITOR_MESSAGE_TEXT_FIELD', 'Текст сообщения')}
-                    onChange={() => {}}
-                />
+                    </Field>
+                </div>
             </div>
         )
     }
