@@ -2,24 +2,35 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Table from '../../../../../components/Table';
-import { DefaultCell, CheckedCell } from '../../../../../components/Table/Cells';
+import { CheckedCell, DefaultCell } from '../../../../../components/Table/Cells';
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        user: PropTypes.object,
+        onCheck: PropTypes.func
     };
 
     static defaultProps = {
-        data: [],
+        user: {},
+        onCheck: () => null,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            checked: [],
+            checked: this.getUserRoleIds(props.user),
         };
     }
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(this.props.user, nextProps.user)) {
+            this.setState({ checked: this.getUserRoleIds(nextProps.user) });
+        }
+    }
+
+    getUserRoleIds = (user = {}) => _.get(user, 'roles', []).map(role => role.id);
 
     getColumns = () => [{
         name: 'checked',
@@ -39,6 +50,7 @@ class UsersTable extends React.PureComponent {
         this.setState({
             checked,
         });
+        this.props.onCheck(checked);
     }
 
     headerRowRender = (column) => {

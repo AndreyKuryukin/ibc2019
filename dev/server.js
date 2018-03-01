@@ -59,7 +59,7 @@ function useStatic() {
         console.log(`Listening on ${app.get('port')}`);
     })
 }
-;
+
 const plugIn = (app, plugins) => {
     plugins.forEach((pluginPath) => {
         try {
@@ -73,60 +73,18 @@ const plugIn = (app, plugins) => {
     })
 };
 
-function getToken(headers) {
-    return headers['authorization'];
-}
-
-function authorize(hostname, port) {
-    return AUTHORIZE ? new Promise((resolve, reject) => {
-        console.log('Authorisation ...')
-        const form = {
-            login: USER_NAME,
-            password: PASSWORD,
-        };
-        const formData = querystring.stringify(form);
-        const contentLength = formData.length;
-        const authUrl = `http://${hostname}:${port}/${AUTHORIZATION_PATH}`;
-
-        request({
-            headers: {
-                'Content-Length': contentLength,
-                'Content-Type': 'application/x-www-form-urlencoded',
-            },
-            uri: authUrl,
-            body: formData,
-            method: 'POST',
-        }, (err, res) => {
-            if (!err && res.statusCode === 200) {
-                resolve(getToken(res.headers));
-            } else {
-                reject(err);
-            }
-        });
-    }) : Promise.resolve(null);
-}
-
 if (PROXY_HOST) {
-    authorize(PROXY_HOST, PROXY_PORT).then((token) => {
-        if (token) {
-            console.log(`Authorization success on ${PROXY_HOST}:${PROXY_PORT} token: "${token}"`);
-        }
-        const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
-        const config = {
-            proxyReqPathResolver: (req) => {
-                return target + require('url').parse(req.originalUrl).path;
-            },
-            // proxyReqOptDecorator: (proxyReqOpts) => {
-            //     proxyReqOpts.headers['Authorization'] = token;
-            //     return proxyReqOpts;
-            // },
-        };
-        app.use('/api/*', proxy(target, config));
-        useStatic();
-        console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);
-    }).catch((e) => {
-        console.error(`problem with request: ${e.message}`);
-    });
+    const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
+    const config = {
+        proxyReqPathResolver: (req) => {
+            console.log(target + require('url').parse(req.originalUrl).path);
+            return target + require('url').parse(req.originalUrl).path;
+        },
+    };
+    app.use('/api/*', proxy(target, config));
+    useStatic();
+    console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);
+
 } else {
     plugIn(app, plugins);
     useStatic();
