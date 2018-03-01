@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Row, Col } from 'reactstrap';
 import Input from '../../../../../components/Input';
+import Field from '../../../../../components/Field';
 import Select from '../../../../../components/Select';
 import ls from 'i18n';
 
@@ -12,18 +13,29 @@ class Configuration extends React.PureComponent {
         return (
             <div className={styles.panel}>
                 <h6>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
-                <Input
-                    name="name"
-                    value={''}
-                    placeholder={ls('NAME_FIELD', 'Имя')}
-                    onChange={() => {}}
-                />
-                <Select
-                    type="select"
-                    placeholder={ls('POLICY_EDITOR_AGREGATION_FUNCTION_FIELD', 'Функция агрегации')}
-                    options={[]}
-                    onChange={() => {}}
-                />
+                <Field
+                    id="name"
+                    labelText="Имя:"
+                >
+                    <Input
+                        id="name"
+                        name="name"
+                        value={''}
+                        onChange={() => {}}
+                    />
+                </Field>
+                <Field
+                    id="agregation"
+                    labelText="Фукнция агрегации:"
+                    required
+                >
+                    <Select
+                        id="agregation"
+                        type="select"
+                        options={[]}
+                        onChange={() => {}}
+                    />
+                </Field>
                 <Row>
                     <Col sm={6}>
                         <Input

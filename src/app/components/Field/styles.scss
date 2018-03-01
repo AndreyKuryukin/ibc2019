@@ -1,6 +1,25 @@
+@import '../../vars';
+
 .fieldWrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
-
+  &.required {
+    color: $orange;
+  }
+  &.rightLabel {
+    flex-direction: row-reverse;
+    .fieldLabel {
+      text-align: left;
+    }
+  }
+  .fieldLabel {
+    text-align: right;
+    padding: 0 5px;
+    margin-bottom: 0;
+  }
+  .fieldInput {
+    background: $white;
+    border: 1px solid $border-blue;
+  }
 }

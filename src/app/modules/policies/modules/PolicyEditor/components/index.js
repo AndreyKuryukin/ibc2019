@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Row, Col } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
+import Field from '../../../../../components/Field';
 import ls from 'i18n';
 import Configuration from './Configuration';
 import Condition from './Condition';

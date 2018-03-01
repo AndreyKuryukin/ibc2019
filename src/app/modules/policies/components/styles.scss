@@ -1,12 +1,9 @@
-@import "../../../style.global";
-
 .policiesWrapper {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
   width: 100%;
-  background-color: $white;
 }
 
 .controls {
@@ -37,13 +34,9 @@
   .title {
     @extend %child;
     width: 100%;
-    border-bottom: 1px solid #dee2e6;
   }
   .subtitle {
     @extend %child;
     width: 50%;
-  }
-  .subtitle:last-child {
-    border-left: 1px solid #dee2e6;
   }
 }
