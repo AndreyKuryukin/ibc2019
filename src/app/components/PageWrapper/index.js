@@ -70,7 +70,7 @@ class PageWrapper extends React.Component {
                             {this.renderMenuItems(this.props.menu)}
                         </DropdownMenu>
                     </Dropdown>
-                    <div className={styles.pageTitle}><h3>{this.state.pageTitle}</h3></div>
+                    <div className={styles.pageTitle}><h5>{this.state.pageTitle}</h5></div>
                 </div>
                 <div className={styles.leftPanel}>
                     <a href="/users/username">Username</a>

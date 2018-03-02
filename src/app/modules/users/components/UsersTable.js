@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Table from '../../../components/Table';
 import { DefaultCell, CheckedCell, LinkCell } from '../../../components/Table/Cells';
+import MailLink from "../../../components/MailLink/index";
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
@@ -51,7 +52,7 @@ class UsersTable extends React.PureComponent {
         this.setState({
             checked,
         });
-    }
+    };
 
     headerRowRender = (column) => {
         switch (column.name) {
@@ -72,7 +73,7 @@ class UsersTable extends React.PureComponent {
                     />
                 );
         }
-    }
+    };
 
     bodyRowRender = (column, node) => {
         const text = node[column.name];
@@ -86,6 +87,9 @@ class UsersTable extends React.PureComponent {
                         value={isRowChecked}
                     />
                 );
+            }
+            case 'email' : {
+                return <MailLink href={node.email}>{node.email}</MailLink>
             }
             case 'login':
                 return (
@@ -101,7 +105,7 @@ class UsersTable extends React.PureComponent {
                     />
                 );
         }
-    }
+    };
 
     render() {
         const columns = this.getColumns();

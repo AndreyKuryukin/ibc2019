@@ -1,7 +1,7 @@
-@import "../../../../../vars";
+@import "../../../../../scss/vars";
 
 .modalBody {
-  * {
+  > * {
     margin-top: 8px;
   }
 }

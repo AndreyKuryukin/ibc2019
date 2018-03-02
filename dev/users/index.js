@@ -25,6 +25,42 @@ module.exports = (app) => {
             login: 'a.smirnov',
             notify_language: 'Russian',
             phone: '+79200000002'
+        },
+        3: {
+            id: 3,
+            description: 'Small comment',
+            disabled: false,
+            email: 'a.smirnov@gmail.com',
+            first_name: 'Alex',
+            last_name: 'Smirnov',
+            ldap_auth: true,
+            login: 'a.smirnov',
+            notify_language: 'Russian',
+            phone: '+79200000002'
+        },
+        4: {
+            id: 4,
+            description: 'Small comment',
+            disabled: false,
+            email: 'a.smirnov@gmail.com',
+            first_name: 'Alex',
+            last_name: 'Smirnov',
+            ldap_auth: true,
+            login: 'a.smirnov',
+            notify_language: 'Russian',
+            phone: '+79200000002'
+        },
+        5: {
+            id: 5,
+            description: 'Small comment',
+            disabled: false,
+            email: 'a.smirnov@gmail.com',
+            first_name: 'Alex',
+            last_name: 'Smirnov',
+            ldap_auth: true,
+            login: 'a.smirnov',
+            notify_language: 'Russian',
+            phone: '+79200000002'
         }
     };
 

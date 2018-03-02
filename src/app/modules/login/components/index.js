@@ -82,7 +82,7 @@ class Login extends React.PureComponent {
                         </ErrorWrapper>
                         <Button
                             type="submit"
-                            color="primary"
+                            color="action"
                         >
                             {ls('LOGIN_SUBMIT', 'Вход')}
                         </Button>

@@ -1,4 +1,4 @@
-@import '../../vars';
+@import '../../scss/vars';
 
 .fieldWrapper {
   display: flex;
@@ -21,5 +21,9 @@
   }
   .fieldInput {
     background: $white;
+  }
+  .form-check-input {
+    position: relative;
+    margin-left: 0;
   }
 }

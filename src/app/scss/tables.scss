@@ -1,0 +1,29 @@
+
+thead {
+  font-weight: $table-thead-font-weight;
+  color: $white;
+  background: #0e0e0e; /* Old browsers */
+  background: -moz-linear-gradient(top, #0e0e0e 0%, #474747 33%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(top, #0e0e0e 0%, #474747 33%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(to bottom, #0e0e0e 0%, #474747 33%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+}
+
+.table {
+  border-bottom: $table-left-border;
+  margin-bottom: 0;
+  .form-check-input {
+    position: relative;
+  }
+  th {
+    font-weight: $table-thead-font-weight;
+  }
+}
+
+.table-bordered {
+  td {
+    border-right: $table-left-border;
+    &:first-child {
+      border-left: $table-left-border;
+    }
+  }
+}
