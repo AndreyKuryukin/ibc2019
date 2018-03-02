@@ -52,13 +52,6 @@ class PolicyEditor extends React.PureComponent {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.policy !== nextProps.policy) {
-            this.setState({
-                policy: nextProps.policy,
-            });
-        }
-    }
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
 
@@ -85,12 +78,8 @@ class PolicyEditor extends React.PureComponent {
             // this.props.onSubmit(this.props.userId, this.state.user);
             this.props.onSubmit(this.props.policyId, this.state.policy);
         }
-    }
-
-    setPolicyProperty = (path, value) => {
-        const policy = _.set(this.state.policy, path, value);
-        this.setState({policy});
     };
+
 
     render() {
         const { active, policyId } = this.props;
@@ -141,7 +130,7 @@ class PolicyEditor extends React.PureComponent {
                                                     name="interval"
                                                     type="number"
                                                     value={_.get(policy, 'threshold.rise_duration')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_duration', e.currentTarget.value)}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_duration', Number(e.currentTarget.value))}
                                                 />
                                             </Field>
                                         </Col>
@@ -155,7 +144,7 @@ class PolicyEditor extends React.PureComponent {
                                                     name="threshold"
                                                     type="number"
                                                     value={_.get(policy, 'threshold.rise_value')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_value', e.currentTarget.value)}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_value', Number(e.currentTarget.value))}
 
                                                 />
                                             </Field>
@@ -221,7 +210,7 @@ class PolicyEditor extends React.PureComponent {
                                                     name="interval"
                                                     type="number"
                                                     value={_.get(policy, 'threshold.cease_duration')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_duration', e.currentTarget.value)}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_duration', Number(e.currentTarget.value))}
                                                 />
                                             </Field>
                                         </div>
@@ -235,7 +224,7 @@ class PolicyEditor extends React.PureComponent {
                                                     name="threshold"
                                                     type="number"
                                                     value={_.get(policy, 'threshold.cease_value')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_value', e.currentTarget.value)}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_value', Number(e.currentTarget.value))}
                                                 />
                                             </Field>
                                         </div>
