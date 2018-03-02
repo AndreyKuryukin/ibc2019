@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 
+import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
 
@@ -41,7 +42,7 @@ class RolesTable extends React.PureComponent {
         this.setState({
             checked,
         });
-    }
+    };
 
     getColumns = () => ([{
         name: 'checked',
@@ -64,7 +65,8 @@ class RolesTable extends React.PureComponent {
     }
     ]);
 
-    headerRowRender = (column, sortDirection) => {
+    headerRowRender = (column, sort) => {
+        const sortDirection = sort.by === column.name ? sort.direction : null;
         switch (column.name) {
             case 'checked': {
                 const isAllChecked = this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
@@ -116,15 +118,15 @@ class RolesTable extends React.PureComponent {
     }
 
     filter = (data, columns, searchText) => {
-        const cleanColomns = columns.filter(col => col.name !== 'checked');
+        const searchableColumns = columns.filter(col => col.searchable);
         return data.filter(
-            node => cleanColomns.map(col => col.name).find(name => node[name].indexOf(searchText) !== -1))
+            node => searchableColumns.find(column => search(node[column.name], searchText)))
     };
 
     render() {
         const { data, searchText } = this.props;
         const columns = this.getColumns();
-        const resultData = searchText ? this.filter(data, columns.filter(col => !!col.searchable), this.props.searchText) : data;
+        const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table headerRowRender={this.headerRowRender}
                    bodyRowRender={this.bodyRowRender}

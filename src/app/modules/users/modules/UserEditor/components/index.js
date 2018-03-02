@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Form } from 'reactstrap';
 import Modal from '../../../../../components/Modal';
-import ErrorWrapper from "../../../../../components/Errors/ErrorWrapper";
 import Input from '../../../../../components/Input';
 import styles from './styles.scss';
 import RolesTable from './RolesTable';
+import Field from "../../../../../components/Field/index";
+import ls from "i18n";
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -72,7 +73,7 @@ class UserEditor extends React.PureComponent {
         if (typeof this.props.onSubmit === 'function') {
             this.props.onSubmit(this.props.userId, this.state.user);
         }
-    }
+    };
 
     render() {
         const {
@@ -95,56 +96,73 @@ class UserEditor extends React.PureComponent {
                     <Form
                         className={styles.userForm}
                     >
-                        <Input
-                            name="login"
-                            value={this.getUserProperty('login', '')}
-                            placeholder={'Логин'}
-                            onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="password"
-                            type="password"
-                            value={this.getUserProperty('password', '')}
-                            placeholder={'Пароль'}
-                            onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="confirm"
-                            type="password"
-                            value={this.getUserProperty('confirm', '')}
-                            placeholder={'Подтвердите пароль'}
-                            onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="name"
-                            value={this.getUserProperty('first_name', '')}
-                            placeholder={'Имя'}
-                            onChange={event => this.setUserProperty('first_name', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="last-name"
-                            value={this.getUserProperty('last_name', '')}
-                            placeholder={'Фамилия'}
-                            onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="email"
-                            value={this.getUserProperty('email', '')}
-                            placeholder={'E-mail'}
-                            onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="phone"
-                            value={this.getUserProperty('phone', '')}
-                            placeholder={'Телефон'}
-                            onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
-                        />
-                        <Input
-                            name="admin"
-                            type="checkbox"
-                            onChange={event => this.setUserProperty('admin', _.get(event, 'target.checked'))}
-                            checked={this.getUserProperty('admin', '')}
-                        />
+                        <Field labelText={ls('USER_LOGIN_FIELD_TITLE', 'Логин')}
+                               required>
+                            <Input
+                                name="login"
+                                value={this.getUserProperty('login', '')}
+                                onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_PASSWORD_FIELD_TITLE', 'Пароль')}
+                               required>
+                            <Input
+                                name="password"
+                                type="password"
+                                value={this.getUserProperty('password', '')}
+                                onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_CONFIRM_FIELD_TITLE', 'Подтвердите пароль')}
+                               required>
+                            <Input
+                                name="confirm"
+                                type="password"
+                                value={this.getUserProperty('confirm', '')}
+                                onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_NAME_FIELD_TITLE', 'Имя')}
+                        >
+                            <Input
+                                name="name"
+                                value={this.getUserProperty('first_name', '')}
+                                onChange={event => this.setUserProperty('first_name', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_LAST_NAME_FIELD_TITLE', 'Фамилия')}
+                        >
+                            <Input
+                                name="last-name"
+                                value={this.getUserProperty('last_name', '')}
+                                onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}>
+                            <Input
+                                name="email"
+                                value={this.getUserProperty('email', '')}
+                                onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_PHONE_FIELD_TITLE', 'Телефон')}>
+                            <Input
+                                name="phone"
+                                value={this.getUserProperty('phone', '')}
+                                onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
+                            />
+                        </Field>
+                        <Field labelText={ls('USER_ADMIN_FIELD_TITLE', 'Администратор')}
+                               labelAlign="right"
+                               inputWidth={23}
+                        >
+                            <Input
+                                name="admin"
+                                type="checkbox"
+                                onChange={event => this.setUserProperty('admin', _.get(event, 'target.checked'))}
+                                checked={this.getUserProperty('admin', '')}
+                            />
+                        </Field>
                     </Form>
                     <div className={styles.userRoles}>
                         <RolesTable
@@ -158,7 +176,6 @@ class UserEditor extends React.PureComponent {
         );
     }
 }
-
 
 
 export default UserEditor;

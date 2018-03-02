@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as ReactstrapTable } from 'reactstrap';
+import _ from 'lodash';
 import styles from './styles.scss';
 import { naturalSort } from '../../util/sort';
 import HeaderCell from './HeaderCell';
 import Immutable from 'immutable';
 import classnames from "classnames";
+import search from '../../util/search';
 
 class Table extends React.PureComponent {
+    static childContextTypes = {
+        sort: PropTypes.func,
+    }
+
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
@@ -34,7 +40,7 @@ class Table extends React.PureComponent {
         super(props);
 
         this.state = {
-            data: [],
+            data: props.data,
             cntrlIsPressed: false,
             selected: [],
             sort: {
@@ -43,6 +49,12 @@ class Table extends React.PureComponent {
             },
             columnFilterValues: Immutable.Map(),
         }
+    }
+
+    getChildContext() {
+        return {
+            sort: this.sort,
+        };
     }
 
     componentDidMount() {
@@ -67,7 +79,6 @@ class Table extends React.PureComponent {
 
     shouldComponentUpdate(nextProps, nextState) {
         const isColumnFilterValuesChanged = this.state.columnFilterValues !== nextState.columnFilterValues;
-
         return !isColumnFilterValuesChanged;
     }
 
@@ -93,15 +104,15 @@ class Table extends React.PureComponent {
 
     onRowClick = (node) => {
         // if (this.state.cntrlIsPressed) {
-            this.setState({ selected:  node.id });
+        this.setState({ selected: node.id });
         // }
-    }
+    };
 
     sort = (columnName) => {
         const { by, direction } = this.state.sort;
         const nextDirection = (direction === 'asc' && by === columnName) ? 'desc' : 'asc';
 
-        const sortedData = naturalSort(this.state.data, [nextDirection], node => [node[columnName]]);
+        const sortedData = naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`)]);
 
         this.setState({
             sort: {
@@ -110,13 +121,13 @@ class Table extends React.PureComponent {
             },
             data: sortedData,
         });
-    }
+    };
 
     onHeaderCellClick = (column) => {
         if (column.sortable) {
             this.sort(column.name);
         }
-    }
+    };
 
     onColumnFilterChange = (columnName, filterValues) => {
         let columnFilterValues = this.state.columnFilterValues.set(columnName, filterValues.toArray().filter(v => !!v));
@@ -129,8 +140,8 @@ class Table extends React.PureComponent {
             if (columnFilterValues.size === 0) return true;
 
             return columnFilterValues.entrySeq().reduce((result, [key, values]) =>
-                result && values.reduce((columnResult, nextValue) => columnResult || node[key].indexOf(nextValue) !== -1, false),
-            true);
+                result && values.reduce((columnResult, nextValue) => columnResult || search(node[key], nextValue), false),
+                true);
         };
 
         this.setState({
@@ -138,7 +149,7 @@ class Table extends React.PureComponent {
         }, () => {
             this.setState({ data: this.props.data.filter(searchByColumns) });
         });
-    }
+    };
 
     render() {
         const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
@@ -146,24 +157,25 @@ class Table extends React.PureComponent {
         return (
             <ReactstrapTable striped bordered {...rest} className="table-hover">
                 <thead>
-                    {columns.map(column => {
-                        const direction = column.name === sort.by ? sort.direction : null;
-                        return (
+                    <tr>
+                        {columns.map(column => (
                             <HeaderCell
                                 key={column.name}
                                 filterable={!!column.filter}
-                                headerRowRender={() => headerRowRender(column, direction)}
+                                headerRowRender={() => headerRowRender(column, sort)}
                                 onClick={() => this.onHeaderCellClick(column)}
                                 onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
-                            />
-                        );
-                    })}
+                            >
+                                {headerRowRender(column, sort)}
+                            </HeaderCell>
+                        ))}
+                    </tr>
                 </thead>
                 <tbody>
                 {data.map(node => (
                     <tr key={node.id}
                         onClick={() => this.onRowClick(node)}
-                        className={classnames({[styles.selected]: selected === node.id }) }
+                        className={classnames({ [styles.selected]: selected === node.id })}
                     >
                         {columns.map(column => (
                             <td key={column.name}>

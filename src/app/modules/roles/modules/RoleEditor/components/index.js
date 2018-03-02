@@ -9,12 +9,13 @@ import PermissionList from './PermissionList'
 
 import styles from './styles.scss';
 import ls from "i18n";
+import Field from "../../../../../components/Field/index";
 
 
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         roleId: PropTypes.number,
@@ -80,7 +81,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     onClose = () => {
-        this.setState({role: {}});
+        this.setState({ role: {} });
         this.context.history.push('/roles');
     };
 
@@ -88,28 +89,33 @@ class RoleEditor extends React.PureComponent {
         this.setRoleProperty('subjects', checkedIds);
     };
 
-    getSourceOptions = (sourceOptions) => sourceOptions.map(opt => ({value: opt[0], title: opt[1]}));
+    getSourceOptions = (sourceOptions) => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
 
     render() {
-
-        const { roleId, subjectsData, sourceOptions} = this.props;
+        const { roleId, subjectsData, sourceOptions } = this.props;
         const { role } = this.state;
-        const submitTitle = roleId ? ls('EDIT_ROLE_SUBMIT', 'Сохранить') : ls('NEW_ROLE_SUBMIT', 'Создать')
+        const submitTitle = roleId ? ls('EDIT_ROLE_SUBMIT', 'Сохранить') : ls('NEW_ROLE_SUBMIT', 'Создать');
+        const data = subjectsData.map(subject => ({ id: subject, name: subject }));
         return (
             <Modal isOpen={this.props.active}>
                 <ModalHeader
                     toggle={this.onClose}>{roleId ? 'Редактирование роли' : 'Создание новой роли'}</ModalHeader>
                 <ModalBody className={styles.modalBody}>
-                    <Input placeholder={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
-                           value={role.name}
-                           onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
-                    />
-                    <Select type="select"
-                            placeholder={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
-                            options={this.getSourceOptions(sourceOptions)}
-                            onChange={this.copySubjectsFromRole}
-                    />
-                    <PermissionList subjectsData={subjectsData}
+                    <Field labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                           required
+                    >
+                        <Input value={role.name}
+                               onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                        />
+                    </Field>
+
+                    <Field labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}>
+                        <Select type="select"
+                                options={this.getSourceOptions(sourceOptions)}
+                                onChange={this.copySubjectsFromRole}
+                        />
+                    </Field>
+                    <PermissionList subjectsData={data}
                                     onCheck={this.onCheck}
                                     checked={role.subjects}
                     />
@@ -122,7 +128,7 @@ class RoleEditor extends React.PureComponent {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="primary" onClick={this.onSubmit}>{submitTitle}</Button>
+                    <Button color="action" onClick={this.onSubmit}>{submitTitle}</Button>
                 </ModalFooter>
             </Modal>
         );

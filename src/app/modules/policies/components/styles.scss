@@ -1,0 +1,53 @@
+@import '../../../scss/vars';
+
+.policiesWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $white;
+  .buttonGroup {
+    display: inline-flex;
+    .addButton {
+      background: url(../../../../resources/img/add_new_over.png);
+      cursor: pointer;
+      &:hover {
+        background: url(../../../../resources/img/add_new.png);
+      }
+    }
+  }
+  .search {
+    width: 20em;
+  }
+}
+
+%child {
+  display: flex;
+  padding: $table-cell-padding;
+}
+.policyCell {
+  display: flex;
+  margin: -$table-cell-padding;
+  flex-wrap: wrap;
+  .title {
+    @extend %child;
+    border-bottom: $table-left-border;
+    width: 100%;
+    justify-content: center;
+  }
+  .subtitle {
+    @extend %child;
+    width: 50%;
+  }
+  .subtitle + .subtitle {
+    border-left: $table-left-border;
+  }
+}

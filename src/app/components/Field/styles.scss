@@ -1,0 +1,29 @@
+@import '../../scss/vars';
+
+.fieldWrapper {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  align-items: center;
+  &.required {
+    color: $orange;
+  }
+  &.rightLabel {
+    flex-direction: row-reverse;
+    .fieldLabel {
+      text-align: left;
+    }
+  }
+  .fieldLabel {
+    text-align: right;
+    padding: 2px 5px 2px 0;
+    margin-bottom: 0;
+  }
+  .fieldInput {
+    background: $white;
+  }
+  .form-check-input {
+    position: relative;
+    margin-left: 0;
+  }
+}

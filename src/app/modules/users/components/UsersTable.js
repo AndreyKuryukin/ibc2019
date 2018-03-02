@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Table from '../../../components/Table';
-import { DefaultCell, CheckedCell, LinkCell } from '../../../components/Table/Cells';
+import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
+import MailLink from "../../../components/MailLink/index";
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
@@ -26,15 +27,35 @@ class UsersTable extends React.PureComponent {
     }, {
         title: 'Логин',
         name: 'login',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
     }, {
         title: 'Имя',
         name: 'name',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
     }, {
         title: 'Email',
         name: 'email',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
     }, {
         title: 'Номер телефона',
         name: 'phone',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'number',
+        }
     }, {
         title: 'Активен',
         name: 'active',
@@ -51,7 +72,7 @@ class UsersTable extends React.PureComponent {
         this.setState({
             checked,
         });
-    }
+    };
 
     headerRowRender = (column) => {
         switch (column.name) {
@@ -72,7 +93,7 @@ class UsersTable extends React.PureComponent {
                     />
                 );
         }
-    }
+    };
 
     bodyRowRender = (column, node) => {
         const text = node[column.name];
@@ -86,6 +107,9 @@ class UsersTable extends React.PureComponent {
                         value={isRowChecked}
                     />
                 );
+            }
+            case 'email' : {
+                return <MailLink href={node.email}>{node.email}</MailLink>
             }
             case 'login':
                 return (
@@ -101,7 +125,7 @@ class UsersTable extends React.PureComponent {
                     />
                 );
         }
-    }
+    };
 
     render() {
         const columns = this.getColumns();

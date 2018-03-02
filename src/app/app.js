@@ -4,11 +4,12 @@ import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 
-import './style.scss';
+import './scss/style.scss';
 
 import Login from './modules/login/containers';
 import Roles from './modules/roles/containers';
 import Users from './modules/users/container';
+import Policies from './modules/policies/containers';
 import rootReducer from './reducers';
 import PageWrapper from "./components/PageWrapper/index";
 
@@ -20,6 +21,7 @@ class App extends React.Component {
                 <Route path="/login" render={props => {props.location.title = 'Логин'; return <Login {...props}/>}} />
                 <Route path="/roles/:action?/:id?" component={Roles} />
                 <Route path="/users/:action?/:id?" component={Users} />
+                <Route path="/policies/:action?/:id?" component={Policies} />
             </div>
         );
     }

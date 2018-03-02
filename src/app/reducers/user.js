@@ -11,6 +11,10 @@ const initialState = {
             link: '/users'
         },
         {
+            title: 'Политики',
+            link: '/policies'
+        },
+        {
             title: 'Статистика',
             link: '/users'
         },

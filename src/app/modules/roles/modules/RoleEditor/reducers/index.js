@@ -4,8 +4,6 @@ const initialState = {
     role: {
         name: '',
         description: '',
-        number: '0',
-        source: '',
         subjects: [],
     },
     subjects: [],

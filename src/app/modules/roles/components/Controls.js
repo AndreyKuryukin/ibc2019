@@ -5,6 +5,7 @@ import _ from 'lodash';
 
 import styles from './styles.scss';
 import ls from "i18n";
+import Icon from "../../../components/Icon/Icon";
 
 class RolesControls extends React.PureComponent {
     static contextTypes = {
@@ -35,23 +36,12 @@ class RolesControls extends React.PureComponent {
     render() {
         const { checkedIds } = this.props;
         return (
-            <div className={styles.controls}>
+            <div className={styles.rolesControls}>
                 <div className={styles.buttonGroup}>
-                    <Button
-                        color="primary"
-                        onClick={this.onAdd}
-                    >
-                        {ls('ROLES_ADD_TITLE', 'Добавить')}
-                    </Button>
-                    <Button
-                        color="link"
-                        disabled={_.isEmpty(checkedIds)}
-                        onClick={this.props.onRemove}>
-                        {ls('ROLES_PEMOVE_TITLE', 'Удалить')}
-                    </Button>
+                    <Icon icon={styles.addButton} onClick={this.onAdd}/>
                 </div>
                 <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
-                       className={styles.search}
+                       className={styles.rolesSearch}
                        onChange={this.onSearchTextChange}
                 />
             </div>

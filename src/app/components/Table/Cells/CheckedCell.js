@@ -7,19 +7,19 @@ class CheckedCell extends React.PureComponent {
         value: PropTypes.bool,
         style: PropTypes.object,
         onChange: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
         value: false,
         style: {},
         onChange: () => null,
-    }
+    };
 
     onChange = (event) => {
         if (typeof this.props.onChange === 'function') {
             this.props.onChange(event.target.checked);
         }
-    }
+    };
 
     render() {
         return (

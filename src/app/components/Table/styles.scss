@@ -1,12 +1,13 @@
-@import '../../vars';
+@import '../../scss/vars';
 
 .thFix {
-    position: relative;
-    vertical-align: top !important;
+  position: relative;
+  vertical-align: top !important;
 }
 
 .selected {
-    background-color: $orange !important;
-    color: $white !important;;
+  background-color: $orange !important;
+  * {
+    color: $white !important;
+  }
 }
-

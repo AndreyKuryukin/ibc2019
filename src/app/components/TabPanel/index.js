@@ -27,7 +27,7 @@ export default class Example extends React.Component {
         };
     }
 
-    componentWillRecieveProps(nextProps) {
+    componentWillReceiveProps(nextProps) {
         if (nextProps.activeTab !== this.props.activeTab) {
             this.setState({
                 activeTab: nextProps.activeTab
