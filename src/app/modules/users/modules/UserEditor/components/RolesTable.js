@@ -104,6 +104,7 @@ class UsersTable extends React.PureComponent {
 
         return (
             <Table
+                bordered
                 data={this.props.data}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

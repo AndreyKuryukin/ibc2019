@@ -67,7 +67,6 @@ class Table extends React.PureComponent {
 
     shouldComponentUpdate(nextProps, nextState) {
         const isColumnFilterValuesChanged = this.state.columnFilterValues !== nextState.columnFilterValues;
-
         return !isColumnFilterValuesChanged;
     }
 
@@ -93,9 +92,9 @@ class Table extends React.PureComponent {
 
     onRowClick = (node) => {
         // if (this.state.cntrlIsPressed) {
-            this.setState({ selected:  node.id });
+        this.setState({ selected: node.id });
         // }
-    }
+    };
 
     sort = (columnName) => {
         const { by, direction } = this.state.sort;
@@ -110,13 +109,13 @@ class Table extends React.PureComponent {
             },
             data: sortedData,
         });
-    }
+    };
 
     onHeaderCellClick = (column) => {
         if (column.sortable) {
             this.sort(column.name);
         }
-    }
+    };
 
     onColumnFilterChange = (columnName, filterValues) => {
         let columnFilterValues = this.state.columnFilterValues.set(columnName, filterValues.toArray().filter(v => !!v));
@@ -130,7 +129,7 @@ class Table extends React.PureComponent {
 
             return columnFilterValues.entrySeq().reduce((result, [key, values]) =>
                 result && values.reduce((columnResult, nextValue) => columnResult || node[key].indexOf(nextValue) !== -1, false),
-            true);
+                true);
         };
 
         this.setState({
@@ -138,7 +137,7 @@ class Table extends React.PureComponent {
         }, () => {
             this.setState({ data: this.props.data.filter(searchByColumns) });
         });
-    }
+    };
 
     render() {
         const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
@@ -165,7 +164,7 @@ class Table extends React.PureComponent {
                 {data.map(node => (
                     <tr key={node.id}
                         onClick={() => this.onRowClick(node)}
-                        className={classnames({[styles.selected]: selected === node.id }) }
+                        className={classnames({ [styles.selected]: selected === node.id })}
                     >
                         {columns.map(column => (
                             <td key={column.name}>

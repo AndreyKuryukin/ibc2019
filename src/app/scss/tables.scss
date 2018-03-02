@@ -9,6 +9,7 @@ thead {
 }
 
 .table {
+  border-bottom: $table-left-border;
   margin-bottom: 0;
   .form-check-input {
     position: relative;
@@ -21,5 +22,8 @@ thead {
 .table-bordered {
   td {
     border-right: $table-left-border;
+    &:first-child {
+      border-left: $table-left-border;
+    }
   }
 }

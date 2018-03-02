@@ -1,0 +1,26 @@
+@import './vars';
+
+.modal-backdrop {
+  filter: alpha(opacity=65);
+}
+
+.modal-header {
+  border-top: 2px solid $orange;
+  color: $white;
+  h5 {
+    font-size: $font-size-base
+  }
+  .close {
+    text-shadow: none;
+    color: white;
+    font-weight: normal;
+    font-size: 1rem;
+    margin: 0;
+  }
+}
+
+.modal-body {
+  background-color: $white;
+  border-right: .5rem solid $dark-blue;
+  border-left: .5rem solid $dark-blue;
+}

@@ -9,11 +9,17 @@ $border-blue: #206A8F;
 $blue: #00aae7;
 $light-blue: #B3D1E0;
 
+$enable-rounded: false;
+
 $theme-colors: map-merge((
         "action":    $orange,
 ), ());
 
-//LINK
+//COMMON
+$font-size-base: 0.85rem;
+$line-height-base: 1;
+
+  //LINK
 $link-color: $white;
 $link-decoration: underline;
 
@@ -21,7 +27,6 @@ $link-decoration: underline;
 $body-bg: $dark-blue;
 
 //TABS
-//$nav-tabs-border-color: $white;
 $nav-tabs-link-hover-border-color: transparent $dark-blue;
 $nav-link-padding-y: .3rem;
 $nav-link-padding-x: .3rem;
@@ -29,13 +34,12 @@ $nav-tabs-border-width: 1px;
 $nav-tabs-link-secondary-bg: $light-blue;
 $nav-tabs-link-active-border-color: transparent $dark-blue;
 
-// COMMONS
-$border-radius: 0;
-$border-radius-lg: 0;
 
 // MODAL
 $modal-content-bg: $dark-blue;
 $table-bg: $white;
+$modal-footer-border-width: 0;
+$modal-header-border-width: 0;
 
 //TABLE
 $table-cell-padding: 0.3em;
@@ -51,9 +55,20 @@ $input-border-color: #E1EBF0;
 $input-border-width: 1px;
 $form-check-input-margin-y: .2em;
 $input-line-height: 1;
+$input-padding-y: 0.2rem;
+$input-padding-x: 0.5rem;
 
 //BUTTONS
 $btn-line-height: 1;
+
+//MODALS
+$modal-top-padding: .5rem;
+$modal-right-padding: .5rem;
+$modal-bottom-padding: .5rem;
+$modal-left-padding: .5rem;
+
+$modal-header-padding: $modal-top-padding $modal-right-padding $modal-bottom-padding $modal-left-padding;
+$modal-inner-padding: .3rem $modal-right-padding .6rem;
 
 
 @import "~bootstrap/scss/functions";

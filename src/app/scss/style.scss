@@ -11,9 +11,8 @@ html, body {
 
 body {
   font-family: Tahoma, Arial, sans-serif;
-  font-size: 14px;
   overflow-y: hidden;
-  line-height: 1em;
+  line-height: 1rem;
   font-weight: normal !important;
   padding: 0;
 }
@@ -27,6 +26,7 @@ body {
 
 @import 'tabs.scss';
 @import 'tables.scss';
+@import 'modal.scss';
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
