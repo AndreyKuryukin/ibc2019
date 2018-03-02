@@ -62,7 +62,7 @@ class Condition extends React.PureComponent {
                                     <Col sm={6}>
                                         <Field
                                             id="parameter"
-                                            labelText="Тип объекта:"
+                                            labelText="Параметр:"
                                         >
                                             <Select
                                                 id="parameter"

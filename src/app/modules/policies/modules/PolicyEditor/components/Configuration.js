@@ -29,14 +29,14 @@ class Configuration extends React.PureComponent {
                     <Field
                     id="name"
                     labelText="Имя:"
-                >
-                    <Input
-                        id="name"
-                        name="name"
-                        value={getPolicyProperty('name')}
-                        onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
-                    />
-                </Field>
+                    >
+                        <Input
+                            id="name"
+                            name="name"
+                            value={getPolicyProperty('name')}
+                            onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
+                        />
+                    </Field>
                     <Field
                         id="aggregation"
                         labelText="Фукнция агрегации:"
@@ -48,11 +48,13 @@ class Configuration extends React.PureComponent {
                             onChange={() => {}}
                         />
                     </Field>
-                    <Row>
-                        <Col sm={6}>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <div style={{ width: '75%' }}>
                             <Field
                                 id="rise_duration"
                                 labelText="Интервал агрегации:"
+                                labelWidth="67%"
+                                inputWidth="17%"
                             >
                                 <Input
                                     id="rise_duration"
@@ -61,8 +63,8 @@ class Configuration extends React.PureComponent {
                                     onChange={event => setPolicyProperty('threshold.rise_duration', _.get(event, 'target.value'))}
                                 />
                             </Field>
-                        </Col>
-                        <Col sm={6}>
+                        </div>
+                        <div style={{ width: '25%' }}>
                             <Field
                                 id="rise_value"
                                 labelText="Порог:"
@@ -74,8 +76,8 @@ class Configuration extends React.PureComponent {
                                     onChange={event => setPolicyProperty('threshold.rise_value', _.get(event, 'target.value'))}
                                 />
                             </Field>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                     <Field
                         id="message"
                         labelText="Текст сообщения:"

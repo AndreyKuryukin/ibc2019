@@ -125,11 +125,13 @@ class PolicyEditor extends React.PureComponent {
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}</h6>
                                 <div className={styles.panelBody}>
-                                    <Row>
-                                        <Col sm={6}>
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <div style={{ width: '70%' }}>
                                             <Field
                                                 id="cease_duration"
                                                 labelText="Интервал агрегации:"
+                                                labelWidth="67%"
+                                                inputWidth="33%"
                                             >
                                                 <Input
                                                     id="cease_duration"
@@ -138,8 +140,8 @@ class PolicyEditor extends React.PureComponent {
                                                     onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
-                                        </Col>
-                                        <Col sm={6}>
+                                        </div>
+                                        <div style={{ width: '30%' }}>
                                             <Field
                                                 id="cease_value"
                                                 labelText="Порог:"
@@ -151,8 +153,8 @@ class PolicyEditor extends React.PureComponent {
                                                     onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
-                                        </Col>
-                                    </Row>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
