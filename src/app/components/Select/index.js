@@ -48,14 +48,18 @@ class RoleEditor extends React.PureComponent {
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
         }
-        return <Input type="select" {...rest}
-                      value={value}
-                      onChange={this.onChange}
-                      className={(this.state.defaultSelected || _.isUndefined(value)) && styles.placeholder}
-        >
-            {this.renderPlaceholder(placeholder, _.isUndefined(value))}
-            {this.renderOptions(options)}
-        </Input>;
+        return (
+            <div className={styles.selectWrapper}>
+                <Input type="select" {...rest}
+                    value={value}
+                    onChange={this.onChange}
+                    className={(this.state.defaultSelected || _.isUndefined(value)) && styles.placeholder}
+                >
+                    {this.renderPlaceholder(placeholder, _.isUndefined(value))}
+                    {this.renderOptions(options)}
+                </Input>
+            </div>
+        );
     }
 }
 

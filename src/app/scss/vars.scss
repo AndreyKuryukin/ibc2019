@@ -42,7 +42,10 @@ $modal-footer-border-width: 0;
 $modal-header-border-width: 0;
 
 //TABLE
-$table-cell-padding: 0.3em;
+$table-cell-left-right-padding: .3em;
+$table-cell-top-bottom-padding: 0;
+$table-cell-padding: $table-cell-top-bottom-padding $table-cell-left-right-padding;
+$table-cell-height: 23px;
 $table-border-width: 0;
 $table-border-color: transparent;
 $table-thead-font-weight: normal;

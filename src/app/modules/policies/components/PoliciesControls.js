@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input } from 'reactstrap'
+import { Input } from 'reactstrap'
+import Icon from "../../../components/Icon/Icon";
 import _ from 'lodash';
 
 import styles from './styles.scss';
@@ -31,12 +32,7 @@ class PoliciesControls extends React.PureComponent {
         return (
             <div className={styles.controls}>
                 <div className={styles.buttonGroup}>
-                    <Button
-                        color="primary"
-                        onClick={this.onAdd}
-                    >
-                        {ls('POLICIES_ADD_TITLE', 'Добавить')}
-                    </Button>
+                    <Icon icon={styles.addButton} onClick={this.onAdd}/>
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}

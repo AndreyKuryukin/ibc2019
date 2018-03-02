@@ -4,6 +4,7 @@ import { Button, Row, Col  } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
+import Icon from "../../../../../components/Icon/Icon";
 import ls from 'i18n';
 
 import styles from './styles.scss';
@@ -16,7 +17,7 @@ class Condition extends React.PureComponent {
                 <div className={styles.panelBody}>
                     <Field
                         id="operator"
-                        labelText="Оператор:"
+                        labelText={`${ls('POLICIES_CONDITION_FIELD_OPERATOR', 'Оператор')}:`}
                     >
                         <Select
                             id="operator"
@@ -27,7 +28,7 @@ class Condition extends React.PureComponent {
                     </Field>
                     <Field
                         id="maxInterval"
-                        labelText="Максимальный интервал:"
+                        labelText={`${ls('POLICIES_CONDITION_FIELD_MAX_INTERVAL', 'Максимальный интервал')}:`}
                     >
                         <Input
                             id="maxInterval"
@@ -36,61 +37,58 @@ class Condition extends React.PureComponent {
                             onChange={() => {}}
                         />
                     </Field>
-                    <div>
-                        <Button
-                            color="primary"
-                            onClick={this.onAdd}
-                        >
-                            {ls('POLICIES_ADD_TITLE', 'Добавить')}
-                        </Button>
-                    </div>
-                    <div className={styles.conditions}>
-                        <div className={styles.conditionBlock}>
-                            <div className={styles.parameters}>
-                                <Field
-                                    id="object"
-                                    labelText="Тип объекта:"
-                                >
-                                    <Select
+                    <div className={styles.conditionsWrapper}>
+                        <Icon icon={styles.addButton} onClick={this.onAdd}/>
+                        <div className={styles.conditions}>
+                            <div className={styles.conditionBlock}>
+                                <div className={styles.parameters}>
+                                    <Field
                                         id="object"
-                                        type="select"
-                                        options={[]}
-                                        onChange={() => {}}
-                                    />
-                                </Field>
-                                <Row>
-                                    <Col sm={6}>
-                                        <Field
-                                            id="parameter"
-                                            labelText="Тип объекта:"
-                                        >
-                                            <Select
-                                                id="parameter"
-                                                type="select"
-                                                options={[]}
-                                                onChange={() => {}}
-                                            />
-                                        </Field>
-                                    </Col>
-                                    <Col sm={3}>
+                                        labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
+                                        labelWidth="30%"
+                                        inputWidth="70%"
+                                    >
                                         <Select
+                                            id="object"
                                             type="select"
-                                            placeholder={''}
                                             options={[]}
                                             onChange={() => {}}
                                         />
-                                    </Col>
-                                    <Col sm={3}>
-                                        <Input
-                                            name="threshold"
-                                            value={''}
-                                            placeholder={''}
-                                            onChange={() => {}}
-                                        />
-                                    </Col>
-                                </Row>
+                                    </Field>
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <div style={{ width: '60%' }}>
+                                            <Field
+                                                id="parameter"
+                                                labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Параметр')}:`}
+                                            >
+                                                <Select
+                                                    id="parameter"
+                                                    type="select"
+                                                    options={[]}
+                                                    onChange={() => {}}
+                                                />
+                                            </Field>
+                                        </div>
+                                        <div style={{ width: '20%', paddingLeft: 5 }}>
+                                            <Select
+                                                type="select"
+                                                placeholder={''}
+                                                options={[]}
+                                                onChange={() => {}}
+                                            />
+                                        </div>
+                                        <div style={{ width: '20%', paddingLeft: 5 }}>
+                                            <Input
+                                                name="threshold"
+                                                value={''}
+                                                placeholder={''}
+                                                onChange={() => {}}
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className={styles.remove}>×</span>
                             </div>
-                            <span className={styles.remove}>×</span>
                         </div>
                     </div>
                 </div>

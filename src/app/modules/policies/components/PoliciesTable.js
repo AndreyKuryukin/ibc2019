@@ -132,12 +132,11 @@ class PoliciesTable extends React.PureComponent {
         return data.filter(
             node => searchableColumns.reduce((result, nextColumn) => {
                 let value = node[nextColumn.name];
-                let isValid = search(value, searchText);
-                if (nextColumn.name === 'aggregation_interval' || nextColumn.name === 'threshold') {
-                    isValid = nextColumn.columns.reduce(
-                        (valid, nextCol) => valid || search(_.get(value, `${nextCol.name}`), searchText),
-                        false);
-                }
+                let isValid = nextColumn.name === 'aggregation_interval' || nextColumn.name === 'threshold'
+                    ? nextColumn.columns.reduce(
+                        (valid, nextCol) => valid || search(_.get(node, `threshold.${nextCol.name}`), searchText),
+                        false)
+                    : search(value, searchText);
                 return result || isValid;
             }, false)
         );

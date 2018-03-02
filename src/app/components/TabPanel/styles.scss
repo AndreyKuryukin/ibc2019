@@ -1,6 +1,11 @@
 @import "../../scss/vars";
 
-.tabContent {
-  background-color: $white;
+.tabsWrapper {
+  display: flex;
+  flex-direction: column;
 }
 
+.tabContent {
+  height: 100%;
+  background-color: $white;
+}

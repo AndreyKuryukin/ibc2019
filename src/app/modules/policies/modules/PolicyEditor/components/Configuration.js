@@ -27,19 +27,19 @@ class Configuration extends React.PureComponent {
                 <h6 className={styles.panelHeader}>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
                 <div className={styles.panelBody}>
                     <Field
-                    id="name"
-                    labelText="Имя:"
-                >
-                    <Input
                         id="name"
-                        name="name"
-                        value={getPolicyProperty('name')}
-                        onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
-                    />
-                </Field>
+                        labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}:`}
+                    >
+                        <Input
+                            id="name"
+                            name="name"
+                            value={getPolicyProperty('name')}
+                            onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
+                        />
+                    </Field>
                     <Field
                         id="aggregation"
-                        labelText="Фукнция агрегации:"
+                        labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}:`}
                     >
                         <Select
                             id="aggregation"
@@ -48,11 +48,13 @@ class Configuration extends React.PureComponent {
                             onChange={() => {}}
                         />
                     </Field>
-                    <Row>
-                        <Col sm={6}>
+                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                        <div style={{ width: '75%' }}>
                             <Field
                                 id="rise_duration"
-                                labelText="Интервал агрегации:"
+                                labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}:`}
+                                labelWidth="67%"
+                                inputWidth="17%"
                             >
                                 <Input
                                     id="rise_duration"
@@ -61,11 +63,11 @@ class Configuration extends React.PureComponent {
                                     onChange={event => setPolicyProperty('threshold.rise_duration', _.get(event, 'target.value'))}
                                 />
                             </Field>
-                        </Col>
-                        <Col sm={6}>
+                        </div>
+                        <div style={{ width: '25%' }}>
                             <Field
                                 id="rise_value"
-                                labelText="Порог:"
+                                labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}:`}
                             >
                                 <Input
                                     id="rise_value"
@@ -74,11 +76,11 @@ class Configuration extends React.PureComponent {
                                     onChange={event => setPolicyProperty('threshold.rise_value', _.get(event, 'target.value'))}
                                 />
                             </Field>
-                        </Col>
-                    </Row>
+                        </div>
+                    </div>
                     <Field
                         id="message"
-                        labelText="Текст сообщения:"
+                        labelText={`${ls('POLICIES_POLICY_FIELD_MESSAGE', 'Текст сообщения')}:`}
                         labelWidth="100%"
                         inputWidth="100%"
                         labelAlign="right"

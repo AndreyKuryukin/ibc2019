@@ -9,7 +9,6 @@ thead {
 }
 
 .table {
-  border-bottom: $table-left-border;
   margin-bottom: 0;
   .form-check-input {
     position: relative;
@@ -20,10 +19,17 @@ thead {
 }
 
 .table-bordered {
+  th, td {
+    padding: $table-cell-padding;
+  }
+  tr {
+    height: $table-cell-height;
+  }
   td {
-    border-right: $table-left-border;
-    &:first-child {
-      border-left: $table-left-border;
-    }
+    height: $table-cell-height;
+    vertical-align: middle;
+  }
+  th + th, td + td {
+    border-left: $table-left-border;
   }
 }

@@ -13,10 +13,14 @@
   }
 }
 
-.panel {
+%flexColumn {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+}
+
+.panel {
+  @extend %flexColumn;
   background: $white;
   .panelHeader {
     padding: 10px;
@@ -24,26 +28,33 @@
     color: $dark-blue;
   }
   .panelBody {
-    display: flex;
-    flex-grow: 1;
-    flex-direction: column;
+    @extend %flexColumn;
     padding: 10px;
     > div:not(:last-child) {
       margin-bottom: 10px;
     }
   }
 }
-
-.conditions {
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: column;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  padding: 5px;
-  overflow-y: auto;
-  overflow-x: hidden;
+.addButton {
+  background: url(../../../../../../resources/img/add_new_over.png);
+  cursor: pointer;
+  &:hover {
+    background: url(../../../../../../resources/img/add_new.png);
+  }
+}
+.conditionsWrapper {
+  @extend %flexColumn;
+  .conditions {
+    display: flex;
+    flex: 1 1 0;
+    flex-direction: column;
+    border: 1px solid #ced4da;
+    box-shadow: inset 0px 5px 5px 0px rgba(191,191,191,1);
+    padding: .5em;
+    overflow-y: auto;
+    overflow-x: hidden;
     .conditionBlock {
+      background: $light-grey;
       border: 1px solid #ced4da;
       border-radius: 0.25rem;
       padding: 5px;
@@ -61,6 +72,7 @@
       }
     }
     .conditionBlock:not(:last-child) {
-       margin-bottom: 5px;
+      margin-bottom: 5px;
     }
+  }
 }

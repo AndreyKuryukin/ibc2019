@@ -84,7 +84,9 @@ class PolicyEditor extends React.PureComponent {
 
     render() {
         const { active, policyId } = this.props;
-        const modalTitle = policyId ? 'Редактировать политику' : 'Создать политику';
+        const modalTitle = policyId
+            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
+            : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
             <Modal isOpen={active} size="lg">
                 <ModalHeader toggle={this.onClose}>{modalTitle}</ModalHeader>
@@ -125,11 +127,13 @@ class PolicyEditor extends React.PureComponent {
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}</h6>
                                 <div className={styles.panelBody}>
-                                    <Row>
-                                        <Col sm={6}>
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <div style={{ width: '70%' }}>
                                             <Field
                                                 id="cease_duration"
-                                                labelText="Интервал агрегации:"
+                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_DURATION', 'Интервал агрегации')}:`}
+                                                labelWidth="67%"
+                                                inputWidth="33%"
                                             >
                                                 <Input
                                                     id="cease_duration"
@@ -138,11 +142,11 @@ class PolicyEditor extends React.PureComponent {
                                                     onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
-                                        </Col>
-                                        <Col sm={6}>
+                                        </div>
+                                        <div style={{ width: '30%' }}>
                                             <Field
                                                 id="cease_value"
-                                                labelText="Порог:"
+                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
                                             >
                                                 <Input
                                                     id="cease_value"
@@ -151,8 +155,8 @@ class PolicyEditor extends React.PureComponent {
                                                     onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
-                                        </Col>
-                                    </Row>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

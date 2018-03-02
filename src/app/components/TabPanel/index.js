@@ -9,7 +9,7 @@ import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 export default class Example extends React.Component {
 
     static propTypes = {
-        activeTab: PropTypes.oneOfType(PropTypes.string, PropTypes.number),
+        activeTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         onTabClick: PropTypes.func,
         children: PropTypes.arrayOf(PropTypes.shape({
             props: PropTypes.objectOf(PropTypes.shape({
@@ -51,7 +51,8 @@ export default class Example extends React.Component {
     renderTabContent = (children = []) => children.map((child, index) =>
         <TabPane
             key={`tab-pane-${child.props.id || index}`}
-            tabId={child.props.id || index}>
+            tabId={child.props.id || index}
+            style={{ height: '100%' }}>
             {child}
         </TabPane>);
 
@@ -68,7 +69,7 @@ export default class Example extends React.Component {
 
     render() {
         return (
-            <div className={this.props.className}>
+            <div className={classnames(styles.tabsWrapper, this.props.className)}>
                 <Nav tabs >
                     {this.renderTabs(this.props.children)}
                 </Nav>

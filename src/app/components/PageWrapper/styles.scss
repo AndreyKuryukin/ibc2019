@@ -1,8 +1,14 @@
 @import "../../scss/vars";
 
 .pageWrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
   height: 100%;
   .navBar {
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
     color: $white;
     .menuWrapper {
       display: inline-flex;
@@ -31,6 +37,8 @@
     }
   }
   .pageContent {
+    display: flex;
+    flex-grow: 1;
     height: 100%;
   }
 }

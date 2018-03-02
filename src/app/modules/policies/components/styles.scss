@@ -1,42 +1,63 @@
+@import '../../../scss/vars';
+
 .policiesWrapper {
   display: flex;
   flex-direction: column;
   flex-grow: 1;
   height: 100%;
   width: 100%;
+  padding: 1em;
 }
 
 .controls {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  background: $white;
   .buttonGroup {
     display: inline-flex;
-    * {
-      margin: 0.5em 0.5em 0.5em 0;
+    .addButton {
+      background: url(../../../../resources/img/add_new_over.png);
+      cursor: pointer;
+      &:hover {
+        background: url(../../../../resources/img/add_new.png);
+      }
     }
   }
   .search {
     width: 20em;
-    font-size: 1.3rem;
-    height: 2em;
   }
 }
 
 %child {
   display: flex;
-  padding: 0.75em;
+  padding: $table-cell-padding;
 }
 .policyCell {
   display: flex;
-  margin: -0.75rem;
+  margin: 0 -$table-cell-left-right-padding;
   flex-wrap: wrap;
   .title {
     @extend %child;
+    border-bottom: $table-left-border;
     width: 100%;
+    justify-content: center;
   }
   .subtitle {
     @extend %child;
+    position: relative;
     width: 50%;
+  }
+  .subtitle + .subtitle {
+    border-left: $table-left-border;
+  }
+  .subtitle + .subtitle:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-left: $table-left-border;
+    top: 0;
+    left: -1px;
+    height: 99999px;
   }
 }
