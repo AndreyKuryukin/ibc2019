@@ -31,6 +31,19 @@ class PolicyEditor extends React.PureComponent {
         onMount: () => null,
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            policy: props.policy || {}
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(nextProps.policy, this.props.policy)) {
+            this.setState({policy: nextProps.policy});
+        }
+    }
+
     componentDidMount() {
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
@@ -39,14 +52,21 @@ class PolicyEditor extends React.PureComponent {
 
     onClose = () => {
         this.context.history.push('/policies');
-    }
+    };
 
     onSubmit = () => {
-        console.log('onSubmit');
-    }
+        console.log(this.state);
+        this.props.onSubmit(this.state.policy);
+    };
+
+    setPolicyProperty = (path, value) => {
+        const policy = _.set(this.state.policy, path, value);
+        this.setState({policy});
+    };
 
     render() {
         const { active, policyId } = this.props;
+        const {policy} = this.state;
         const modalTitle = policyId ? 'Редактировать политику' : 'Создать политику';
         return (
             <Modal isOpen={active} size="lg">
@@ -54,7 +74,82 @@ class PolicyEditor extends React.PureComponent {
                 <ModalBody>
                     <div className={styles.roleEditorContent}>
                         <div className={styles.roleEditorColumn}>
-                            <Configuration />
+
+                            <div className={styles.panel}>
+                                <h6 className={styles.panelHeader}>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
+                                <div className={styles.panelBody}>
+                                    <Field
+                                        id="name"
+                                        labelText="Имя:"
+                                    >
+                                        <Input
+                                            id="name"
+                                            name="name"
+                                            value={_.get(policy, 'name')}
+                                            onChange={(e) => this.setPolicyProperty('name', e.currentTarget.value)}
+                                        />
+                                    </Field>
+                                    <Field
+                                        id="agregation"
+                                        labelText="Фукнция агрегации:"
+                                        required
+                                    >
+                                        <Select
+                                            id="agregation"
+                                            type="select"
+                                            options={[]}
+                                            onChange={() => {
+                                            }}
+                                        />
+                                    </Field>
+                                    <Row>
+                                        <Col sm={6}>
+                                            <Field
+                                                id="interval"
+                                                labelText="Интервал агрегации:"
+                                            >
+                                                <Input
+                                                    id="interval"
+                                                    name="interval"
+                                                    type="number"
+                                                    value={_.get(policy, 'threshold.rise_duration')}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_duration', e.currentTarget.value)}
+                                                />
+                                            </Field>
+                                        </Col>
+                                        <Col sm={6}>
+                                            <Field
+                                                id="threshold"
+                                                labelText="Порог:"
+                                            >
+                                                <Input
+                                                    id="threshold"
+                                                    name="threshold"
+                                                    type="number"
+                                                    value={_.get(policy, 'threshold.rise_value')}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_value', e.currentTarget.value)}
+
+                                                />
+                                            </Field>
+                                        </Col>
+                                    </Row>
+                                    <Field
+                                        id="message"
+                                        labelText="Текст сообщения:"
+                                        labelWidth="100%"
+                                        inputWidth="100%"
+                                        labelAlign="right"
+                                    >
+                                        <Input
+                                            id="message"
+                                            type="textarea"
+                                            value={_.get(policy, 'threshold.notification_template')}
+                                            onChange={(e) => this.setPolicyProperty('threshold.notification_template', e.currentTarget.value)}
+                                        />
+                                    </Field>
+                                </div>
+                            </div>
+
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
                                 <div className={styles.panelBody}>
@@ -94,8 +189,9 @@ class PolicyEditor extends React.PureComponent {
                                                 <Input
                                                     id="interval"
                                                     name="interval"
-                                                    value={''}
-                                                    onChange={() => {}}
+                                                    type="number"
+                                                    value={_.get(policy, 'threshold.cease_duration')}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_duration', e.currentTarget.value)}
                                                 />
                                             </Field>
                                         </Col>
@@ -107,8 +203,9 @@ class PolicyEditor extends React.PureComponent {
                                                 <Input
                                                     id="threshold"
                                                     name="threshold"
-                                                    value={''}
-                                                    onChange={() => {}}
+                                                    type="number"
+                                                    value={_.get(policy, 'threshold.cease_value')}
+                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_value', e.currentTarget.value)}
                                                 />
                                             </Field>
                                         </Col>

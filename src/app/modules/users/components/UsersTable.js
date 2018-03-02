@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Table from '../../../components/Table';
-import { DefaultCell, CheckedCell, LinkCell } from '../../../components/Table/Cells';
+import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
 
 class UsersTable extends React.PureComponent {
@@ -27,15 +27,35 @@ class UsersTable extends React.PureComponent {
     }, {
         title: 'Логин',
         name: 'login',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
     }, {
         title: 'Имя',
         name: 'name',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
     }, {
         title: 'Email',
         name: 'email',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
     }, {
         title: 'Номер телефона',
         name: 'phone',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'number',
+        }
     }, {
         title: 'Активен',
         name: 'active',

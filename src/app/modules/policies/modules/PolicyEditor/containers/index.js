@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import PolicyEditorComponent from '../components';
+import rest from "../../../../../rest/index";
 
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
@@ -18,11 +19,15 @@ class PolicyEditor extends React.PureComponent {
 
     onChildMount = () => {
         console.log(this.props.policyId);
-    }
+    };
 
-    onSubmit = () => {
-        console.log('onSubmit');
-    }
+    onSubmit = (policy) => {
+        console.log(policy);
+        rest.post('/api/v1/policy', policy)
+            .then(() => {
+                this.props.history.push('/policies');
+            })
+    };
 
     render() {
         return (

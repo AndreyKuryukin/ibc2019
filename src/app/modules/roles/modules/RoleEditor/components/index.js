@@ -15,7 +15,7 @@ import Field from "../../../../../components/Field/index";
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         roleId: PropTypes.number,
@@ -92,7 +92,6 @@ class RoleEditor extends React.PureComponent {
     getSourceOptions = (sourceOptions) => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
 
     render() {
-
         const { roleId, subjectsData, sourceOptions } = this.props;
         const { role } = this.state;
         const submitTitle = roleId ? ls('EDIT_ROLE_SUBMIT', 'Сохранить') : ls('NEW_ROLE_SUBMIT', 'Создать');
