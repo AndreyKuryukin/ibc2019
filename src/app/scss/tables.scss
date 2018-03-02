@@ -20,10 +20,10 @@ thead {
 }
 
 .table-bordered {
-  td {
-    border-right: $table-left-border;
-    &:first-child {
-      border-left: $table-left-border;
-    }
+  th, td {
+    padding: $table-cell-padding;
+  }
+  th + th, td + td {
+    border-left: $table-left-border;
   }
 }

@@ -20,6 +20,7 @@ class PolicyEditor extends React.PureComponent {
         policy: PropTypes.object,
         active: PropTypes.bool,
         onSubmit: PropTypes.func,
+        onClose: PropTypes.func,
         onMount: PropTypes.func,
     };
 
@@ -28,6 +29,7 @@ class PolicyEditor extends React.PureComponent {
         policy: null,
         active: false,
         onSubmit: () => null,
+        onClose: () => null,
         onMount: () => null,
     };
 
@@ -50,14 +52,40 @@ class PolicyEditor extends React.PureComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.policy !== nextProps.policy) {
+            this.setState({
+                policy: nextProps.policy,
+            });
+        }
+    }
+
+    getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
+
+    setPolicyProperty = (key, value) => {
+        const policyValues = _.set({}, key, value);
+        const policy = _.merge(
+            {},
+            this.state.policy,
+            policyValues,
+        );
+
+        this.setState({
+            policy,
+        });
+    }
+
     onClose = () => {
         this.context.history.push('/policies');
+        this.props.onClose();
     };
 
     onSubmit = () => {
-        console.log(this.state);
-        this.props.onSubmit(this.state.policy);
-    };
+        if (typeof this.props.onSubmit === 'function') {
+            // this.props.onSubmit(this.props.userId, this.state.user);
+            this.props.onSubmit(this.props.policyId, this.state.policy);
+        }
+    }
 
     setPolicyProperty = (path, value) => {
         const policy = _.set(this.state.policy, path, value);
@@ -180,11 +208,13 @@ class PolicyEditor extends React.PureComponent {
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}</h6>
                                 <div className={styles.panelBody}>
-                                    <Row>
-                                        <Col sm={6}>
+                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                        <div style={{ width: '70%' }}>
                                             <Field
-                                                id="interval"
+                                                id="cease_duration"
                                                 labelText="Интервал агрегации:"
+                                                labelWidth="67%"
+                                                inputWidth="33%"
                                             >
                                                 <Input
                                                     id="interval"
@@ -194,10 +224,10 @@ class PolicyEditor extends React.PureComponent {
                                                     onChange={(e) => this.setPolicyProperty('threshold.cease_duration', e.currentTarget.value)}
                                                 />
                                             </Field>
-                                        </Col>
-                                        <Col sm={6}>
+                                        </div>
+                                        <div style={{ width: '30%' }}>
                                             <Field
-                                                id="threshold"
+                                                id="cease_value"
                                                 labelText="Порог:"
                                             >
                                                 <Input
@@ -208,8 +238,8 @@ class PolicyEditor extends React.PureComponent {
                                                     onChange={(e) => this.setPolicyProperty('threshold.cease_value', e.currentTarget.value)}
                                                 />
                                             </Field>
-                                        </Col>
-                                    </Row>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>

@@ -22,7 +22,9 @@ class PolicyCell extends React.PureComponent {
     }
 
     onColumnClick = (columnName) => {
-        this.context.sort(`${this.props.name}.${columnName}`);
+        if (this.props.sort !== null) {
+            this.context.sort(`${this.props.name}.${columnName}`);
+        }
     }
 
     onParentClick = (e) => {
