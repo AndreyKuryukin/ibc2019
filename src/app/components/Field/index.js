@@ -19,7 +19,7 @@ class Field extends React.PureComponent {
         labelAlign: PropTypes.oneOf(['left', 'right']),
         required: PropTypes.bool,
         children: PropTypes.node,
-    };
+    }
 
     static defaultProps = {
         id: '',
@@ -29,7 +29,7 @@ class Field extends React.PureComponent {
         labelAlign: 'left',
         required: false,
         children: null,
-    };
+    }
 
     render() {
         const { id, labelText, labelWidth, labelAlign, inputWidth, required, children } = this.props;

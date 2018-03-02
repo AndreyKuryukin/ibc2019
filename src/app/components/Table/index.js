@@ -1,13 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Table as ReactstrapTable } from 'reactstrap';
+import _ from 'lodash';
 import styles from './styles.scss';
 import { naturalSort } from '../../util/sort';
 import HeaderCell from './HeaderCell';
 import Immutable from 'immutable';
 import classnames from "classnames";
+import search from '../../util/search';
 
 class Table extends React.PureComponent {
+    static childContextTypes = {
+        sort: PropTypes.func,
+    }
+
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
@@ -34,7 +40,7 @@ class Table extends React.PureComponent {
         super(props);
 
         this.state = {
-            data: [],
+            data: props.data,
             cntrlIsPressed: false,
             selected: [],
             sort: {
@@ -43,6 +49,12 @@ class Table extends React.PureComponent {
             },
             columnFilterValues: Immutable.Map(),
         }
+    }
+
+    getChildContext() {
+        return {
+            sort: this.sort,
+        };
     }
 
     componentDidMount() {
@@ -100,7 +112,7 @@ class Table extends React.PureComponent {
         const { by, direction } = this.state.sort;
         const nextDirection = (direction === 'asc' && by === columnName) ? 'desc' : 'asc';
 
-        const sortedData = naturalSort(this.state.data, [nextDirection], node => [node[columnName]]);
+        const sortedData = naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`)]);
 
         this.setState({
             sort: {
@@ -128,7 +140,7 @@ class Table extends React.PureComponent {
             if (columnFilterValues.size === 0) return true;
 
             return columnFilterValues.entrySeq().reduce((result, [key, values]) =>
-                result && values.reduce((columnResult, nextValue) => columnResult || node[key].indexOf(nextValue) !== -1, false),
+                result && values.reduce((columnResult, nextValue) => columnResult || search(node[key], nextValue), false),
                 true);
         };
 
@@ -147,15 +159,17 @@ class Table extends React.PureComponent {
                 <thead>
                 <tr>
                     {columns.map(column => {
-                        const direction = column.name === sort.by ? sort.direction : null;
+
                         return (
                             <HeaderCell
                                 key={column.name}
                                 filterable={!!column.filter}
-                                headerRowRender={() => headerRowRender(column, direction)}
+                                headerRowRender={() => headerRowRender(column, sort)}
                                 onClick={() => this.onHeaderCellClick(column)}
                                 onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
-                            />
+                            >
+                                    {headerRowRender(column, sort)}
+                                </HeaderCell>
                         );
                     })}
                 </tr>
