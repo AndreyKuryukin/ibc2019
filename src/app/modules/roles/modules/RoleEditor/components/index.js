@@ -94,8 +94,6 @@ class RoleEditor extends React.PureComponent {
     render() {
         const { roleId, subjectsData, sourceOptions } = this.props;
         const { role } = this.state;
-        const submitTitle = roleId ? ls('EDIT_ROLE_SUBMIT', 'Сохранить') : ls('NEW_ROLE_SUBMIT', 'Создать');
-        const data = subjectsData.map(subject => ({ id: subject, name: subject }));
         return (
             <Modal isOpen={this.props.active}>
                 <ModalHeader
@@ -115,7 +113,7 @@ class RoleEditor extends React.PureComponent {
                                 onChange={this.copySubjectsFromRole}
                         />
                     </Field>
-                    <PermissionList subjectsData={data}
+                    <PermissionList subjectsData={subjectsData}
                                     onCheck={this.onCheck}
                                     checked={role.subjects}
                     />
