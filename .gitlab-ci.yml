@@ -19,6 +19,7 @@ node-build:
   - apt-get install -y libpng-dev
   - npm install
   - npm run build
+  - ls -la ./build
   cache:
     key: js_html_css
     paths:
@@ -37,6 +38,7 @@ docker-package:
   - pip install awscli
   - $(aws ecr get-login --no-include-email --region us-east-1)
   - export FRONTEND_VERSION=$(cat ./package.json | grep version | sed 's/.*\([0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}\).*/\1/')
+  - ls -la ./build
   - docker build -t $REPOSITORY_URL:$FRONTEND_VERSION .
   - docker push $REPOSITORY_URL
   cache:
