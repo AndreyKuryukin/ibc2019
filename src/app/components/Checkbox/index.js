@@ -1,16 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
+import classnames from 'classnames';
+
+import styles from './styles.scss';
 
 class Checkbox extends React.PureComponent {
     static propTypes = {
-        value: PropTypes.bool,
+        id: PropTypes.string.isRequired,
+        disabled: PropTypes.bool,
+        checked: PropTypes.bool,
+        checkedPartially: PropTypes.bool,
+        className: PropTypes.string,
         style: PropTypes.object,
         onChange: PropTypes.func,
     };
 
     static defaultProps = {
-        value: false,
+        disabled: false,
+        checked: false,
+        checkedPartially: false,
+        className: '',
         style: {},
         onChange: () => null,
     };
@@ -22,13 +32,28 @@ class Checkbox extends React.PureComponent {
     };
 
     render() {
+        const { id, style, checked, checkedPartially, className, disabled } = this.props;
+        const classNames = classnames(
+            styles.checkboxInput,
+            className,
+            { [styles.checkedPartially]: checkedPartially },
+        );
         return (
-            <Input
-                type="checkbox"
-                style={this.props.style}
-                onChange={this.onChange}
-                checked={this.props.value}
-            />
+            <div className={styles.checkboxWrapper}>
+                <Input
+                    id={id}
+                    type="checkbox"
+                    style={this.props.style}
+                    onChange={this.onChange}
+                    checked={checked}
+                    disabled={disabled}
+                />
+                <label
+                    htmlFor={id}
+                    style={style}
+                    className={classNames}
+                />
+            </div>
         );
     }
 }

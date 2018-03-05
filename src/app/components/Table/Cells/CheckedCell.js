@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
+import Checkbox from '../../Checkbox';
 
 class CheckedCell extends React.PureComponent {
     static propTypes = {
+        id: PropTypes.string.isRequired,
         value: PropTypes.bool,
         style: PropTypes.object,
         onChange: PropTypes.func,
@@ -15,16 +17,16 @@ class CheckedCell extends React.PureComponent {
         onChange: () => null,
     };
 
-    onChange = (event) => {
+    onChange = (checked) => {
         if (typeof this.props.onChange === 'function') {
-            this.props.onChange(event.target.checked);
+            this.props.onChange(checked);
         }
     };
 
     render() {
         return (
-            <Input
-                type="checkbox"
+            <Checkbox
+                id={this.props.id}
                 style={this.props.style}
                 onChange={this.onChange}
                 checked={this.props.value}

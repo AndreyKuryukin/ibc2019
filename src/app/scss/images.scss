@@ -1,0 +1,48 @@
+@mixin imgByPath($path) {
+  background: url(../../resources/img/#{$path}) no-repeat 0 0;
+}
+@mixin iconBuilder($width, $height, $icon) {
+  width: $width;
+  height: $height;
+  @include imgByPath($icon);
+}
+
+.addIcon {
+  @include iconBuilder(22px, 22px, 'add_new.png');
+  &:hover {
+    @include imgByPath('add_new_hover.png');
+  }
+}
+.deleteIcon {
+  @include iconBuilder(22px, 22px, 'delete.png');
+  &:hover {
+    @include imgByPath('delete_hover.png');
+  }
+}
+.groupIcon {
+  @include iconBuilder(22px, 22px, 'group.png');
+  &:hover {
+    @include imgByPath('group_hover.png');
+  }
+}
+.lockIcon {
+  @include iconBuilder(22px, 22px, 'lock.png');
+  &:hover {
+    @include imgByPath('lock_hover.png');
+  }
+}
+.unlockIcon {
+  @include iconBuilder(22px, 22px, 'unlock.png');
+  &:hover {
+    @include imgByPath('unlock_hover.png');
+  }
+}
+.superadminIcon {
+  @include iconBuilder(22px, 22px, 'superadmin.png');
+}
+.adminIcon {
+  @include iconBuilder(22px, 22px, 'admin.png');
+}
+.userIcon {
+  @include iconBuilder(22px, 22px, 'user.png');
+}

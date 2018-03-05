@@ -1,0 +1,28 @@
+.checkboxWrapper {
+  display: inline-block;
+  input:checked + .checkboxInput:before {
+    background: url('../../../resources/img/checkbox/checkbox_checked.png') no-repeat center;
+  }
+  input:checked:disabled + .checkboxInput:before {
+    background: url('../../../resources/img/checkbox/checkbox_checked_disabled.png') no-repeat center;
+  }
+  input:disabled + .checkboxInput:before {
+    background: url('../../../resources/img/checkbox/checkbox_disabled.png') no-repeat center;
+  }
+  input:disabled + .checkboxInput.checkedPartially:before {
+    background: url('../../../resources/img/checkbox/checkbox_partially_checked_disabled.png') no-repeat center;
+  }
+}
+.checkboxInput {
+  margin-bottom: 0;
+  &:before {
+    content: '';
+    display: block;
+    width: 12px;
+    height: 12px;
+    background: url('../../../resources/img/checkbox/checkbox_default.png') no-repeat center;
+  }
+  &.checkedPartially:before {
+    background: url('../../../resources/img/checkbox/checkbox_partially_checked.png') no-repeat center;
+  }
+}

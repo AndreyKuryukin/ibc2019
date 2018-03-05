@@ -6,17 +6,24 @@ import classnames from "classnames";
 class Icon extends React.PureComponent {
     static propTypes = {
         icon: PropTypes.string.isRequired,
+        title: PropTypes.string,
+        disabled: PropTypes.bool,
         onClick: PropTypes.func,
     };
 
+    static defaultProps = {
+        title: '',
+        disabled: false,
+        onClick: () => null,
+    }
+
     render() {
         return (
-            <div className={styles.wrapper}>
-                <div
-                    className={classnames(styles.image, this.props.icon)}
-                    onClick={this.props.onClick}
-                />
-            </div>
+            <div
+                className={classnames(styles.iconBlock, this.props.icon)}
+                onClick={this.props.onClick}
+                title={this.props.title}
+            />
         );
     }
 }

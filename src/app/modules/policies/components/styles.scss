@@ -17,13 +17,6 @@
   background: $white;
   .buttonGroup {
     display: inline-flex;
-    .addButton {
-      background: url(../../../../resources/img/add_new_over.png);
-      cursor: pointer;
-      &:hover {
-        background: url(../../../../resources/img/add_new.png);
-      }
-    }
   }
   .search {
     width: 20em;

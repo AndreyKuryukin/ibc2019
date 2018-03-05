@@ -23,12 +23,6 @@
     > *:not(:last-child) {
       margin-right: 1em;
     }
-    .addButton {
-      background: url(../../../../resources/img/add_new_over.png);
-      &:hover {
-        background: url(../../../../resources/img/add_new.png);
-      }
-    }
   }
   .rolesSearch {
     width: 20em;

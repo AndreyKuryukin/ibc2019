@@ -162,7 +162,7 @@ class Table extends React.Component {
             <div className={styles.tableContainer} style={{
                 backgroundPositionY: `${this.getHeadHeight()}px`,
             }}>
-                <ReactstrapTable bordered {...rest} className="table-hover">
+                <ReactstrapTable striped bordered {...rest} className="table-hover">
                     <thead
                         ref={thead => (this.thead = thead)}
                     >
