@@ -5,6 +5,7 @@ import { deleteRoleSuccess, fetchListOfRolesSuccess } from '../actions';
 import rest from '../../../rest';
 import { selectRolesData } from '../selectors';
 import RolesComponent from '../components';
+import ls from "i18n";
 
 class Roles extends React.PureComponent {
     static contextTypes = {
@@ -34,7 +35,7 @@ class Roles extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle('Роли');
+        this.context.navBar.setPageTitle(ls('ROLES_PAGE_TITLE', 'Роли'));
     }
 
     fetchRoles = () => {

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import ls from "i18n";
 import FormFeedback from "../FormFeedback";
 import { ERROR } from "../../costants/errors";
 

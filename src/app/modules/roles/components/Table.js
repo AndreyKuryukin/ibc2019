@@ -5,6 +5,7 @@ import _ from 'lodash';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
+import ls from "i18n";
 
 class RolesTable extends React.PureComponent {
     static propTypes = {
@@ -47,7 +48,7 @@ class RolesTable extends React.PureComponent {
     getColumns = () => ([{
         name: 'checked',
     }, {
-        title: 'Название',
+        title: ls('ROLES_NAME', 'Название'),
         name: 'name',
         searchable: true,
         sortable: true,
@@ -55,7 +56,7 @@ class RolesTable extends React.PureComponent {
             type: 'text',
         },
     }, {
-        title: 'Описание',
+        title: ls('ROLES_DESCRIPTION', 'Описание'),
         name: 'description',
         searchable: true,
         sortable: true,

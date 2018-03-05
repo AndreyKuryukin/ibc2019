@@ -131,7 +131,7 @@ class PolicyEditor extends React.PureComponent {
                                         <div style={{ width: '70%' }}>
                                             <Field
                                                 id="cease_duration"
-                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_DURATION', 'Интервал агрегации')}:`}
+                                                labelText={ls('POLICIES_ADD', 'Создать политику')}
                                                 labelWidth="67%"
                                                 inputWidth="33%"
                                             >
@@ -167,7 +167,7 @@ class PolicyEditor extends React.PureComponent {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="primary" onClick={this.onSubmit}>{'ОК'}</Button>
+                    <Button color="primary" onClick={this.onSubmit}>{ls('POLICIES_SUBMIT', 'Сохранить')}</Button>
                 </ModalFooter>
             </Modal>
         );
