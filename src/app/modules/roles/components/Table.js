@@ -5,6 +5,7 @@ import _ from 'lodash';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
+import ls from "i18n";
 
 class RolesTable extends React.PureComponent {
     static propTypes = {
