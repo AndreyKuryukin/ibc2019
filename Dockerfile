@@ -1,7 +1,7 @@
 FROM node:8.9.4-alpine
 
-RUN apt-get update
-RUN apt-get install -y nginx
+RUN apk update 
+RUN apk add nginx
 
 COPY nginx.conf /etc/nginx/nginx.conf
 RUN ln -sf /dev/stdout /var/log/nginx/access.log
