@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button, Form, FormFeedback, FormGroup, Alert } from 'reactstrap';
+import { Badge, Button, Form} from 'reactstrap';
 
 import Input from '../../../components/Input';
 import _ from 'lodash';
@@ -44,21 +44,36 @@ class Login extends React.PureComponent {
         text: ls('ENGLISH_LANGUAGE', 'English'),
     }];
 
+    getErrors = (loginFailed) => {
+        if (loginFailed) {
+            return [{
+                type: 'VALIDATION',
+                severity: 'CRITICAL',
+                target: 'login',
+                title: ls('LOGIN_ERROR_FIELD', 'Неверные учётные данные')
+            },{
+                type: 'VALIDATION',
+                severity: 'CRITICAL',
+                target: 'password',
+                title: ls('LOGIN_ERROR_FIELD', 'Неверные учётные данные')
+            }]
+        }
+        return [];
+    };
+
     render() {
         const {loginFailed} = this.props;
         return (
             <div className={styles.loginContainer}>
+                <div className={styles.shield}/>
                 <div className={styles.formContainer}>
-                    <div className={styles.shield}/>
+                    <h3 className={styles.sqmLabel}>SQM</h3>
                     <Form
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
                     >
-                        {loginFailed && <Alert color="danger" className={styles.errorMessage}>
-                            {ls('LOGIN_FAILED_MESSAGE', 'Логин и пароль не совпадают')}
-                        </Alert>}
                         <ErrorWrapper
-                            errors={this.props.errors}
+                            errors={this.getErrors(loginFailed)}
                             className={styles.errorGroup}
                         >
                             <Input

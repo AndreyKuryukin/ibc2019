@@ -15,7 +15,7 @@ import Field from "../../../../../components/Field/index";
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         roleId: PropTypes.number,
@@ -92,11 +92,8 @@ class RoleEditor extends React.PureComponent {
     getSourceOptions = (sourceOptions) => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
 
     render() {
-
         const { roleId, subjectsData, sourceOptions } = this.props;
         const { role } = this.state;
-        const submitTitle = roleId ? ls('EDIT_ROLE_SUBMIT', 'Сохранить') : ls('NEW_ROLE_SUBMIT', 'Создать');
-        const data = subjectsData.map(subject => ({ id: subject, name: subject }));
         return (
             <Modal isOpen={this.props.active}>
                 <ModalHeader
@@ -116,7 +113,7 @@ class RoleEditor extends React.PureComponent {
                                 onChange={this.copySubjectsFromRole}
                         />
                     </Field>
-                    <PermissionList subjectsData={data}
+                    <PermissionList subjectsData={subjectsData}
                                     onCheck={this.onCheck}
                                     checked={role.subjects}
                     />
@@ -129,7 +126,7 @@ class RoleEditor extends React.PureComponent {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="action" onClick={this.onSubmit}>{submitTitle}</Button>
+                    <Button color="action" onClick={this.onSubmit}>{ls('NEW_ROLE_SUBMIT', 'Создать')}</Button>
                 </ModalFooter>
             </Modal>
         );

@@ -38,7 +38,7 @@ class PolicyEditor extends React.PureComponent {
                     this.props.onFetchPolicySuccess(policy);
                 });
         }
-    }
+    };
 
     onSubmit = (policyId, policyData) => {
         const submit = policyId ? rest.put : rest.post;

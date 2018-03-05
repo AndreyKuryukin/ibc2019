@@ -36,12 +36,12 @@ class RolesControls extends React.PureComponent {
     render() {
         const { checkedIds } = this.props;
         return (
-            <div className={styles.controls}>
+            <div className={styles.rolesControls}>
                 <div className={styles.buttonGroup}>
                     <Icon icon={styles.addButton} onClick={this.onAdd}/>
                 </div>
                 <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
-                       className={styles.search}
+                       className={styles.rolesSearch}
                        onChange={this.onSearchTextChange}
                 />
             </div>
