@@ -97,7 +97,7 @@ class RoleEditor extends React.PureComponent {
         return (
             <Modal isOpen={this.props.active}>
                 <ModalHeader
-                    toggle={this.onClose}>{roleId ? 'Редактирование роли' : 'Создание новой роли'}</ModalHeader>
+                    toggle={this.onClose}>{roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') : ls('NEW_ROLE_ADD', 'Создание новой роли')}</ModalHeader>
                 <ModalBody className={styles.modalBody}>
                     <Field labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
                            required

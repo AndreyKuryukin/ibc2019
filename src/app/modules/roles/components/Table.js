@@ -47,7 +47,7 @@ class RolesTable extends React.PureComponent {
     getColumns = () => ([{
         name: 'checked',
     }, {
-        title: 'Название',
+        title: ls('ROLES_NAME', 'Название'),
         name: 'name',
         searchable: true,
         sortable: true,
@@ -55,7 +55,7 @@ class RolesTable extends React.PureComponent {
             type: 'text',
         },
     }, {
-        title: 'Описание',
+        title: ls('ROLES_DESCRIPTION', 'Описание'),
         name: 'description',
         searchable: true,
         sortable: true,

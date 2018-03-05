@@ -16,7 +16,7 @@ class Condition extends React.PureComponent {
                 <div className={styles.panelBody}>
                     <Field
                         id="operator"
-                        labelText="Оператор:"
+                        labelText={ls('POLICIES_OPERATOR_TITLE', 'Оператор:')}
                     >
                         <Select
                             id="operator"
@@ -27,7 +27,7 @@ class Condition extends React.PureComponent {
                     </Field>
                     <Field
                         id="maxInterval"
-                        labelText="Максимальный интервал:"
+                        labelText={ls('POLICIES_MAX_INTERVAL', 'Максимальный интервал:')}
                     >
                         <Input
                             id="maxInterval"
@@ -49,7 +49,7 @@ class Condition extends React.PureComponent {
                             <div className={styles.parameters}>
                                 <Field
                                     id="object"
-                                    labelText="Тип объекта:"
+                                    labelText={ls('POLICIES_OBJECT_TYPE', 'Тип объекта')}
                                 >
                                     <Select
                                         id="object"
@@ -62,7 +62,7 @@ class Condition extends React.PureComponent {
                                     <Col sm={6}>
                                         <Field
                                             id="parameter"
-                                            labelText="Параметр:"
+                                            labelText={ls('POLICIES_PARAMETER', 'Параметр:')}
                                         >
                                             <Select
                                                 id="parameter"

@@ -2,5 +2,20 @@
 
 .tabContent {
   background-color: $white;
+  height: 100%;
+  width: 100%;
+  .tab-pane.active {
+    height: 100%;
+    width: 100%;
+  }
+  .stripedBack {
+    background: linear-gradient(
+                    to bottom,
+                    $light-grey,
+                    $white 50%,
+                    $light-grey 50%,
+                    $white
+    );
+  }
 }
 

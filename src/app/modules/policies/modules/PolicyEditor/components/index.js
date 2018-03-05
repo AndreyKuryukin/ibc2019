@@ -84,88 +84,15 @@ class PolicyEditor extends React.PureComponent {
     render() {
         const { active, policyId } = this.props;
         const {policy} = this.state;
-        const modalTitle = policyId ? 'Редактировать политику' : 'Создать политику';
+        const modalTitle = policyId ? ls('POLICIES_EDIT', 'Редактировать политику') :  ls('POLICIES_ADD', 'Создать политику');
         return (
             <Modal isOpen={active} size="lg">
                 <ModalHeader toggle={this.onClose}>{modalTitle}</ModalHeader>
                 <ModalBody>
                     <div className={styles.roleEditorContent}>
                         <div className={styles.roleEditorColumn}>
+                            <Configuration/>
 
-                            <div className={styles.panel}>
-                                <h6 className={styles.panelHeader}>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
-                                <div className={styles.panelBody}>
-                                    <Field
-                                        id="name"
-                                        labelText="Имя:"
-                                    >
-                                        <Input
-                                            id="name"
-                                            name="name"
-                                            value={_.get(policy, 'name')}
-                                            onChange={(e) => this.setPolicyProperty('name', e.currentTarget.value)}
-                                        />
-                                    </Field>
-                                    <Field
-                                        id="agregation"
-                                        labelText="Фукнция агрегации:"
-                                        required
-                                    >
-                                        <Select
-                                            id="agregation"
-                                            type="select"
-                                            options={[]}
-                                            onChange={() => {
-                                            }}
-                                        />
-                                    </Field>
-                                    <Row>
-                                        <Col sm={6}>
-                                            <Field
-                                                id="interval"
-                                                labelText="Интервал агрегации:"
-                                            >
-                                                <Input
-                                                    id="interval"
-                                                    name="interval"
-                                                    type="number"
-                                                    value={_.get(policy, 'threshold.rise_duration')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_duration', Number(e.currentTarget.value))}
-                                                />
-                                            </Field>
-                                        </Col>
-                                        <Col sm={6}>
-                                            <Field
-                                                id="threshold"
-                                                labelText="Порог:"
-                                            >
-                                                <Input
-                                                    id="threshold"
-                                                    name="threshold"
-                                                    type="number"
-                                                    value={_.get(policy, 'threshold.rise_value')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.rise_value', Number(e.currentTarget.value))}
-
-                                                />
-                                            </Field>
-                                        </Col>
-                                    </Row>
-                                    <Field
-                                        id="message"
-                                        labelText="Текст сообщения:"
-                                        labelWidth="100%"
-                                        inputWidth="100%"
-                                        labelAlign="right"
-                                    >
-                                        <Input
-                                            id="message"
-                                            type="textarea"
-                                            value={_.get(policy, 'threshold.notification_template')}
-                                            onChange={(e) => this.setPolicyProperty('threshold.notification_template', e.currentTarget.value)}
-                                        />
-                                    </Field>
-                                </div>
-                            </div>
 
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
@@ -201,7 +128,7 @@ class PolicyEditor extends React.PureComponent {
                                         <div style={{ width: '70%' }}>
                                             <Field
                                                 id="cease_duration"
-                                                labelText="Интервал агрегации:"
+                                                labelText={ls('POLICIES_ADD', 'Создать политику')}"Интервал агрегации:"
                                                 labelWidth="67%"
                                                 inputWidth="33%"
                                             >
@@ -217,7 +144,7 @@ class PolicyEditor extends React.PureComponent {
                                         <div style={{ width: '30%' }}>
                                             <Field
                                                 id="cease_value"
-                                                labelText="Порог:"
+                                                labelText={ls('POLICIES_THRESHOLD', 'Порог:')}
                                             >
                                                 <Input
                                                     id="threshold"
@@ -239,7 +166,7 @@ class PolicyEditor extends React.PureComponent {
                 </ModalBody>
                 <ModalFooter>
                     <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="primary" onClick={this.onSubmit}>{'ОК'}</Button>
+                    <Button color="primary" onClick={this.onSubmit}>{ls('POLICIES_SUBMIT', 'Сохранить')}</Button>
                 </ModalFooter>
             </Modal>
         );

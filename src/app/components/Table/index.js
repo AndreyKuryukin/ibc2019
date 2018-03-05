@@ -155,7 +155,7 @@ class Table extends React.PureComponent {
         const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
-            <ReactstrapTable striped bordered {...rest} className="table-hover">
+            <ReactstrapTable bordered {...rest} className="table-hover">
                 <thead>
                     <tr>
                         {columns.map(column => (

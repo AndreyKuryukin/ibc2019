@@ -42,7 +42,7 @@ class RolesListControls extends React.PureComponent {
                 <Search
                     onChange={this.props.onSearchTextChange}
                     className={styles.search}
-                    placeholder="Поиск"
+                    placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                 />
             </Controls>
         );
