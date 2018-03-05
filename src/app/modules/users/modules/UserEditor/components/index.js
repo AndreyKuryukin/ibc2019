@@ -85,7 +85,7 @@ class UserEditor extends React.PureComponent {
         return (
             <Modal
                 isOpen={active}
-                title={userId ? "Редактирование пользователя" : "Создание пользователя"}
+                title={userId ? ls('USER_EDIT_USER', 'Редактирование пользователя') : ls('USER_ADD_USER', 'Создание пользователя')}
                 onClose={this.onClose}
                 onSubmit={this.onSubmit}
                 size="lg"

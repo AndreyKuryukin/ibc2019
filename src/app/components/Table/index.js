@@ -9,7 +9,7 @@ import Immutable from 'immutable';
 import classnames from "classnames";
 import search from '../../util/search';
 
-class Table extends React.PureComponent {
+class Table extends React.Component {
     static childContextTypes = {
         sort: PropTypes.func,
     }
@@ -80,6 +80,10 @@ class Table extends React.PureComponent {
     shouldComponentUpdate(nextProps, nextState) {
         const isColumnFilterValuesChanged = this.state.columnFilterValues !== nextState.columnFilterValues;
         return !isColumnFilterValuesChanged;
+    }
+
+    getHeadHeight() {
+        return this.thead ? this.thead.getBoundingClientRect().height : 0;
     }
 
     onKeyDownListener = (event) => {
@@ -155,37 +159,43 @@ class Table extends React.PureComponent {
         const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
-            <ReactstrapTable striped bordered {...rest} className="table-hover">
-                <thead>
-                    <tr>
-                        {columns.map(column => (
-                            <HeaderCell
-                                key={column.name}
-                                filterable={!!column.filter}
-                                headerRowRender={() => headerRowRender(column, sort)}
-                                onClick={() => this.onHeaderCellClick(column)}
-                                onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
-                            >
-                                {headerRowRender(column, sort)}
-                            </HeaderCell>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                {data.map(node => (
-                    <tr key={node.id}
-                        onClick={() => this.onRowClick(node)}
-                        className={classnames({ [styles.selected]: selected === node.id })}
+            <div className={styles.tableContainer} style={{
+                backgroundPositionY: `${this.getHeadHeight()}px`,
+            }}>
+                <ReactstrapTable striped bordered {...rest} className="table-hover">
+                    <thead
+                        ref={thead => (this.thead = thead)}
                     >
-                        {columns.map(column => (
-                            <td key={column.name}>
-                                {bodyRowRender(column, node)}
-                            </td>
-                        ))}
-                    </tr>
-                ))}
-                </tbody>
-            </ReactstrapTable>
+                        <tr>
+                            {columns.map(column => (
+                                <HeaderCell
+                                    key={column.name}
+                                    filterable={!!column.filter}
+                                    headerRowRender={() => headerRowRender(column, sort)}
+                                    onClick={() => this.onHeaderCellClick(column)}
+                                    onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
+                                >
+                                    {headerRowRender(column, sort)}
+                                </HeaderCell>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {data.map(node => (
+                        <tr key={node.id}
+                            onClick={() => this.onRowClick(node)}
+                            className={classnames({ [styles.selected]: selected === node.id })}
+                        >
+                            {columns.map(column => (
+                                <td key={column.name}>
+                                    {bodyRowRender(column, node)}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                    </tbody>
+                </ReactstrapTable>
+            </div>
         );
     }
 }

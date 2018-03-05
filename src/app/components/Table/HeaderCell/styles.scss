@@ -1,6 +1,17 @@
+@import '../../../scss/vars';
+
 .headerCell {
   position: relative;
   cursor: pointer;
+}
+.headerCell + .headerCell:before {
+  content: '';
+  display: block;
+  position: absolute;
+  border-left: $table-left-border;
+  top: 0;
+  left: -1px;
+  height: 99999px;
 }
 .thFix {
   vertical-align: top !important;

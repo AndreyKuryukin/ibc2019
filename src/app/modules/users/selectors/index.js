@@ -1,4 +1,5 @@
 import { createSelector } from 'reselect';
+import ls from 'i18n';
 
 export const selectUsersRoot = state => state.users;
 export const selectUsers = state => selectUsersRoot(state).users;
@@ -8,7 +9,7 @@ const selectUsersList = createSelector(
     users => users.list.map(id => users.byId[id]),
 );
 
-const formatActiveStatus = disabled => disabled ? 'Нет' : 'Да';
+const formatActiveStatus = disabled => disabled ? ls('YES', 'Нет') : ls('NO', 'Да');
 
 const getUserRow = user => ({
     id: user.id,

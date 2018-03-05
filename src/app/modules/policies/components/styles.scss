@@ -35,7 +35,7 @@
 }
 .policyCell {
   display: flex;
-  margin: -$table-cell-padding;
+  margin: 0 -$table-cell-left-right-padding;
   flex-wrap: wrap;
   .title {
     @extend %child;
@@ -45,9 +45,19 @@
   }
   .subtitle {
     @extend %child;
+    position: relative;
     width: 50%;
   }
   .subtitle + .subtitle {
     border-left: $table-left-border;
+  }
+  .subtitle + .subtitle:before {
+    content: '';
+    display: block;
+    position: absolute;
+    border-left: $table-left-border;
+    top: 0;
+    left: -1px;
+    height: 99999px;
   }
 }
