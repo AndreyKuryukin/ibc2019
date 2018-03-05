@@ -27,8 +27,8 @@ class Configuration extends React.PureComponent {
                 <h6 className={styles.panelHeader}>{ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}</h6>
                 <div className={styles.panelBody}>
                     <Field
-                    id="name"
-                    labelText={ls('POLICIES_CONFIGURATION_NAME', 'Имя:')}
+                        id="name"
+                        labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}:`}
                     >
                         <Input
                             id="name"
@@ -39,7 +39,7 @@ class Configuration extends React.PureComponent {
                     </Field>
                     <Field
                         id="aggregation"
-                        labelText={ls('POLICIES_AGGREGATION', 'Фукнция агрегации:')}
+                        labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}:`}
                     >
                         <Select
                             id="aggregation"
@@ -52,7 +52,7 @@ class Configuration extends React.PureComponent {
                         <div style={{ width: '75%' }}>
                             <Field
                                 id="rise_duration"
-                                labelText={ls('POLICIES_AGGREGATION_INTERVAL', 'Интервал агрегации:')}
+                                labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}:`}
                                 labelWidth="67%"
                                 inputWidth="17%"
                             >
@@ -67,7 +67,7 @@ class Configuration extends React.PureComponent {
                         <div style={{ width: '25%' }}>
                             <Field
                                 id="rise_value"
-                                labelText={ls('POLICIES_THRESHOLD', 'Порог:')}
+                                labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}:`}
                             >
                                 <Input
                                     id="rise_value"
@@ -80,7 +80,7 @@ class Configuration extends React.PureComponent {
                     </div>
                     <Field
                         id="message"
-                        labelText={ls('POLICIES_AGGREGATION_INTERVAL', 'Текст сообщения:')}
+                        labelText={`${ls('POLICIES_POLICY_FIELD_MESSAGE', 'Текст сообщения')}:`}
                         labelWidth="100%"
                         inputWidth="100%"
                         labelAlign="right"

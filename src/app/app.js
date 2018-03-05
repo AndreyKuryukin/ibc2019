@@ -17,7 +17,7 @@ import PageWrapper from "./components/PageWrapper/index";
 class App extends React.Component {
     render() {
         return (
-            <div style={{ height: '100%' }}>
+            <div style={{ display: 'flex', flexGrow: 1 }}>
                 <Route path="/login" render={props => {props.location.title = 'Логин'; return <Login {...props}/>}} />
                 <Route path="/roles/:action?/:id?" component={Roles} />
                 <Route path="/users/:action?/:id?" component={Users} />

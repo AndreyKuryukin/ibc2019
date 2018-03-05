@@ -41,7 +41,7 @@ class Field extends React.PureComponent {
         return (
             <div className={classes}>
                 <label
-                    for={id}
+                    htmlFor={id}
                     className={styles.fieldLabel}
                     style={{ width: labelWidth }}
                 >{labelText}</label>

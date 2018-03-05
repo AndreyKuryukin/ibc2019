@@ -1,6 +1,12 @@
 @import "../../scss/vars";
 
+.tabsWrapper {
+  display: flex;
+  flex-direction: column;
+}
+
 .tabContent {
+  height: 100%;
   background-color: $white;
   height: 100%;
   width: 100%;
@@ -18,4 +24,3 @@
     );
   }
 }
-

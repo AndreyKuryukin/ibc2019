@@ -14,7 +14,6 @@ body {
   overflow-y: hidden;
   line-height: 1rem;
   font-weight: normal !important;
-  padding: 0;
 }
 
 .app-root {
@@ -32,4 +31,3 @@ input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
   color: $placeholder !important;
 }
-

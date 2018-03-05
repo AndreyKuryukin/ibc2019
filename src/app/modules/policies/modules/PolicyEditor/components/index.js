@@ -35,15 +35,10 @@ class PolicyEditor extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {
-            policy: props.policy || {}
-        }
-    }
 
-    componentWillReceiveProps(nextProps) {
-        if (!_.isEqual(nextProps.policy, this.props.policy)) {
-            this.setState({policy: nextProps.policy});
-        }
+        this.state = {
+            policy: props.policy,
+        };
     }
 
     componentDidMount() {
@@ -52,6 +47,13 @@ class PolicyEditor extends React.PureComponent {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.policy !== nextProps.policy) {
+            this.setState({
+                policy: nextProps.policy,
+            });
+        }
+    }
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
 
@@ -71,29 +73,30 @@ class PolicyEditor extends React.PureComponent {
     onClose = () => {
         this.context.history.push('/policies');
         this.props.onClose();
-    };
+    }
 
     onSubmit = () => {
         if (typeof this.props.onSubmit === 'function') {
             // this.props.onSubmit(this.props.userId, this.state.user);
             this.props.onSubmit(this.props.policyId, this.state.policy);
         }
-    };
-
+    }
 
     render() {
         const { active, policyId } = this.props;
-        const {policy} = this.state;
-        const modalTitle = policyId ? ls('POLICIES_EDIT', 'Редактировать политику') :  ls('POLICIES_ADD', 'Создать политику');
+        const modalTitle = policyId
+            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
+            : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
             <Modal isOpen={active} size="lg">
                 <ModalHeader toggle={this.onClose}>{modalTitle}</ModalHeader>
                 <ModalBody>
                     <div className={styles.roleEditorContent}>
                         <div className={styles.roleEditorColumn}>
-                            <Configuration/>
-
-
+                            <Configuration
+                                getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
+                                setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
+                            />
                             <div className={styles.panel}>
                                 <h6 className={styles.panelHeader}>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
                                 <div className={styles.panelBody}>
@@ -128,30 +131,28 @@ class PolicyEditor extends React.PureComponent {
                                         <div style={{ width: '70%' }}>
                                             <Field
                                                 id="cease_duration"
-                                                labelText={ls('POLICIES_ADD', 'Создать политику')}"Интервал агрегации:"
+                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_DURATION', 'Интервал агрегации')}:`}
                                                 labelWidth="67%"
                                                 inputWidth="33%"
                                             >
                                                 <Input
-                                                    id="interval"
-                                                    name="interval"
-                                                    type="number"
-                                                    value={_.get(policy, 'threshold.cease_duration')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_duration', Number(e.currentTarget.value))}
+                                                    id="cease_duration"
+                                                    name="cease_duration"
+                                                    value={this.getPolicyProperty('threshold.cease_duration')}
+                                                    onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
                                         </div>
                                         <div style={{ width: '30%' }}>
                                             <Field
                                                 id="cease_value"
-                                                labelText={ls('POLICIES_THRESHOLD', 'Порог:')}
+                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
                                             >
                                                 <Input
-                                                    id="threshold"
-                                                    name="threshold"
-                                                    type="number"
-                                                    value={_.get(policy, 'threshold.cease_value')}
-                                                    onChange={(e) => this.setPolicyProperty('threshold.cease_value', Number(e.currentTarget.value))}
+                                                    id="cease_value"
+                                                    name="cease_value"
+                                                    value={this.getPolicyProperty('threshold.cease_value')}
+                                                    onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
                                         </div>
