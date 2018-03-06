@@ -8,6 +8,7 @@ import { ERROR } from "../../costants/errors";
 class ErrorWrapper extends React.PureComponent {
     static propTypes = {
         errors: PropTypes.array,
+        errorAlign: PropTypes.oneOf(['top', 'right', 'bottom', 'left'])
     };
 
     static defaultProps = {

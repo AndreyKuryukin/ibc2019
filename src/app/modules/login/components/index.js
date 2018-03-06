@@ -50,12 +50,10 @@ class Login extends React.PureComponent {
                 type: 'VALIDATION',
                 severity: 'CRITICAL',
                 target: 'login',
-                title: ls('LOGIN_ERROR_FIELD', 'Неверные учётные данные')
             },{
                 type: 'VALIDATION',
                 severity: 'CRITICAL',
                 target: 'password',
-                title: ls('LOGIN_ERROR_FIELD', 'Неверные учётные данные')
             }]
         }
         return [];
