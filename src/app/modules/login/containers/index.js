@@ -8,12 +8,14 @@ import LoginComponent from '../components';
 import { signInSuccess } from '../actions/index';
 import { signIn } from '../../../rest/index';
 import { ERRORS } from "../../../costants/errors";
+import ls from "i18n";
 
 
 class Login extends React.PureComponent {
 
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
+        notifications: PropTypes.object.isRequired,
     };
 
     componentDidMount() {
@@ -33,6 +35,12 @@ class Login extends React.PureComponent {
                 this.props.onLoginSuccess(userName);
                 this.props.history.push('/roles');
             }).catch((error) => {
+            this.context.notifications.notify({
+                title: ls('LOGIN_ERROR_FIELD', 'Неверные учётные данные:'),
+                message: ls('LOGIN_ERROR_FIELD', 'Логин и пароль не совпадают'),
+                type: 'CRITICAL',
+                code: 'login-failed'
+            });
             this.setState({ errors: _.get(error, `data.${ERRORS}`), loginFailed: true });
         });
     };

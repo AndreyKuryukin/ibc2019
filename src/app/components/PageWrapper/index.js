@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar, Button } from 'reactstrap';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar } from 'reactstrap';
 
 import styles from './styles.scss';
 import { withRouter } from "react-router-dom";
@@ -47,7 +47,7 @@ class PageWrapper extends React.Component {
 
     setPageTitle = (title) => this.setState({ pageTitle: title, hidden: false });
 
-    renderMenuItems = (items = []) => items.map(item => <DropdownItem
+    renderMenuItems = (items = []) => items.map((item, index) => <DropdownItem key={`menu-item-${index}`}
         onClick={() => this.onMenuClick(item)}>{item.title}</DropdownItem>);
 
     render() {
