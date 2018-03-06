@@ -37,8 +37,8 @@ class Modal extends React.PureComponent {
                     {this.props.children}
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="primary" onClick={onSubmit}>OK</Button>
-                    <Button color="secondary" onClick={onClose}>Cancel</Button>
+                    <Button color="action" onClick={onSubmit}>OK</Button>
+                    <Button color="action" onClick={onClose}>Cancel</Button>
                 </ModalFooter>
             </ReactstrapModal>
         );

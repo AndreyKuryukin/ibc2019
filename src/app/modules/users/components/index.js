@@ -68,8 +68,6 @@ class Users extends React.PureComponent {
 
                     <UsersTable
                         data={this.props.usersData}
-                        onCheckAll={(allChecked) => {
-                        }}
                     />
 
                     {isEditorActive && <UserEditor

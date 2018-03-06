@@ -7,6 +7,7 @@ class CheckedCell extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
         value: PropTypes.bool,
+        checkedPartially: PropTypes.bool,
         style: PropTypes.object,
         onChange: PropTypes.func,
     };
@@ -30,6 +31,7 @@ class CheckedCell extends React.PureComponent {
                 style={this.props.style}
                 onChange={this.onChange}
                 checked={this.props.value}
+                checkedPartially={this.props.checkedPartially}
             />
         );
     }
