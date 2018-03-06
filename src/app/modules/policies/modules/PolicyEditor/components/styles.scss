@@ -35,13 +35,6 @@
     }
   }
 }
-.addButton {
-  background: url(../../../../../../resources/img/add_new_over.png);
-  cursor: pointer;
-  &:hover {
-    background: url(../../../../../../resources/img/add_new.png);
-  }
-}
 .conditionsWrapper {
   @extend %flexColumn;
   .conditions {

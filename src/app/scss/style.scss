@@ -26,8 +26,12 @@ body {
 @import 'tabs.scss';
 @import 'tables.scss';
 @import 'modal.scss';
+@import 'images.scss';
 
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
   color: $placeholder !important;
+}
+input[type=checkbox], input[type=radio] {
+  display: none;
 }

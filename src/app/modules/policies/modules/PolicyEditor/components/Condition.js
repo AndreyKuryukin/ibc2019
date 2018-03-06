@@ -38,7 +38,7 @@ class Condition extends React.PureComponent {
                         />
                     </Field>
                     <div className={styles.conditionsWrapper}>
-                        <Icon icon={styles.addButton} onClick={this.onAdd}/>
+                        <Icon icon="addIcon" onClick={this.onAdd}/>
                         <div className={styles.conditions}>
                             <div className={styles.conditionBlock}>
                                 <div className={styles.parameters}>

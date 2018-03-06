@@ -80,6 +80,7 @@ class UsersTable extends React.PureComponent {
                 const isAllChecked = this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
                 return (
                     <CheckedCell
+                        id="users-all"
                         onChange={this.onCheck}
                         style={{ marginLeft: 0 }}
                         value={isAllChecked}
@@ -102,6 +103,7 @@ class UsersTable extends React.PureComponent {
                 const isRowChecked = this.state.checked.includes(node.id);
                 return (
                     <CheckedCell
+                        id={`users-user-${node.id}`}
                         onChange={(value) => this.onCheck(value, node)}
                         style={{ marginLeft: 0 }}
                         value={isRowChecked}

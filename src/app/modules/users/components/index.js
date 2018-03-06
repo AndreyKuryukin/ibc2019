@@ -59,7 +59,7 @@ class Users extends React.PureComponent {
                      tabTitle={ls('USERS_TAB_TITLE', 'Пользователи')}>
 
                     <div className={styles.controlsWrapper}>
-                        <Icon icon={styles.addButton} onClick={this.onAdd}/>
+                        <Icon icon="addIcon" onClick={this.onAdd} />
                         <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
                                className={styles.search}
                                onChange={this.onSearchTextChange}
