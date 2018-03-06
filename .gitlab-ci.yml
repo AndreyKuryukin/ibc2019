@@ -3,12 +3,28 @@ services:
   - docker:dind
 
 stages:
+  - build
   - package
 
 variables:
   DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: dev
   REPOSITORY_URL: 730874227725.dkr.ecr.us-east-1.amazonaws.com/sqm/frontend
+
+node-build:
+  image: node:8.9.4 
+  stage: build
+  script:
+  - apt-get update
+  - apt-get install -y libpng-dev
+  - npm install
+  - npm run build
+  - ls -la ./build
+  cache:
+    key: js_html_css
+    paths:
+    - build
+    policy: push
 
 docker-package:
   image: docker:latest
@@ -21,10 +37,15 @@ docker-package:
   - apk add --no-cache curl jq python py-pip
   - pip install awscli
   - $(aws ecr get-login --no-include-email --region us-east-1)
-  - export FRONTEND_VERSION=$(cat ./package.json | grep version | sed 's/.*\([0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}\).*/\1/')
+  - export FRONTEND_VERSION=$(cat ./package.json | grep version | sed 's/.*\([0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}.*\)",/\1/')
+  - ls -la ./build
   - docker build -t $REPOSITORY_URL:$FRONTEND_VERSION .
   - docker push $REPOSITORY_URL
-
+  cache:
+    key: js_html_css
+    paths:
+    - build
+    policy: pull
   environment:
     name: review/$CI_COMMIT_REF_NAME
     url: https://$CI_ENVIRONMENT_SLUG.example.com
