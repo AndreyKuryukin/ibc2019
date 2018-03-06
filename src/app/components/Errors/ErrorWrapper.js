@@ -18,10 +18,12 @@ class ErrorWrapper extends React.PureComponent {
     markInvalid = (child, error, key) => {
         const result = [];
         result.push({...child, props: {...child.props, valid: false}});
-        const errorText = <FormFeedback key={`feedback-${key}`}>
-            {error[ERROR.TITLE]}
-        </FormFeedback>;
-        result.push(errorText);
+        if (error[ERROR.TITLE]) {
+            const errorText = <FormFeedback key={`feedback-${key}`}>
+                {error[ERROR.TITLE]}
+            </FormFeedback>;
+            result.push(errorText);
+        }
         return result
     };
 
