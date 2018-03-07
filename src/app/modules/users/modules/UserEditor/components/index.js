@@ -6,8 +6,11 @@ import Modal from '../../../../../components/Modal';
 import Input from '../../../../../components/Input';
 import styles from './styles.scss';
 import RolesTable from './RolesTable';
-import Field from "../../../../../components/Field/index";
-import ls from "i18n";
+import Field from '../../../../../components/Field';
+import Panel from '../../../../../components/Panel';
+import Checkbox from '../../../../../components/Checkbox';
+import Radio from '../../../../../components/Radio';
+import ls from 'i18n';
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -88,88 +91,186 @@ class UserEditor extends React.PureComponent {
                 title={userId ? ls('USER_EDIT_USER', 'Редактирование пользователя') : ls('USER_ADD_USER', 'Создание пользователя')}
                 onClose={this.onClose}
                 onSubmit={this.onSubmit}
-                size="lg"
+                className={styles.userEditor}
+                modalClassName={styles.userEditor}
             >
                 <div
-                    className={styles.roleEditorContent}
+                    className={styles.userEditorContent}
                 >
-                    <Form
-                        className={styles.userForm}
-                    >
-                        <Field labelText={ls('USER_LOGIN_FIELD_TITLE', 'Логин')}
-                               required>
-                            <Input
-                                name="login"
-                                value={this.getUserProperty('login', '')}
-                                onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_PASSWORD_FIELD_TITLE', 'Пароль')}
-                               required>
-                            <Input
-                                name="password"
-                                type="password"
-                                value={this.getUserProperty('password', '')}
-                                onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_CONFIRM_FIELD_TITLE', 'Подтвердите пароль')}
-                               required>
-                            <Input
-                                name="confirm"
-                                type="password"
-                                value={this.getUserProperty('confirm', '')}
-                                onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_NAME_FIELD_TITLE', 'Имя')}
+                    <div className={styles.userEditorColumn}>
+                        <Panel
+                            title={ls('USER_AUTHENTICATION_MODE_PANEL_TITLE', 'Authentication mode')}
                         >
-                            <Input
-                                name="name"
-                                value={this.getUserProperty('first_name', '')}
-                                onChange={event => this.setUserProperty('first_name', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_LAST_NAME_FIELD_TITLE', 'Фамилия')}
+                            <Field
+                                id="ldap"
+                                labelText={ls('USER_LDAP_MODE_FIELD_TITLE', 'LDAP')}
+                                labelAlign="right"
+                                labelWidth="95%"
+                                inputWidth="5%"
+                            >
+                                <Radio
+                                    id="ldap"
+                                    type="radio"
+                                    name="authentication-mode"
+                                    checked={this.getUserProperty('authenticationMode', '') === 'ldap'}
+                                    onChange={value => this.setUserProperty('authenticationMode', value)}
+                                />
+                            </Field>
+                            <Field
+                                id="custom"
+                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Custom')}
+                                labelAlign="right"
+                                labelWidth="95%"
+                                inputWidth="5%"
+                            >
+                                <Radio
+                                    id="custom"
+                                    type="radio"
+                                    name="authentication-mode"
+                                    checked={this.getUserProperty('authenticationMode', '') === 'custom'}
+                                    onChange={value => this.setUserProperty('authenticationMode', value)}
+                                />
+                            </Field>
+                        </Panel>
+                        <Panel
+                            title={ls('USER_CREATION_PANEL_TITLE', 'User creation')}
                         >
-                            <Input
-                                name="last-name"
-                                value={this.getUserProperty('last_name', '')}
-                                onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}>
-                            <Input
-                                name="email"
-                                value={this.getUserProperty('email', '')}
-                                onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_PHONE_FIELD_TITLE', 'Телефон')}>
-                            <Input
-                                name="phone"
-                                value={this.getUserProperty('phone', '')}
-                                onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
-                            />
-                        </Field>
-                        <Field labelText={ls('USER_ADMIN_FIELD_TITLE', 'Администратор')}
-                               labelAlign="right"
-                               inputWidth={23}
+                            <Form
+                                className={styles.userForm}
+                            >
+                                <Field
+                                    id="login"
+                                    labelText={ls('USER_LOGIN_FIELD_TITLE', 'Логин')}
+                                    required
+                                >
+                                    <Input
+                                        id="login"
+                                        name="login"
+                                        value={this.getUserProperty('login', '')}
+                                        onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="password"
+                                    labelText={ls('USER_PASSWORD_FIELD_TITLE', 'Пароль')}
+                                    required
+                                >
+                                    <Input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        value={this.getUserProperty('password', '')}
+                                        onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="confirm"
+                                    labelText={ls('USER_CONFIRM_FIELD_TITLE', 'Подтвердите пароль')}
+                                    required
+                                >
+                                    <Input
+                                        id="confirm"
+                                        name="confirm"
+                                        type="password"
+                                        value={this.getUserProperty('confirm', '')}
+                                        onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="name"
+                                    labelText={ls('USER_NAME_FIELD_TITLE', 'Имя')}
+                                >
+                                    <Input
+                                        id="name"
+                                        name="name"
+                                        value={this.getUserProperty('first_name', '')}
+                                        onChange={event => this.setUserProperty('first_name', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="last-name"
+                                    labelText={ls('USER_LAST_NAME_FIELD_TITLE', 'Фамилия')}
+                                >
+                                    <Input
+                                        id="last-name"
+                                        name="last-name"
+                                        value={this.getUserProperty('last_name', '')}
+                                        onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="email"
+                                    labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}
+                                >
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        value={this.getUserProperty('email', '')}
+                                        onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="phone"
+                                    labelText={ls('USER_PHONE_FIELD_TITLE', 'Телефон')}
+                                >
+                                    <Input
+                                        id="phone"
+                                        name="phone"
+                                        value={this.getUserProperty('phone', '')}
+                                        onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
+                                    />
+                                </Field>
+                                <Field
+                                    id="admin"
+                                    labelText={ls('USER_ADMIN_FIELD_TITLE', 'Администратор')}
+                                    labelAlign="right"
+                                    labelWidth="95%"
+                                    inputWidth="5%"
+                                >
+                                    <Checkbox
+                                        id="admin"
+                                        onChange={value => this.setUserProperty('admin', value)}
+                                        checked={this.getUserProperty('admin', false)}
+                                    />
+                                </Field>
+                            </Form>
+                        </Panel>
+                    </div>
+                    <div className={styles.userEditorColumn}>
+                        <Panel
+                            title={ls('USER_ROLE_PANEL_TITLE', 'Role')}
+                            bodyStyle={{ padding: 0 }}
                         >
-                            <Input
-                                name="admin"
-                                type="checkbox"
-                                onChange={event => this.setUserProperty('admin', _.get(event, 'target.checked'))}
-                                checked={this.getUserProperty('admin', '')}
+                            <RolesTable
+                                data={rolesList}
+                                user={user}
+                                onCheck={checked => this.setUserProperty('roles', checked)}
                             />
-                        </Field>
-                    </Form>
-                    <div className={styles.userRoles}>
-                        <RolesTable
-                            data={rolesList}
-                            user={user}
-                            onCheck={checked => this.setUserProperty('roles', checked)}
-                        />
+                        </Panel>
+                    </div>
+                    <div className={styles.userEditorColumn}>
+                        <Panel
+                            title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
+                            bodyStyle={{ padding: 0 }}
+                        >
+                            <RolesTable
+                                data={rolesList}
+                                user={user}
+                                onCheck={checked => this.setUserProperty('roles', checked)}
+                            />
+                        </Panel>
+                    </div>
+                    <div className={styles.userEditorColumn}>
+                        <Panel
+                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Notification group')}
+                            bodyStyle={{ padding: 0 }}
+                        >
+                            <RolesTable
+                                data={rolesList}
+                                user={user}
+                                onCheck={checked => this.setUserProperty('roles', checked)}
+                            />
+                        </Panel>
                     </div>
                 </div>
             </Modal>

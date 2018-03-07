@@ -1,15 +1,26 @@
-.roleEditorContent {
-  display: flex;
-  flex-direction: row;
-  .userForm {
-    width: 300px;
-    > *:not(:last-child) {
-      margin-bottom: .3rem;
-    }
-  }
-  .userRoles {
+.userEditor {
+  width: 912px;
+  max-width: 912px;
+  .userEditorContent {
     display: flex;
-    flex-grow: 1;
-    margin-left: 10px;
+    flex-direction: row;
+    .userEditorColumn {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .userEditorColumn:first-child {
+      flex-grow: 0;
+    }
+    .userEditorColumn + .userEditorColumn {
+      margin-left: 1px;
+    }
+    .userForm {
+      width: 260px;
+    }
+    .userRoles {
+      display: flex;
+      flex-grow: 1;
+    }
   }
 }
