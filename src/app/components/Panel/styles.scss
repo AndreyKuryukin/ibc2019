@@ -1,0 +1,22 @@
+@import "../../scss/vars";
+
+.panel {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  background: $white;
+  .panelHeader {
+    height: 20px;
+    line-height: 20px;
+    padding: 0 8px;
+    background: $light-grey;
+    color: $dark-blue;
+    font-size: 12px;
+  }
+  .panelBody {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    padding: 10px;
+  }
+}

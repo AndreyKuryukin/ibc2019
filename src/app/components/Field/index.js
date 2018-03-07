@@ -19,6 +19,7 @@ class Field extends React.PureComponent {
         labelAlign: PropTypes.oneOf(['left', 'right']),
         required: PropTypes.bool,
         children: PropTypes.node,
+        style: PropTypes.object,
     }
 
     static defaultProps = {
@@ -29,17 +30,18 @@ class Field extends React.PureComponent {
         labelAlign: 'left',
         required: false,
         children: null,
+        style: {},
     }
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, inputWidth, required, children } = this.props;
+        const { id, labelText, labelWidth, labelAlign, inputWidth, required, children, style } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
             { [styles.required]: required },
             { [styles.rightLabel]: labelAlign === 'right' },
         );
         return (
-            <div className={classes}>
+            <div className={classes} style={style}>
                 <label
                     htmlFor={id}
                     className={styles.fieldLabel}

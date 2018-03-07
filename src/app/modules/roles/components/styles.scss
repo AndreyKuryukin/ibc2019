@@ -1,7 +1,7 @@
 .rolesContainer {
   display: flex;
   flex-grow: 1;
-  padding: 1em;
+  padding: 0 10px 10px;
   height: 100%;
 }
 
@@ -14,10 +14,11 @@
 }
 
 .rolesControls {
-  padding: 10px;
+  padding: 5px;
+  height: 32px;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-grow: 0;
+  flex-shrink: 0;
   .buttonGroup {
     display: inline-flex;
     > *:not(:last-child) {
@@ -26,5 +27,6 @@
   }
   .rolesSearch {
     width: 20em;
+    margin-left: auto;
   }
 }

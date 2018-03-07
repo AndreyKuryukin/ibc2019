@@ -1,9 +1,9 @@
 // COLORS
-$orange: #ff6000;
+$orange: #ff8000;
 $placeholder: #aaa;
 $grey: #aaa;
 $white: #fff;
-$light-grey: #E9E9E9;
+$light-grey: #ccc;
 
 $dark-blue: #015680;
 $border-blue: #206A8F;
@@ -42,16 +42,17 @@ $modal-footer-border-width: 0;
 $modal-header-border-width: 0;
 
 //TABLE
-$table-cell-left-right-padding: .3em;
+$table-cell-left-right-padding: 8px;
 $table-cell-top-bottom-padding: 0;
 $table-cell-padding: $table-cell-top-bottom-padding $table-cell-left-right-padding;
-$table-cell-height: 23px;
+$table-cell-height: 22px;
 $table-border-width: 0;
 $table-border-color: transparent;
 $table-thead-font-weight: normal;
 $table-left-border: 1px $light-grey solid;
 $table-hover-bg: #E2E2E2;
 $table-accent-bg: #F2F2F2;
+$table-body-cell-color: #333;
 
 //INPUT
 $input-border-color: #E1EBF0;
@@ -65,13 +66,18 @@ $input-padding-x: 0.5rem;
 $btn-line-height: 1;
 
 //MODALS
-$modal-top-padding: .5rem;
-$modal-right-padding: .5rem;
-$modal-bottom-padding: .5rem;
-$modal-left-padding: .5rem;
+$modal-right-padding: 15px;
+$modal-left-padding: 15px;
 
-$modal-header-padding: $modal-top-padding $modal-right-padding $modal-bottom-padding $modal-left-padding;
-$modal-inner-padding: .3rem $modal-right-padding .6rem;
+$modal-header-padding: 10px $modal-right-padding 10px $modal-left-padding;
+$modal-body-padding: 0 $modal-right-padding 0 $modal-left-padding;
+$modal-footer-padding: 5px $modal-right-padding 11px $modal-left-padding;
+$modal-footer-height: 42px;
+
+//NAVBAR
+$navbar-height: 45px;
+$navbar-padding-x: 0;
+$navbar-padding-y: 0;
 
 //NOTIFICATIONS
 $notifications-background: transparent;

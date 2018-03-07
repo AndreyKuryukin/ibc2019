@@ -9,17 +9,15 @@
     display: flex;
     flex-grow: 0;
     flex-shrink: 0;
+    align-items: initial;
+    justify-content: stretch;
+    height: $navbar-height;
     color: $white;
     .menuWrapper {
       display: inline-flex;
-      flex: 3;
+      flex: 0;
       .menuFix {
         top: 10px !important;
-      }
-      .pageTitle {
-        width: 100%;
-        display: inline;
-        text-align: center;
       }
       .qLogo {
         //background: url(../../../resources/img/logo-rt.png);
@@ -31,9 +29,17 @@
         }
       }
     }
-    .leftPanel {
-      text-align: right;
+    .pageTitle {
+      width: 100%;
+      display: inline;
+      text-align: center;
+      padding: 10px;
       flex: 1;
+    }
+    .rightPanel {
+      text-align: right;
+      flex: 0;
+      padding: 10px;
     }
   }
   .pageContent {

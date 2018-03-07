@@ -13,30 +13,10 @@
   }
 }
 
-%flexColumn {
+.conditionsWrapper {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-}
-
-.panel {
-  @extend %flexColumn;
-  background: $white;
-  .panelHeader {
-    padding: 10px;
-    background: $light-grey;
-    color: $dark-blue;
-  }
-  .panelBody {
-    @extend %flexColumn;
-    padding: 10px;
-    > div:not(:last-child) {
-      margin-bottom: 10px;
-    }
-  }
-}
-.conditionsWrapper {
-  @extend %flexColumn;
   .conditions {
     display: flex;
     flex: 1 1 0;

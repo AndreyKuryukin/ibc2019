@@ -7,6 +7,7 @@
 .modal-header {
   border-top: 2px solid $orange;
   color: $white;
+  align-items: center;
   h5 {
     font-size: $font-size-base
   }
@@ -16,11 +17,18 @@
     font-weight: normal;
     font-size: 1rem;
     margin: 0;
+    padding: 0;
   }
 }
 
 .modal-body {
-  background-color: $white;
-  border-right: .5rem solid $dark-blue;
-  border-left: .5rem solid $dark-blue;
+  padding: $modal-body-padding;
+}
+
+.modal-footer {
+  height: $modal-footer-height;
+  justify-content: space-between;
+  flex-grow: 0;
+  flex-shrink: 0;
+  padding: $modal-footer-padding;
 }

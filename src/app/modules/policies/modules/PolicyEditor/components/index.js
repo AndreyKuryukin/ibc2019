@@ -5,6 +5,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Row, Col } from 're
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
+import Panel from '../../../../../components/Panel';
 import ls from 'i18n';
 import Configuration from './Configuration';
 import Condition from './Condition';
@@ -97,68 +98,66 @@ class PolicyEditor extends React.PureComponent {
                                 getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
                                 setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
                             />
-                            <div className={styles.panel}>
-                                <h6 className={styles.panelHeader}>{ls('POLICIES_SCOPE_TITLE', 'Область применения')}</h6>
-                                <div className={styles.panelBody}>
-                                    <Field
+                            <Panel
+                                title={ls('POLICIES_SCOPE_TITLE', 'Область применения')}
+                            >
+                                <Field
+                                    id="iField"
+                                    inputWidth="100%"
+                                >
+                                    <Select
                                         id="iField"
-                                        inputWidth="100%"
-                                    >
-                                        <Select
-                                            id="iField"
-                                            type="select"
-                                            options={[]}
-                                            onChange={() => {}}
-                                        />
-                                    </Field>
-                                    <Field
+                                        type="select"
+                                        options={[]}
+                                        onChange={() => {}}
+                                    />
+                                </Field>
+                                <Field
+                                    id="jField"
+                                    inputWidth="100%"
+                                >
+                                    <Select
                                         id="jField"
-                                        inputWidth="100%"
-                                    >
-                                        <Select
-                                            id="jField"
-                                            type="select"
-                                            options={[]}
-                                            onChange={() => {}}
-                                        />
-                                    </Field>
-                                </div>
-                            </div>
-                            <div className={styles.panel}>
-                                <h6 className={styles.panelHeader}>{ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}</h6>
-                                <div className={styles.panelBody}>
-                                    <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                        <div style={{ width: '70%' }}>
-                                            <Field
+                                        type="select"
+                                        options={[]}
+                                        onChange={() => {}}
+                                    />
+                                </Field>
+                            </Panel>
+                            <Panel
+                                title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
+                            >
+                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <div style={{ width: '70%' }}>
+                                        <Field
+                                            id="cease_duration"
+                                            labelText={ls('POLICIES_ADD', 'Создать политику')}
+                                            labelWidth="67%"
+                                            inputWidth="33%"
+                                        >
+                                            <Input
                                                 id="cease_duration"
-                                                labelText={ls('POLICIES_ADD', 'Создать политику')}
-                                                labelWidth="67%"
-                                                inputWidth="33%"
-                                            >
-                                                <Input
-                                                    id="cease_duration"
-                                                    name="cease_duration"
-                                                    value={this.getPolicyProperty('threshold.cease_duration')}
-                                                    onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
-                                                />
-                                            </Field>
-                                        </div>
-                                        <div style={{ width: '30%' }}>
-                                            <Field
+                                                name="cease_duration"
+                                                value={this.getPolicyProperty('threshold.cease_duration')}
+                                                onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
+                                            />
+                                        </Field>
+                                    </div>
+                                    <div style={{ width: '30%' }}>
+                                        <Field
+                                            id="cease_value"
+                                            labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
+                                        >
+                                            <Input
                                                 id="cease_value"
-                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
-                                            >
-                                                <Input
-                                                    id="cease_value"
-                                                    name="cease_value"
-                                                    value={this.getPolicyProperty('threshold.cease_value')}
-                                                    onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
-                                                />
-                                            </Field>
-                                        </div>
+                                                name="cease_value"
+                                                value={this.getPolicyProperty('threshold.cease_value')}
+                                                onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
+                                            />
+                                        </Field>
                                     </div>
                                 </div>
-                            </div>
+                            </Panel>
                         </div>
                         <div className={styles.roleEditorColumn}>
                             <Condition />

@@ -82,13 +82,15 @@ class UsersTable extends React.PureComponent {
     headerRowRender = (column) => {
         switch (column.name) {
             case 'checked': {
-                const isAllChecked = this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
+                const checkedPartially = this.props.data.length !== 0 && this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
+                const isAllChecked = !checkedPartially && this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
                 return (
                     <CheckedCell
                         id="users-all"
                         onChange={this.onCheck}
                         style={{ marginLeft: 0 }}
                         value={isAllChecked}
+                        checkedPartially={checkedPartially}
                     />
                 );
             }
