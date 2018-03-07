@@ -1,12 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import styles from './styles.scss';
 import ls from 'i18n';
 import TabPanel from '../../../components/TabPanel';
 import UserEditor from '../modules/UserEditor/containers';
 import UsersTable from './UsersTable';
-import Icon from "../../../components/Icon/Icon";
-import Input from "../../../components/Input/index";
+import Icon from '../../../components/Icon/Icon';
+import Input from '../../../components/Input/index';
 
 class Users extends React.PureComponent {
     static childContextTypes = {
@@ -33,11 +34,25 @@ class Users extends React.PureComponent {
         };
     }
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchText: '',
+        };
+    }
+
     componentDidMount() {
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
         }
     }
+
+    onSearchTextChange = (searchText) => {
+        this.setState({
+            searchText,
+        });
+    };
 
     onAdd = () => {
         this.props.history.push('/users/add');
@@ -45,6 +60,7 @@ class Users extends React.PureComponent {
 
     render() {
         const { match, history } = this.props;
+        const { searchText } = this.state;
         const { params } = match;
 
         const isEditorActive = params.action === 'edit' || params.action === 'add';
@@ -62,14 +78,13 @@ class Users extends React.PureComponent {
                         <Icon icon="addIcon" onClick={this.onAdd} />
                         <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
                                className={styles.search}
-                               onChange={this.onSearchTextChange}
+                               onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
                         />
                     </div>
 
                     <UsersTable
                         data={this.props.usersData}
-                        onCheckAll={(allChecked) => {
-                        }}
+                        searchText={searchText}
                     />
 
                     {isEditorActive && <UserEditor

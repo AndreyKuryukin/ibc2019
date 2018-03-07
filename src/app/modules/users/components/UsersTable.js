@@ -4,14 +4,17 @@ import _ from 'lodash';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
+import search from '../../../util/search';
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        searchText: PropTypes.string,
     };
 
     static defaultProps = {
         data: [],
+        searchText: '',
     };
 
     constructor(props) {
@@ -19,11 +22,13 @@ class UsersTable extends React.PureComponent {
 
         this.state = {
             checked: [],
+            searchText: '',
         };
     }
 
     getColumns = () => [{
         name: 'checked',
+        width: 28,
     }, {
         title: 'Логин',
         name: 'login',
@@ -129,13 +134,20 @@ class UsersTable extends React.PureComponent {
         }
     };
 
-    render() {
-        const columns = this.getColumns();
+    filter = (data, columns, searchText) => {
+        const searchableColumns = columns.filter(col => col.searchable);
+        return data.filter(
+            node => searchableColumns.find(column => search(node[column.name], searchText)))
+    };
 
+    render() {
+        const { data, searchText } = this.props;
+        const columns = this.getColumns();
+        const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table
                 selectable
-                data={this.props.data}
+                data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}

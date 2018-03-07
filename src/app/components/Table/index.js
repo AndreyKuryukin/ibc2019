@@ -174,6 +174,7 @@ class Table extends React.Component {
                                     headerRowRender={() => headerRowRender(column, sort)}
                                     onClick={() => this.onHeaderCellClick(column)}
                                     onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
+                                    width={column.width}
                                 >
                                     {headerRowRender(column, sort)}
                                 </HeaderCell>
