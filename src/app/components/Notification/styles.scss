@@ -1,0 +1,41 @@
+@import '../../scss/vars';
+
+.notification {
+  display: flex;
+  flex-direction: column;
+  background: $notifications-background;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 99999;
+  .notificationMessage {
+    display: flex;
+    flex-direction: row;
+    justify-items: center;
+    z-index: 99999;
+    align-items: center;
+    margin: $notification-margin;
+    border: $notification-border;
+    padding: $notification-padding;
+    background-color: $notification-background;
+    .closeIcon {
+      background: url(../../../resources/img/close.png);
+      position: relative;
+      right: -$notification-right-padding;
+      top: -$notification-top-padding;
+      margin: 6px;
+      height: 7px;
+      width: 7px;
+    }
+    &.criticalMsg {
+      &:before {
+        content: url(../../../resources/img/error.png);
+        height: 15px;
+        width: 15px;
+        display: block;
+        margin-right: 8px
+      }
+    }
+  }
+}
+

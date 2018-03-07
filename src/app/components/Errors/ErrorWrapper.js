@@ -8,6 +8,7 @@ import { ERROR } from "../../costants/errors";
 class ErrorWrapper extends React.PureComponent {
     static propTypes = {
         errors: PropTypes.array,
+        errorAlign: PropTypes.oneOf(['top', 'right', 'bottom', 'left'])
     };
 
     static defaultProps = {
@@ -17,10 +18,12 @@ class ErrorWrapper extends React.PureComponent {
     markInvalid = (child, error, key) => {
         const result = [];
         result.push({...child, props: {...child.props, valid: false}});
-        const errorText = <FormFeedback key={`feedback-${key}`}>
-            {error[ERROR.TITLE]}
-        </FormFeedback>;
-        result.push(errorText);
+        if (error[ERROR.TITLE]) {
+            const errorText = <FormFeedback key={`feedback-${key}`}>
+                {error[ERROR.TITLE]}
+            </FormFeedback>;
+            result.push(errorText);
+        }
         return result
     };
 

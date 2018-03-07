@@ -1,6 +1,7 @@
 // COLORS
 $orange: #ff8000;
 $placeholder: #aaa;
+$grey: #aaa;
 $white: #fff;
 $light-grey: #ccc;
 
@@ -12,18 +13,18 @@ $light-blue: #B3D1E0;
 $enable-rounded: false;
 
 $theme-colors: map-merge((
-        "action":    $orange,
+        "action": $orange,
 ), ());
 
 //COMMON
 $font-size-base: 0.85rem;
 $line-height-base: 1;
 
-  //LINK
+//LINK
 $link-color: $white;
 $link-decoration: underline;
 
-  //BODY
+//BODY
 $body-bg: $dark-blue;
 
 //TABS
@@ -33,7 +34,6 @@ $nav-link-padding-x: .3rem;
 $nav-tabs-border-width: 1px;
 $nav-tabs-link-secondary-bg: $light-blue;
 $nav-tabs-link-active-border-color: transparent $dark-blue;
-
 
 // MODAL
 $modal-content-bg: $dark-blue;
@@ -78,6 +78,21 @@ $modal-footer-height: 42px;
 $navbar-height: 45px;
 $navbar-padding-x: 0;
 $navbar-padding-y: 0;
+
+//NOTIFICATIONS
+$notifications-background: transparent;
+
+$notification-background: $white;
+$notification-border-color: $grey;
+$notification-margin: 4px;
+
+$notification-top-padding: 6px;
+$notification-right-padding: 12px;
+$notification-bottom-padding: 12px;
+$notification-left-padding: 4px;
+
+$notification-padding: $notification-top-padding $notification-right-padding $notification-bottom-padding $notification-left-padding;
+$notification-border: 1px solid $notification-border-color;
 
 @import "~bootstrap/scss/functions";
 @import '~bootstrap/scss/variables';
