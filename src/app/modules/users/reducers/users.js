@@ -1,5 +1,6 @@
 import {
     FETCH_USERS_SUCCESS,
+    DELETE_USER_SUCCESS,
 } from '../actions';
 import { CREATE_USER, UPDATE_USER } from '../modules/UserEditor/actions';
 
@@ -40,6 +41,16 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 byId,
+            };
+        }
+        case DELETE_USER_SUCCESS: {
+            const { ids } = action.payload;
+            const byId = _.omit(state.byId, ids);
+            const list = _.without(state.list, ...ids);
+
+            return {
+                byId,
+                list,
             };
         }
         default:

@@ -9,7 +9,7 @@ import UsersTable from './UsersTable';
 import Icon from '../../../components/Icon/Icon';
 import Input from '../../../components/Input/index';
 
-class Users extends React.PureComponent {
+class Users extends React.Component {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -20,12 +20,14 @@ class Users extends React.PureComponent {
         usersData: PropTypes.array,
         isLoading: PropTypes.bool,
         onMount: PropTypes.func,
+        onDelete: PropTypes.func,
     };
 
     static defaultProps = {
         usersData: [],
         isLoading: false,
         onMount: () => null,
+        onDelete: () => null,
     };
 
     getChildContext() {
@@ -39,6 +41,7 @@ class Users extends React.PureComponent {
 
         this.state = {
             searchText: '',
+            checkedIds: [],
         };
     }
 
@@ -46,6 +49,16 @@ class Users extends React.PureComponent {
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const isCheckedIdsChanged = this.state.checkedIds !== nextState.checkedIds;
+
+        return !isCheckedIdsChanged;
+    }
+
+    onCheck = (checkedIds) => {
+        this.setState({ checkedIds });
     }
 
     onSearchTextChange = (searchText) => {
@@ -56,6 +69,13 @@ class Users extends React.PureComponent {
 
     onAdd = () => {
         this.props.history.push('/users/add');
+    }
+
+    onDelete = () => {
+        const ids = this.state.checkedIds;
+        if (ids.length > 0) {
+            this.props.onDelete(ids);
+        }
     }
 
     render() {
@@ -76,7 +96,8 @@ class Users extends React.PureComponent {
 
                     <div className={styles.controlsWrapper}>
                         <Icon icon="addIcon" onClick={this.onAdd} />
-                        <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
+                        <Icon icon="deleteIcon" onClick={this.onDelete} style={{ marginLeft: 10 }} />
+                        <Input placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                                className={styles.search}
                                onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
                         />
@@ -85,6 +106,7 @@ class Users extends React.PureComponent {
                     <UsersTable
                         data={this.props.usersData}
                         searchText={searchText}
+                        onCheck={this.onCheck}
                     />
 
                     {isEditorActive && <UserEditor

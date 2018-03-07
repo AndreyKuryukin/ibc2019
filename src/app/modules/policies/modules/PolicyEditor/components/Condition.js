@@ -42,54 +42,54 @@ class Condition extends React.PureComponent {
                     <Icon icon="addIcon" onClick={this.onAdd}/>
                     <div className={styles.conditions}>
                         <div className={styles.conditionBlock}>
-                        <div className={styles.parameters}>
-                            <Field
-                                id="object"
-                                labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
-                                labelWidth="30%"
-                                inputWidth="70%"
-                            >
-                                <Select
+                            <div className={styles.parameters}>
+                                <Field
                                     id="object"
-                                    type="select"
-                                    options={[]}
-                                    onChange={() => {}}
-                                />
-                            </Field>
-                            <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                <div style={{ width: '60%' }}>
-                                    <Field
-                                        id="parameter"
-                                        labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Параметр')}:`}
-                                    >
-                                        <Select
-                                            id="parameter"
-                                            type="select"
-                                            options={[]}
-                                            onChange={() => {}}
-                                        />
-                                    </Field>
-                                </div>
-                                <div style={{ width: '20%', paddingLeft: 5 }}>
+                                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
+                                    labelWidth="30%"
+                                    inputWidth="70%"
+                                >
                                     <Select
+                                        id="object"
                                         type="select"
-                                        placeholder={''}
                                         options={[]}
                                         onChange={() => {}}
                                     />
-                                </div>
-                                <div style={{ width: '20%', paddingLeft: 5 }}>
-                                    <Input
-                                        name="threshold"
-                                        value={''}
-                                        placeholder={''}
-                                        onChange={() => {}}
-                                    />
+                                </Field>
+                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <div style={{ width: '60%' }}>
+                                        <Field
+                                            id="parameter"
+                                            labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Параметр')}:`}
+                                        >
+                                            <Select
+                                                id="parameter"
+                                                type="select"
+                                                options={[]}
+                                                onChange={() => {}}
+                                            />
+                                        </Field>
+                                    </div>
+                                    <div style={{ width: '20%', paddingLeft: 5 }}>
+                                        <Select
+                                            type="select"
+                                            placeholder={''}
+                                            options={[]}
+                                            onChange={() => {}}
+                                        />
+                                    </div>
+                                    <div style={{ width: '20%', paddingLeft: 5 }}>
+                                        <Input
+                                            name="threshold"
+                                            value={''}
+                                            placeholder={''}
+                                            onChange={() => {}}
+                                        />
+                                    </div>
                                 </div>
                             </div>
+                            <span className={styles.remove}>×</span>
                         </div>
-                        <span className={styles.remove}>×</span>
-                    </div>
                     </div>
                 </div>
             </Panel>

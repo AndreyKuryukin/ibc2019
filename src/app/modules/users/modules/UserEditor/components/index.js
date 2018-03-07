@@ -5,10 +5,9 @@ import { Form } from 'reactstrap';
 import Modal from '../../../../../components/Modal';
 import Input from '../../../../../components/Input';
 import styles from './styles.scss';
-import RolesTable from './RolesTable';
+import RolesGrid from './RolesGrid';
 import Field from '../../../../../components/Field';
 import Panel from '../../../../../components/Panel';
-import Checkbox from '../../../../../components/Checkbox';
 import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
 
@@ -52,6 +51,12 @@ class UserEditor extends React.PureComponent {
                 user: nextProps.user,
             });
         }
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const isCheckedIdsChanged = this.state.checkedIds !== nextState.checkedIds;
+
+        return !isCheckedIdsChanged;
     }
 
     getUserProperty = (key, defaultValue) => _.get(this.state.user, key, defaultValue);
@@ -220,19 +225,6 @@ class UserEditor extends React.PureComponent {
                                         onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
                                     />
                                 </Field>
-                                <Field
-                                    id="admin"
-                                    labelText={ls('USER_ADMIN_FIELD_TITLE', 'Администратор')}
-                                    labelAlign="right"
-                                    labelWidth="95%"
-                                    inputWidth="5%"
-                                >
-                                    <Checkbox
-                                        id="admin"
-                                        onChange={value => this.setUserProperty('admin', value)}
-                                        checked={this.getUserProperty('admin', false)}
-                                    />
-                                </Field>
                             </Form>
                         </Panel>
                     </div>
@@ -241,7 +233,7 @@ class UserEditor extends React.PureComponent {
                             title={ls('USER_ROLE_PANEL_TITLE', 'Role')}
                             bodyStyle={{ padding: 0 }}
                         >
-                            <RolesTable
+                            <RolesGrid
                                 data={rolesList}
                                 user={user}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
@@ -253,7 +245,7 @@ class UserEditor extends React.PureComponent {
                             title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
                             bodyStyle={{ padding: 0 }}
                         >
-                            <RolesTable
+                            <RolesGrid
                                 data={rolesList}
                                 user={user}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
@@ -265,7 +257,7 @@ class UserEditor extends React.PureComponent {
                             title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Notification group')}
                             bodyStyle={{ padding: 0 }}
                         >
-                            <RolesTable
+                            <RolesGrid
                                 data={rolesList}
                                 user={user}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
