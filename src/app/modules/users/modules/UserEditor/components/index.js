@@ -255,8 +255,8 @@ class UserEditor extends React.PureComponent {
                         >
                             <RolesTable
                                 data={rolesList}
-                                user={user}
-                                onCheck={checked => this.setUserProperty('roles', checked)}
+                                checked={user}
+                                onCheck={checked => this.setUserProperty('division', checked)}
                             />
                         </Panel>
                     </div>
