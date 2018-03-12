@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import styles from './styles.scss';
 import Panel from '../../../../../components/Panel';
-import TreeView from '../../../../../components/TreeView'
+import Grid from '../../../../../components/Grid'
+import { CheckedCell } from '../../../../../components/Table/Cells';
 import ls from "i18n";
 
 
@@ -19,75 +20,121 @@ class Divisions extends React.Component {
         checked: []
     };
 
+    constructor(props) {
+        super(props);
 
+        this.state = {
+            checked: [],
+        };
+    }
 
-    onCheck = () => {
+    onCheck = (value, node) => {
+        let checked = [];
+        if (node) {
+            console.log(node);
+            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id);
+        } else {
+            checked = value ? this.props.data.map(node => node.id) : [];
+        }
 
+        this.setState({
+            checked,
+        });
     };
 
     mapData = (data) => {
         return [
             {
                 id: 1,
-                name: 'Expandable',
+                name: 'All',
                 items: [
                     {
                         id: 3,
-                        name: 'osidjfoisd'
+                        name: 'Russia',
+                        items: [
+                            {
+                                id: 5,
+                                name: 'Moscow',
+                            }, {
+                                id: 6,
+                                name: 'Far east',
+                            }, {
+                                id: 7,
+                                name: 'West',
+                            }, {
+                                id: 8,
+                                name: 'Ural',
+                            }, {
+                                id: 9,
+                                name: 'South',
+                            }, {
+                                id: 10,
+                                name: 'North',
+                            }, {
+                                id: 11,
+                                name: 'St. Petersburg',
+                            },
+                        ]
                     },
                     {
                         id: 4,
-                        name: 'retertertert'
-                    }
-                ]
-            },
-            {
-                id: 5,
-                name: 'Expandable 2',
-                items: [
-                    {
-                        id: 6,
-                        name: 'level 1',
+                        name: 'USA',
                         items: [
                             {
-                                id: 7,
-                                name: 'level 2'
+                                id: 12,
+                                name: 'Alaska',
+                            }, {
+                                id: 13,
+                                name: 'California',
+                            }, {
+                                id: 14,
+                                name: 'Oklahoma',
+                            }, {
+                                id: 15,
+                                name: 'Texas',
                             }
                         ]
-                    },
+                    }
                 ]
-            },
-            {
-                id: 2,
-                name: 'Simple'
             }
         ]
     };
 
-    headerRowRender = (column, node) => {
-        return node[column.name];
-    };
-
     bodyRowRender = (column, node) => {
-        return node[column.name];
+        return (
+            <CheckedCell
+                id={`user-editor-divisions-grid-${node.id}`}
+                onChange={(value) => this.onCheck(value, node)}
+                style={{ marginLeft: 0 }}
+                value={this.state.checked.includes(node.id)}
+                checkedPartially={false}
+                text={node[column.name]}
+            />
+        );
     };
 
     render() {
         const {
             data,
         } = this.props;
-        return <div className={styles.userEditorColumn}>
+
+        const checkedPartially = this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
+
+        return (
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
                 bodyStyle={{ padding: 0 }}
             >
-                <TreeView
+                <Grid
+                    id="user-editor-divisions-grid"
                     data={this.mapData(data)}
-                    headerRowRender={this.headerRowRender}
                     bodyRowRender={this.bodyRowRender}
+                    checkedPartially={checkedPartially}
+                    onCheckAll={this.onCheck}
+                    tree
                 />
             </Panel>
-        </div>
+        );
     }
 }
 

@@ -5,6 +5,7 @@ import ls from 'i18n';
 import Input from '../Input';
 import Checkbox from '../Checkbox';
 import Table from '../Table';
+import TreeView from '../TreeView';
 
 import styles from './styles.scss';
 
@@ -28,6 +29,7 @@ class Grid extends React.PureComponent {
         selectable: false,
         isAllChecked: false,
         checkedPartially: false,
+        tree: false,
         headerRowRender: null,
         bodyRowRender: () => null,
         onCheckAll: () => null,
@@ -35,7 +37,18 @@ class Grid extends React.PureComponent {
     };
 
     render() {
-        const { id, isAllChecked, onCheckAll, onSearchTextChange, checkedPartially, ...rest } = this.props;
+        const {
+            id,
+            columns,
+            selectable,
+            isAllChecked,
+            onCheckAll,
+            onSearchTextChange,
+            checkedPartially,
+            tree,
+            ...rest
+        } = this.props;
+
         return (
             <div className={styles.gridWrapper}>
                 <div className={styles.gridControls}>
@@ -51,7 +64,15 @@ class Grid extends React.PureComponent {
                         onChange={e => onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
                     />
                 </div>
-                <Table {...rest} />
+                <div className={styles.gridBody}>
+                    {tree ? <TreeView
+                        {...rest}
+                    /> : <Table
+                        {...rest}
+                        columns={columns}
+                        selectable={selectable}
+                    />}
+                </div>
             </div>
         );
     }

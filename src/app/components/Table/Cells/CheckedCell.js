@@ -31,7 +31,7 @@ class CheckedCell extends React.PureComponent {
             ...this.props.style,
         };
         return (
-            <div>
+            <div style={{ display: 'flex', alignItems: 'center' }}>
                 <Checkbox
                     id={this.props.id}
                     style={style}

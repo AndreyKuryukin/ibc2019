@@ -43,7 +43,7 @@ class RolesGrid extends React.PureComponent {
     onCheck = (value, node) => {
         let checked = [];
         if (node) {
-            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
+            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id);
         } else {
             checked = value ? this.props.data.map(node => node.id) : [];
         }
