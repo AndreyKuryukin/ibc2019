@@ -6,6 +6,7 @@ import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
 import ls from "i18n";
+import classnames from "classnames";
 
 
 class Divisions extends React.Component {
@@ -121,6 +122,7 @@ class Divisions extends React.Component {
         const checkedPartially = this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
 
         return (
+        return <div className={classnames(styles.userEditorColumn, styles.userDivisions)}>
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
                 bodyStyle={{ padding: 0 }}
@@ -128,13 +130,19 @@ class Divisions extends React.Component {
                 <Grid
                     id="user-editor-divisions-grid"
                     data={this.mapData(data)}
+                    columns={[
+                        {
+                            name: 'name',
+                        }
+                    ]}
+                    headerRowRender={this.headerRowRender}
                     bodyRowRender={this.bodyRowRender}
                     checkedPartially={checkedPartially}
                     onCheckAll={this.onCheck}
                     tree
                 />
             </Panel>
-        );
+        </div>
     }
 }
 

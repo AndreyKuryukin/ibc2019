@@ -40,12 +40,6 @@ class TreeView extends React.Component {
         }
     }
 
-    getColumns = () => ([
-        {
-            name: 'name',
-        }
-    ]);
-
     mapData = (data, level = 0) => {
         const result = [];
         data.forEach((node, index) => {
@@ -70,10 +64,11 @@ class TreeView extends React.Component {
     };
 
     expandableCell = (column, node) => {
-        return <div style={{ marginLeft: node.level * 12 }} className={styles.treeCell}>
+        return <div className={styles.treeCell}>
+            {this.transitCells(node.level)}
             <div className={classnames({
-                // [styles.lastCell]: node.isLast,
-                // [styles.middleCell]: !node.isLast,
+                [styles.lastExpandableCell]: node.isLast,
+                [styles.middleExpandableCell]: !node.isLast,
                 [styles.collapsedCell]: !this.isExpanded(node.id),
                 [styles.expandedCell]: this.isExpanded(node.id)
             })}
@@ -84,14 +79,23 @@ class TreeView extends React.Component {
     };
 
     simpleCell = (column, node) => {
-        return <div style={{ marginLeft: node.level * 12 }} className={styles.treeCell}>
+        return <div className={styles.treeCell}>
+            {this.transitCells(node.level)}
             <div className={classnames({
-                // [styles.lastCell]: node.isLast,
-                // [styles.middleCell]: !node.isLast,
+                [styles.lastCell]: node.isLast,
+                [styles.middleCell]: !node.isLast,
             })}
             />
             {this.props.bodyRowRender(column, node)}
         </div>
+    };
+
+    transitCells = (count) => {
+        const transitCells = [];
+        for (let i = 0; i < count; i++) {
+            transitCells.push(<div className={styles.transitCell} key={i}/>)
+        }
+        return transitCells;
     };
 
     isExpanded = id => this.state.expanded.findIndex(uid => uid === id) !== -1;
@@ -104,12 +108,11 @@ class TreeView extends React.Component {
     };
 
     render() {
-        const { data, headerRowRender } = this.props;
+        const { data, ...rest } = this.props;
         const newData = this.mapData(data);
         return <Table
-            columns={this.getColumns()}
+            {...rest}
             data={newData}
-            headerRowRender={headerRowRender}
             bodyRowRender={this.bodyRowRender}
         />
     }
