@@ -39,7 +39,6 @@ class Grid extends React.PureComponent {
     render() {
         const {
             id,
-            columns,
             selectable,
             isAllChecked,
             onCheckAll,
@@ -69,7 +68,6 @@ class Grid extends React.PureComponent {
                         {...rest}
                     /> : <Table
                         {...rest}
-                        columns={columns}
                         selectable={selectable}
                     />}
                 </div>

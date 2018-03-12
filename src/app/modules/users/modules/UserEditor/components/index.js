@@ -244,7 +244,7 @@ class UserEditor extends React.PureComponent {
                     <div className={styles.userEditorColumn}>
                         <Divisions
                             data={rolesList}
-                            checked={user}
+                            checked={[]}
                             onCheck={checked => this.setUserProperty('division', checked)}
                         />
                     </div>
