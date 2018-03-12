@@ -11,6 +11,7 @@ import Panel from '../../../../../components/Panel';
 import Checkbox from '../../../../../components/Checkbox';
 import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
+import Divisions from "./Divisions";
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -253,7 +254,7 @@ class UserEditor extends React.PureComponent {
                             title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
                             bodyStyle={{ padding: 0 }}
                         >
-                            <RolesTable
+                            <Divisions
                                 data={rolesList}
                                 checked={user}
                                 onCheck={checked => this.setUserProperty('division', checked)}

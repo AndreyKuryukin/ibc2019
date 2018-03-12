@@ -1,0 +1,25 @@
+.treeCell {
+  display: flex;
+  flex-direction: row;
+  padding-left: 12px;
+  align-items: center;
+}
+
+.expandedCell {
+  height: 20px;
+  width: 16px;
+  background: url(../../../resources/img/tree/minus.png) no-repeat;
+  &:hover {
+    background: url('../../../resources/img/tree/minus 1.png') no-repeat;
+  }
+}
+
+.collapsedCell {
+  height: 20px;
+  width: 16px;
+  background: url(../../../resources/img/tree/plus.png) no-repeat;
+  &:hover {
+    background: url('../../../resources/img/tree/plus 1.png') no-repeat;
+  }
+}
+

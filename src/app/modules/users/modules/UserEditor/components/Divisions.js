@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import styles from './styles.scss';
 import Panel from '../../../../../components/Panel';
+import TreeView from '../../../../../components/TreeView'
 import ls from "i18n";
 
 
@@ -13,20 +14,62 @@ class Divisions extends React.Component {
         checked: PropTypes.array
     };
 
+    static defaultProps = {
+        data: [],
+        checked: []
+    };
+
+
+
     onCheck = () => {
 
     };
 
-    mapData = () => {
-
+    mapData = (data) => {
+        return [
+            {
+                id: 1,
+                name: 'Expandable',
+                items: [
+                    {
+                        id: 3,
+                        name: 'osidjfoisd'
+                    },
+                    {
+                        id: 4,
+                        name: 'retertertert'
+                    }
+                ]
+            },
+            {
+                id: 5,
+                name: 'Expandable 2',
+                items: [
+                    {
+                        id: 6,
+                        name: 'level 1',
+                        items: [
+                            {
+                                id: 7,
+                                name: 'level 2'
+                            }
+                        ]
+                    },
+                ]
+            },
+            {
+                id: 2,
+                name: 'Simple'
+            }
+        ]
     };
 
-    headerRowRender = () => {
-
+    headerRowRender = (column, node) => {
+        return node[column.name];
     };
 
-    bodyRowRender = () => {
-
+    bodyRowRender = (column, node) => {
+        return node[column.name];
     };
 
     render() {
