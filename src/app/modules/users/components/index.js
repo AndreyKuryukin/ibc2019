@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import _ from 'lodash';
 import styles from './styles.scss';
 import ls from 'i18n';
 import TabPanel from '../../../components/TabPanel';
 import UserEditor from '../modules/UserEditor/containers';
 import UsersTable from './UsersTable';
-import Icon from "../../../components/Icon/Icon";
-import Input from "../../../components/Input/index";
+import Icon from '../../../components/Icon/Icon';
+import Input from '../../../components/Input/index';
 
-class Users extends React.PureComponent {
+class Users extends React.Component {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -19,17 +20,28 @@ class Users extends React.PureComponent {
         usersData: PropTypes.array,
         isLoading: PropTypes.bool,
         onMount: PropTypes.func,
+        onDelete: PropTypes.func,
     };
 
     static defaultProps = {
         usersData: [],
         isLoading: false,
         onMount: () => null,
+        onDelete: () => null,
     };
 
     getChildContext() {
         return {
             history: this.props.history,
+        };
+    }
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            searchText: '',
+            checkedIds: [],
         };
     }
 
@@ -39,12 +51,36 @@ class Users extends React.PureComponent {
         }
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        const isCheckedIdsChanged = this.state.checkedIds !== nextState.checkedIds;
+
+        return !isCheckedIdsChanged;
+    }
+
+    onCheck = (checkedIds) => {
+        this.setState({ checkedIds });
+    }
+
+    onSearchTextChange = (searchText) => {
+        this.setState({
+            searchText,
+        });
+    };
+
     onAdd = () => {
         this.props.history.push('/users/add');
     }
 
+    onDelete = () => {
+        const ids = this.state.checkedIds;
+        if (ids.length > 0) {
+            this.props.onDelete(ids);
+        }
+    }
+
     render() {
         const { match, history } = this.props;
+        const { searchText } = this.state;
         const { params } = match;
 
         const isEditorActive = params.action === 'edit' || params.action === 'add';
@@ -60,14 +96,17 @@ class Users extends React.PureComponent {
 
                     <div className={styles.controlsWrapper}>
                         <Icon icon="addIcon" onClick={this.onAdd} />
-                        <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
+                        <Icon icon="deleteIcon" onClick={this.onDelete} style={{ marginLeft: 10 }} />
+                        <Input placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                                className={styles.search}
-                               onChange={this.onSearchTextChange}
+                               onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
                         />
                     </div>
 
                     <UsersTable
                         data={this.props.usersData}
+                        searchText={searchText}
+                        onCheck={this.onCheck}
                     />
 
                     {isEditorActive && <UserEditor
