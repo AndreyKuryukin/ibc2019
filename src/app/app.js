@@ -33,15 +33,6 @@ class App extends React.Component {
 
 const store = createStore(rootReducer);
 
-function getCookie() {
-    return document.cookie;
-}
-function updateMessage() {
-    let text = getCookie();
-    console.log(text);
-}
-setTimeout(updateMessage, 1000);
-
 const renderRootComponent = () => {
     ReactDOM.render(
         <Notification>

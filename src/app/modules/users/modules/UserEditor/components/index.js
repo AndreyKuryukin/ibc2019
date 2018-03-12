@@ -10,6 +10,7 @@ import Field from '../../../../../components/Field';
 import Panel from '../../../../../components/Panel';
 import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
+import Divisions from "./Divisions";
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -241,16 +242,11 @@ class UserEditor extends React.PureComponent {
                         </Panel>
                     </div>
                     <div className={styles.userEditorColumn}>
-                        <Panel
-                            title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
-                            bodyStyle={{ padding: 0 }}
-                        >
-                            <RolesGrid
-                                data={rolesList}
-                                user={user}
-                                onCheck={checked => this.setUserProperty('roles', checked)}
-                            />
-                        </Panel>
+                        <Divisions
+                            data={rolesList}
+                            checked={user}
+                            onCheck={checked => this.setUserProperty('division', checked)}
+                        />
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
