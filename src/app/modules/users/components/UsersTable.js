@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Table from '../../../components/Table';
-import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
-import MailLink from "../../../components/MailLink/index";
+import { DefaultCell, CheckedCell, LinkCell } from '../../../components/Table/Cells';
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
@@ -25,39 +24,19 @@ class UsersTable extends React.PureComponent {
     getColumns = () => [{
         name: 'checked',
     }, {
-        title: 'Логин',
+        title: 'Login',
         name: 'login',
-        searchable: true,
-        sortable: true,
-        filter: {
-            type: 'text',
-        }
     }, {
-        title: 'Имя',
+        title: 'Name',
         name: 'name',
-        searchable: true,
-        sortable: true,
-        filter: {
-            type: 'text',
-        }
     }, {
         title: 'Email',
         name: 'email',
-        searchable: true,
-        sortable: true,
-        filter: {
-            type: 'text',
-        }
     }, {
-        title: 'Номер телефона',
+        title: 'Phone number',
         name: 'phone',
-        searchable: true,
-        sortable: true,
-        filter: {
-            type: 'number',
-        }
     }, {
-        title: 'Активен',
+        title: 'Active',
         name: 'active',
     }];
 
@@ -72,20 +51,17 @@ class UsersTable extends React.PureComponent {
         this.setState({
             checked,
         });
-    };
+    }
 
     headerRowRender = (column) => {
         switch (column.name) {
             case 'checked': {
-                const checkedPartially = this.props.data.length !== 0 && this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
-                const isAllChecked = !checkedPartially && this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
+                const isAllChecked = this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
                 return (
                     <CheckedCell
-                        id="users-all"
                         onChange={this.onCheck}
                         style={{ marginLeft: 0 }}
                         value={isAllChecked}
-                        checkedPartially={checkedPartially}
                     />
                 );
             }
@@ -96,7 +72,7 @@ class UsersTable extends React.PureComponent {
                     />
                 );
         }
-    };
+    }
 
     bodyRowRender = (column, node) => {
         const text = node[column.name];
@@ -105,15 +81,11 @@ class UsersTable extends React.PureComponent {
                 const isRowChecked = this.state.checked.includes(node.id);
                 return (
                     <CheckedCell
-                        id={`users-user-${node.id}`}
                         onChange={(value) => this.onCheck(value, node)}
                         style={{ marginLeft: 0 }}
                         value={isRowChecked}
                     />
                 );
-            }
-            case 'email' : {
-                return <MailLink href={node.email}>{node.email}</MailLink>
             }
             case 'login':
                 return (
@@ -129,7 +101,7 @@ class UsersTable extends React.PureComponent {
                     />
                 );
         }
-    };
+    }
 
     render() {
         const columns = this.getColumns();
