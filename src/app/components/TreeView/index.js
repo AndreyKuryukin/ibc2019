@@ -14,24 +14,29 @@ class TreeView extends React.Component {
                 id: PropTypes.oneOfType([
                     PropTypes.number,
                     PropTypes.string
-                ]),
+                ]).isRequired,
                 name: PropTypes.string,
                 items: PropTypes.array
             })),
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
+        expanded: PropTypes.arrayOf(PropTypes.oneOfType([
+            PropTypes.number,
+            PropTypes.string
+        ]))
     };
 
     static defaultProps = {
         data: [],
+        expanded: [],
         headerRowRender: () => null,
         bodyRowRender: () => null,
-    }
+    };
 
     constructor(props) {
         super(props);
         this.state = {
-            expanded: [5, 6]
+            expanded: []
         }
     }
 
@@ -101,7 +106,6 @@ class TreeView extends React.Component {
     render() {
         const { data, headerRowRender } = this.props;
         const newData = this.mapData(data);
-        console.log(newData);
         return <Table
             columns={this.getColumns()}
             data={newData}

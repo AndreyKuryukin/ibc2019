@@ -250,16 +250,11 @@ class UserEditor extends React.PureComponent {
                         </Panel>
                     </div>
                     <div className={styles.userEditorColumn}>
-                        <Panel
-                            title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
-                            bodyStyle={{ padding: 0 }}
-                        >
-                            <Divisions
-                                data={rolesList}
-                                checked={user}
-                                onCheck={checked => this.setUserProperty('division', checked)}
-                            />
-                        </Panel>
+                        <Divisions
+                            data={rolesList}
+                            checked={user}
+                            onCheck={checked => this.setUserProperty('division', checked)}
+                        />
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
