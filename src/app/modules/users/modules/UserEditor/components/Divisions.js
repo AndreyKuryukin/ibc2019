@@ -6,6 +6,7 @@ import Panel from '../../../../../components/Panel';
 import TreeView from '../../../../../components/TreeView'
 import ls from "i18n";
 import classnames from "classnames";
+import CheckedCell from "../../../../../components/Table/Cells/CheckedCell";
 
 
 class Divisions extends React.Component {
@@ -20,10 +21,23 @@ class Divisions extends React.Component {
         checked: []
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked:  []
+        }
+    }
 
+    onCheck = (id) => {
+        this.setState({
+            checked: _.uniq([...this.state.checked, id])
+        })
+    };
 
-    onCheck = () => {
-
+    unCheck = (id) => {
+        this.setState({
+            checked: this.state.checked.filter(uid => uid !== id)
+        })
     };
 
     mapData = (data) => {
@@ -90,11 +104,17 @@ class Divisions extends React.Component {
     };
 
     headerRowRender = (column, node) => {
-        return node[column.name];
+
     };
 
     bodyRowRender = (column, node) => {
-        return node[column.name];
+        return <span>
+            <CheckedCell value={this.state.checked.findIndex(id => id === node.id) !== -1}
+                         id={node.id}
+                         onChange={checked => checked ? this.onCheck(node.id) : this.unCheck(node.id)}
+            />
+            {node[column.name]}
+        </span>
     };
 
     render() {

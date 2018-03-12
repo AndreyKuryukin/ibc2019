@@ -57,6 +57,46 @@ class UsersTable extends React.PureComponent {
             type: 'number',
         }
     }, {
+        title: 'Роли',
+        name: 'roles',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Подразделения',
+        name: 'divisions',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Группы уведомлений',
+        name: 'groups',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Создан',
+        name: 'created',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Последний логин',
+        name: 'last_connection',
+        searchable: true,
+        sortable: true,
+        filter: {
+            type: 'text',
+        }
+    }, {
         title: 'Активен',
         name: 'active',
     }];

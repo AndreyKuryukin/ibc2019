@@ -10,6 +10,7 @@ import PermissionList from './PermissionList'
 import styles from './styles.scss';
 import ls from "i18n";
 import Field from "../../../../../components/Field/index";
+import Panel from "../../../../../components/Panel/index";
 
 
 class RoleEditor extends React.PureComponent {
@@ -99,30 +100,35 @@ class RoleEditor extends React.PureComponent {
                 <ModalHeader
                     toggle={this.onClose}>{roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') : ls('NEW_ROLE_ADD', 'Создание новой роли')}</ModalHeader>
                 <ModalBody className={styles.modalBody}>
-                    <Field labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
-                           required
-                    >
-                        <Input value={role.name}
-                               onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
-                        />
-                    </Field>
+                    <Panel title={ls('ROLES_EDIT_MAIN_INFO', 'Основная информация')}>
+                        <Field labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                               required
+                        >
+                            <Input value={role.name}
+                                   onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                            />
+                        </Field>
 
-                    <Field labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}>
-                        <Select type="select"
-                                options={this.getSourceOptions(sourceOptions)}
-                                onChange={this.copySubjectsFromRole}
+                        <Field labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}>
+                            <Select type="select"
+                                    options={this.getSourceOptions(sourceOptions)}
+                                    onChange={this.copySubjectsFromRole}
+                            />
+                        </Field>
+                    </Panel>
+                    <Panel title={ls('ROLES_EDIT_PERMISSIONS', 'Разрешения')}>
+                        <PermissionList subjectsData={subjectsData}
+                                        onCheck={this.onCheck}
+                                        checked={role.subjects}
                         />
-                    </Field>
-                    <PermissionList subjectsData={subjectsData}
-                                    onCheck={this.onCheck}
-                                    checked={role.subjects}
-                    />
-                    <Input type="textarea"
-                           value={role.description}
-                           placeholder={ls('NEW_ROLE_COMMENT_PLACEHOLDER', 'Комментарий')}
-                           onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
+                    </Panel>
+                    <Panel title={ls('NEW_ROLE_COMMENT_PLACEHOLDER', 'Комментарий')}>
+                        <Input type="textarea"
+                               value={role.description}
+                               onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
 
-                    />
+                        />
+                    </Panel>
                 </ModalBody>
                 <ModalFooter>
                     <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
