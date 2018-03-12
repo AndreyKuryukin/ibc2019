@@ -5,6 +5,7 @@ import styles from './styles.scss';
 import Panel from '../../../../../components/Panel';
 import TreeView from '../../../../../components/TreeView'
 import ls from "i18n";
+import classnames from "classnames";
 
 
 class Divisions extends React.Component {
@@ -52,9 +53,33 @@ class Divisions extends React.Component {
                             {
                                 id: 7,
                                 name: 'level 2'
+                            },
+                            {
+                                id: 8,
+                                name: 'level 2'
+                            },
+                            {
+                                id: 9,
+                                name: 'level 2'
                             }
                         ]
                     },
+                    {
+                        id: 10,
+                        name: 'level 1',
+                        items: [
+                            {
+                                id: 11,
+                                name: 'level 2',
+                                items: [
+                                    {
+                                        id: 12,
+                                        name: 'level 2'
+                                    }
+                                ]
+                            }
+                        ]
+                    }
                 ]
             },
             {
@@ -76,13 +101,18 @@ class Divisions extends React.Component {
         const {
             data,
         } = this.props;
-        return <div className={styles.userEditorColumn}>
+        return <div className={classnames(styles.userEditorColumn, styles.userDivisions)}>
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
                 bodyStyle={{ padding: 0 }}
             >
                 <TreeView
                     data={this.mapData(data)}
+                    columns={[
+                        {
+                            name: 'name',
+                        }
+                    ]}
                     headerRowRender={this.headerRowRender}
                     bodyRowRender={this.bodyRowRender}
                 />

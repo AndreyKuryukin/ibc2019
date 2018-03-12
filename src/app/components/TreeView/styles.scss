@@ -1,12 +1,11 @@
 .treeCell {
   display: flex;
   flex-direction: row;
-  padding-left: 12px;
   align-items: center;
 }
 
 .expandedCell {
-  height: 20px;
+  height: 22px;
   width: 16px;
   background: url(../../../resources/img/tree/minus.png) no-repeat;
   &:hover {
@@ -15,11 +14,111 @@
 }
 
 .collapsedCell {
-  height: 20px;
+  height: 22px;;
   width: 16px;
   background: url(../../../resources/img/tree/plus.png) no-repeat;
   &:hover {
     background: url('../../../resources/img/tree/plus 1.png') no-repeat;
+  }
+}
+
+.lastExpandableCell {
+  height: 22px;;
+  width: 16px;
+  &:before {
+    display: block;
+    border-right: 1px solid #dfdfdf;
+    content: "";
+    top: 0;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    width: 45%;
+  }
+}
+
+.middleExpandableCell {
+  height: 22px;;
+  width: 16px;
+  &:before {
+    display: block;
+    border-right: 1px solid #dfdfdf;
+    content: "";
+    top: 0;
+    height: 4px;
+    width: 45%;
+  }
+  &:after {
+    display: block;
+    border-right: 1px solid #dfdfdf;
+    content: "";
+    width: 45%;
+    top: 13px;
+    position: relative;
+    height: 5px;
+  }
+}
+
+.lastCell {
+  height: 22px;;
+  width: 16px;
+  &:before {
+    display: block;
+    border-right: 1px solid #dfdfdf;
+    content: "";
+    top: 0;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    height: 12px;
+    width: 45%;
+  }
+  &:after {
+    display: block;
+    border-bottom: 1px solid #dfdfdf;
+    content: "";
+    border-bottom: 1px solid #dfdfdf;
+    width: 50%;
+    margin-left: 6px;
+  }
+}
+
+.middleCell {
+  height: 22px;;
+  width: 16px;
+  display: flex;
+  &:before {
+    display: block;
+    border-right: 1px solid #dfdfdf;
+    content: "";
+    top: 0;
+    height: 100%;
+    width: 45%;
+  }
+  &:after {
+    display: block;
+    border-bottom: 1px solid #dfdfdf;
+    content: "";
+    border-bottom: 1px solid #dfdfdf;
+    width: 30%;
+    margin-left: 0;
+    top: 5px;
+    height: 13px;
+  }
+}
+
+.transitCell {
+  height: 22px;;
+  width: 16px;
+  display: flex;
+  &:before {
+    display: block;
+    border-right: 1px solid #dfdfdf;
+    content: "";
+    top: 0;
+    height: 100%;
+    width: 45%;
   }
 }
 
