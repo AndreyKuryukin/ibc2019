@@ -1,12 +1,60 @@
-.treeCell {
+@import '../../scss/vars';
+
+$stick: 1px solid $light-grey;
+$tree-control-width: 16px;
+$tree-space-width: 28px;
+
+%cell {
+  height: $table-cell-height;
+  width: $tree-control-width;
+}
+
+%showPseudo {
+  display: block;
+  content: "";
+}
+
+%topStick {
+  @extend %showPseudo;
+  border-right: $stick;
+  position: absolute;
+  top: 0;
+  height: 4px;
+  width: $tree-control-width / 2 - 1px;
+}
+
+%bottomStick {
+  @extend %showPseudo;
+  border-right: $stick;
+  width: $tree-control-width / 2 - 1px;
+  bottom: 0;
+  position: absolute;
+  height: 5px;
+}
+
+%verticalStick {
+  @extend %showPseudo;
+  border-right: $stick;
+  top: 0;
+  height: 100%;
+  width: $tree-control-width / 2 - 1px;
+}
+
+%rightStick {
+  @extend %showPseudo;
+  border-bottom: $stick;
+  width: 30%;
+  margin-left: 6px;
+}
+
+.cellContainer {
   display: flex;
   flex-direction: row;
   align-items: center;
 }
 
 .expandedCell {
-  height: 22px;
-  width: 16px;
+  @extend %cell;
   background: url(../../../resources/img/tree/minus.png) no-repeat;
   &:hover {
     background: url('../../../resources/img/tree/minus 1.png') no-repeat;
@@ -14,8 +62,7 @@
 }
 
 .collapsedCell {
-  height: 22px;;
-  width: 16px;
+  @extend %cell;
   background: url(../../../resources/img/tree/plus.png) no-repeat;
   &:hover {
     background: url('../../../resources/img/tree/plus 1.png') no-repeat;
@@ -23,85 +70,42 @@
 }
 
 .lastExpandableCell {
-  height: 22px;;
-  width: 16px;
+  @extend %cell;
   &:before {
-    display: block;
-    border-right: 1px solid #dfdfdf;
-    content: "";
-    top: 0;
-    left: 50%;
-    right: 0;
-    bottom: 0;
-    height: 4px;
-    width: 45%;
+    @extend %topStick;
   }
 }
 
 .middleExpandableCell {
-  height: 22px;;
-  width: 16px;
+  @extend %cell;
+  position: relative;
   &:before {
-    display: block;
-    border-right: 1px solid #dfdfdf;
-    content: "";
-    top: 0;
-    height: 4px;
-    width: 45%;
+    @extend %topStick;
   }
   &:after {
-    display: block;
-    border-right: 1px solid #dfdfdf;
-    content: "";
-    width: 45%;
-    top: 13px;
-    position: relative;
-    height: 5px;
+    @extend %bottomStick
   }
 }
 
 .lastCell {
-  height: 22px;;
-  width: 16px;
+  @extend %cell;
   &:before {
-    display: block;
-    border-right: 1px solid #dfdfdf;
-    content: "";
-    top: 0;
-    left: 50%;
-    right: 0;
-    bottom: 0;
-    height: 12px;
-    width: 45%;
+    @extend  %verticalStick;
+    height: 45%
   }
   &:after {
-    display: block;
-    border-bottom: 1px solid #dfdfdf;
-    content: "";
-    border-bottom: 1px solid #dfdfdf;
-    width: 50%;
-    margin-left: 6px;
+    @extend %rightStick
   }
 }
 
 .middleCell {
-  height: 22px;;
-  width: 16px;
+  @extend %cell;
   display: flex;
   &:before {
-    display: block;
-    border-right: 1px solid #dfdfdf;
-    content: "";
-    top: 0;
-    height: 100%;
-    width: 45%;
+    @extend  %verticalStick;
   }
   &:after {
-    display: block;
-    border-bottom: 1px solid #dfdfdf;
-    content: "";
-    border-bottom: 1px solid #dfdfdf;
-    width: 30%;
+    @extend %rightStick;
     margin-left: 0;
     top: 5px;
     height: 13px;
@@ -109,21 +113,15 @@
 }
 
 .transitCell {
-  height: 22px;;
-  width: 16px;
-  display: flex;
+  @extend %cell;
+  width: $tree-space-width;
   &:before {
-    display: block;
-    border-right: 1px solid #dfdfdf;
-    content: "";
-    top: 0;
-    height: 100%;
-    width: 45%;
+    @extend  %verticalStick;
   }
 }
 
 .emptyCell {
-  height: 22px;;
-  width: 16px;
+  width: $tree-space-width;
+  @extend %cell;
 }
 
