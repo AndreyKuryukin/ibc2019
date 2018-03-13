@@ -24,11 +24,13 @@ class UsersTable extends React.PureComponent {
 
     getColumns = () => [{
         name: 'checked',
+        width: '24px'
     }, {
         title: 'Логин',
         name: 'login',
         searchable: true,
         sortable: true,
+        width: '50px',
         filter: {
             type: 'text',
         }
@@ -37,6 +39,7 @@ class UsersTable extends React.PureComponent {
         name: 'name',
         searchable: true,
         sortable: true,
+        width: '50px',
         filter: {
             type: 'text',
         }
@@ -45,6 +48,7 @@ class UsersTable extends React.PureComponent {
         name: 'email',
         searchable: true,
         sortable: true,
+        width: '50px',
         filter: {
             type: 'text',
         }
@@ -53,10 +57,57 @@ class UsersTable extends React.PureComponent {
         name: 'phone',
         searchable: true,
         sortable: true,
+        width: '50px',
         filter: {
             type: 'number',
         }
     }, {
+        title: 'Роли',
+        name: 'roles',
+        searchable: true,
+        sortable: true,
+        width: '50px',
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Подразделения',
+        name: 'divisions',
+        searchable: true,
+        sortable: true,
+        width: '50px',
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Группы уведомлений',
+        name: 'groups',
+        searchable: true,
+        sortable: true,
+        width: '50px',
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Создан',
+        name: 'created',
+        searchable: true,
+        sortable: true,
+        width: '50px',
+        filter: {
+            type: 'text',
+        }
+    }, {
+        title: 'Последний логин',
+        name: 'last_connection',
+        searchable: true,
+        sortable: true,
+        width: '50px',
+        filter: {
+            type: 'text',
+        }
+    }, {
+        width: '50px',
         title: 'Активен',
         name: 'active',
     }];

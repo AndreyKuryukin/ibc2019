@@ -1,0 +1,127 @@
+@import '../../scss/vars';
+
+$stick: 1px solid $light-grey;
+$tree-control-width: 16px;
+$tree-space-width: 28px;
+
+%cell {
+  height: $table-cell-height;
+  width: $tree-control-width;
+}
+
+%showPseudo {
+  display: block;
+  content: "";
+}
+
+%topStick {
+  @extend %showPseudo;
+  border-right: $stick;
+  position: absolute;
+  top: 0;
+  height: 4px;
+  width: $tree-control-width / 2 - 1px;
+}
+
+%bottomStick {
+  @extend %showPseudo;
+  border-right: $stick;
+  width: $tree-control-width / 2 - 1px;
+  bottom: 0;
+  position: absolute;
+  height: 5px;
+}
+
+%verticalStick {
+  @extend %showPseudo;
+  border-right: $stick;
+  top: 0;
+  height: 100%;
+  width: $tree-control-width / 2 - 1px;
+}
+
+%rightStick {
+  @extend %showPseudo;
+  border-bottom: $stick;
+  width: 30%;
+  margin-left: 6px;
+}
+
+.cellContainer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.expandedCell {
+  @extend %cell;
+  background: url(../../../resources/img/tree/minus.png) no-repeat;
+  &:hover {
+    background: url('../../../resources/img/tree/minus 1.png') no-repeat;
+  }
+}
+
+.collapsedCell {
+  @extend %cell;
+  background: url(../../../resources/img/tree/plus.png) no-repeat;
+  &:hover {
+    background: url('../../../resources/img/tree/plus 1.png') no-repeat;
+  }
+}
+
+.lastExpandableCell {
+  @extend %cell;
+  &:before {
+    @extend %topStick;
+  }
+}
+
+.middleExpandableCell {
+  @extend %cell;
+  position: relative;
+  &:before {
+    @extend %topStick;
+  }
+  &:after {
+    @extend %bottomStick
+  }
+}
+
+.lastCell {
+  @extend %cell;
+  &:before {
+    @extend  %verticalStick;
+    height: 45%
+  }
+  &:after {
+    @extend %rightStick
+  }
+}
+
+.middleCell {
+  @extend %cell;
+  display: flex;
+  &:before {
+    @extend  %verticalStick;
+  }
+  &:after {
+    @extend %rightStick;
+    margin-left: 0;
+    top: 5px;
+    height: 13px;
+  }
+}
+
+.transitCell {
+  @extend %cell;
+  width: $tree-space-width;
+  &:before {
+    @extend  %verticalStick;
+  }
+}
+
+.emptyCell {
+  width: $tree-space-width;
+  @extend %cell;
+}
+

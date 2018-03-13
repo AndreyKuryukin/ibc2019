@@ -60,6 +60,7 @@ class HeaderCell extends React.PureComponent {
         const {
             filterable,
             onClick,
+            width,
         } = this.props;
         const { isFilterTriggerActive, isFilterFormActive } = this.state;
         const classes = classNames(
@@ -68,6 +69,8 @@ class HeaderCell extends React.PureComponent {
         );
         return (
             <th
+                width={width}
+                maxWidth={width}
                 className={classes}
                 onClick={onClick}
                 onMouseEnter={this.onMouseEnter}
