@@ -9,6 +9,10 @@ class HeaderCell extends React.PureComponent {
     static propTypes = {
         children: PropTypes.node,
         filterable: PropTypes.bool,
+        width: PropTypes.oneOfType([
+            PropTypes.string,
+            PropTypes.number,
+        ]),
         onClick: PropTypes.func,
         onColumnFilterChange: PropTypes.func,
     }
@@ -16,6 +20,7 @@ class HeaderCell extends React.PureComponent {
     static defaultProps = {
         children: null,
         filterable: false,
+        width: null,
         onClick: () => null,
         onColumnFilterChange: () => null,
     }
@@ -59,8 +64,8 @@ class HeaderCell extends React.PureComponent {
     render() {
         const {
             filterable,
-            onClick,
             width,
+            onClick,
         } = this.props;
         const { isFilterTriggerActive, isFilterFormActive } = this.state;
         const classes = classNames(
@@ -69,12 +74,12 @@ class HeaderCell extends React.PureComponent {
         );
         return (
             <th
-                width={width}
                 maxWidth={width}
                 className={classes}
                 onClick={onClick}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
+                width={width}
             >
                 {this.props.children}
                 {filterable && <ColumnFilterTrigger active={isFilterTriggerActive} onClick={this.onTriggerClick} />}

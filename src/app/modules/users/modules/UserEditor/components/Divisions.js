@@ -1,13 +1,71 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import styles from './styles.scss';
+import Immutable from 'immutable';
+import _ from 'lodash';
 import Panel from '../../../../../components/Panel';
-import TreeView from '../../../../../components/TreeView'
+import Grid from '../../../../../components/Grid'
+import { CheckedCell } from '../../../../../components/Table/Cells';
 import ls from "i18n";
-import classnames from "classnames";
-import CheckedCell from "../../../../../components/Table/Cells/CheckedCell";
 
+const treeData = [
+    {
+        id: 1,
+        name: 'All',
+        children: [
+            {
+                id: 3,
+                name: 'Russia',
+                children: [
+                    {
+                        id: 5,
+                        name: 'Moscow',
+                    }, {
+                        id: 6,
+                        name: 'Far east',
+                    }, {
+                        id: 7,
+                        name: 'West',
+                    }, {
+                        id: 8,
+                        name: 'Ural',
+                    }, {
+                        id: 9,
+                        name: 'South',
+                    }, {
+                        id: 10,
+                        name: 'North',
+                    }, {
+                        id: 11,
+                        name: 'St. Petersburg',
+                    },
+                ]
+            },
+            {
+                id: 4,
+                name: 'USA',
+                children: [
+                    {
+                        id: 12,
+                        name: 'Alaska',
+                    }, {
+                        id: 13,
+                        name: 'California',
+                    }, {
+                        id: 14,
+                        name: 'Oklahoma',
+                    }, {
+                        id: 15,
+                        name: 'Texas',
+                        children: [{
+                            id: 16,
+                            name: 'Texas City',
+                        }],
+                    }
+                ]
+            },
+        ]
+    }
+];
 
 class Divisions extends React.Component {
 
@@ -23,111 +81,100 @@ class Divisions extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.state = {
-            checked:  []
-        }
+            checked: Immutable.Set(props.checked),
+        };
     }
 
-    onCheck = (id) => {
-        this.setState({
-            checked: _.uniq([...this.state.checked, id])
-        })
-    };
-
-    unCheck = (id) => {
-        this.setState({
-            checked: this.state.checked.filter(uid => uid !== id)
-        })
-    };
-
-    mapData = (data) => {
-        return [
-            {
-                id: 1,
-                name: 'Expandable',
-                items: [
-                    {
-                        id: 3,
-                        name: 'osidjfoisd'
-                    },
-                    {
-                        id: 4,
-                        name: 'retertertert'
-                    }
-                ]
-            },
-            {
-                id: 5,
-                name: 'Expandable 2',
-                items: [
-                    {
-                        id: 6,
-                        name: 'level 1',
-                        items: [
-                            {
-                                id: 7,
-                                name: 'level 2'
-                            },
-                            {
-                                id: 8,
-                                name: 'level 2'
-                            },
-                            {
-                                id: 9,
-                                name: 'level 2'
-                            }
-                        ]
-                    },
-                    {
-                        id: 10,
-                        name: 'level 1',
-                        items: [
-                            {
-                                id: 11,
-                                name: 'level 2',
-                                items: [
-                                    {
-                                        id: 12,
-                                        name: 'level 2'
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                id: 2,
-                name: 'Simple'
+    getChildrenIds = (parentNode) => {
+        let ids = [];
+        parentNode.children.forEach((node) => {
+            if (node.children && node.children.length > 0) {
+                ids = ids.concat([node.id, ...this.getChildrenIds(node)]);
+            } else {
+                ids.push(node.id);
             }
-        ]
+        });
+
+        return ids;
     };
 
-    headerRowRender = (column, node) => {
+    onCheckAll = (value) => {
+        const allIds = treeData.reduce((result, next) => result.concat([next.id, ...this.getChildrenIds(next)]), []);
+        this.setState({
+            checked: value ? Immutable.Set(allIds) : Immutable.Set([]),
+        });
+    };
 
+    onCheck = (value, node) => {
+        let checked = this.state.checked;
+
+        if (node.expandable) {                                              // If node has children
+            const childrenIds = this.getChildrenIds(node);
+            checked = value
+                ? this.state.checked.union([node.id, ...childrenIds])       // Check all children
+                : this.state.checked.subtract([node.id, ...childrenIds]);   // Uncheck all children
+        } else {
+            checked = value ? this.state.checked.add(node.id) : this.state.checked.delete(node.id);
+        }
+
+        const parents = node.parents;
+        _.forEachRight(parents, (parent) => {                                // Iterate over all parents of node to check/uncheck them
+            if (this.getChildrenIds(parent).every(id => checked.has(id))) {  // If every children of parent is checked
+                if (checked.has(parent.id)) {                                // If parent is already checked
+                    return false;
+                } else {
+                    checked = checked.add(parent.id);                        // Check such parent
+                }
+            } else {
+                if (!checked.has(parent.id)) {                               // If parent is still not checked
+                    return false;
+                } else {
+                    checked = checked.delete(parent.id);                     // Uncheck such parent
+                }
+            }});
+
+        this.setState({
+            checked,
+        });
     };
 
     bodyRowRender = (column, node) => {
-        return <span>
-            <CheckedCell value={this.state.checked.findIndex(id => id === node.id) !== -1}
-                         id={node.id}
-                         onChange={checked => checked ? this.onCheck(node.id) : this.unCheck(node.id)}
+        let checkedPartially = false;
+        let checked = this.state.checked.has(node.id);
+        if (node.children && node.children.length > 0) {
+            checkedPartially = !checked && this.getChildrenIds(node).some(id => this.state.checked.has(id));
+        }
+
+        return (
+            <CheckedCell
+                id={`user-editor-divisions-grid-${node.id}`}
+                onChange={(value) => this.onCheck(value, node)}
+                style={{ marginLeft: 0 }}
+                value={checked}
+                checkedPartially={checkedPartially}
+                text={node[column.name]}
             />
-            {node[column.name]}
-        </span>
+        );
     };
 
     render() {
         const {
             data,
         } = this.props;
-        return <div className={classnames(styles.userEditorColumn, styles.userDivisions)}>
+
+        const isAllChecked = treeData.every(node => this.state.checked.has(node.id));
+        const checkedPartially = !isAllChecked && this.state.checked.size > 0;
+
+        return (
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
                 bodyStyle={{ padding: 0 }}
             >
-                <TreeView
-                    data={this.mapData(data)}
+                <Grid
+                    id="user-editor-divisions-grid"
+                    data={treeData}
                     columns={[
                         {
                             name: 'name',
@@ -135,9 +182,13 @@ class Divisions extends React.Component {
                     ]}
                     headerRowRender={this.headerRowRender}
                     bodyRowRender={this.bodyRowRender}
+                    checkedPartially={checkedPartially}
+                    isAllChecked={isAllChecked}
+                    onCheckAll={this.onCheckAll}
+                    tree
                 />
             </Panel>
-        </div>
+        );
     }
 }
 

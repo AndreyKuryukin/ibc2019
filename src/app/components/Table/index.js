@@ -26,7 +26,7 @@ class Table extends React.Component {
         data: [],
         columns: [],
         selectable: false,
-        headerRowRender: () => null,
+        headerRowRender: null,
         bodyRowRender: () => null,
     };
 
@@ -162,8 +162,8 @@ class Table extends React.Component {
             <div className={styles.tableContainer} style={{
                 backgroundPositionY: `${this.getHeadHeight()}px`,
             }}>
-                <ReactstrapTable striped bordered {...rest} className="table-hover">
-                    <thead
+                <ReactstrapTable striped bordered {...rest} className="table-hover" width="100%">
+                    {headerRowRender && <thead
                         ref={thead => (this.thead = thead)}
                     >
                         <tr>
@@ -174,12 +174,13 @@ class Table extends React.Component {
                                     headerRowRender={() => headerRowRender(column, sort)}
                                     onClick={() => this.onHeaderCellClick(column)}
                                     onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
+                                    width={column.width}
                                 >
                                     {headerRowRender(column, sort)}
                                 </HeaderCell>
                             ))}
                         </tr>
-                    </thead>
+                    </thead>}
                     <tbody>
                     {data.map(node => (
                         <tr key={node.id}
