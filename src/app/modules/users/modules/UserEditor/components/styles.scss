@@ -1,6 +1,6 @@
 .userEditor {
-  width: 912px;
-  max-width: 912px;
+  width: 912px !important;
+  max-width: 912px !important;
   .userEditorContent {
     display: flex;
     flex-direction: row;
@@ -17,6 +17,9 @@
     }
     .userForm {
       width: 260px;
+    }
+    .userDivisions {
+      height: 100%;
     }
     .userRoles {
       display: flex;

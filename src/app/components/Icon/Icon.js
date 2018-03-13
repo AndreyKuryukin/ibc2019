@@ -9,11 +9,13 @@ class Icon extends React.PureComponent {
         title: PropTypes.string,
         disabled: PropTypes.bool,
         onClick: PropTypes.func,
+        style: PropTypes.object,
     };
 
     static defaultProps = {
         title: '',
         disabled: false,
+        style: null,
         onClick: () => null,
     }
 
@@ -23,6 +25,7 @@ class Icon extends React.PureComponent {
                 className={classnames(styles.iconBlock, this.props.icon)}
                 onClick={this.props.onClick}
                 title={this.props.title}
+                style={this.props.style}
             />
         );
     }

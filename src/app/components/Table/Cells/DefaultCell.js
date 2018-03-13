@@ -20,7 +20,6 @@ class DefaultCell extends React.PureComponent {
             onClick,
             sortDirection,
         } = this.props;
-
         return (
             <div onClick={onClick}>
                 {sortDirection && <span>{sortDirection === 'asc' ? '\u2B07' : '\u2B06'}</span>}

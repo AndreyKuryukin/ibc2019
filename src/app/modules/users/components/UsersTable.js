@@ -1,17 +1,23 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import ls from 'i18n';
 import Table from '../../../components/Table';
-import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
+import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
+import search from '../../../util/search';
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        searchText: PropTypes.string,
+        onCheck: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
+        searchText: '',
+        onCheck: () => null,
     };
 
     constructor(props) {
@@ -19,45 +25,60 @@ class UsersTable extends React.PureComponent {
 
         this.state = {
             checked: [],
+            searchText: '',
         };
     }
 
     getColumns = () => [{
         name: 'checked',
+        width: 28,
     }, {
-        title: 'Логин',
+        title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Login'),
         name: 'login',
         searchable: true,
         sortable: true,
-        filter: {
-            type: 'text',
-        }
     }, {
-        title: 'Имя',
+        title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Name'),
         name: 'name',
         searchable: true,
         sortable: true,
-        filter: {
-            type: 'text',
-        }
     }, {
-        title: 'Email',
+        title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'Email'),
         name: 'email',
         searchable: true,
         sortable: true,
-        filter: {
-            type: 'text',
-        }
     }, {
-        title: 'Номер телефона',
+        title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Cell phone'),
         name: 'phone',
         searchable: true,
         sortable: true,
-        filter: {
-            type: 'number',
-        }
     }, {
-        title: 'Активен',
+        title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Roles'),
+        name: 'roles',
+        searchable: true,
+        sortable: true,
+    }, {
+        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Divisions'),
+        name: 'divisions',
+        searchable: true,
+        sortable: true,
+    }, {
+        title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Notification groups'),
+        name: 'notification_group',
+        searchable: true,
+        sortable: true,
+    }, {
+        title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Created'),
+        name: 'created',
+        searchable: true,
+        sortable: true,
+    }, {
+        title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Last connection'),
+        name: 'last_connection',
+        searchable: true,
+        sortable: true,
+    }, {
+        title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Active'),
         name: 'active',
     }];
 
@@ -72,6 +93,8 @@ class UsersTable extends React.PureComponent {
         this.setState({
             checked,
         });
+
+        this.props.onCheck(checked);
     };
 
     headerRowRender = (column) => {
@@ -117,9 +140,10 @@ class UsersTable extends React.PureComponent {
             }
             case 'login':
                 return (
-                    <LinkCell
+                    <IconCell
+                        icon="adminIcon"
                         href={`/users/edit/${node.id}`}
-                        content={text}
+                        text={text}
                     />
                 );
             default:
@@ -131,13 +155,20 @@ class UsersTable extends React.PureComponent {
         }
     };
 
-    render() {
-        const columns = this.getColumns();
+    filter = (data, columns, searchText) => {
+        const searchableColumns = columns.filter(col => col.searchable);
+        return data.filter(
+            node => searchableColumns.find(column => search(node[column.name], searchText)))
+    };
 
+    render() {
+        const { data, searchText } = this.props;
+        const columns = this.getColumns();
+        const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table
                 selectable
-                data={this.props.data}
+                data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
