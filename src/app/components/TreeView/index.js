@@ -16,7 +16,7 @@ class TreeView extends React.Component {
                     PropTypes.string
                 ]).isRequired,
                 name: PropTypes.string,
-                items: PropTypes.array
+                children: PropTypes.array
             })),
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
@@ -44,10 +44,10 @@ class TreeView extends React.Component {
         const result = [];
         data.forEach((node, index) => {
             node.isLast = (index + 1) === data.length;
-            if (!_.isEmpty(node.items)) {
+            if (!_.isEmpty(node.children)) {
                 result.push({ ...node, expandable: true, parents });
                 if (this.isExpanded(node.id)) {
-                    result.push(...this.mapData(node.items, [...parents, node]))
+                    result.push(...this.mapData(node.children, [...parents, node]))
                 }
             } else {
                 result.push({ ...node, parents })
@@ -101,7 +101,7 @@ class TreeView extends React.Component {
     isExpanded = id => this.state.expanded.findIndex(uid => uid === id) !== -1;
 
     bodyRowRender = (column, node) => {
-        if (!_.isEmpty(node.items)) {
+        if (!_.isEmpty(node.children)) {
             return this.expandableCell(column, node)
         }
         return this.simpleCell(column, node);

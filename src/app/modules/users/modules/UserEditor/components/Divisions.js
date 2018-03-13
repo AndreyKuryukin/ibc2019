@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Immutable from 'immutable';
+import _ from 'lodash';
 import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
@@ -10,11 +11,11 @@ const treeData = [
     {
         id: 1,
         name: 'All',
-        items: [
+        children: [
             {
                 id: 3,
                 name: 'Russia',
-                items: [
+                children: [
                     {
                         id: 5,
                         name: 'Moscow',
@@ -42,7 +43,7 @@ const treeData = [
             {
                 id: 4,
                 name: 'USA',
-                items: [
+                children: [
                     {
                         id: 12,
                         name: 'Alaska',
@@ -55,9 +56,13 @@ const treeData = [
                     }, {
                         id: 15,
                         name: 'Texas',
+                        children: [{
+                            id: 16,
+                            name: 'Texas City',
+                        }],
                     }
                 ]
-            }
+            },
         ]
     }
 ];
@@ -83,10 +88,10 @@ class Divisions extends React.Component {
     }
 
     getChildrenIds = (parentNode) => {
-        let ids = [parentNode.id];
-        parentNode.items.forEach((node) => {
-            if (node.items && node.items.length > 0) {
-                ids = ids.concat(this.getChildrenIds(node));
+        let ids = [];
+        parentNode.children.forEach((node) => {
+            if (node.children && node.children.length > 0) {
+                ids = ids.concat([node.id, ...this.getChildrenIds(node)]);
             } else {
                 ids.push(node.id);
             }
@@ -96,21 +101,39 @@ class Divisions extends React.Component {
     };
 
     onCheckAll = (value) => {
+        const allIds = treeData.reduce((result, next) => result.concat([next.id, ...this.getChildrenIds(next)]), []);
         this.setState({
-            checked: value ? Immutable.Set(this.getChildrenIds(treeData[0])) : Immutable.Set([]),
+            checked: value ? Immutable.Set(allIds) : Immutable.Set([]),
         });
     };
 
     onCheck = (value, node) => {
         let checked = this.state.checked;
 
-        if (node.expandable) {
+        if (node.expandable) {                                              // If node has children
+            const childrenIds = this.getChildrenIds(node);
             checked = value
-                ? this.state.checked.union(this.getChildrenIds(node))
-                : this.state.checked.subtract(this.getChildrenIds(node));
+                ? this.state.checked.union([node.id, ...childrenIds])       // Check all children
+                : this.state.checked.subtract([node.id, ...childrenIds]);   // Uncheck all children
         } else {
             checked = value ? this.state.checked.add(node.id) : this.state.checked.delete(node.id);
         }
+
+        const parents = node.parents;
+        _.forEachRight(parents, (parent) => {                                // Iterate over all parents of node to check/uncheck them
+            if (this.getChildrenIds(parent).every(id => checked.has(id))) {  // If every children of parent is checked
+                if (checked.has(parent.id)) {                                // If parent is already checked
+                    return false;
+                } else {
+                    checked = checked.add(parent.id);                        // Check such parent
+                }
+            } else {
+                if (!checked.has(parent.id)) {                               // If parent is still not checked
+                    return false;
+                } else {
+                    checked = checked.delete(parent.id);                     // Uncheck such parent
+                }
+            }});
 
         this.setState({
             checked,
@@ -119,12 +142,9 @@ class Divisions extends React.Component {
 
     bodyRowRender = (column, node) => {
         let checkedPartially = false;
-        let checked = false;
-        if (node.items && node.items.length > 0) {
-            checked = node.items.every(child => this.state.checked.has(child.id));
-            checkedPartially = !checked && node.items.some(child => this.state.checked.has(child.id));
-        } else {
-            checked = this.state.checked.has(node.id);
+        let checked = this.state.checked.has(node.id);
+        if (node.children && node.children.length > 0) {
+            checkedPartially = !checked && this.getChildrenIds(node).some(id => this.state.checked.has(id));
         }
 
         return (
@@ -144,7 +164,8 @@ class Divisions extends React.Component {
             data,
         } = this.props;
 
-        const checkedPartially = this.state.checked.size > 0 && this.state.checked.size < treeData.length;
+        const isAllChecked = treeData.every(node => this.state.checked.has(node.id));
+        const checkedPartially = !isAllChecked && this.state.checked.size > 0;
 
         return (
             <Panel
@@ -162,6 +183,7 @@ class Divisions extends React.Component {
                     headerRowRender={this.headerRowRender}
                     bodyRowRender={this.bodyRowRender}
                     checkedPartially={checkedPartially}
+                    isAllChecked={isAllChecked}
                     onCheckAll={this.onCheckAll}
                     tree
                 />
