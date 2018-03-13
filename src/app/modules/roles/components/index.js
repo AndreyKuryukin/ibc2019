@@ -98,7 +98,7 @@ class Roles extends React.Component {
                      tabTitle={ls('USERS_TAB_TITLE', 'Пользователи')}
                 />
                 <div id="/roles"
-                     tabTitle="Roles"
+                     tabTitle={ls('ROLES_TAB_TITLE', 'Роли')}
                      className={styles.rolesWrapper}>
                     <RolesControls
                         checkedIds={checkedIds}
