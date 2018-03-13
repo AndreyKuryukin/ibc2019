@@ -74,6 +74,7 @@ class HeaderCell extends React.PureComponent {
         );
         return (
             <th
+                maxWidth={width}
                 className={classes}
                 onClick={onClick}
                 onMouseEnter={this.onMouseEnter}

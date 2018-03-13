@@ -156,13 +156,13 @@ class Table extends React.Component {
     };
 
     render() {
-        const { columns, headerRowRender, bodyRowRender, selectable, ...rest } = this.props;
+        const { columns, headerRowRender, bodyRowRender, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
             <div className={styles.tableContainer} style={{
                 backgroundPositionY: `${this.getHeadHeight()}px`,
             }}>
-                <ReactstrapTable striped bordered {...rest} className="table-hover">
+                <ReactstrapTable striped bordered {...rest} className="table-hover" width="100%">
                     {headerRowRender && <thead
                         ref={thead => (this.thead = thead)}
                     >

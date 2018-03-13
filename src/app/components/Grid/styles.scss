@@ -16,4 +16,9 @@
       margin-left: auto;
     }
   }
+  .gridBody {
+    display: flex;
+    flex: 1 1 0;
+    overflow-x: hidden;
+  }
 }
