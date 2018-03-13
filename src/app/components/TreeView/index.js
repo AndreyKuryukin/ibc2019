@@ -40,17 +40,17 @@ class TreeView extends React.Component {
         }
     }
 
-    mapData = (data, level = 0) => {
+    mapData = (data, parents = []) => {
         const result = [];
         data.forEach((node, index) => {
-            const isLast = (index + 1) === data.length;
+            node.isLast = (index + 1) === data.length;
             if (!_.isEmpty(node.items)) {
-                result.push({ ...node, expandable: true, isLast, level });
+                result.push({ ...node, expandable: true, parents });
                 if (this.isExpanded(node.id)) {
-                    result.push(...this.mapData(node.items, level + 1))
+                    result.push(...this.mapData(node.items, [...parents, node]))
                 }
             } else {
-                result.push({ ...node, isLast, level })
+                result.push({ ...node, parents })
             }
         });
         return result;
@@ -65,7 +65,7 @@ class TreeView extends React.Component {
 
     expandableCell = (column, node) => {
         return <div className={styles.treeCell}>
-            {this.transitCells(node.level)}
+            {this.transitCells(node.parents)}
             <div className={classnames({
                 [styles.lastExpandableCell]: node.isLast,
                 [styles.middleExpandableCell]: !node.isLast,
@@ -80,7 +80,7 @@ class TreeView extends React.Component {
 
     simpleCell = (column, node) => {
         return <div className={styles.treeCell}>
-            {this.transitCells(node.level)}
+            {this.transitCells(node.parents)}
             <div className={classnames({
                 [styles.lastCell]: node.isLast,
                 [styles.middleCell]: !node.isLast,
@@ -90,12 +90,12 @@ class TreeView extends React.Component {
         </div>
     };
 
-    transitCells = (count) => {
-        const transitCells = [];
-        for (let i = 0; i < count; i++) {
-            transitCells.push(<div className={styles.transitCell} key={i}/>)
-        }
-        return transitCells;
+    transitCells = (parents) => {
+        return parents.map((parent, index) => <div className={classnames({
+                [styles.transitCell]: !parent.isLast,
+                [styles.emptyCell]: parent.isLast
+            })} key={index}/>
+        );
     };
 
     isExpanded = id => this.state.expanded.findIndex(uid => uid === id) !== -1;
