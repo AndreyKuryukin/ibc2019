@@ -64,7 +64,7 @@ class TreeView extends React.Component {
     };
 
     expandableCell = (column, node) => {
-        return <div className={styles.treeCell}>
+        return <div className={styles.cellContainer}>
             {this.transitCells(node.parents)}
             <div className={classnames({
                 [styles.lastExpandableCell]: node.isLast,
@@ -79,7 +79,7 @@ class TreeView extends React.Component {
     };
 
     simpleCell = (column, node) => {
-        return <div className={styles.treeCell}>
+        return <div className={styles.cellContainer}>
             {this.transitCells(node.parents)}
             <div className={classnames({
                 [styles.lastCell]: node.isLast,
