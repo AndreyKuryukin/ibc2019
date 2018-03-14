@@ -114,7 +114,7 @@ class Users extends React.Component {
                         userId={userId}
                     />}
                 </div>
-                <div id="/roles" tabTitle="Roles"/>
+                <div id="/roles" tabTitle={ls('ROLES_TAB_TITLE', 'Роли')} />
             </TabPanel>
         );
     }

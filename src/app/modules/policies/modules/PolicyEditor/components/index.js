@@ -92,8 +92,8 @@ class PolicyEditor extends React.PureComponent {
             <Modal isOpen={active} size="lg">
                 <ModalHeader toggle={this.onClose}>{modalTitle}</ModalHeader>
                 <ModalBody>
-                    <div className={styles.roleEditorContent}>
-                        <div className={styles.roleEditorColumn}>
+                    <div className={styles.policyEditorContent}>
+                        <div className={styles.policyEditorColumn}>
                             <Configuration
                                 getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
                                 setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
@@ -159,7 +159,7 @@ class PolicyEditor extends React.PureComponent {
                                 </div>
                             </Panel>
                         </div>
-                        <div className={styles.roleEditorColumn}>
+                        <div className={styles.policyEditorColumn}>
                             <Condition />
                         </div>
                     </div>

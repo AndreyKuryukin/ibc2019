@@ -29,6 +29,9 @@ body {
 @import 'modal.scss';
 @import 'images.scss';
 
+input[type=text] {
+  height: $input-height;
+}
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {
   color: $placeholder !important;
@@ -36,6 +39,6 @@ textarea::-webkit-input-placeholder {
 input[type=checkbox], input[type=radio] {
   display: none;
 }
-.btn-action {
+.btn-action, .btn-outline-action, .btn-outline-action:hover {
   color: #fff;
 }

@@ -4,6 +4,7 @@ $placeholder: #aaa;
 $grey: #aaa;
 $white: #fff;
 $light-grey: #ccc;
+$smooth-grey: #f2f2f2;
 
 $dark-blue: #015680;
 $border-blue: #206A8F;
@@ -13,7 +14,7 @@ $light-blue: #B3D1E0;
 $enable-rounded: false;
 
 $theme-colors: map-merge((
-        "action": $orange,
+  "action": $orange,
 ), ());
 
 //COMMON
@@ -61,6 +62,8 @@ $form-check-input-margin-y: .2em;
 $input-line-height: 1;
 $input-padding-y: 0.2rem;
 $input-padding-x: 0.5rem;
+$input-height: 22px;
+$input-border-color: #bfd5df;
 
 //BUTTONS
 $btn-line-height: 1;

@@ -130,7 +130,6 @@ class Roles extends React.Component {
                     </Modal>
                 </div>
             </TabPanel>
-
         );
     }
 }

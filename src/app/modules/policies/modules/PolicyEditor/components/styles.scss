@@ -1,14 +1,14 @@
 @import '../../../../../scss/vars';
 
-.roleEditorContent {
+.policyEditorContent {
   display: flex;
   flex-direction: row;
-  .roleEditorColumn {
+  .policyEditorColumn {
     display: flex;
     flex-direction: column;
     width: 50%;
   }
-  .roleEditorColumn:first-child {
+  .policyEditorColumn:first-child {
     margin-right: 1px;
   }
 }
@@ -27,7 +27,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     .conditionBlock {
-      background: $light-grey;
+      background: $smooth-grey;
       border: 1px solid #ced4da;
       border-radius: 0.25rem;
       padding: 5px;
