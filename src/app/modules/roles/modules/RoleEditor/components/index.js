@@ -18,7 +18,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     static propTypes = {
-        roleId: PropTypes.number,
+        roleId: PropTypes.string,
         role: PropTypes.object.isRequired,
         active: PropTypes.bool,
         onSubmit: PropTypes.func.isRequired,
@@ -65,6 +65,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     copySubjectsFromRole = (roleId) => {
+        console.log(this.props);
         if (!_.isUndefined(roleId)) {
             let subjects = this.props.subjectsByRole[roleId];
             if (!_.isArray(subjects)) {
@@ -89,11 +90,13 @@ class RoleEditor extends React.PureComponent {
         this.setRoleProperty('subjects', checkedIds);
     };
 
-    getSourceOptions = (sourceOptions) => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
+    getSourceOptions = sourceOptions => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
 
     render() {
         const { roleId, subjectsData, sourceOptions } = this.props;
         const { role } = this.state;
+        const filteredSourceOptions = roleId ? sourceOptions.filter(opt => opt[0] !== roleId) : sourceOptions;
+
         return (
             <Modal
                 isOpen={this.props.active}
@@ -118,7 +121,7 @@ class RoleEditor extends React.PureComponent {
                                 labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из:')}
                             >
                                 <Select type="select"
-                                        options={this.getSourceOptions(sourceOptions)}
+                                        options={this.getSourceOptions(filteredSourceOptions)}
                                         onChange={this.copySubjectsFromRole}
                                 />
                             </Field>
@@ -145,8 +148,12 @@ class RoleEditor extends React.PureComponent {
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button outline color="action" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="action" onClick={this.onSubmit}>{ls('NEW_ROLE_SUBMIT', 'Создать')}</Button>
+                    <Button outline color="action" onClick={this.onClose}>
+                        {ls('NEW_ROLE_CANCEL', 'Отмена')}
+                    </Button>
+                    <Button color="action" onClick={this.onSubmit}>
+                        {roleId ? ls('NEW_ROLE_UPDATE', 'Обновить') : ls('NEW_ROLE_CREATE', 'Создать')}
+                    </Button>
                 </ModalFooter>
             </Modal>
         );

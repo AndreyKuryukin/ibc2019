@@ -54,10 +54,10 @@ class Roles extends React.PureComponent {
         this.setState({ isLoading: true });
         Promise.all(
             ids.map(id => rest.delete('/api/v1/role/:roleId', {}, { urlParams: { roleId: id } }))
-        ).then(([...ids]) => {
+        ).then(([...deletedIds]) => {
             this.props.onDeleteRolesSuccess(ids);
             this.setState({ isLoading: false });
-        })
+        });
     };
 
     onRemove = (ids) => {
