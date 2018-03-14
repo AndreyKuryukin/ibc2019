@@ -97,6 +97,9 @@ class Users extends React.Component {
                     <div className={styles.controlsWrapper}>
                         <Icon icon="addIcon" onClick={this.onAdd} />
                         <Icon icon="deleteIcon" onClick={this.onDelete} style={{ marginLeft: 10 }} />
+                        <Icon icon="lockIcon"  style={{ marginLeft: 10 }} />
+                        <Icon icon="unlockIcon"  style={{ marginLeft: 10 }} />
+                        <Icon icon="groupIcon"  style={{ marginLeft: 20 }} />
                         <Input placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                                className={styles.search}
                                onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}

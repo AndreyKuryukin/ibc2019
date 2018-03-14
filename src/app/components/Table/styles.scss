@@ -2,8 +2,6 @@
 
 .tableContainer {
   flex-grow: 1;
-  height: 100%;
-  overflow: hidden;
   background: repeating-linear-gradient(180deg, $smooth-grey, $smooth-grey $table-cell-height, $white $table-cell-height, $white $table-cell-height*2);
 }
 

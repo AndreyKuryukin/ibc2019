@@ -23,6 +23,7 @@ class RolesControls extends React.PureComponent {
         onSearchTextChange: () => null,
         onCheckAll: () => null,
         onRemove: () => null,
+        checkedIds: []
     };
 
     onAdd = () => {
