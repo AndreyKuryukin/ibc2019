@@ -14,7 +14,6 @@ class Grid extends React.PureComponent {
         id: PropTypes.string.isRequired,
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
-        selectable: PropTypes.bool,
         isAllChecked: PropTypes.bool,
         checkedPartially: PropTypes.bool,
         headerRowRender: PropTypes.func,
@@ -26,7 +25,6 @@ class Grid extends React.PureComponent {
     static defaultProps = {
         data: [],
         columns: [],
-        selectable: false,
         isAllChecked: false,
         checkedPartially: false,
         tree: false,
@@ -39,7 +37,6 @@ class Grid extends React.PureComponent {
     render() {
         const {
             id,
-            selectable,
             isAllChecked,
             onCheckAll,
             onSearchTextChange,
@@ -68,7 +65,6 @@ class Grid extends React.PureComponent {
                         {...rest}
                     /> : <Table
                         {...rest}
-                        selectable={selectable}
                     />}
                 </div>
             </div>
