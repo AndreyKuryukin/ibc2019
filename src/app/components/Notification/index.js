@@ -11,6 +11,7 @@ class Notification extends React.PureComponent {
     static CRITICAL = 'CRITICAL';
     static WARNING = 'WARNING';
     static ACKNOWLEDGEMENT = 'ACKNOWLEDGEMENT';
+    static CONFIRMATION = 'CONFIRMATION';
 
     static propTypes = {};
 
@@ -23,6 +24,7 @@ class Notification extends React.PureComponent {
     getChildContext = () => ({
         notifications: {
             notify: this.notify,
+            close: this.onNotificationClose,
         }
     });
 
@@ -35,18 +37,15 @@ class Notification extends React.PureComponent {
     }
 
     notify = (notif) => {
-        const notifications = [...this.state.notifications, {
-            ...notif,
-            id: (new Date()).getTime(),
-        }];
+        const notifications = [...this.state.notifications, notif];
         this.setState({
             notifications: _.uniqBy(notifications, notific => notific.code)
         });
     };
 
-    onNotificationClose = (notif) => {
+    onNotificationClose = (code) => {
         const { notifications } = this.state;
-        const newNotifications = notifications.filter(ntf => ntf.id !== notif.id);
+        const newNotifications = notifications.filter(ntf => ntf.code !== code);
         this.setState({ notifications: newNotifications })
     };
 
@@ -54,20 +53,26 @@ class Notification extends React.PureComponent {
         const { type = Notification.CRITICAL, message, title, ...rest } = notif;
         const className = classnames(styles.notificationMessage, {
             [styles.criticalMsg]: type === Notification.CRITICAL,
+            [styles.confirmationMsg]: type === Notification.CONFIRMATION,
             // [styles.warningMsg]: type === Notification.WARNING,
             // [styles.ackMsg]: type === Notification.ACKNOWLEDGEMENT,
         });
         return <div className={className}
-                    key={`notification-msg-${notif.id}`}
+                    key={`notification-msg-${notif.code}`}
         >
             <div>
                 {title}
                 <br/>
                 {message}
+                <br/>
+                {!_.isEmpty(notif.actions) &&
+                <div className={styles.notificationActions}>
+                    {notif.actions}
+                </div>}
             </div>
             <div className={styles.closeIcon}
-                 key={notif.id}
-                 onClick={() => this.onNotificationClose(notif)}
+                 key={notif.code}
+                 onClick={() => this.onNotificationClose(notif.code)}
             />
         </div>
     });

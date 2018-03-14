@@ -64,7 +64,7 @@ class PageWrapper extends React.Component {
                                         onClick={this.toggle}
                                         data-toggle="dropdown"
                                         aria-expanded={this.state.isOpen}>
-                            <div onClick={this.toggle} className={styles.qLogo}><h3>Q'ligent logo</h3></div>
+                            <div onClick={this.toggle} className={styles.qLogo}/>
                         </DropdownToggle>
                         <DropdownMenu className={styles.menuFix}>
                             {this.renderMenuItems(this.props.menu)}

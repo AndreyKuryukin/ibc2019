@@ -20,8 +20,9 @@
         top: 10px !important;
       }
       .qLogo {
-        //background: url(../../../resources/img/logo-rt.png);
-        //background-size: cover;
+        background: url(../../../resources/img/logo_white.png) no-repeat;
+        margin: 8px;
+        background-size: 55%;
         height: 3em;
         width: 14em;
         &:hover {

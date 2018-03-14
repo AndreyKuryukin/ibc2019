@@ -37,7 +37,6 @@ class Roles extends React.Component {
             searchText: '',
             isAllChecked: false,
             checkedIds: [],
-            showRemoveConfirmation: false
         };
     }
 
@@ -55,17 +54,11 @@ class Roles extends React.Component {
 
     onCheck = (checkedIds) => {
         this.setState({ checkedIds });
-    }
+    };
 
-    onRemoveConfirm = () => {
+    onRemove = () => {
         this.props.onRemove(this.state.checkedIds);
-        this.removeConfirmToggle()
     };
-
-    removeConfirmToggle = () => {
-        this.setState({ showRemoveConfirmation: !this.state.showRemoveConfirmation });
-    };
-
 
     onSearchTextChange = (searchText) => {
         this.setState({
@@ -73,22 +66,16 @@ class Roles extends React.Component {
         });
     };
 
-    composeRemoveConfirmMessage = (checkedIds, rolesData) => {
-        const roles = checkedIds.map(id => rolesData.find(role => role.id === id).name).join(', ');
-        return ls('REMOVE_ROLES_CONFIRM_TEXT', 'Удалить роли: {{roles}}?').replace('{{roles}}', roles)
-    };
-
     render() {
         const {
             searchText,
-            checkedIds,
-            showRemoveConfirmation
+            checkedIds
         } = this.state;
 
         const { match, rolesData, history, isLoading } = this.props;
         const { params } = match;
         const isEditorActive = params.action === 'edit' || params.action === 'add';
-        const roleId = params.id ? Number(params.id) : null;
+        const roleId = params.id ? params.id : null;
         return (
             <TabPanel onTabClick={(tabId) => history && history.push(`${tabId}`)}
                       activeTabId="/roles"
@@ -104,7 +91,7 @@ class Roles extends React.Component {
                         checkedIds={checkedIds}
                         searchText={searchText}
                         onSearchTextChange={this.onSearchTextChange}
-                        onRemove={this.removeConfirmToggle}
+                        onRemove={this.onRemove}
                     />
                     <RolesTable
                         searchText={searchText}
@@ -116,21 +103,8 @@ class Roles extends React.Component {
                         active={isEditorActive}
                         roleId={roleId}
                     />}
-                    <Modal isOpen={showRemoveConfirmation} toggle={this.removeConfirmToggle}>
-                        <ModalBody>
-                            {this.composeRemoveConfirmMessage(checkedIds, rolesData)}
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="link"
-                                    onClick={this.removeConfirmToggle}>{ls('GENERAL_CANCEL', 'Отмена')}</Button>
-                            <Button color="danger"
-                                    onClick={this.onRemoveConfirm}>{ls('GENERAL_REMOVE', 'Удалить')}</Button>
-
-                        </ModalFooter>
-                    </Modal>
                 </div>
             </TabPanel>
-
         );
     }
 }

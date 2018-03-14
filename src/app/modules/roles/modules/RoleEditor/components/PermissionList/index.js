@@ -1,10 +1,49 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { CheckedCell } from '../../../../../../components/Table/Cells';
+import { getChildrenIds, checkNodeAndGetCheckedIds } from '../../../../../../util/tree';
+import search from '../../../../../../util/search';
 
-import { DefaultCell, LinkCell,CheckedCell } from '../../../../../../components/Table/Cells';
-
-import Table from '../../../../../../components/Table';
-import ls from "i18n";
+import Grid from '../../../../../../components/Grid';
+const treeData = [
+    {
+        id: 1,
+        name: 'Главная',
+        children: [
+            {
+                id: 2,
+                name: 'Просмотр',
+            },  {
+                id: 3,
+                name: 'Создание виджета',
+            }, {
+                id: 4,
+                name: 'Удаление виджета',
+            }, {
+                id: 5,
+                name: 'Редактирование виджета',
+            },
+        ]
+    }, {
+        id: 6,
+        name: 'Конфиг БПАС',
+        children: [
+            {
+                id: 7,
+                name: 'Просмотр',
+            },  {
+                id: 8,
+                name: 'Восстановление конфига',
+            }, {
+                id: 9,
+                name: 'Обновление конфига',
+            }, {
+                id: 10,
+                name: 'Удаление конфига',
+            },
+        ]
+    }
+];
 
 class RolesListGrid extends React.PureComponent {
     static propTypes = {
@@ -20,98 +59,83 @@ class RolesListGrid extends React.PureComponent {
 
     constructor(props) {
         super(props);
+
         this.state = {
-            checked: props.checked || [],
+            searchText: '',
+            checked: props.checked ? props.checked : [],
         };
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (this.props.checked !== nextProps.checked) {
-            this.setState({
-                checked: nextProps.checked
-            });
-        }
-    }
+    // componentWillReceiveProps(nextProps) {
+    //     if (this.props.checked !== nextProps.checked) {
+    //         this.setState({
+    //             checked: nextProps.checked
+    //         });
+    //     }
+    // }
 
+    onCheckAll = (value) => {
+        const allIds = treeData.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), []);
+        this.setState({
+            checked: value ? allIds : [],
+        });
+    };
 
     onCheck = (value, node) => {
-        let checked = [];
-        if (node) {
-            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
-        } else {
-            checked = value ? this.props.subjectsData.map(node => node.id) : [];
-        }
-
-         this.props.onCheck(checked);
-
         this.setState({
-            checked,
+            checked: checkNodeAndGetCheckedIds(this.state.checked, node, value),
         });
-    }
-
-    headerRowRender = (column) => {
-        switch (column.name) {
-            case 'checked': {
-                const isAllChecked = this.props.subjectsData.length !== 0 && this.state.checked.length === this.props.subjectsData.length;
-                return (
-                    <CheckedCell
-                        onChange={this.onCheck}
-                        style={{ marginLeft: 0 }}
-                        value={isAllChecked}
-                    />
-                );
-            }
-            default:
-                return (
-                    <DefaultCell
-                        content={column.title}
-                    />
-                );
-        }
     };
 
     bodyRowRender = (column, node) => {
-        const text = node[column.name];
-        switch (column.name) {
-            case 'checked': {
-                const isRowChecked = this.state.checked.findIndex(id => node.id === id) !== -1;
-                return (
-                    <CheckedCell
-                        onChange={(value) => this.onCheck(value, node)}
-                        style={{ marginLeft: 0 }}
-                        value={isRowChecked}
-                    />
-                );
-            }
-            case 'name':
-                return (
-                    <DefaultCell
-                        content={text}
-                    />
-                );
+        let checkedPartially = false;
+        let checked = this.state.checked.includes(node.id);
+        if (node.children && node.children.length > 0) {
+            checkedPartially = !checked && getChildrenIds(node).some(id => this.state.checked.includes(id));
         }
+
+        return (
+            <CheckedCell
+                id={`role-editor-subjects-grid-${node.id}`}
+                onChange={(value) => this.onCheck(value, node)}
+                style={{ marginLeft: 0 }}
+                value={checked}
+                checkedPartially={checkedPartially}
+                text={node[column.name]}
+            />
+        );
     };
 
-    getColumns = () => ([{
-        name: 'checked',
-    }, {
-        title: 'Название',
-        name: 'name'
-    }
-    ]);
+    onSearchTextChange = (searchText) => {
+        this.setState({ searchText });
+    };
+
+    filter = (data, searchText) => data.filter(node => {
+        return search(node.name, searchText) || (node.children && this.filter(node.children, searchText).length > 0);
+    });
 
     render() {
         const { subjectsData } = this.props;
+        const isAllChecked = treeData.every(node => this.state.checked.includes(node.id));
+        const checkedPartially = !isAllChecked && this.state.checked.length > 0;
+        const filteredData = this.state.searchText ? this.filter(treeData, this.state.searchText) : treeData;
+
         return (
-            <div>
-                <h6>{ls('ROLE_EDITOR_SUBJECTS_TITLE', 'Разрешения')}</h6>
-                <Table headerRowRender={this.headerRowRender}
-                       bodyRowRender={this.bodyRowRender}
-                       data={subjectsData}
-                       columns={this.getColumns()}
-                       size="sm"
-                />
-            </div>
+            <Grid
+                id="role-editor-subjects-grid"
+                data={filteredData}
+                columns={[
+                    {
+                        name: 'name',
+                    }
+                ]}
+                bodyRowRender={this.bodyRowRender}
+                checkedPartially={checkedPartially}
+                isAllChecked={isAllChecked}
+                onCheckAll={this.onCheckAll}
+                onSearchTextChange={this.onSearchTextChange}
+                tree
+            />
         );
     }
 }
