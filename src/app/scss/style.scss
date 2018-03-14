@@ -29,13 +29,11 @@ body {
 @import 'modal.scss';
 @import 'images.scss';
 
-input[type=text] {
+input:not([type=checkbox]), input:not([type=radio]) {
   height: $input-height;
 }
 input::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-  color: $placeholder !important;
-}
+
 input[type=checkbox], input[type=radio] {
   display: none;
 }

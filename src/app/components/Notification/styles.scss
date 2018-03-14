@@ -18,11 +18,20 @@
     border: $notification-border;
     padding: $notification-padding;
     background-color: $notification-background;
+    .notificationActions {
+      padding: 8px 0 0 0;
+      min-width: 200px;
+      display: flex;
+      flex-direction: row-reverse;
+      * {
+        margin-left: 4px;
+      }
+    }
     .closeIcon {
       background: url(../../../resources/img/close.png);
-      position: relative;
-      right: -$notification-right-padding;
-      top: -$notification-top-padding;
+      position: absolute;
+      right: $notification-margin;
+      top: $notification-margin;
       margin: 6px;
       height: 7px;
       width: 7px;
@@ -30,6 +39,15 @@
     &.criticalMsg {
       &:before {
         content: url(../../../resources/img/error.png);
+        height: 15px;
+        width: 15px;
+        display: block;
+        margin-right: 8px
+      }
+    }
+    &.confirmationMsg {
+      &:before {
+        content: url(../../../resources/img/warning.png);
         height: 15px;
         width: 15px;
         display: block;

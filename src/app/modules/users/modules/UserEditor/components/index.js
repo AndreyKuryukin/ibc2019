@@ -254,9 +254,8 @@ class UserEditor extends React.PureComponent {
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
-                                data={rolesList}
+                                data={[]}
                                 user={user}
-                                onCheck={checked => this.setUserProperty('roles', checked)}
                             />
                         </Panel>
                     </div>

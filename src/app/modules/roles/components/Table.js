@@ -138,7 +138,8 @@ class RolesTable extends React.PureComponent {
             <Table headerRowRender={this.headerRowRender}
                    bodyRowRender={this.bodyRowRender}
                    data={resultData}
-                   columns={columns}/>
+                   columns={columns}
+            />
         );
     }
 }

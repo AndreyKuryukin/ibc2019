@@ -71,6 +71,7 @@ $tree-space-width: 28px;
 
 .lastExpandableCell {
   @extend %cell;
+  position: relative;
   &:before {
     @extend %topStick;
   }

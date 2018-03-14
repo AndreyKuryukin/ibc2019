@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { Button } from 'reactstrap';
 import { deleteRoleSuccess, fetchListOfRolesSuccess } from '../actions';
 import rest from '../../../rest';
 import { selectRolesData } from '../selectors';
@@ -10,6 +11,7 @@ import ls from "i18n";
 class Roles extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
+        notifications: PropTypes.object.isRequired,
     };
 
     static propTypes = {
@@ -48,7 +50,7 @@ class Roles extends React.PureComponent {
             });
     };
 
-    onRemove = (ids) => {
+    onRemoveConfirmed = (ids) => {
         this.setState({ isLoading: true });
         Promise.all(
             ids.map(id => rest.delete('/api/v1/role/:roleId', {}, { urlParams: { roleId: id } }))
@@ -56,6 +58,30 @@ class Roles extends React.PureComponent {
             this.props.onDeleteRolesSuccess(ids);
             this.setState({ isLoading: false });
         });
+    };
+
+    onRemove = (ids) => {
+        this.context.notifications.notify({
+            title: ls('ROLES_REMOVE_CONFIRM_TITLE', 'Подтвердите действие:'),
+            message: ls('ROLES_REMOVE_CONFIRM_MESSAGE', 'Удаление роли'),
+            type: 'CONFIRMATION',
+            code: 'remove-roles',
+            actions: [
+                <Button color='action'
+                        onClick={() => {
+                            this.context.notifications.close('remove-roles');
+                            this.onRemoveConfirmed(ids)
+                        }}>
+                    {ls('GENERAL_REMOVE', "Удалить")}
+                </Button>,
+                <Button outline
+                        color="action"
+                        onClick={() => this.context.notifications.close('remove-roles')}>
+                    {ls('GENERAL_CANCEL', "Отмена")}
+                </Button>,
+            ]
+        });
+
     };
 
     render() {
