@@ -7,6 +7,7 @@ import Table from '../../../components/Table';
 import { DefaultCell, LinkCell } from '../../../components/Table/Cells'
 import PolicyCell from './PolicyCell';
 import search from '../../../util/search';
+import styles from './styles.scss';
 
 class PoliciesTable extends React.PureComponent {
     static propTypes = {
@@ -148,6 +149,7 @@ class PoliciesTable extends React.PureComponent {
         const filteredData = searchText ? this.filterBySearchText(data, columns, searchText) : data;
         return (
             <Table
+                className={styles.policyTable}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 data={filteredData}

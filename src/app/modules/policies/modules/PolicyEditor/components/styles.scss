@@ -1,15 +1,21 @@
 @import '../../../../../scss/vars';
-
-.roleEditorContent {
-  display: flex;
-  flex-direction: row;
-  .roleEditorColumn {
+.policyEditor {
+  width: 800px !important;
+  max-width: 800px !important;
+  .policyEditorContent {
     display: flex;
-    flex-direction: column;
-    width: 50%;
+    flex-direction: row;
+    .policyEditorColumn {
+      display: flex;
+      flex-direction: column;
+      width: 50%;
+    }
+    .policyEditorColumn:first-child {
+      margin-right: 1px;
+    }
   }
-  .roleEditorColumn:first-child {
-    margin-right: 1px;
+  .modal-footer {
+    justify-content: flex-end;
   }
 }
 
@@ -17,6 +23,7 @@
   display: flex;
   flex-grow: 1;
   flex-direction: column;
+  margin-top: 10px;
   .conditions {
     display: flex;
     flex: 1 1 0;
