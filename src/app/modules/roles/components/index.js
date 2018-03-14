@@ -59,7 +59,7 @@ class Roles extends React.Component {
 
     onRemoveConfirm = () => {
         this.props.onRemove(this.state.checkedIds);
-        this.removeConfirmToggle()
+        this.removeConfirmToggle();
     };
 
     removeConfirmToggle = () => {
@@ -74,8 +74,8 @@ class Roles extends React.Component {
     };
 
     composeRemoveConfirmMessage = (checkedIds, rolesData) => {
-        const roles = checkedIds.map(id => rolesData.find(role => role.id === id).name).join(', ');
-        return ls('REMOVE_ROLES_CONFIRM_TEXT', 'Удалить роли: {{roles}}?').replace('{{roles}}', roles)
+        // const roles = checkedIds.map(id => rolesData.find(role => role.id === id).name).join(', ');
+        return ls('REMOVE_ROLES_CONFIRM_TEXT', 'Удалить роли: {{roles}}?').replace('{{roles}}', []);
     };
 
     render() {
@@ -88,7 +88,7 @@ class Roles extends React.Component {
         const { match, rolesData, history, isLoading } = this.props;
         const { params } = match;
         const isEditorActive = params.action === 'edit' || params.action === 'add';
-        const roleId = params.id ? Number(params.id) : null;
+        const roleId = params.id ? params.id : null;
         return (
             <TabPanel onTabClick={(tabId) => history && history.push(`${tabId}`)}
                       activeTabId="/roles"

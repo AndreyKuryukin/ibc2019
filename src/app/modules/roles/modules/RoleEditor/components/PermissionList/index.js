@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { CheckedCell } from '../../../../../../components/Table/Cells';
 import { getChildrenIds, checkNodeAndGetCheckedIds } from '../../../../../../util/tree';
 import search from '../../../../../../util/search';
-
 import Grid from '../../../../../../components/Grid';
+
 const treeData = [
     {
         id: 1,
@@ -79,12 +79,15 @@ class RolesListGrid extends React.PureComponent {
         this.setState({
             checked: value ? allIds : [],
         });
+
+        this.props.onCheck(allIds);
     };
 
     onCheck = (value, node) => {
-        this.setState({
-            checked: checkNodeAndGetCheckedIds(this.state.checked, node, value),
-        });
+        const checked = checkNodeAndGetCheckedIds(this.state.checked, node, value);
+        this.setState({ checked });
+
+        this.props.onCheck(checked);
     };
 
     bodyRowRender = (column, node) => {
@@ -110,9 +113,8 @@ class RolesListGrid extends React.PureComponent {
         this.setState({ searchText });
     };
 
-    filter = (data, searchText) => data.filter(node => {
-        return search(node.name, searchText) || (node.children && this.filter(node.children, searchText).length > 0);
-    });
+    filter = (data, searchText) => data.filter(node => search(node.name, searchText) || (node.children && this.filter(node.children, searchText).length > 0));
+
 
     render() {
         const { subjectsData } = this.props;
