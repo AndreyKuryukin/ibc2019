@@ -23,6 +23,10 @@
   }
 }
 
+.policyTable thead tr {
+  height: 44px;
+}
+
 %child {
   display: flex;
   padding: $table-cell-padding;
