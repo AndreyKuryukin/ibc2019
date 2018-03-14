@@ -31,7 +31,6 @@ export const signIn = (login, password) => request(SIGN_IN_URL, {
 });
 
 
-
 export const composeUrl = (url, params = {}) =>
     _.reduce(params, (result, value, key) => result.replace(`:${key}`, value), url);
 
