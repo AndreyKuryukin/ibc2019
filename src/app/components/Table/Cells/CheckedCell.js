@@ -31,7 +31,7 @@ class CheckedCell extends React.PureComponent {
             ...this.props.style,
         };
         return (
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div className="table-cell-content" title={this.props.text}>
                 <Checkbox
                     id={this.props.id}
                     style={style}
@@ -39,7 +39,7 @@ class CheckedCell extends React.PureComponent {
                     checked={this.props.value}
                     checkedPartially={this.props.checkedPartially}
                 />
-                {this.props.text}
+                <span className="truncated">{this.props.text}</span>
             </div>
         );
     }

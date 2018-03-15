@@ -21,11 +21,15 @@ class LinkCell extends React.PureComponent {
         } = this.props;
 
         return (
-            <Link
-                onClick={onClick}
-                to={href}
-                style={{ color: '#212529', textDecoration: 'underline' }}
-            >{content}</Link>
+            <div className="table-cell-content" title={content}>
+                <span className="truncated">
+                    <Link
+                        onClick={onClick}
+                        to={href}
+                        style={{ color: '#212529', textDecoration: 'underline' }}
+                    >{content}</Link>
+                </span>
+            </div>
         );
     }
 }

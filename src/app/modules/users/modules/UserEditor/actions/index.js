@@ -10,6 +10,12 @@ export const fetchRolesSuccess = roles => ({
     payload: { roles },
 });
 
+export const FETCH_GROUPS_SUCCESS = 'users/FETCH_GROUPS';
+export const fetchGroupsSuccess = groups => ({
+    type: FETCH_GROUPS_SUCCESS,
+    payload: { groups },
+});
+
 export const CREATE_USER = 'users/CREATE_USER';
 export const createUser = user => ({
     type: CREATE_USER,
