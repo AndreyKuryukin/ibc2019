@@ -57,6 +57,7 @@ class UsersTable extends React.PureComponent {
         name: 'roles',
         searchable: true,
         sortable: true,
+        width: 110,
     }, {
         title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделения'),
         name: 'divisions',
@@ -64,9 +65,10 @@ class UsersTable extends React.PureComponent {
         sortable: true,
     }, {
         title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
-        name: 'notification_group',
+        name: 'groups',
         searchable: true,
         sortable: true,
+        width: 170,
     }, {
         title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
         name: 'created',
@@ -122,7 +124,7 @@ class UsersTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        const text = node[column.name];
+        const value = node[column.name];
         switch (column.name) {
             case 'checked': {
                 const isRowChecked = this.state.checked.includes(node.id);
@@ -143,13 +145,20 @@ class UsersTable extends React.PureComponent {
                     <IconCell
                         icon="adminIcon"
                         href={`/users/edit/${node.id}`}
-                        text={text}
+                        text={value}
+                    />
+                );
+            case 'roles':
+            case 'groups':
+                return (
+                    <DefaultCell
+                        content={value ? value.map(item => item.name).join(', ') : ''}
                     />
                 );
             default:
                 return (
                     <DefaultCell
-                        content={text}
+                        content={value}
                     />
                 );
         }

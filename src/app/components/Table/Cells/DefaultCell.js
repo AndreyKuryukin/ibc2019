@@ -21,9 +21,9 @@ class DefaultCell extends React.PureComponent {
             sortDirection,
         } = this.props;
         return (
-            <div onClick={onClick}>
+            <div onClick={onClick} className="table-cell-content" title={content}>
                 {sortDirection && <span>{sortDirection === 'asc' ? '\u2B07' : '\u2B06'}</span>}
-                {content}
+                <span className="truncated">{content}</span>
             </div>
         );
     }

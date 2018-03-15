@@ -29,22 +29,21 @@ class IconCell extends React.PureComponent {
         };
 
         return (
-            <div style={{
-                display: 'flex',
-                alignItems: 'center'
-            }}>
+            <div className="table-cell-content" title={text}>
                 <Icon
                     icon={icon}
                     style={iconStyle}
                     onClick={onIconClick}
                 />
-                {href ? (
-                    <Link
-                        onClick={onLinkClick}
-                        to={href}
-                        style={{ color: '#212529', textDecoration: 'underline' }}
-                    >{text}</Link>
-                ) : text}
+                <span className="truncated">
+                    {href ? (
+                        <Link
+                            onClick={onLinkClick}
+                            to={href}
+                            style={{ color: '#212529', textDecoration: 'underline' }}
+                        >{text}</Link>
+                    ) : text}
+                </span>
             </div>
         );
     }
