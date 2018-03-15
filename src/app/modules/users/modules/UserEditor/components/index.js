@@ -24,10 +24,12 @@ class UserEditor extends React.PureComponent {
         onSubmit: PropTypes.func.isRequired,
         onMount: PropTypes.func,
         rolesList: PropTypes.array,
+        groupsList: PropTypes.array,
     };
 
     static defaultProps = {
         rolesList: [],
+        groupsList: [],
         active: false,
         onMount: () => null,
     };
@@ -89,7 +91,7 @@ class UserEditor extends React.PureComponent {
             active,
             userId,
             rolesList,
-            user
+            groupsList,
         } = this.props;
         return (
             <Modal
@@ -236,7 +238,7 @@ class UserEditor extends React.PureComponent {
                         >
                             <RolesGrid
                                 data={rolesList}
-                                user={user}
+                                checked={this.getUserProperty('roles', [])}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
                             />
                         </Panel>
@@ -254,8 +256,9 @@ class UserEditor extends React.PureComponent {
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
-                                data={[]}
-                                user={user}
+                                data={groupsList}
+                                checked={this.getUserProperty('groups', [])}
+                                onCheck={checked => this.setUserProperty('groups', checked)}
                             />
                         </Panel>
                     </div>

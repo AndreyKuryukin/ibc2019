@@ -74,12 +74,14 @@ class HeaderCell extends React.PureComponent {
         );
         return (
             <th
-                maxWidth={width}
                 className={classes}
                 onClick={onClick}
                 onMouseEnter={this.onMouseEnter}
                 onMouseLeave={this.onMouseLeave}
-                width={width}
+                style={{
+                    width,
+                    maxWidth: width,
+                }}
             >
                 {this.props.children}
                 {filterable && <ColumnFilterTrigger active={isFilterTriggerActive} onClick={this.onTriggerClick} />}

@@ -9,3 +9,20 @@ export const selectUsersList = createSelector(
     users => users.list.map(id => users.byId[id]),
 );
 
+const formatActiveStatus = disabled => disabled ? ls('YES', 'Нет') : ls('NO', 'Да');
+
+const getUserRow = user => ({
+    id: user.id,
+    login: user.login,
+    name: user.first_name,
+    email: user.email,
+    phone: user.phone,
+    active: formatActiveStatus(user.disabled),
+    roles: user.roles,
+    groups: user.groups,
+});
+
+export const selectUsersData = createSelector(
+    selectUsersList,
+    users => users.map(getUserRow),
+);
