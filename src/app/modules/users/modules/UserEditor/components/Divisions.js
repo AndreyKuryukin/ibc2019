@@ -1,69 +1,62 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Immutable from 'immutable';
-import _ from 'lodash';
 import ls from "i18n";
 import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
-import { getChildrenIds, checkNodeAndGetCheckedIds } from '../../../../../util/tree';
+import { checkNodeAndGetCheckedIds, getChildrenIds } from '../../../../../util/tree';
 
 const treeData = [
     {
-        id: 1,
-        name: 'All',
+        id: 3,
+        name: 'Россия',
         children: [
             {
-                id: 3,
-                name: 'Russia',
-                children: [
-                    {
-                        id: 5,
-                        name: 'Moscow',
-                    }, {
-                        id: 6,
-                        name: 'Far east',
-                    }, {
-                        id: 7,
-                        name: 'West',
-                    }, {
-                        id: 8,
-                        name: 'Ural',
-                    }, {
-                        id: 9,
-                        name: 'South',
-                    }, {
-                        id: 10,
-                        name: 'North',
-                    }, {
-                        id: 11,
-                        name: 'St. Petersburg',
-                    },
-                ]
+                id: 5,
+                name: 'Центральный ФО',
+                children: [{
+                    id: 22,
+                    name: 'Москва'
+                }]
+            }, {
+                id: 6,
+                name: 'Дальне-Восточный ФО',
+            }, {
+                id: 7,
+                name: 'Северо-Западный ФО',
+            }, {
+                id: 8,
+                name: 'Уральский ФО',
+            }, {
+                id: 9,
+                name: 'Южный ФО',
+            }, {
+                id: 10,
+                name: 'Сибирский ФО',
             },
+        ]
+    },
+    {
+        id: 4,
+        name: 'USA',
+        children: [
             {
-                id: 4,
-                name: 'USA',
-                children: [
-                    {
-                        id: 12,
-                        name: 'Alaska',
-                    }, {
-                        id: 13,
-                        name: 'California',
-                    }, {
-                        id: 14,
-                        name: 'Oklahoma',
-                    }, {
-                        id: 15,
-                        name: 'Texas',
-                        children: [{
-                            id: 16,
-                            name: 'Texas City',
-                        }],
-                    }
-                ]
-            },
+                id: 12,
+                name: 'Alaska',
+            }, {
+                id: 13,
+                name: 'California',
+            }, {
+                id: 14,
+                name: 'Oklahoma',
+            }, {
+                id: 15,
+                name: 'Texas',
+                children: [{
+                    id: 16,
+                    name: 'Texas City',
+                }],
+            }
         ]
     }
 ];
@@ -130,7 +123,7 @@ class Divisions extends React.Component {
 
         return (
             <Panel
-                title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
+                title={ls('USER_DIVISION_PANEL_TITLE', 'Подразделения')}
                 bodyStyle={{ padding: 0 }}
             >
                 <Grid

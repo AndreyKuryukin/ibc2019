@@ -6,6 +6,7 @@ import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
 import search from '../../../util/search';
+import moment from "moment";
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
@@ -79,7 +80,7 @@ class UsersTable extends React.PureComponent {
         sortable: true,
     }, {
         title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
-        name: 'active',
+        name: 'disabled',
     }];
 
     onCheck = (value, node) => {
@@ -122,7 +123,7 @@ class UsersTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        const text = node[column.name];
+        const text =  node[column.name] || '';
         switch (column.name) {
             case 'checked': {
                 const isRowChecked = this.state.checked.includes(node.id);
@@ -146,6 +147,16 @@ class UsersTable extends React.PureComponent {
                         text={text}
                     />
                 );
+            case 'roles':
+                return (node[column.name] || []).map(role => role.name).join(', ');
+            case 'name':
+                return `${node['first_name']} ${node['last_name']}`;
+            case 'last_connection':
+                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+            case 'created':
+                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+            case 'disabled':
+                return node[column.name] ? ls('NO', 'Нет') : ls('YES', 'Да');
             default:
                 return (
                     <DefaultCell
