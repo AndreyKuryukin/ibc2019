@@ -40,6 +40,6 @@ textarea::-webkit-input-placeholder {
 input[type=checkbox], input[type=radio] {
   display: none;
 }
-.btn-action {
+.btn-action, .btn-outline-action, .btn-outline-action:hover {
   color: #fff;
 }

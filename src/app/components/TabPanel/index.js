@@ -37,6 +37,7 @@ export default class Example extends React.Component {
 
     renderTabs = (children = []) =>
         children.map((child, index) => <NavItem
+            className={classnames({[styles.inactiveItem]: this.state.activeTab !== child.props.id})}
             key={`tab-pane-${child.props.id || index}`}>
             <NavLink
                 className={classnames({ active: this.state.activeTab === child.props.id })}

@@ -1,7 +1,16 @@
 @import "../../../../../scss/vars";
 
-.modalBody {
-  > * {
+.roleEditor {
+  width: 380px;
+  .modal-footer {
+    justify-content: flex-end;
+  }
+}
+
+.roleEditorContent {
+  display: flex;
+  flex-direction: column;
+  .panel + .panel {
     margin-top: 1px;
   }
 }
@@ -9,4 +18,3 @@
 .selectPlaceholder {
   color: $placeholder;
 }
-

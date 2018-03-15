@@ -57,23 +57,16 @@ class RolesTable extends React.PureComponent {
             type: 'text',
         },
     }, {
-        title: ls('ROLES_SUBJECTS', 'Разрешения'),
-        name: 'description',
+        title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
+        name: 'number',
         searchable: true,
         sortable: true,
-        filter: {
-            type: 'text',
-        },
     }, {
         title: ls('ROLES_DESCRIPTION', 'Описание'),
         name: 'description',
         searchable: true,
         sortable: true,
-        filter: {
-            type: 'text',
-        },
-    }
-    ]);
+    }]);
 
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
@@ -145,7 +138,8 @@ class RolesTable extends React.PureComponent {
             <Table headerRowRender={this.headerRowRender}
                    bodyRowRender={this.bodyRowRender}
                    data={resultData}
-                   columns={columns}/>
+                   columns={columns}
+            />
         );
     }
 }

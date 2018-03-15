@@ -17,6 +17,7 @@ class Table extends React.Component {
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
+        className: PropTypes.string,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
         selectable: PropTypes.bool,
@@ -25,6 +26,7 @@ class Table extends React.Component {
     static defaultProps = {
         data: [],
         columns: [],
+        className: '',
         selectable: false,
         headerRowRender: null,
         bodyRowRender: () => null,
@@ -156,13 +158,13 @@ class Table extends React.Component {
     };
 
     render() {
-        const { columns, headerRowRender, bodyRowRender, ...rest } = this.props;
+        const { columns, headerRowRender, bodyRowRender, className, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
             <div className={styles.tableContainer} style={{
                 backgroundPositionY: headerRowRender ? `${this.getHeadHeight()}px` : 0,
             }}>
-                <ReactstrapTable striped bordered {...rest} className="table-hover" width="100%">
+                <ReactstrapTable striped bordered {...rest} className={classnames('table-hover', className)}>
                     {headerRowRender && <thead
                         ref={thead => (this.thead = thead)}
                     >

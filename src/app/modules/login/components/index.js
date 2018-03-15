@@ -65,7 +65,7 @@ class Login extends React.PureComponent {
             <div className={styles.loginContainer}>
                 <div className={styles.shield}/>
                 <div className={styles.formContainer}>
-                    <h3 className={styles.sqmLabel}>SQM</h3>
+                    <div className={styles.sqmLabel}/>
                     <Form
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
@@ -97,7 +97,7 @@ class Login extends React.PureComponent {
                             type="submit"
                             color="action"
                         >
-                            {ls('LOGIN_SUBMIT', 'Вход')}
+                            {ls('LOGIN_SUBMIT', 'ВХОД')}
                         </Button>
                     </Form>
                 </div>

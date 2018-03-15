@@ -89,11 +89,14 @@ class PolicyEditor extends React.PureComponent {
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
-            <Modal isOpen={active} size="lg">
+            <Modal
+                isOpen={active}
+                className={styles.policyEditor}
+            >
                 <ModalHeader toggle={this.onClose}>{modalTitle}</ModalHeader>
                 <ModalBody>
-                    <div className={styles.roleEditorContent}>
-                        <div className={styles.roleEditorColumn}>
+                    <div className={styles.policyEditorContent}>
+                        <div className={styles.policyEditorColumn}>
                             <Configuration
                                 getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
                                 setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
@@ -159,14 +162,14 @@ class PolicyEditor extends React.PureComponent {
                                 </div>
                             </Panel>
                         </div>
-                        <div className={styles.roleEditorColumn}>
+                        <div className={styles.policyEditorColumn}>
                             <Condition />
                         </div>
                     </div>
                 </ModalBody>
                 <ModalFooter>
-                    <Button color="link" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                    <Button color="primary" onClick={this.onSubmit}>{ls('POLICIES_SUBMIT', 'Сохранить')}</Button>
+                    <Button outline color="action" onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
+                    <Button color="action" onClick={this.onSubmit}>{ls('POLICIES_SUBMIT', 'Сохранить')}</Button>
                 </ModalFooter>
             </Modal>
         );

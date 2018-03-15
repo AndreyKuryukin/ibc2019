@@ -33,12 +33,12 @@ class UsersTable extends React.PureComponent {
         name: 'checked',
         width: 28,
     }, {
-        title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Login'),
+        title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Логин'),
         name: 'login',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Name'),
+        title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
         sortable: true,
@@ -48,39 +48,39 @@ class UsersTable extends React.PureComponent {
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Cell phone'),
+        title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
         name: 'phone',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Roles'),
+        title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
         name: 'roles',
         searchable: true,
         sortable: true,
         width: 110,
     }, {
-        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Divisions'),
+        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделения'),
         name: 'divisions',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Notification groups'),
+        title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
         name: 'groups',
         searchable: true,
         sortable: true,
         width: 170,
     }, {
-        title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Created'),
+        title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
         name: 'created',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Last connection'),
+        title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
         name: 'last_connection',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Active'),
+        title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
         name: 'active',
     }];
 
@@ -175,12 +175,10 @@ class UsersTable extends React.PureComponent {
         const columns = this.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
-            <Table
-                selectable
-                data={filteredData}
-                columns={columns}
-                headerRowRender={this.headerRowRender}
-                bodyRowRender={this.bodyRowRender}
+            <Table data={filteredData}
+                   columns={columns}
+                   headerRowRender={this.headerRowRender}
+                   bodyRowRender={this.bodyRowRender}
             />
         );
     }
