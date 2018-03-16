@@ -12,7 +12,7 @@ import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
 import Divisions from "./Divisions";
 
-class UserEditor extends React.PureComponent {
+class UserEditor extends React.Component {
     static contextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -25,11 +25,13 @@ class UserEditor extends React.PureComponent {
         onMount: PropTypes.func,
         rolesList: PropTypes.array,
         groupsList: PropTypes.array,
+        divisions: PropTypes.object,
     };
 
     static defaultProps = {
         rolesList: [],
         groupsList: [],
+        divisions: null,
         active: false,
         onMount: () => null,
     };
@@ -82,7 +84,7 @@ class UserEditor extends React.PureComponent {
     onSubmit = () => {
         const user = _.omit(this.state.user, 'confirm');
         if (typeof this.props.onSubmit === 'function') {
-            this.props.onSubmit(this.props.userId, this.state.user);
+            this.props.onSubmit(this.props.userId, user);
         }
     };
 
@@ -92,7 +94,9 @@ class UserEditor extends React.PureComponent {
             userId,
             rolesList,
             groupsList,
+            divisions,
         } = this.props;
+
         return (
             <Modal
                 isOpen={active}
@@ -245,9 +249,9 @@ class UserEditor extends React.PureComponent {
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Divisions
-                            data={rolesList}
-                            checked={[]}
-                            onCheck={checked => this.setUserProperty('division', checked)}
+                            data={divisions ? [divisions] : []}
+                            division={this.getUserProperty('division_id')}
+                            onCheck={id => this.setUserProperty('division_id', id)}
                         />
                     </div>
                     <div className={styles.userEditorColumn}>

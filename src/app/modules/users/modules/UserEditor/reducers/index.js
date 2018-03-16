@@ -18,7 +18,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case FETCH_USER_SUCCESS: {
+        case FETCH_USER_SUCCESS:
             return {
                 ...state,
                 user: {
@@ -28,19 +28,16 @@ export default (state = initialState, action) => {
                     groups: action.payload.user.groups.map(group => group.id),
                 },
             };
-        }
-        case FETCH_ROLES_SUCCESS: {
+        case FETCH_ROLES_SUCCESS:
             return {
                 ...state,
                 roles: action.payload.roles,
             };
-        }
-        case FETCH_GROUPS_SUCCESS: {
+        case FETCH_GROUPS_SUCCESS:
             return {
                 ...state,
                 groups: action.payload.groups,
-            }
-        }
+            };
         default:
             return state;
     }

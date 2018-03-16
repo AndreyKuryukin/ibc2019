@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import UsersComponent from '../components/';
 import rest from '../../../rest';
-import { fetchUsersSuccess, deleteUserSuccess } from '../actions';
+import { fetchUsersSuccess, deleteUserSuccess, fetchDivisionsSuccess } from '../actions';
 import { selectUsersData } from '../selectors';
 
 class Users extends React.PureComponent {
@@ -15,12 +15,18 @@ class Users extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         usersData: PropTypes.array,
+        divisionsById: PropTypes.object,
         onFetchUsersSuccess: PropTypes.func,
+        onFetchDivisionsSuccess: PropTypes.func,
+        onDeleteUsersSuccess: PropTypes.func,
     };
 
     static defaultProps = {
         usersData: [],
+        divisionsById: null,
         onFetchUsersSuccess: () => null,
+        onFetchDivisionsSuccess: () => null,
+        onDeleteUsersSuccess: () => null,
     };
 
     constructor(props) {
@@ -38,10 +44,12 @@ class Users extends React.PureComponent {
     onUsersMount = () => {
         this.setState({ isLoading: true });
 
-        rest.get('/api/v1/user/all')
-            .then((response) => {
-                const users = response.data;
+        Promise.all([rest.get('/api/v1/user/all'), rest.get('/api/v1/division/root')])
+            .then(([usersResponse, divisionsResponse]) => {
+                const users = usersResponse.data;
+                const divisions = divisionsResponse.data;
                 this.props.onFetchUsersSuccess(users);
+                this.props.onFetchDivisionsSuccess(divisions);
                 this.setState({ isLoading: false });
             });
     }
@@ -53,8 +61,8 @@ class Users extends React.PureComponent {
 
         Promise.all(
             ids.map(id => rest.delete('/api/v1/user/:userId', {}, { urlParams: { userId: id } }))
-        ).then(([...ids]) => {
-            this.props.deleteUserSuccess(ids);
+        ).then(() => {
+            this.props.onDeleteUsersSuccess(ids);
             this.setState({ isLoading: false });
         }).catch((e) => {
             console.error(e);
@@ -69,6 +77,7 @@ class Users extends React.PureComponent {
                 match={this.props.match}
                 isLoading={this.state.isLoading}
                 usersData={this.props.usersData}
+                divisionsById={this.props.divisionsById}
                 onMount={this.onUsersMount}
                 onDelete={this.onDelete}
             />
@@ -78,10 +87,13 @@ class Users extends React.PureComponent {
 
 const mapStateToProps = state => ({
     usersData: selectUsersData(state),
+    divisionsById: state.users.users.divisionsById,
 });
 
 const mapDispatchToProps = dispatch => ({
     onFetchUsersSuccess: (users) => dispatch(fetchUsersSuccess(users)),
+    onFetchDivisionsSuccess: (divisions) => dispatch(fetchDivisionsSuccess(divisions)),
+    onDeleteUsersSuccess: (ids) => dispatch(deleteUserSuccess(ids)),
 });
 
 export default connect(
