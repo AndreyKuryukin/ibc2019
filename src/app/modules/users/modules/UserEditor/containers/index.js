@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { selectSelectedUser, selectUserRoles } from '../selectors';
 import RoleEditorComponent from '../components';
 import rest from '../../../../../rest';
-import { createUser, fetchRolesSuccess, fetchGroupsSuccess, fetchUserSuccess, updateUser } from '../actions';
+import { createUser, fetchRolesSuccess, fetchGroupsSuccess, fetchUserSuccess, fetchDivisionsSuccess, updateUser } from '../actions';
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -20,6 +20,7 @@ class UserEditor extends React.PureComponent {
         userId: null,
         onFetchUserSuccess: () => null,
         onFetchRolesSuccess: () => null,
+        onFetchDivisionsSuccess: () => null,
         onFetchGroupsSuccess: () => null,
         onUpdateUserSuccess: () => null,
         onCreateUserSuccess: () => null,
@@ -76,6 +77,7 @@ const mapStateToProps = state => ({
     user: selectSelectedUser(state),
     rolesList: selectUserRoles(state),
     groupsList: state.users.editor.groups,
+    divisions: state.users.users.divisions,
 });
 
 const mapDispatchToProps = dispatch => ({

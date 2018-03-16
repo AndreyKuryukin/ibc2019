@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
+import moment from 'moment';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
@@ -10,12 +11,14 @@ import search from '../../../util/search';
 class UsersTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        divisionsById: PropTypes.object,
         searchText: PropTypes.string,
         onCheck: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
+        divisionsById: {},
         searchText: '',
         onCheck: () => null,
     };
@@ -59,8 +62,8 @@ class UsersTable extends React.PureComponent {
         sortable: true,
         width: 110,
     }, {
-        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделения'),
-        name: 'divisions',
+        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
+        name: 'division_id',
         searchable: true,
         sortable: true,
     }, {
@@ -148,11 +151,24 @@ class UsersTable extends React.PureComponent {
                         text={value}
                     />
                 );
+            case 'division_id':
+                return (
+                    <DefaultCell
+                        content={_.get(this.props.divisionsById, `${value}.name`, '')}
+                    />
+                );
             case 'roles':
             case 'groups':
                 return (
                     <DefaultCell
                         content={value ? value.map(item => item.name).join(', ') : ''}
+                    />
+                );
+            case 'created':
+            case 'last_connection':
+                return (
+                    <DefaultCell
+                        content={moment(value).format('HH:mm:ss DD/MM/YYYY')}
                     />
                 );
             default:
