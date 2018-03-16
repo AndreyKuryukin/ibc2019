@@ -4,102 +4,47 @@ import ls from "i18n";
 import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
-import { checkNodeAndGetCheckedIds, getChildrenIds } from '../../../../../util/tree';
-
-const treeData = [
-    {
-        id: 3,
-        name: 'Россия',
-        children: [
-            {
-                id: 5,
-                name: 'Центральный ФО',
-                children: [{
-                    id: 22,
-                    name: 'Москва'
-                }]
-            }, {
-                id: 6,
-                name: 'Дальне-Восточный ФО',
-            }, {
-                id: 7,
-                name: 'Северо-Западный ФО',
-            }, {
-                id: 8,
-                name: 'Уральский ФО',
-            }, {
-                id: 9,
-                name: 'Южный ФО',
-            }, {
-                id: 10,
-                name: 'Сибирский ФО',
-            },
-        ]
-    },
-    {
-        id: 4,
-        name: 'USA',
-        children: [
-            {
-                id: 12,
-                name: 'Alaska',
-            }, {
-                id: 13,
-                name: 'California',
-            }, {
-                id: 14,
-                name: 'Oklahoma',
-            }, {
-                id: 15,
-                name: 'Texas',
-                children: [{
-                    id: 16,
-                    name: 'Texas City',
-                }],
-            }
-        ]
-    }
-];
 
 class Divisions extends React.Component {
 
     static propTypes = {
         data: PropTypes.array,
-        checked: PropTypes.array
+        division: PropTypes.string,
+        onCheck: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
-        checked: []
+        division: '',
+        onCheck: () => null,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            checked: props.checked ? props.checked : [],
+            division: props.division,
         };
     }
 
-    onCheckAll = (value) => {
-        const allIds = treeData.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), []);
-        this.setState({
-            checked: value ? allIds : [],
-        });
-    };
+    componentWillReceiveProps(nextProps) {
+        if (this.props.division !== nextProps.division) {
+            this.setState({
+                division: nextProps.division,
+            });
+        }
+    }
 
     onCheck = (value, node) => {
         this.setState({
-            checked: checkNodeAndGetCheckedIds(this.state.checked, node, value),
+            division: node.id,
         });
+
+        this.props.onCheck(node.id);
     };
 
     bodyRowRender = (column, node) => {
-        let checkedPartially = false;
-        let checked = this.state.checked.includes(node.id);
-        if (node.children && node.children.length > 0) {
-            checkedPartially = !checked && getChildrenIds(node).some(id => this.state.checked.includes(id));
-        }
+        let checked = this.state.division === node.id;
 
         return (
             <CheckedCell
@@ -107,7 +52,7 @@ class Divisions extends React.Component {
                 onChange={(value) => this.onCheck(value, node)}
                 style={{ marginLeft: 0 }}
                 value={checked}
-                checkedPartially={checkedPartially}
+                checkedPartially={false}
                 text={node[column.name]}
             />
         );
@@ -118,9 +63,6 @@ class Divisions extends React.Component {
             data,
         } = this.props;
 
-        const isAllChecked = treeData.every(node => this.state.checked.includes(node.id));
-        const checkedPartially = !isAllChecked && this.state.checked.length > 0;
-
         return (
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Подразделения')}
@@ -128,16 +70,15 @@ class Divisions extends React.Component {
             >
                 <Grid
                     id="user-editor-divisions-grid"
-                    data={treeData}
+                    data={data}
                     columns={[
                         {
                             name: 'name',
                         }
                     ]}
                     bodyRowRender={this.bodyRowRender}
-                    checkedPartially={checkedPartially}
-                    isAllChecked={isAllChecked}
-                    onCheckAll={this.onCheckAll}
+                    checkedPartially={false}
+                    isAllChecked={false}
                     tree
                 />
             </Panel>

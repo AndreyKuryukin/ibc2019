@@ -9,3 +9,9 @@ export const deleteUserSuccess = ids => ({
     type: DELETE_USER_SUCCESS,
     payload: { ids },
 });
+
+export const FETCH_DIVISIONS_SUCCESS = 'users/FETCH_DIVISIONS';
+export const fetchDivisionsSuccess = divisions => ({
+    type: FETCH_DIVISIONS_SUCCESS,
+    payload: { divisions },
+});

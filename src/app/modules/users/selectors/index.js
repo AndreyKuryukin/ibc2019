@@ -20,6 +20,7 @@ const getUserRow = user => ({
     active: formatActiveStatus(user.disabled),
     roles: user.roles,
     groups: user.groups,
+    division_id: user.division_id,
 });
 
 export const selectUsersData = createSelector(
