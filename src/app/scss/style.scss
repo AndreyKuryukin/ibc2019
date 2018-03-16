@@ -32,7 +32,6 @@ body {
 input:not([type=checkbox]), input:not([type=radio]) {
   height: $input-height;
 }
-input::-webkit-input-placeholder,
 
 input[type=checkbox], input[type=radio] {
   display: none;
