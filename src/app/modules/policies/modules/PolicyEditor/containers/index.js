@@ -49,7 +49,9 @@ class PolicyEditor extends React.PureComponent {
             this.context.history.push('/policies');
             this.props.onReset();
         };
-
+        policyData.policy_type = "SIMPLE";
+        policyData.scope_type = "NODE";
+        policyData.condition = {condition: 'www'};
         submit('/api/v1/policy', policyData)
             .then(success);
     }

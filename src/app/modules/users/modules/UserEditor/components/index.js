@@ -256,11 +256,12 @@ class UserEditor extends React.Component {
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Notification group')}
+                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Группы уведомлений')}
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
                                 data={groupsList}
+                                id="edit-user-groups"
                                 checked={this.getUserProperty('groups', [])}
                                 onCheck={checked => this.setUserProperty('groups', checked)}
                             />

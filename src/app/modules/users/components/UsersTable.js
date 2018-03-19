@@ -7,7 +7,6 @@ import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
 import search from '../../../util/search';
-import moment from "moment";
 
 class UsersTable extends React.PureComponent {
     static propTypes = {

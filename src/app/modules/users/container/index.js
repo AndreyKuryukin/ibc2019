@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import UsersComponent from '../components/';
 import rest from '../../../rest';
-import { fetchUsersSuccess } from '../actions';
+import { fetchUsersSuccess, fetchDivisionsSuccess, deleteUserSuccess } from '../actions';
 import { selectUsersList } from '../selectors';
 import ls from 'i18n';
 
@@ -83,8 +83,9 @@ class Users extends React.PureComponent {
                 return rest.put('/api/v1/user', user)
             }
         }))
-            .then((users) => {
-                const updatedUsers = _.uniqBy([...this.props.usersData, users], user => user.id);
+            .then((response) => {
+                const users = response.map(resp => resp.data);
+                const updatedUsers = _.uniqBy([...this.props.usersData, ...users], user => user.id);
                 this.props.onFetchUsersSuccess(updatedUsers);
                 this.setState({ isLoading: false });
             })

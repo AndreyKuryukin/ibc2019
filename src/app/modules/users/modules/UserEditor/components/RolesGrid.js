@@ -52,7 +52,7 @@ class RolesGrid extends React.PureComponent {
 
     bodyRowRender = (column, node) => (
         <CheckedCell
-            id={`user-editor-roles-grid-${node.id}`}
+            id={`${this.props.id}-${node.id}`}
             onChange={(value) => this.onCheck(value, node)}
             style={{ marginLeft: 0 }}
             value={this.state.checked.includes(node.id)}
@@ -82,7 +82,7 @@ class RolesGrid extends React.PureComponent {
 
         return (
             <Grid
-                id="user-editor-roles-grid"
+                id={this.props.id}
                 data={filteredData}
                 columns={columns}
                 bodyRowRender={this.bodyRowRender}

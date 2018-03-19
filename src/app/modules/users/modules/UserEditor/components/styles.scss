@@ -20,10 +20,12 @@
     }
     .userDivisions {
       height: 100%;
+      width: 200px;
     }
     .userRoles {
       display: flex;
       flex-grow: 1;
+      width: 200px;
     }
   }
 }
