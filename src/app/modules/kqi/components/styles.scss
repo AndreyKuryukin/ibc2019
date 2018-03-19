@@ -1,0 +1,24 @@
+@import '../../../scss/vars';
+
+.kqiWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+}
+
+.kqiControls {
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $white;
+  .buttonsGroup {
+    display: flex;
+  }
+  .search {
+    width: 20em;
+  }
+}

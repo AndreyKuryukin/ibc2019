@@ -29,9 +29,9 @@ body {
 @import 'modal.scss';
 @import 'images.scss';
 
-input:not([type=checkbox]), input:not([type=radio]) {
+input:not([type=checkbox]), input:not([type=radio]), select {
   height: $input-height;
-  font-size: $default-font-size;
+  font-size: $default-font-size !important;
 }
 input::-webkit-input-placeholder,
 textarea::-webkit-input-placeholder {

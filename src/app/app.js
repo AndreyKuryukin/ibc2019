@@ -10,6 +10,7 @@ import Login from './modules/login/containers';
 import Roles from './modules/roles/containers';
 import Users from './modules/users/container';
 import Policies from './modules/policies/containers';
+import KQI from './modules/kqi/containers';
 import rootReducer from './reducers';
 import PageWrapper from "./components/PageWrapper/index";
 import Notification from "./components/Notification";
@@ -26,6 +27,7 @@ class App extends React.Component {
                 <Route path="/roles/:action?/:id?" component={Roles}/>
                 <Route path="/users/:action?/:id?" component={Users}/>
                 <Route path="/policies/:action?/:id?" component={Policies}/>
+                <Route path="/kqi/:action?" component={KQI}/>
             </div>
         );
     }
