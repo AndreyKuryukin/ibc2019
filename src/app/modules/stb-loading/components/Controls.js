@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Input } from 'reactstrap';
 import _ from 'lodash';
 import ls from 'i18n';
-import DatePicker from 'react-date-picker';
+import DatePicker from '../../../components/DatePicker';
 import styles from './styles.scss';
 
 class StbLoadingControls extends React.PureComponent {
@@ -23,19 +23,16 @@ class StbLoadingControls extends React.PureComponent {
         this.props.onSearchTextChange(_.get(event, 'currentTarget.value'));
     };
 
-    onChange = (v, f) => {
+    onChange = (v) => {
         console.log(v);
-        console.log(f);
     };
 
     render() {
         return (
             <div className={styles.controls}>
                 <div className={styles.controlsGroup}>
-                    <DatePicker
-                        onChange={this.onChange}
-                        value={new Date()}
-                    />
+                    <DatePicker title={ls('STB_LOADING_REPORT_INTERVAL_TITLE', 'Период отчёта:')} onChange={this.onChange} />
+                    <DatePicker title="—" />
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}

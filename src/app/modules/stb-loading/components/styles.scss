@@ -15,6 +15,9 @@
   align-items: center;
   justify-content: space-between;
   background: $white;
+  .controlsGroup {
+    display: flex;
+  }
   .search {
     width: 20em;
   }
