@@ -1,0 +1,131 @@
+@import "./vars";
+
+.rw-widget {
+  width: 142px;
+  font-size: inherit;
+  .rw-widget-picker {
+    height: $input-height;
+  }
+  .rw-widget-container {
+    border-radius: $border-radius;
+    border: none;
+    input {
+      @extend .form-control;
+      font-size: $default-font-size;
+    }
+  }
+  .rw-select {
+    border: none;
+    .rw-btn {
+      border: none;
+      vertical-align: bottom;
+      background-color: $orange;
+      color: $white;
+      opacity: 1;
+    }
+  }
+
+  .rw-calendar-header {
+    background-color: $border-blue;
+    .rw-btn {
+      color: $white;
+      &:hover {
+        background-color: $dark-blue;
+      }
+    }
+  }
+
+  .rw-calendar-head {
+
+  }
+  &.rw-state-disabled {
+    border: 0;
+  }
+}
+
+
+
+//.rw-input {
+//  background: #222;
+//  color: #fff;
+//  padding: 0 0 0 5px;
+//  height: 23px;
+//  line-height: 23px;
+//}
+//.rw-input:disabled {
+//  background: #404040;
+//  color: #A6A6A6;
+//  padding: 0 0 0 5px;
+//  height: 23px;
+//  line-height: 23px;
+//}
+//
+//.rw-widget > .rw-select {
+//  border-left: 0;
+//}
+//
+//.rw-select {
+//  background: #4474BF;
+//}
+//
+//.rw-btn {
+//  color: #fff;
+//  line-height: 23px;
+//  width: 23px;
+//  border: 0;
+//}
+//
+//.rw-popup {
+//  background: #222;
+//  color: #fff;
+//  width: 200px;
+//  border: 5px #424242 solid;
+//  box-sizing: border-box;
+//}
+//.rw-popup-container.rw-calendar-popup {
+//  width: 210px;
+//}
+//
+//ul.rw-list > li.rw-list-option.rw-state-selected {
+//  background-color: #4474BF;
+//  border: #4474BF 1px solid;
+//  color: #fff;
+//}
+//
+//ul.rw-list > li.rw-list-option.rw-state-focus, ul.rw-selectlist > li.rw-list-option.rw-state-focus {
+//  background-color: #222;
+//  border: 0;
+//  color: #fff;
+//}
+//
+//.rw-state-focus {
+//  background-color: #222;
+//  color: #fff;
+//}
+//
+//ul.rw-list > li.rw-list-option:hover {
+//  background-color: #1d5d90;
+//  border: #1d5d90 1px solid;
+//}
+//
+//.rw-state-selected {
+//  background-color: #4474BF;
+//}
+//.rw-calendar-grid td .rw-btn {
+//  padding: 0 !important;
+//}
+//.rw-calendar-grid td .rw-btn:hover {
+//  background-color: #66afe9
+//}
+//
+//.rw-calendar .rw-footer .rw-btn:hover {
+//  background-color: #66afe9
+//}
+//
+//.rw-calendar .rw-header .rw-btn-view {
+//  background-color: #222;
+//}
+//
+//.rw-datetimepicker.invalid .rw-input {
+//  border: 1px solid red;
+//}

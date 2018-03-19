@@ -2,7 +2,6 @@ const webpack = require('webpack');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
-const WebpackShellPlugin = require('webpack-shell-plugin');
 
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -57,19 +56,23 @@ module.exports = {
                             importLoaders: 1,
                             localIdentName: '[local]',
                         },
-                    }, 'sass-loader'],
+                    }, 'fast-sass-loader'],
                 }),
             },
             {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader?modules&importLoaders=1&localIdentName=[name]__[local]___[hash:base64:5]'],
+                    use: ['css-loader?modules&importLoaders=1&localIdentName=[local]'],
                 }),
             },
             {
-                test: /\.(jpe?g|png|gif|svg)$/i,
+                test: /\.(jpe?g|png|gif)$/i,
                 loaders: ['url-loader', 'img-loader']
+            },
+            {
+                test: /\.(svg|woff|woff2|eot|ttf|)$/i,
+                loaders: ['url-loader']
             }
         ],
     },
@@ -86,10 +89,8 @@ module.exports = {
         new CopyWebpackPlugin([
             'src/static/index.html',
         ]),
-        new ExtractTextPlugin('_styles.css', {
+        new ExtractTextPlugin('styles.css', {
             allChunks: true,
-        }),
-        new WebpackShellPlugin({
-            onBuildExit:['node post.build.js']})
+        })
     ],
 };

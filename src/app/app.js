@@ -3,7 +3,10 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
+import moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
 
+import 'react-widgets/dist/css/react-widgets.css';
 import './scss/style.scss';
 
 import Login from './modules/login/containers';
@@ -14,6 +17,8 @@ import rootReducer from './reducers';
 import PageWrapper from "./components/PageWrapper/index";
 import Notification from "./components/Notification";
 
+moment.locale('ru');
+momentLocalizer();
 
 class App extends React.Component {
     render() {

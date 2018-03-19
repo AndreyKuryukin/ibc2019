@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input } from 'reactstrap'
+import { Button, Input } from 'reactstrap';
+import { DatePicker } from 'react-widgets'
+
 import _ from 'lodash';
 
 import styles from './styles.scss';
@@ -40,6 +42,7 @@ class RolesControls extends React.PureComponent {
                 <div className={styles.buttonGroup}>
                     <Icon icon="addIcon" onClick={this.onAdd} />
                     <Icon icon="deleteIcon" onClick={this.props.onRemove} />
+                    <DatePicker/>
                 </div>
                 <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
                        className={styles.rolesSearch}
