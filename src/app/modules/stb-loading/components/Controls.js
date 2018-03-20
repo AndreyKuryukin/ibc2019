@@ -31,8 +31,14 @@ class StbLoadingControls extends React.PureComponent {
         return (
             <div className={styles.controls}>
                 <div className={styles.controlsGroup}>
-                    <DatePicker title={ls('STB_LOADING_REPORT_INTERVAL_TITLE', 'Период отчёта:')} onChange={this.onChange} />
-                    <DatePicker title="—" />
+                    <DatePicker
+                        title={ls('STB_LOADING_REPORT_INTERVAL_TITLE', 'Период отчёта:')}
+                        min={new Date()}
+                        onChange={this.onChange}
+                    />
+                    <DatePicker
+                        title="—"
+                    />
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
