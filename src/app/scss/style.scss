@@ -29,6 +29,7 @@ body {
 @import 'tables.scss';
 @import 'modal.scss';
 @import 'images.scss';
+@import 'rwidgets.scss';
 
 input:not([type=checkbox]), input:not([type=radio]) {
   height: $input-height;
