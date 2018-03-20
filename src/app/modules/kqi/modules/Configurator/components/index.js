@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import ls from "i18n";
+import ls from 'i18n';
+import _ from 'lodash';
 
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
 import styles from './styles.scss';
+import {
+    OBJECT_TYPES,
+    OPERATOR_TYPES,
+} from '../constants';
 
 class Configurator extends React.PureComponent {
     static contextTypes = {
@@ -14,12 +19,17 @@ class Configurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        paramTypes: PropTypes.array,
+        paramTypesById: PropTypes.object,
+        onMount: PropTypes.func,
         onSubmit: PropTypes.func.isRequired,
     };
 
     static defaultProps = {
         active: false,
-        onSubmit: () => null,
+        paramTypes: [],
+        paramTypesById: null,
+        onMount: () => null,
     };
 
     constructor(props) {
@@ -27,12 +37,22 @@ class Configurator extends React.PureComponent {
         this.state = {
             config: {
                 name: '',
-                objectType: '',
-                param: '',
-                operator: '',
-                value: '',
+                object_type: '',
+                parameter_type: null,
+                operator_type: '',
+                level: '',
             },
         };
+    }
+
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
+    }
+
+    static mapObjectToOptions (object) {
+        return _.map(object, (title, value) => ({ value, title }));
     }
 
     setConfigProperty = (key, value) => {
@@ -43,12 +63,18 @@ class Configurator extends React.PureComponent {
         this.setState({ config });
     };
 
+    onChangeParameterType = (value) => {
+        const parameterType = _.get(this.props.paramTypesById, `${value}`, null);
+
+        this.setConfigProperty('parameter_type', parameterType);
+    }
+
     onClose = () => {
         this.context.history.push('/kqi');
     }
 
     onSubmit = () => {
-        console.log(this.state.config);
+        this.props.onSubmit(this.state.config);
     }
 
     render() {
@@ -81,8 +107,8 @@ class Configurator extends React.PureComponent {
                             inputWidth="65%"
                         >
                             <Select
-                                options={[{title: '123', value: '123'}]}
-                                onChange={value => this.setConfigProperty('objectType', value)}
+                                options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
+                                onChange={value => this.setConfigProperty('object_type', value)}
                             />
                         </Field>
                         <Field
@@ -91,10 +117,9 @@ class Configurator extends React.PureComponent {
                             labelWidth="35%"
                             inputWidth="65%"
                         >
-                            <Input
-                                id="param"
-                                value={config.param}
-                                onChange={event => this.setConfigProperty('param', event.currentTarget.value)}
+                            <Select
+                                options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
+                                onChange={this.onChangeParameterType}
                             />
                         </Field>
                         <Field
@@ -104,20 +129,21 @@ class Configurator extends React.PureComponent {
                             inputWidth="65%"
                         >
                             <Select
-                                options={[{title: '123', value: '123'}]}
-                                onChange={value => this.setConfigProperty('operator', value)}
+                                options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
+                                onChange={value => this.setConfigProperty('operator_type', value)}
                             />
                         </Field>
                         <Field
-                            id="value"
-                            labelText={ls('KQI_VALUE_LABEL', 'Значение:')}
+                            id="level"
+                            labelText={ls('KQI_LEVEL_LABEL', 'Значение:')}
                             labelWidth="35%"
                             inputWidth="65%"
                         >
                             <Input
-                                id="value"
+                                type="number"
+                                id="level"
                                 value={config.value}
-                                onChange={event => this.setConfigProperty('value', event.currentTarget.value)}
+                                onChange={event => this.setConfigProperty('level', event.currentTarget.value)}
                             />
                         </Field>
                     </div>

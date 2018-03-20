@@ -17,6 +17,9 @@
   background: $white;
   .buttonsGroup {
     display: flex;
+    .iconBlock + .iconBlock {
+      margin-left: 10px;
+    }
   }
   .search {
     width: 20em;

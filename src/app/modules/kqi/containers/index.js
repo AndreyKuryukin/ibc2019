@@ -36,17 +36,17 @@ class KQI extends React.PureComponent {
     }
 
     onFetchKQI = () => {
-        this.setState({ isLoading: true });
-        rest.get('/api/v1/kqi/all')
-            .then((response) => {
-                const kqi = response.data;
-                this.props.onFetchKQISuccess(kqi);
-                this.setState({ isLoading: false });
-            })
-            .catch((e) => {
-                console.error(e);
-                this.setState({ isLoading: false });
-            });
+        // this.setState({ isLoading: true });
+        // rest.get('/api/v1/kqi')
+        //     .then((response) => {
+        //         const kqi = response.data;
+        //         this.props.onFetchKQISuccess(kqi);
+        //         this.setState({ isLoading: false });
+        //     })
+        //     .catch((e) => {
+        //         console.error(e);
+        //         this.setState({ isLoading: false });
+        //     });
     };
 
     render() {
@@ -63,7 +63,7 @@ class KQI extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    kqiData: state.kqi,
+    kqiData: [],
 });
 
 const mapDispatchToProps = dispatch => ({

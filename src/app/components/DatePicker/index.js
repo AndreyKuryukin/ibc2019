@@ -24,8 +24,8 @@ class DatePicker extends React.PureComponent {
         valid: false,
         time: false,
         value: null,
-        min: null,
-        max: null,
+        min: new Date(1900, 0, 1),
+        max: new Date(2099, 11, 31),
         style: null,
         onChange: () => null,
     };
@@ -38,7 +38,7 @@ class DatePicker extends React.PureComponent {
             ...rest,
         } = this.props;
         const datePickerTitles = {
-            calendarButton: ls('DATE_PICKER_APPLY_DATE', 'Выбрать дату'),
+            dateButton: ls('DATE_PICKER_APPLY_DATE', 'Выбрать дату'),
             timeButton: ls('DATE_PICKER_APPLY_TIME', 'Выбрать время'),
         };
         return (
@@ -46,6 +46,7 @@ class DatePicker extends React.PureComponent {
                 <span className={styles.datePickerTitle}>{title}</span>
                 <DateTimePicker
                     messages={datePickerTitles}
+                    format={'DD.MM.YYYY'}
                     {...rest}
                 />
             </div>

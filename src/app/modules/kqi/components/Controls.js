@@ -25,18 +25,18 @@ class KQIControls extends React.PureComponent {
 
     onConfigure = () => {
         this.context.history.push('/kqi/configure');
-    }
+    };
 
     onCalculate = () => {
         this.context.history.push('/kqi/calculate');
-    }
+    };
 
     render() {
         return (
             <div className={styles.kqiControls}>
                 <div className={styles.buttonsGroup}>
-                    <Icon icon="addIcon" onClick={this.onCalculate} />
-                    <Icon icon="addIcon" onClick={this.onConfigure} />
+                    <Icon icon="kqiAdd" onClick={this.onConfigure} />
+                    <Icon icon="kqiCalculate" onClick={this.onCalculate} />
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}

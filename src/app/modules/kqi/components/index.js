@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import Table from './Table';
 import Controls from './Controls';
 import styles from './styles.scss';
-import Configurator from '../modules/Configurator/components';
-import Calculator from '../modules/Calculator/components';
+import Configurator from '../modules/Configurator/containers';
+import Calculator from '../modules/Calculator/containers';
 
 class KQI extends React.PureComponent {
     static childContextTypes = {

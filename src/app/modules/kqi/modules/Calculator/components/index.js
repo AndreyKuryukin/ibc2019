@@ -1,13 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import ls from "i18n";
-
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import ls from 'i18n';
+import _ from 'lodash';
+import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
 import Checkbox from "../../../../../components/Checkbox";
+import DatePicker from "../../../../../components/DatePicker";
 import styles from './styles.scss';
+import {
+    GROUPING_TYPES,
+    EQUIPMENT_TYPE_GROUPING,
+    ABONENT_GROUP_GROUPING,
+    SERVICE_TYPES,
+    DATE_TIME_GROUPING,
+    LOCATION_GROUPING,
+    LAST_MILE_TECHNOLOGIES,
+    LAST_INCH_TECHNOLOGIES,
+} from '../constants';
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -16,29 +28,112 @@ class Calculator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        kqiList: PropTypes.array,
+        locationsList: PropTypes.array,
+        manufactureList: PropTypes.array,
+        equipmentsList: PropTypes.array,
+        usergroupsList: PropTypes.array,
         onSubmit: PropTypes.func.isRequired,
+        onMount: PropTypes.func,
+    };
+
+    static defaultProps = {
+        active: false,
+        kqiList: [],
+        locationsList: [],
+        manufactureList: [],
+        equipmentsList: [],
+        usergroupsList: [],
+        onSubmit: () => null,
+        onMount: () => null,
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            config: {
+                name: '',
+                description: '',
+                service_type: '',
+                start_date_time: null,
+                end_date_time: null,
+                location: '',
+                last_mile_technology: '',
+                last_inch_technology: '',
+                manufacture: '',
+                equipment_type: '',
+                abonent_group: '',
+                kqi_config_id: null,
+            },
+        };
+    }
+
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
+    }
+
+    static mapObjectToOptions (object) {
+        return _.map(object, (title, value) => ({ value, title }));
+    }
+
+    static mapListToOptions = createSelector(
+        (props, listName) => _.get(props, `${listName}`, []),
+        list => list.map((item) => {
+            if (typeof item === 'string') return { value: item, title: item };
+            if (typeof item === 'object') return { value: item.id, title: item.name };
+        }),
+    );
+
+    setConfigProperty = (key, value) => {
+        const config = {
+            ...this.state.config,
+            [key]: value,
+        };
+
+        this.setState({ config });
+    };
+
+    setGroupingProperty = (prop, key, checked) => {
+        const updated = checked
+            ? [..._.get(this.state.config, `${prop}`, []), key]
+            : _.without(_.get(this.state.config, `${prop}`, []), key);
+
+        this.setConfigProperty(prop, updated);
     };
 
     onClose = () => {
         this.context.history.push('/kqi');
-    }
+    };
 
     onSubmit = () => {
-        console.log('onSubmit');
-    }
+        const { config } = this.state;
+        const preparedConfig = {
+            ...config,
+            date_time_grouping: _.get(config, 'date_time_grouping') ? [_.get(config, 'date_time_grouping')] : [GROUPING_TYPES.NONE] ,
+            location_grouping: _.get(config, 'location_grouping') ? [_.get(config, 'location_grouping')] : [GROUPING_TYPES.NONE],
+            last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
+            last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
+            manufacture_grouping: _.get(config, 'manufacture_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
+            equipment_grouping: _.get(config, 'equipment_grouping', []).length > 0 ? _.get(config, 'equipment_grouping') : [GROUPING_TYPES.NONE],
+            abonent_grouping: _.get(config, 'abonent_grouping', []).length > 0 ? _.get(config, 'abonent_grouping') : [GROUPING_TYPES.NONE],
+        };
+        this.props.onSubmit(preparedConfig);
+    };
 
     getPanelsConfig = () => [{
         title: ls('KQI_CALCULATOR_BASIC_PARAMETERS_TITLE', 'Основные параметры'),
         fields: [{
-            id: 'service',
+            id: 'service-type',
             labelText: `${ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}:`,
             labelWidth: '20%',
             inputWidth: '80%',
             children: (
                 <Select
-                    id="service"
-                    options={[]}
-                    onChange={() => {}}
+                    id="service-type"
+                    options={Calculator.mapObjectToOptions(SERVICE_TYPES)}
+                    onChange={value => this.setConfigProperty('service_type', value)}
                 />
             ),
         }, {
@@ -49,8 +144,8 @@ class Calculator extends React.PureComponent {
             children: (
                 <Select
                     id="kqi"
-                    options={[]}
-                    onChange={() => {}}
+                    options={Calculator.mapListToOptions(this.props, 'kqiList')}
+                    onChange={value => this.setConfigProperty('kqi_config_id', value)}
                 />
             ),
         }]
@@ -60,22 +155,30 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'time-interval',
             labelText: `${ls('KQI_CALCULATOR_TIME_INTERVAL_FIELD_LABEL', 'Временной интервал')}:`,
-            labelWidth: '40%',
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
             },
             children: (
-                <Input
-                    id="time-interval"
-                    value={''}
-                    onChange={() => {}}
-                />
+                <div style={{ display: 'flex' }}>
+                    <DatePicker
+                        value={_.get(this.state.config, 'start_date_time', null)}
+                        onChange={value => this.setConfigProperty('start_date_time', value)}
+                        style={{ width: '50%' }}
+                    />
+                    <DatePicker
+                        value={_.get(this.state.config, 'end_date_time', null)}
+                        min={_.get(this.state.config, 'start_date_time', null)}
+                        onChange={value => this.setConfigProperty('end_date_time', value)}
+                        style={{ width: '50%' }}
+                    />
+                </div>
             ),
         }, {
-            id: 'time-interval-grouping',
+            id: 'date-time-grouping',
             labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '40%',
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
@@ -83,9 +186,9 @@ class Calculator extends React.PureComponent {
             },
             children: (
                 <Select
-                    id="time-interval-grouping"
-                    options={[]}
-                    onChange={() => {}}
+                    id="date-time-grouping"
+                    options={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
+                    onChange={value => this.setConfigProperty('date_time_grouping', value)}
                 />
             ),
         }]
@@ -95,7 +198,7 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'location',
             labelText: `${ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'Местоположение')}:`,
-            labelWidth: '40%',
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
@@ -103,14 +206,14 @@ class Calculator extends React.PureComponent {
             children: (
                 <Select
                     id="location"
-                    options={[]}
-                    onChange={() => {}}
+                    options={Calculator.mapListToOptions(this.props, 'locationsList')}
+                    onChange={value => this.setConfigProperty('location', value)}
                 />
             ),
         }, {
             id: 'location-grouping',
             labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '40%',
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
@@ -119,33 +222,33 @@ class Calculator extends React.PureComponent {
             children: (
                 <Select
                     id="location-grouping"
-                    options={[]}
-                    onChange={() => {}}
+                    options={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
+                    onChange={value => this.setConfigProperty('location_grouping', value)}
                 />
             ),
         }]
     }, {
-        title: ls('KQI_CALCULATOR_PM_TECHNOLOGY_TITLE', 'Тип технологии ПМ'),
+        title: ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии ПМ'),
         horizontal: true,
         fields: [{
-            id: 'pm-technology',
-            labelText: `${ls('KQI_CALCULATOR_PM_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}:`,
-            labelWidth: '40%',
+            id: 'last-mile-technology',
+            labelText: `${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}:`,
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
             },
             children: (
                 <Select
-                    id="pm-technology"
-                    options={[]}
-                    onChange={() => {}}
+                    id="last-mile-technology"
+                    options={Calculator.mapObjectToOptions(LAST_MILE_TECHNOLOGIES)}
+                    onChange={value => this.setConfigProperty('last_mile_technology', value)}
                 />
             ),
         }, {
-            id: 'pm-technology-grouping',
+            id: 'last-mile-technology-grouping',
             labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '40%',
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
@@ -153,35 +256,35 @@ class Calculator extends React.PureComponent {
             },
             children: (
                 <Select
-                    id="pm-technology-grouping"
-                    options={[]}
-                    onChange={() => {}}
+                    id="last-mile-technology-grouping"
+                    options={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
+                    onChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
                 />
             ),
         }]
     }, {
-        title: ls('KQI_CALCULATOR_PD_TECHNOLOGY_TITLE', 'Тип технологии ПД'),
+        title: ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии ПД'),
         horizontal: true,
         fields: [{
-            id: 'pd-technology',
-            labelText: `${ls('KQI_CALCULATOR_PD_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}:`,
-            labelWidth: '40%',
+            id: 'last-inch-technology',
+            labelText: `${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}:`,
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
             },
             children: (
                 <Select
-                    id="pd-technology"
-                    options={[]}
-                    onChange={() => {}}
+                    id="last-inch-technology"
+                    options={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}
+                    onChange={value => this.setConfigProperty('last_inch_technology', value)}
                 />
             ),
         }, {
-            id: 'pd-technology-grouping',
-            labelText: ls('KQI_CALCULATOR_PD_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии'),
+            id: 'last-inch-technology-grouping',
+            labelText: ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии'),
             labelWidth: '90%',
-            inputWidth: '5%',
+            inputWidth: '7%',
             labelAlign: 'right',
             style: {
                 flex: '1 1 0',
@@ -189,36 +292,35 @@ class Calculator extends React.PureComponent {
             },
             children: (
                 <Checkbox
-                    id="pd-technology-grouping"
-                    checked={false}
-                    onChange={() => null}
-                    disabled
+                    id="last-inch-technology-grouping"
+                    checked={_.get(this.state.config, 'last_inch_technology_grouping', false)}
+                    onChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}
                 />
             ),
         }]
     }, {
-        title: ls('KQI_CALCULATOR_PRODUCER_TITLE', 'Производитель'),
+        title: ls('KQI_CALCULATOR_MANUFACTURE_TITLE', 'Производитель'),
         horizontal: true,
         fields: [{
-            id: 'producer',
-            labelText: `${ls('KQI_CALCULATOR_PRODUCER_FIELD_LABEL', 'Производитель')}:`,
-            labelWidth: '40%',
+            id: 'manufacture',
+            labelText: `${ls('KQI_CALCULATOR_MANUFACTURE_FIELD_LABEL', 'Производитель')}:`,
+            labelWidth: '37%',
             inputWidth: '60%',
             style: {
                 flex: '1 1 0',
             },
             children: (
                 <Select
-                    id="producer"
-                    options={[]}
-                    onChange={() => {}}
+                    id="manufacture"
+                    options={Calculator.mapListToOptions(this.props, 'manufactureList')}
+                    onChange={value => this.setConfigProperty('manufacture', value)}
                 />
             ),
         }, {
-            id: 'producer-grouping',
-            labelText: ls('KQI_CALCULATOR_PRODUCER_GROUPING_FIELD_LABEL', 'С группировкой по производителю оборудования'),
+            id: 'manufacture-grouping',
+            labelText: ls('KQI_CALCULATOR_MANUFACTURE_GROUPING_FIELD_LABEL', 'С группировкой по производителю оборудования'),
             labelWidth: '90%',
-            inputWidth: '5%',
+            inputWidth: '7%',
             labelAlign: 'right',
             style: {
                 flex: '1 1 0',
@@ -226,10 +328,9 @@ class Calculator extends React.PureComponent {
             },
             children: (
                 <Checkbox
-                    id="producer-grouping"
-                    checked={false}
-                    onChange={() => null}
-                    disabled
+                    id="manufacture-grouping"
+                    checked={_.get(this.state.config, 'manufacture_grouping', false)}
+                    onChange={value => this.setConfigProperty('manufacture_grouping', value)}
                 />
             ),
         }]
@@ -237,6 +338,7 @@ class Calculator extends React.PureComponent {
 
     render() {
         const panels = this.getPanelsConfig();
+
         return (
             <Modal
                 isOpen={this.props.active}
@@ -266,13 +368,13 @@ class Calculator extends React.PureComponent {
                                 <Field
                                     id="equipment-type"
                                     labelText={`${ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_FIELD_LABEL', 'Тип оборудования')}:`}
-                                    labelWidth="35%"
-                                    inputWidth="65%"
+                                    labelWidth="37%"
+                                    inputWidth="63%"
                                 >
                                     <Select
                                         id="equipment-type"
-                                        options={[]}
-                                        onChange={() => {}}
+                                        options={Calculator.mapListToOptions(this.props, 'equipmentsList')}
+                                        onChange={value => this.setConfigProperty('equipment_type', value)}
                                     />
                                 </Field>
                                 <Field
@@ -284,9 +386,8 @@ class Calculator extends React.PureComponent {
                                 >
                                     <Checkbox
                                         id="equipment-type-grouping"
-                                        checked={false}
-                                        onChange={() => null}
-                                        disabled
+                                        checked={_.get(this.state.config, 'equipment_grouping', []).includes(EQUIPMENT_TYPE_GROUPING.SELF)}
+                                        onChange={value => this.setGroupingProperty('equipment_grouping', EQUIPMENT_TYPE_GROUPING.SELF, value)}
                                     />
                                 </Field>
                                 <Field
@@ -298,8 +399,8 @@ class Calculator extends React.PureComponent {
                                 >
                                     <Checkbox
                                         id="hw-version-grouping"
-                                        checked={false}
-                                        onChange={() => null}
+                                        checked={_.get(this.state.config, 'equipment_grouping', []).includes(EQUIPMENT_TYPE_GROUPING.HW)}
+                                        onChange={value => this.setGroupingProperty('equipment_grouping', EQUIPMENT_TYPE_GROUPING.HW, value)}
                                     />
                                 </Field>
                                 <Field
@@ -311,51 +412,50 @@ class Calculator extends React.PureComponent {
                                 >
                                     <Checkbox
                                         id="sw-version-grouping"
-                                        checked={false}
-                                        onChange={() => null}
+                                        checked={_.get(this.state.config, 'equipment_grouping', []).includes(EQUIPMENT_TYPE_GROUPING.SW)}
+                                        onChange={value => this.setGroupingProperty('equipment_grouping', EQUIPMENT_TYPE_GROUPING.SW, value)}
                                     />
                                 </Field>
                             </Panel>
                             <Panel
-                                title={ls('KQI_CALCULATOR_SUBSCRIBERS_TITLE', '')}
+                                title={ls('KQI_CALCULATOR_ABONENT_TITLE', '')}
                             >
                                 <Field
-                                    id="subscribers-group"
-                                    labelText={`${ls('KQI_CONFIGURATOR_SUBSCRIBERS_GROUP_FIELD_LABEL', 'Группа абонентов')}:`}
+                                    id="abonent-group"
+                                    labelText={`${ls('KQI_CONFIGURATOR_ABONENT_GROUP_FIELD_LABEL', 'Группа абонентов')}:`}
                                     labelWidth="35%"
                                     inputWidth="65%"
                                 >
                                     <Select
-                                        id="subscribers-group"
-                                        options={[]}
-                                        onChange={() => {}}
+                                        id="abonent-group"
+                                        options={Calculator.mapListToOptions(this.props, 'usergroupsList')}
+                                        onChange={value => this.setConfigProperty('abonent_group', value)}
                                     />
                                 </Field>
                                 <Field
-                                    id="subscribers-grouping"
-                                    labelText={ls('KQI_CONFIGURATOR_SUBSCRIBERS_GROUPING_FIELD_LABEL', 'С группировкой по группам абонентов')}
+                                    id="abonent-grouping"
+                                    labelText={ls('KQI_CONFIGURATOR_ABONENT_GROUPING_FIELD_LABEL', 'С группировкой по группам абонентов')}
                                     labelWidth="67%"
                                     inputWidth="5%"
                                     labelAlign="right"
                                 >
                                     <Checkbox
-                                        id="subscribers-grouping"
-                                        checked={false}
-                                        onChange={() => null}
-                                        disabled
+                                        id="abonent-grouping"
+                                        checked={_.get(this.state.config, 'abonent_grouping', []).includes(ABONENT_GROUP_GROUPING.SELF)}
+                                        onChange={value => this.setGroupingProperty('abonent_grouping', ABONENT_GROUP_GROUPING.SELF, value)}
                                     />
                                 </Field>
                                 <Field
-                                    id="subscribers-list"
-                                    labelText={ls('KQI_CONFIGURATOR_SUBSCRIBERS_LIST_FIELD_LABEL', 'Формировать список абонентов')}
+                                    id="abonent-list-grouping"
+                                    labelText={ls('KQI_CONFIGURATOR_ABONENT_LIST_FIELD_LABEL', 'Формировать список абонентов')}
                                     labelWidth="67%"
                                     inputWidth="5%"
                                     labelAlign="right"
                                 >
                                     <Checkbox
-                                        id="subscribers-list"
-                                        checked={false}
-                                        onChange={() => null}
+                                        id="abonent-list-grouping"
+                                        checked={_.get(this.state.config, 'abonent_grouping', []).includes(ABONENT_GROUP_GROUPING.ABONENT)}
+                                        onChange={value => this.setGroupingProperty('abonent_grouping', ABONENT_GROUP_GROUPING.ABONENT, value)}
                                     />
                                 </Field>
                             </Panel>
