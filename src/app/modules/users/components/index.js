@@ -22,6 +22,8 @@ class Users extends React.Component {
         isLoading: PropTypes.bool,
         onMount: PropTypes.func,
         onDelete: PropTypes.func,
+        onLock: PropTypes.func,
+        onUnlock: PropTypes.func,
     };
 
     static defaultProps = {
@@ -30,6 +32,8 @@ class Users extends React.Component {
         isLoading: false,
         onMount: () => null,
         onDelete: () => null,
+        onUnlock: () => null,
+        onLock: () => null,
     };
 
     getChildContext() {
@@ -71,14 +75,28 @@ class Users extends React.Component {
 
     onAdd = () => {
         this.props.history.push('/users/add');
-    }
+    };
 
     onDelete = () => {
         const ids = this.state.checkedIds;
         if (ids.length > 0) {
             this.props.onDelete(ids);
         }
-    }
+    };
+
+    onLock = () => {
+        const ids = this.state.checkedIds;
+        if (ids.length > 0) {
+            this.props.onLock(ids);
+        }
+    };
+
+    onUnlock = () => {
+        const ids = this.state.checkedIds;
+        if (ids.length > 0) {
+            this.props.onUnlock(ids);
+        }
+    };
 
     render() {
         const { match, history } = this.props;
@@ -99,8 +117,8 @@ class Users extends React.Component {
                     <div className={styles.controlsWrapper}>
                         <Icon icon="addIcon" onClick={this.onAdd} />
                         <Icon icon="deleteIcon" onClick={this.onDelete} style={{ marginLeft: 10 }} />
-                        <Icon icon="lockIcon"  style={{ marginLeft: 10 }} />
-                        <Icon icon="unlockIcon"  style={{ marginLeft: 10 }} />
+                        <Icon icon="lockIcon" onClick={this.onLock} style={{ marginLeft: 10 }} />
+                        <Icon icon="unlockIcon" onClick={this.onUnlock}/>
                         <Icon icon="groupIcon"  style={{ marginLeft: 20 }} />
                         <Input placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                                className={styles.search}

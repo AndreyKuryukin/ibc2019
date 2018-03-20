@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import UsersComponent from '../components/';
 import rest from '../../../rest';
-import { fetchUsersSuccess, deleteUserSuccess, fetchDivisionsSuccess } from '../actions';
-import { selectUsersData } from '../selectors';
+import { fetchUsersSuccess, fetchDivisionsSuccess, deleteUserSuccess } from '../actions';
+import { selectUsersList } from '../selectors';
+import ls from 'i18n';
 
 class Users extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
+        notifications: PropTypes.object.isRequired,
     };
 
     static propTypes = {
@@ -52,7 +54,7 @@ class Users extends React.PureComponent {
                 this.props.onFetchDivisionsSuccess(divisions);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
     onDelete = (ids) => {
         this.setState({
@@ -68,7 +70,42 @@ class Users extends React.PureComponent {
             console.error(e);
             this.setState({ isLoading: false });
         });
-    }
+    };
+
+    triggerUsersLock = (ids, block) => {
+        this.setState({
+            isLoading: true,
+        });
+        Promise.all(ids.map(id => {
+            const user = this.props.usersData.find(user => user.id === id);
+            if (user) {
+                user.disabled = block;
+                return rest.put('/api/v1/user', user)
+            }
+        }))
+            .then((response) => {
+                const users = response.map(resp => resp.data);
+                const updatedUsers = _.uniqBy([...this.props.usersData, ...users], user => user.id);
+                this.props.onFetchUsersSuccess(updatedUsers);
+                this.setState({ isLoading: false });
+            })
+            .catch(() => {
+                this.setState({ isLoading: false });
+                this.context.notifications.notify({
+                    type: 'CRITICAL',
+                    title: block ? ls('LOCK_USERS_ERROR_TITLE', 'Ошибка блокировки пользователей')
+                        : ls('UNLOCK_USERS_ERROR_TITLE', 'Ошибка разблокировки пользователей')
+                })
+            })
+    };
+
+    onLock = (ids) => {
+        this.triggerUsersLock(ids, true);
+    };
+
+    onUnlock = (ids) => {
+        this.triggerUsersLock(ids, false);
+    };
 
     render() {
         return (
@@ -80,13 +117,15 @@ class Users extends React.PureComponent {
                 divisionsById={this.props.divisionsById}
                 onMount={this.onUsersMount}
                 onDelete={this.onDelete}
+                onLock={this.onLock}
+                onUnlock={this.onUnlock}
             />
         );
     }
 }
 
 const mapStateToProps = state => ({
-    usersData: selectUsersData(state),
+    usersData: selectUsersList(state),
     divisionsById: state.users.users.divisionsById,
 });
 

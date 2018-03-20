@@ -6,7 +6,13 @@ axios.defaults.headers.common.Authorization = localStorage.getItem('jwtToken');
 
 export const request = (url, params) => new Promise((resolve, reject) => {
     axios({ ...params, baseURL: window.location.origin, url })
-        .then(response => resolve({ data: _.get(response, 'data'), headers: _.get(response, 'headers') }))
+        .then(response => {
+            const status = _.get(response, 'status');
+            if (status === 401) {
+
+            }
+            resolve({ data: _.get(response, 'data'), headers: _.get(response, 'headers') })
+        })
         .catch((error) => {
             const response = _.get(error, 'response');
             reject(response);
@@ -29,7 +35,6 @@ export const signIn = (login, password) => request(SIGN_IN_URL, {
     axios.defaults.headers.common.Authorization = localStorage.getItem('jwtToken');
     return userName;
 });
-
 
 
 export const composeUrl = (url, params = {}) =>

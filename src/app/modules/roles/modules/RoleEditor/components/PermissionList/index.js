@@ -1,49 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { CheckedCell } from '../../../../../../components/Table/Cells';
-import { getChildrenIds, checkNodeAndGetCheckedIds } from '../../../../../../util/tree';
+import { checkNodeAndGetCheckedIds, getChildrenIds } from '../../../../../../util/tree';
 import search from '../../../../../../util/search';
 import Grid from '../../../../../../components/Grid';
-
-const treeData = [
-    {
-        id: 1,
-        name: 'Главная',
-        children: [
-            {
-                id: 2,
-                name: 'Просмотр',
-            },  {
-                id: 3,
-                name: 'Создание виджета',
-            }, {
-                id: 4,
-                name: 'Удаление виджета',
-            }, {
-                id: 5,
-                name: 'Редактирование виджета',
-            },
-        ]
-    }, {
-        id: 6,
-        name: 'Конфиг БПАС',
-        children: [
-            {
-                id: 7,
-                name: 'Просмотр',
-            },  {
-                id: 8,
-                name: 'Восстановление конфига',
-            }, {
-                id: 9,
-                name: 'Обновление конфига',
-            }, {
-                id: 10,
-                name: 'Удаление конфига',
-            },
-        ]
-    }
-];
+import * as _ from "lodash";
+import ls from "i18n";
 
 class RolesListGrid extends React.PureComponent {
     static propTypes = {
@@ -54,25 +16,40 @@ class RolesListGrid extends React.PureComponent {
 
     static defaultProps = {
         subjectsData: [],
+        checked: [],
         onCheck: () => null
     };
 
     constructor(props) {
         super(props);
-
         this.state = {
             searchText: '',
             checked: props.checked ? props.checked : [],
+            subjectsData: props.subjectsData ? props.subjectsData : [],
         };
     }
 
-    // componentWillReceiveProps(nextProps) {
-    //     if (this.props.checked !== nextProps.checked) {
-    //         this.setState({
-    //             checked: nextProps.checked
-    //         });
-    //     }
-    // }
+    componentWillReceiveProps(nextProps) {
+        if (this.props.checked !== nextProps.checked) {
+            this.setState({
+                checked: nextProps.checked
+            });
+        }
+        if (this.props.subjectsData !== nextProps.subjectsData) {
+            this.setState({
+                checked: nextProps.checked,
+                subjectsData: this.mapData(nextProps.subjectsData)
+            });
+        }
+    }
+
+    mapData = subjects => subjects.map(subj => {
+        const levels = _.get(subj, 'access_level');
+        if (!_.isEmpty(levels)) {
+            subj.children = levels.map(lvl => ({ id: `${subj.id}.${lvl}`, name: ls(lvl, lvl) }))
+        }
+        return subj
+    });
 
     onCheckAll = (value) => {
         const allIds = treeData.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), []);
@@ -86,7 +63,6 @@ class RolesListGrid extends React.PureComponent {
     onCheck = (value, node) => {
         const checked = checkNodeAndGetCheckedIds(this.state.checked, node, value);
         this.setState({ checked });
-
         this.props.onCheck(checked);
     };
 
@@ -117,10 +93,10 @@ class RolesListGrid extends React.PureComponent {
 
 
     render() {
-        const { subjectsData } = this.props;
-        const isAllChecked = treeData.every(node => this.state.checked.includes(node.id));
+        const { subjectsData } = this.state;
+        const isAllChecked = subjectsData.every(node => this.state.checked.includes(node.id));
         const checkedPartially = !isAllChecked && this.state.checked.length > 0;
-        const filteredData = this.state.searchText ? this.filter(treeData, this.state.searchText) : treeData;
+        const filteredData = this.state.searchText ? this.filter(subjectsData, this.state.searchText) : subjectsData;
 
         return (
             <Grid

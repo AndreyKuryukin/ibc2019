@@ -84,7 +84,7 @@ class UsersTable extends React.PureComponent {
         sortable: true,
     }, {
         title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
-        name: 'active',
+        name: 'disabled',
     }];
 
     onCheck = (value, node) => {
@@ -127,7 +127,7 @@ class UsersTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        const value = node[column.name];
+        const value =  node[column.name] || '';
         switch (column.name) {
             case 'checked': {
                 const isRowChecked = this.state.checked.includes(node.id);
@@ -164,13 +164,14 @@ class UsersTable extends React.PureComponent {
                         content={value ? value.map(item => item.name).join(', ') : ''}
                     />
                 );
-            case 'created':
+            case 'name':
+                return `${node['first_name']} ${node['last_name']}`;
             case 'last_connection':
-                return (
-                    <DefaultCell
-                        content={moment(value).format('HH:mm:ss DD/MM/YYYY')}
-                    />
-                );
+                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+            case 'created':
+                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+            case 'disabled':
+                return node[column.name] ? ls('NO', 'Нет') : ls('YES', 'Да');
             default:
                 return (
                     <DefaultCell

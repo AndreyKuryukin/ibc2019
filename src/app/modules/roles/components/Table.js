@@ -60,6 +60,7 @@ class RolesTable extends React.PureComponent {
         title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
         name: 'number',
         searchable: true,
+        width: 200,
         sortable: true,
     }, {
         title: ls('ROLES_DESCRIPTION', 'Описание'),

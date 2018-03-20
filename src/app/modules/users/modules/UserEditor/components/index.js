@@ -111,7 +111,7 @@ class UserEditor extends React.Component {
                 >
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_AUTHENTICATION_MODE_PANEL_TITLE', 'Authentication mode')}
+                            title={ls('USER_AUTHENTICATION_MODE_PANEL_TITLE', 'Способ аутентификации')}
                         >
                             <Field
                                 id="ldap"
@@ -130,7 +130,7 @@ class UserEditor extends React.Component {
                             </Field>
                             <Field
                                 id="custom"
-                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Custom')}
+                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Другой')}
                                 labelAlign="right"
                                 labelWidth="95%"
                                 inputWidth="5%"
@@ -145,7 +145,7 @@ class UserEditor extends React.Component {
                             </Field>
                         </Panel>
                         <Panel
-                            title={ls('USER_CREATION_PANEL_TITLE', 'User creation')}
+                            title={ls('USER_CREATION_PANEL_TITLE', 'Основная информация')}
                         >
                             <Form
                                 className={styles.userForm}
@@ -237,7 +237,7 @@ class UserEditor extends React.Component {
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_ROLE_PANEL_TITLE', 'Role')}
+                            title={ls('USER_ROLE_PANEL_TITLE', 'Роль')}
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
@@ -256,11 +256,12 @@ class UserEditor extends React.Component {
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Notification group')}
+                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Группы уведомлений')}
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
                                 data={groupsList}
+                                id="edit-user-groups"
                                 checked={this.getUserProperty('groups', [])}
                                 onCheck={checked => this.setUserProperty('groups', checked)}
                             />
