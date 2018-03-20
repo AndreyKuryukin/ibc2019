@@ -5,7 +5,7 @@ import _ from 'lodash';
 import { selectSelectedUser, selectUserRoles } from '../selectors';
 import RoleEditorComponent from '../components';
 import rest from '../../../../../rest';
-import { createUser, fetchRolesSuccess, fetchUserSuccess, updateUser } from '../actions';
+import { createUser, fetchRolesSuccess, fetchGroupsSuccess, fetchUserSuccess, fetchDivisionsSuccess, updateUser } from '../actions';
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -20,25 +20,28 @@ class UserEditor extends React.PureComponent {
         userId: null,
         onFetchUserSuccess: () => null,
         onFetchRolesSuccess: () => null,
+        onFetchDivisionsSuccess: () => null,
+        onFetchGroupsSuccess: () => null,
         onUpdateUserSuccess: () => null,
         onCreateUserSuccess: () => null,
     };
 
     onChildMount = () => {
-        const queries = [];
-        queries.push(rest.get('/api/v1/role/all'));
+        const queries = [rest.get('/api/v1/role/all'), rest.get('/api/v1/group/all')];
         if (this.props.userId) {
             queries.push(rest.get('/api/v1/user/:id', { urlParams: { id: this.props.userId } }));
             queries.push(rest.get('/api/v1/role/user/:userId', { urlParams: { userId: this.props.userId} }));
         }
 
         Promise.all(queries)
-            .then(([rolesResponse, userResponse, userRolesResponse]) => {
+            .then(([rolesResponse, groupsResponse, userResponse, userRolesResponse]) => {
                 const roles = rolesResponse.data;
+                const groups = groupsResponse.data;
                 const user = userResponse ? userResponse.data : null;
                 const userRoles = userRolesResponse ? userRolesResponse.data : [];
 
                 this.props.onFetchRolesSuccess(roles);
+                this.props.onFetchGroupsSuccess(groups);
                 if (user) {
                     user.roles = userRoles;
                     this.props.onFetchUserSuccess(user);
@@ -73,11 +76,14 @@ class UserEditor extends React.PureComponent {
 const mapStateToProps = state => ({
     user: selectSelectedUser(state),
     rolesList: selectUserRoles(state),
+    groupsList: state.users.editor.groups,
+    divisions: state.users.users.divisions,
 });
 
 const mapDispatchToProps = dispatch => ({
     onFetchUserSuccess: user => dispatch(fetchUserSuccess(user)),
     onFetchRolesSuccess: roles => dispatch(fetchRolesSuccess(roles)),
+    onFetchGroupsSuccess: groups => dispatch(fetchGroupsSuccess(groups)),
     onUpdateUserSuccess: role => dispatch(updateUser(role)),
     onCreateUserSuccess: role => dispatch(createUser(role)),
 });

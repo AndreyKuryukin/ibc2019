@@ -65,7 +65,6 @@ class RoleEditor extends React.PureComponent {
     };
 
     copySubjectsFromRole = (roleId) => {
-        console.log(this.props);
         if (!_.isUndefined(roleId)) {
             let subjects = this.props.subjectsByRole[roleId];
             if (!_.isArray(subjects)) {
@@ -77,8 +76,28 @@ class RoleEditor extends React.PureComponent {
         }
     };
 
+    mapRole = (role) => {
+        const subjects = _.reduce(role.subjects, (result, id) => {
+            const ids = id.split('.');
+            if (ids.length > 1) {
+                const subject = this.props.subjectsData.find(subj => subj.id === ids[0]);
+                if (!result[subject.id]) {
+                    subject['access_level'] = [];
+                    result[subject.id] = _.omit(subject, ['isLast', 'children']);
+                }
+                result[subject.id]['access_level'].push(ids[1]);
+                return result
+            }
+            return result;
+        }, {});
+        role.subjects = _.values(subjects);
+        return role;
+    };
+
     onSubmit = () => {
-        this.props.onSubmit(this.props.roleId, this.state.role);
+        const role = this.mapRole(this.state.role);
+        console.log(role);
+        this.props.onSubmit(this.props.roleId, role);
     };
 
     onClose = () => {
@@ -111,6 +130,7 @@ class RoleEditor extends React.PureComponent {
                         >
                             <Field
                                 labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли:')}
+                                required
                             >
                                 <Input value={role.name}
                                        onChange={event => this.setRoleProperty('name', event.currentTarget.value)}

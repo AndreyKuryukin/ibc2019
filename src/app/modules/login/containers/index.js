@@ -33,6 +33,7 @@ class Login extends React.PureComponent {
             .then((userName) => {
                 this.setState({ loading: false });
                 this.props.onLoginSuccess(userName);
+                this.context.notifications.close('login-failed');
                 this.props.history.push('/roles');
             }).catch((error) => {
             this.context.notifications.notify({

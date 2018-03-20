@@ -76,6 +76,7 @@ class Roles extends React.PureComponent {
                 </Button>,
                 <Button outline
                         color="action"
+                        style={{color: 'black'}}
                         onClick={() => this.context.notifications.close('remove-roles')}>
                     {ls('GENERAL_CANCEL', "Отмена")}
                 </Button>,

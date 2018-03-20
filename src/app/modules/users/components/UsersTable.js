@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
+import moment from 'moment';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
@@ -10,12 +11,14 @@ import search from '../../../util/search';
 class UsersTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        divisionsById: PropTypes.object,
         searchText: PropTypes.string,
         onCheck: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
+        divisionsById: {},
         searchText: '',
         onCheck: () => null,
     };
@@ -57,16 +60,18 @@ class UsersTable extends React.PureComponent {
         name: 'roles',
         searchable: true,
         sortable: true,
+        width: 110,
     }, {
-        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделения'),
-        name: 'divisions',
+        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
+        name: 'division_id',
         searchable: true,
         sortable: true,
     }, {
         title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
-        name: 'notification_group',
+        name: 'groups',
         searchable: true,
         sortable: true,
+        width: 170,
     }, {
         title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
         name: 'created',
@@ -79,7 +84,7 @@ class UsersTable extends React.PureComponent {
         sortable: true,
     }, {
         title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
-        name: 'active',
+        name: 'disabled',
     }];
 
     onCheck = (value, node) => {
@@ -122,7 +127,7 @@ class UsersTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        const text = node[column.name];
+        const value =  node[column.name] || '';
         switch (column.name) {
             case 'checked': {
                 const isRowChecked = this.state.checked.includes(node.id);
@@ -143,13 +148,34 @@ class UsersTable extends React.PureComponent {
                     <IconCell
                         icon="adminIcon"
                         href={`/users/edit/${node.id}`}
-                        text={text}
+                        text={value}
                     />
                 );
+            case 'division_id':
+                return (
+                    <DefaultCell
+                        content={_.get(this.props.divisionsById, `${value}.name`, '')}
+                    />
+                );
+            case 'roles':
+            case 'groups':
+                return (
+                    <DefaultCell
+                        content={value ? value.map(item => item.name).join(', ') : ''}
+                    />
+                );
+            case 'name':
+                return `${node['first_name']} ${node['last_name']}`;
+            case 'last_connection':
+                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+            case 'created':
+                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+            case 'disabled':
+                return node[column.name] ? ls('NO', 'Нет') : ls('YES', 'Да');
             default:
                 return (
                     <DefaultCell
-                        content={text}
+                        content={value}
                     />
                 );
         }

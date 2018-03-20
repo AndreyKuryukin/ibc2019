@@ -18,8 +18,10 @@ $theme-colors: map-merge((
 ), ());
 
 //COMMON
+$default-font-size: 12px;
 $font-size-base: 0.85rem;
 $line-height-base: 1;
+$border-radius: 0;
 
 //LINK
 $link-color: $white;
@@ -56,7 +58,6 @@ $table-accent-bg: #F2F2F2;
 $table-body-cell-color: #333;
 
 //INPUT
-$input-border-color: #E1EBF0;
 $input-border-width: 1px;
 $form-check-input-margin-y: .2em;
 $input-line-height: 1;

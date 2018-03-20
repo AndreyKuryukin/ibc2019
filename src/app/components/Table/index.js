@@ -165,7 +165,7 @@ class Table extends React.Component {
         const { data = [], selected, sort } = this.state;
         return (
             <div className={styles.tableContainer} style={{
-                backgroundPositionY: `${this.getHeadHeight()}px`,
+                backgroundPositionY: headerRowRender ? `${this.getHeadHeight()}px` : 0,
             }}>
                 <ReactstrapTable striped bordered {...rest} className={classnames('table-hover', className)}>
                     {headerRowRender && <thead
@@ -193,7 +193,13 @@ class Table extends React.Component {
                             className={classnames({ [styles.selected]: selected === node.id })}
                         >
                             {columns.map(column => (
-                                <td key={column.name}>
+                                <td
+                                    key={column.name}
+                                    style={{
+                                        width: column.width,
+                                        maxWidth: column.width,
+                                    }}
+                                >
                                     {bodyRowRender(column, node)}
                                 </td>
                             ))}

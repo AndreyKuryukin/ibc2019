@@ -12,7 +12,7 @@ import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
 import Divisions from "./Divisions";
 
-class UserEditor extends React.PureComponent {
+class UserEditor extends React.Component {
     static contextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -24,10 +24,14 @@ class UserEditor extends React.PureComponent {
         onSubmit: PropTypes.func.isRequired,
         onMount: PropTypes.func,
         rolesList: PropTypes.array,
+        groupsList: PropTypes.array,
+        divisions: PropTypes.object,
     };
 
     static defaultProps = {
         rolesList: [],
+        groupsList: [],
+        divisions: null,
         active: false,
         onMount: () => null,
     };
@@ -80,7 +84,7 @@ class UserEditor extends React.PureComponent {
     onSubmit = () => {
         const user = _.omit(this.state.user, 'confirm');
         if (typeof this.props.onSubmit === 'function') {
-            this.props.onSubmit(this.props.userId, this.state.user);
+            this.props.onSubmit(this.props.userId, user);
         }
     };
 
@@ -89,8 +93,10 @@ class UserEditor extends React.PureComponent {
             active,
             userId,
             rolesList,
-            user
+            groupsList,
+            divisions,
         } = this.props;
+
         return (
             <Modal
                 isOpen={active}
@@ -105,7 +111,7 @@ class UserEditor extends React.PureComponent {
                 >
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_AUTHENTICATION_MODE_PANEL_TITLE', 'Authentication mode')}
+                            title={ls('USER_AUTHENTICATION_MODE_PANEL_TITLE', 'Способ аутентификации')}
                         >
                             <Field
                                 id="ldap"
@@ -124,7 +130,7 @@ class UserEditor extends React.PureComponent {
                             </Field>
                             <Field
                                 id="custom"
-                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Custom')}
+                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Другой')}
                                 labelAlign="right"
                                 labelWidth="95%"
                                 inputWidth="5%"
@@ -139,7 +145,7 @@ class UserEditor extends React.PureComponent {
                             </Field>
                         </Panel>
                         <Panel
-                            title={ls('USER_CREATION_PANEL_TITLE', 'User creation')}
+                            title={ls('USER_CREATION_PANEL_TITLE', 'Основная информация')}
                         >
                             <Form
                                 className={styles.userForm}
@@ -231,31 +237,33 @@ class UserEditor extends React.PureComponent {
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_ROLE_PANEL_TITLE', 'Role')}
+                            title={ls('USER_ROLE_PANEL_TITLE', 'Роль')}
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
                                 data={rolesList}
-                                user={user}
+                                checked={this.getUserProperty('roles', [])}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
                             />
                         </Panel>
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Divisions
-                            data={rolesList}
-                            checked={[]}
-                            onCheck={checked => this.setUserProperty('division', checked)}
+                            data={divisions ? [divisions] : []}
+                            division={this.getUserProperty('division_id')}
+                            onCheck={id => this.setUserProperty('division_id', id)}
                         />
                     </div>
                     <div className={styles.userEditorColumn}>
                         <Panel
-                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Notification group')}
+                            title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Группы уведомлений')}
                             bodyStyle={{ padding: 0 }}
                         >
                             <RolesGrid
-                                data={[]}
-                                user={user}
+                                data={groupsList}
+                                id="edit-user-groups"
+                                checked={this.getUserProperty('groups', [])}
+                                onCheck={checked => this.setUserProperty('groups', checked)}
                             />
                         </Panel>
                     </div>

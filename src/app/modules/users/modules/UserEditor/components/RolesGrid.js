@@ -8,6 +8,7 @@ import search from '../../../../../util/search';
 class RolesGrid extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        checked: PropTypes.array,
         onCheck: PropTypes.func
     };
 
@@ -19,20 +20,15 @@ class RolesGrid extends React.PureComponent {
         super(props);
 
         this.state = {
-            checked: this.getUserRoleIds(props.user),
+            checked: props.checked,
             searchText: '',
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_.isEqual(this.props.user, nextProps.user)) {
-            this.setState({ checked: this.getUserRoleIds(nextProps.user) });
+        if (!_.isEqual(this.props.checked, nextProps.checked)) {
+            this.setState({ checked: nextProps.checked });
         }
-    }
-
-    getUserRoleIds = (user = {}) => {
-        console.log(_.get(user, 'roles', []));
-        return _.get(user, 'roles', []).map(role => role.id);
     }
 
     getColumns = () => [{
@@ -56,7 +52,7 @@ class RolesGrid extends React.PureComponent {
 
     bodyRowRender = (column, node) => (
         <CheckedCell
-            id={`user-editor-roles-grid-${node.id}`}
+            id={`${this.props.id}-${node.id}`}
             onChange={(value) => this.onCheck(value, node)}
             style={{ marginLeft: 0 }}
             value={this.state.checked.includes(node.id)}
@@ -86,7 +82,7 @@ class RolesGrid extends React.PureComponent {
 
         return (
             <Grid
-                id="user-editor-roles-grid"
+                id={this.props.id}
                 data={filteredData}
                 columns={columns}
                 bodyRowRender={this.bodyRowRender}
