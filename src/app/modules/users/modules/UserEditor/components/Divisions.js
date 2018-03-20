@@ -65,7 +65,7 @@ class Divisions extends React.Component {
 
         return (
             <Panel
-                title={ls('USER_DIVISION_PANEL_TITLE', 'Division')}
+                title={ls('USER_DIVISION_PANEL_TITLE', 'Подразделения')}
                 bodyStyle={{ padding: 0 }}
             >
                 <Grid

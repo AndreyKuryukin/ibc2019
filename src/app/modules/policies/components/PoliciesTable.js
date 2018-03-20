@@ -4,7 +4,7 @@ import _ from 'lodash';
 import ls from 'i18n';
 
 import Table from '../../../components/Table';
-import { DefaultCell, LinkCell } from '../../../components/Table/Cells'
+import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import PolicyCell from './PolicyCell';
 import search from '../../../util/search';
 import styles from './styles.scss';

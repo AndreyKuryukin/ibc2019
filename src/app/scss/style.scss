@@ -7,6 +7,7 @@ html, body {
   margin: 0;
   padding: 0;
   min-height: 100%;
+  overflow-x: hidden;
 }
 
 body {
@@ -28,15 +29,13 @@ body {
 @import 'tables.scss';
 @import 'modal.scss';
 @import 'images.scss';
+@import 'rwidgets.scss';
 
 input:not([type=checkbox]), input:not([type=radio]), select {
   height: $input-height;
   font-size: $default-font-size !important;
 }
-input::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-  color: $placeholder !important;
-}
+
 input[type=checkbox], input[type=radio] {
   display: none;
 }
