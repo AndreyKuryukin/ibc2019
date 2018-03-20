@@ -2,10 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { DateTimePicker as Picker } from 'react-widgets';
-import classnames from "classnames";
-
-import styles from'./styles.scss';
-
 
 class DateTimePicker extends React.PureComponent {
 
