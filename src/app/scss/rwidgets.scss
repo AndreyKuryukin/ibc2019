@@ -1,7 +1,9 @@
 @import "./vars";
 
+$calendar-width: 200px;
+$trigger-width: 22px;
+
 .rw-widget {
-  width: 142px;
   font-size: inherit;
   .rw-widget-picker {
     height: $input-height;
@@ -23,6 +25,19 @@
       color: $white;
       opacity: 1;
     }
+    & > * {
+      width: $trigger-width;
+    }
+  }
+
+  .rw-calendar-head {
+    .rw-head-cell {
+      font-weight: normal;
+    }
+  }
+
+  .rw-calendar-grid {
+    height: 132px;
   }
 
   .rw-calendar-header {
@@ -35,15 +50,40 @@
     }
   }
 
-  .rw-calendar-head {
-
+  .rw-calendar-footer {
+    background-color: $white;
+    border-top: $border-width solid $border-blue;
   }
   &.rw-state-disabled {
     border: 0;
   }
 }
 
+.rw-open {
+  .rw-btn-select {
+    background-color: $border-blue !important;
+    color: $white !important;
+  }
+}
 
+.rw-cell {
+  padding: 0;
+  border-radius: $border-radius;
+  border: none;
+  &.rw-state-focus {
+    background-color: $orange;
+    color: $white;
+    &:hover {
+      background-color: $orange;
+    }
+  }
+}
+
+.rw-popup {
+  width: $calendar-width;
+  background-color: $border-blue;
+  padding: 0 12px 12px 12px;
+}
 
 //.rw-input {
 //  background: #222;
