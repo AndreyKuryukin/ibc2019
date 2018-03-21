@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
+import _ from 'lodash';
 import { DateTimePicker as Picker } from 'react-widgets';
 
 class DateTimePicker extends React.PureComponent {
@@ -9,17 +9,11 @@ class DateTimePicker extends React.PureComponent {
     static DEFAULT_TRIGGER_WIDTH = 22;
 
     static propsTypes = {
-        inputProps: PropTypes.object,
-        width: PropTypes.number,
+        inputWidth: PropTypes.number,
     };
 
     static defaultProps = {
-        width: DateTimePicker.DEFAULT_INPUT_WIDTH + DateTimePicker.DEFAULT_TRIGGER_WIDTH,
-        inputProps: {
-            style: {
-                width: DateTimePicker.DEFAULT_INPUT_WIDTH
-            }
-        },
+        inputWidth: DateTimePicker.DEFAULT_INPUT_WIDTH,
     };
 
     constructor(props) {
@@ -49,10 +43,16 @@ class DateTimePicker extends React.PureComponent {
 
     render() {
         const {
-            inputProps,
-            width,
+            inputWidth,
             ...rest
         } = this.props;
+
+        const width = (inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH) + DateTimePicker.DEFAULT_TRIGGER_WIDTH;
+        const inputProps = {
+            style: {
+                width: inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH,
+            },
+        };
         return <Picker popupTransition={this.transitionClass(inputProps)}
                        inputProps={inputProps}
                        style={{ width }}

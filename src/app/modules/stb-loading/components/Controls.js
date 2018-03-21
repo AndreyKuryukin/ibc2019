@@ -1,16 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'reactstrap';
+import { Input, Button } from 'reactstrap';
 import _ from 'lodash';
 import ls from 'i18n';
-import DatePicker from '../../../components/DatePicker';
+import DatePicker from '../../../components/LabeledDateTimePicker';
 import styles from './styles.scss';
 
 class StbLoadingControls extends React.PureComponent {
-    static contextTypes = {
-        history: PropTypes.object.isRequired,
-    };
-
     static propTypes = {
         onSearchTextChange: PropTypes.func,
     };
@@ -19,13 +15,34 @@ class StbLoadingControls extends React.PureComponent {
         onSearchTextChange: () => null,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            startDate: null,
+            endDate: null,
+        };
+    }
+
     onSearchTextChange = (event) => {
         this.props.onSearchTextChange(_.get(event, 'currentTarget.value'));
     };
 
-    onChange = (v) => {
-        console.log(v);
+    onChangeStartDate = (startDate) => {
+        this.setState({
+            startDate,
+        });
     };
+
+    onChangeEndDate = (endDate) => {
+        this.setState({
+            endDate,
+        });
+    };
+
+    onShow = () => {
+        console.log('onShow');
+    }
 
     render() {
         return (
@@ -33,12 +50,20 @@ class StbLoadingControls extends React.PureComponent {
                 <div className={styles.controlsGroup}>
                     <DatePicker
                         title={ls('STB_LOADING_REPORT_INTERVAL_TITLE', 'Период отчёта:')}
-                        min={new Date()}
-                        onChange={this.onChange}
+                        value={this.state.startDate}
+                        inputWidth={80}
+                        onChange={this.onChangeStartDate}
                     />
                     <DatePicker
                         title="—"
+                        min={this.state.startDate}
+                        value={this.state.endDate}
+                        inputWidth={80}
+                        onChange={this.onChangeEndDate}
                     />
+                    <Button color="action" onClick={this.onShow}>
+                        {ls('SHOW_BUTTON_LABEL', 'Показать')}
+                    </Button>
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
