@@ -27,7 +27,7 @@ class UserEditor extends React.PureComponent {
     };
 
     onChildMount = () => {
-        const queries = [rest.get('/api/v1/role/all'), rest.get('/api/v1/group/all')];
+        const queries = [rest.get('/api/v1/role'), rest.get('/api/v1/group')];
         if (this.props.userId) {
             queries.push(rest.get('/api/v1/user/:id', { urlParams: { id: this.props.userId } }));
             queries.push(rest.get('/api/v1/role/user/:userId', { urlParams: { userId: this.props.userId} }));
