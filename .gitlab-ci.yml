@@ -28,10 +28,8 @@ node-build:
 
 docker-package:
   image: docker:latest
-#  only:
-#  - master
-#  except:
-#  - branches
+  only:
+  - web
   stage: package
   script:
   - apk add --no-cache curl jq python py-pip
