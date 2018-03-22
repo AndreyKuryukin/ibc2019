@@ -8,7 +8,7 @@ import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
 import Checkbox from "../../../../../components/Checkbox";
-import DatePicker from "../../../../../components/DatePicker";
+import DatePicker from "../../../../../components/DateTimePicker";
 import styles from './styles.scss';
 import {
     GROUPING_TYPES,
@@ -155,8 +155,8 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'time-interval',
             labelText: `${ls('KQI_CALCULATOR_TIME_INTERVAL_FIELD_LABEL', 'Временной интервал')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '68%',
             style: {
                 flex: '1 1 0',
             },
@@ -165,21 +165,26 @@ class Calculator extends React.PureComponent {
                     <DatePicker
                         value={_.get(this.state.config, 'start_date_time', null)}
                         onChange={value => this.setConfigProperty('start_date_time', value)}
-                        style={{ width: '50%' }}
+                        inputWidth={90}
+                        format={'DD.MM.YYYY HH:mm'}
+                        time
                     />
                     <DatePicker
                         value={_.get(this.state.config, 'end_date_time', null)}
                         min={_.get(this.state.config, 'start_date_time', null)}
                         onChange={value => this.setConfigProperty('end_date_time', value)}
-                        style={{ width: '50%' }}
+                        inputWidth={90}
+                        format={'DD.MM.YYYY HH:mm'}
+                        style={{ marginLeft: 5 }}
+                        time
                     />
                 </div>
             ),
         }, {
             id: 'date-time-grouping',
             labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '68%',
             style: {
                 flex: '1 1 0',
                 marginTop: 0,
@@ -198,8 +203,8 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'location',
             labelText: `${ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'Местоположение')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '66%',
             style: {
                 flex: '1 1 0',
             },
@@ -213,8 +218,8 @@ class Calculator extends React.PureComponent {
         }, {
             id: 'location-grouping',
             labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '68%',
             style: {
                 flex: '1 1 0',
                 marginTop: 0,
@@ -233,8 +238,8 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'last-mile-technology',
             labelText: `${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '66%',
             style: {
                 flex: '1 1 0',
             },
@@ -248,8 +253,8 @@ class Calculator extends React.PureComponent {
         }, {
             id: 'last-mile-technology-grouping',
             labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '68%',
             style: {
                 flex: '1 1 0',
                 marginTop: 0,
@@ -268,8 +273,8 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'last-inch-technology',
             labelText: `${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '66%',
             style: {
                 flex: '1 1 0',
             },
@@ -284,7 +289,7 @@ class Calculator extends React.PureComponent {
             id: 'last-inch-technology-grouping',
             labelText: ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии'),
             labelWidth: '90%',
-            inputWidth: '7%',
+            inputWidth: '6%',
             labelAlign: 'right',
             style: {
                 flex: '1 1 0',
@@ -304,8 +309,8 @@ class Calculator extends React.PureComponent {
         fields: [{
             id: 'manufacture',
             labelText: `${ls('KQI_CALCULATOR_MANUFACTURE_FIELD_LABEL', 'Производитель')}:`,
-            labelWidth: '37%',
-            inputWidth: '60%',
+            labelWidth: '32%',
+            inputWidth: '66%',
             style: {
                 flex: '1 1 0',
             },
@@ -320,7 +325,7 @@ class Calculator extends React.PureComponent {
             id: 'manufacture-grouping',
             labelText: ls('KQI_CALCULATOR_MANUFACTURE_GROUPING_FIELD_LABEL', 'С группировкой по производителю оборудования'),
             labelWidth: '90%',
-            inputWidth: '7%',
+            inputWidth: '6%',
             labelAlign: 'right',
             style: {
                 flex: '1 1 0',
@@ -368,8 +373,8 @@ class Calculator extends React.PureComponent {
                                 <Field
                                     id="equipment-type"
                                     labelText={`${ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_FIELD_LABEL', 'Тип оборудования')}:`}
-                                    labelWidth="37%"
-                                    inputWidth="63%"
+                                    labelWidth="32%"
+                                    inputWidth="68%"
                                 >
                                     <Select
                                         id="equipment-type"
@@ -423,8 +428,8 @@ class Calculator extends React.PureComponent {
                                 <Field
                                     id="abonent-group"
                                     labelText={`${ls('KQI_CONFIGURATOR_ABONENT_GROUP_FIELD_LABEL', 'Группа абонентов')}:`}
-                                    labelWidth="35%"
-                                    inputWidth="65%"
+                                    labelWidth="32%"
+                                    inputWidth="68%"
                                 >
                                     <Select
                                         id="abonent-group"
