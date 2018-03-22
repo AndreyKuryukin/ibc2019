@@ -5,7 +5,14 @@ import _ from 'lodash';
 import { selectSelectedUser, selectUserRoles } from '../selectors';
 import RoleEditorComponent from '../components';
 import rest from '../../../../../rest';
-import { createUser, fetchRolesSuccess, fetchGroupsSuccess, fetchUserSuccess, fetchDivisionsSuccess, updateUser } from '../actions';
+import {
+    createUser,
+    fetchDivisionsSuccess,
+    fetchGroupsSuccess,
+    fetchRolesSuccess,
+    fetchUserSuccess,
+    updateUser
+} from '../actions';
 
 class UserEditor extends React.PureComponent {
     static contextTypes = {
@@ -30,22 +37,16 @@ class UserEditor extends React.PureComponent {
         const queries = [rest.get('/api/v1/role'), rest.get('/api/v1/group')];
         if (this.props.userId) {
             queries.push(rest.get('/api/v1/user/:id', { urlParams: { id: this.props.userId } }));
-            queries.push(rest.get('/api/v1/role/user/:userId', { urlParams: { userId: this.props.userId} }));
         }
 
         Promise.all(queries)
-            .then(([rolesResponse, groupsResponse, userResponse, userRolesResponse]) => {
+            .then(([rolesResponse, groupsResponse, userResponse]) => {
                 const roles = rolesResponse.data;
                 const groups = groupsResponse.data;
-                const user = userResponse ? userResponse.data : null;
-                const userRoles = userRolesResponse ? userRolesResponse.data : [];
-
+                const user = userResponse.data;
                 this.props.onFetchRolesSuccess(roles);
                 this.props.onFetchGroupsSuccess(groups);
-                if (user) {
-                    user.roles = userRoles;
-                    this.props.onFetchUserSuccess(user);
-                }
+                this.props.onFetchUserSuccess(user);
             });
     };
 
@@ -58,7 +59,7 @@ class UserEditor extends React.PureComponent {
             this.context.history.push('/users');
         };
 
-        submit('/api/v1/user', _.omit(userData, 'confirm'))
+        submit('/api/v1/user', userData)
             .then(success);
     };
 

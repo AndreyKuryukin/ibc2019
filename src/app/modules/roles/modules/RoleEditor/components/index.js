@@ -72,7 +72,7 @@ class RoleEditor extends React.PureComponent {
             if (!_.isArray(subjects)) {
                 subjects = [];
             }
-            this.setRoleProperty('subjects', subjects)
+            this.setRoleProperty('subjects', this.subjectsToPermissions(subjects))
         } else {
             this.setRoleProperty('subjects', [])
         }
