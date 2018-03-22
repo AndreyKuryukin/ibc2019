@@ -9,6 +9,7 @@ class RoleEditor extends React.PureComponent {
 
     static defaultProps = {
         options: [],
+        defaultValue: null,
         onChange: () => null,
     };
 
@@ -43,7 +44,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     render() {
-        const { placeholder, options, children, ...rest } = this.props;
+        const { placeholder, defaultValue, options, children, ...rest } = this.props;
         const value = this.getValue();
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')

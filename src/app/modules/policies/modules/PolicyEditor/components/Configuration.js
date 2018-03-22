@@ -14,15 +14,21 @@ class Configuration extends React.PureComponent {
     static propTypes = {
         getPolicyProperty: PropTypes.func,
         setPolicyProperty: PropTypes.func,
-    }
+        types: PropTypes.array,
+    };
 
     static defaultProps = {
         getPolicyProperty: () => null,
         setPolicyProperty: () => null,
-    }
+        types: []
+    };
+
+    mapTypes = (types) => {
+        return types.map(type => ({ value: type, title: type }))
+    };
 
     render() {
-        const { getPolicyProperty, setPolicyProperty } = this.props;
+        const { getPolicyProperty, setPolicyProperty, types } = this.props;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -30,6 +36,7 @@ class Configuration extends React.PureComponent {
                 <Field
                     id="name"
                     labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}:`}
+                    required
                 >
                     <Input
                         id="name"
@@ -40,13 +47,15 @@ class Configuration extends React.PureComponent {
                 </Field>
                 <Field
                     id="aggregation"
+                    required
                     labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}:`}
                 >
                     <Select
                         id="aggregation"
                         type="select"
-                        options={[]}
-                        onChange={() => {}}
+                        options={this.mapTypes(types)}
+                        value={getPolicyProperty('policy_type')}
+                        onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
                     />
                 </Field>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
@@ -59,6 +68,7 @@ class Configuration extends React.PureComponent {
                         >
                             <Input
                                 id="rise_duration"
+                                type="number"
                                 name="rise_duration"
                                 value={getPolicyProperty('threshold.rise_duration')}
                                 onChange={event => setPolicyProperty('threshold.rise_duration', _.get(event, 'target.value'))}
@@ -72,6 +82,7 @@ class Configuration extends React.PureComponent {
                         >
                             <Input
                                 id="rise_value"
+                                type="number"
                                 name="rise_value"
                                 value={getPolicyProperty('threshold.rise_value')}
                                 onChange={event => setPolicyProperty('threshold.rise_value', _.get(event, 'target.value'))}
@@ -90,8 +101,8 @@ class Configuration extends React.PureComponent {
                     <Input
                         id="message"
                         type="textarea"
-                        value={''}
-                        onChange={() => {}}
+                        value={getPolicyProperty('notification_template')}
+                        onChange={(event) => {setPolicyProperty('notification_template', _.get(event, 'target.value'))}}
                     />
                 </Field>
             </Panel>

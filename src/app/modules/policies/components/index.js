@@ -57,7 +57,7 @@ class Policies extends React.Component {
 
         const { params } = match;
         const isEditorActive = params.action === 'edit' || params.action === 'add';
-        const policyId = params.id ? Number(params.id) : null;
+        const policyId = params.id ? params.id : null;
 
         return (
             <div className={styles.policiesWrapper}>

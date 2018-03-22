@@ -37,7 +37,7 @@ class Policies extends React.PureComponent {
     fetchPolicies = () => {
         this.setState({ isLoading: true });
 
-        rest.get('/api/v1/policy/all')
+        rest.get('/api/v1/policy')
             .then((response) => {
                 const policies = response.data;
                 this.props.onFetchPoliciesSuccess(policies);
