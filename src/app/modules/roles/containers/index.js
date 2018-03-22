@@ -42,7 +42,7 @@ class Roles extends React.PureComponent {
 
     fetchRoles = () => {
         this.setState({ isLoading: true });
-        rest.get('/api/v1/role/all')
+        rest.get('/api/v1/role/')
             .then((response) => {
                 const roles = response.data;
                 this.props.onFetchRolesSuccess(roles);

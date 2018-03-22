@@ -48,8 +48,10 @@ class RoleEditor extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.role !== nextProps.role) {
+            const role = nextProps.role;
+            role.subjects = this.subjectsToPermissions(role.subjects);
             this.setState({
-                role: nextProps.role,
+                role,
             });
         }
     }
@@ -70,14 +72,14 @@ class RoleEditor extends React.PureComponent {
             if (!_.isArray(subjects)) {
                 subjects = [];
             }
-            this.setRoleProperty('subjects', subjects)
+            this.setRoleProperty('subjects', this.subjectsToPermissions(subjects))
         } else {
             this.setRoleProperty('subjects', [])
         }
     };
 
-    mapRole = (role) => {
-        const subjects = _.reduce(role.subjects, (result, id) => {
+    permissionsToSubjects = (subjects) => {
+        const resultSubjects = _.reduce(subjects, (result, id) => {
             const ids = id.split('.');
             if (ids.length > 1) {
                 const subject = this.props.subjectsData.find(subj => subj.id === ids[0]);
@@ -90,13 +92,20 @@ class RoleEditor extends React.PureComponent {
             }
             return result;
         }, {});
-        role.subjects = _.values(subjects);
-        return role;
+        return _.values(resultSubjects);
     };
 
+    subjectsToPermissions = subjects => _.reduce(subjects, (result, subj) => {
+        if (!_.isEmpty(subj.access_level)) {
+            const levelIds = subj.access_level.map(lvl => `${subj.id}.${lvl}`);
+            return result.concat(levelIds);
+        }
+        return result;
+    }, []);
+
     onSubmit = () => {
-        const role = this.mapRole(this.state.role);
-        console.log(role);
+        const role = this.state.role;
+        role.subjects = this.permissionsToSubjects(role.subjects);
         this.props.onSubmit(this.props.roleId, role);
     };
 
@@ -153,7 +162,7 @@ class RoleEditor extends React.PureComponent {
                         >
                             <PermissionList subjectsData={subjectsData}
                                             onCheck={this.onCheck}
-                                            checked={role.subjects}
+                                            checked={role.subjects || []}
                             />
                         </Panel>
                         <Panel

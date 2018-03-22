@@ -46,7 +46,7 @@ class Users extends React.PureComponent {
     onUsersMount = () => {
         this.setState({ isLoading: true });
 
-        Promise.all([rest.get('/api/v1/user/all'), rest.get('/api/v1/division/root')])
+        Promise.all([rest.get('/api/v1/user'), rest.get('/api/v1/division/root')])
             .then(([usersResponse, divisionsResponse]) => {
                 const users = usersResponse.data;
                 const divisions = divisionsResponse.data;
