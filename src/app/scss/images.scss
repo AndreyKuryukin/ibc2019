@@ -46,3 +46,15 @@
 .userIcon {
   @include iconBuilder(22px, 22px, 'user.png');
 }
+.kqiAdd {
+  @include iconBuilder(22px, 22px, 'add_kqi.png');
+  &:hover {
+    @include imgByPath('add_kqi_hover.png');
+  }
+}
+.kqiCalculate {
+  @include iconBuilder(22px, 22px, 'calc_kqi.png');
+  &:hover {
+    @include imgByPath('calc_kqi_hover.png');
+  }
+}

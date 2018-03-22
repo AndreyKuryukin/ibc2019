@@ -42,7 +42,7 @@ class DatePicker extends React.PureComponent {
             ...rest,
         } = this.props;
         const datePickerTitles = {
-            calendarButton: ls('DATE_PICKER_APPLY_DATE', 'Выбрать дату'),
+            dateButton: ls('DATE_PICKER_APPLY_DATE', 'Выбрать дату'),
             timeButton: ls('DATE_PICKER_APPLY_TIME', 'Выбрать время'),
         };
         return (
@@ -51,6 +51,7 @@ class DatePicker extends React.PureComponent {
                 <DateTimePicker
                     inputWidth={inputWidth}
                     messages={datePickerTitles}
+                    format={'DD.MM.YYYY'}
                     {...rest}
                 />
             </div>

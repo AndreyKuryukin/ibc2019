@@ -15,8 +15,8 @@ const initialState = {
             link: '/policies'
         },
         {
-            title: 'Статистика',
-            link: '/users'
+            title: 'KQI',
+            link: '/kqi'
         },
         {
             title: 'Отчеты',

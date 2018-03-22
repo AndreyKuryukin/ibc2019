@@ -31,9 +31,9 @@ body {
 @import 'images.scss';
 @import 'rwidgets.scss';
 
-input:not([type=checkbox]), input:not([type=radio]) {
+input:not([type=checkbox]), input:not([type=radio]), select {
   height: $input-height;
-  font-size: $default-font-size;
+  font-size: $default-font-size !important;
 }
 
 input[type=checkbox], input[type=radio] {

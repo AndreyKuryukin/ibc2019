@@ -5,7 +5,7 @@ import styles from './styles.scss';
 
 const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 
-class RoleEditor extends React.PureComponent {
+class Select extends React.PureComponent {
 
     static defaultProps = {
         options: [],
@@ -63,4 +63,4 @@ class RoleEditor extends React.PureComponent {
     }
 }
 
-export default RoleEditor;
+export default Select;

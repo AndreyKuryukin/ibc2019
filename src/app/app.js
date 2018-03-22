@@ -14,6 +14,7 @@ import Roles from './modules/roles/containers';
 import Users from './modules/users/container';
 import Policies from './modules/policies/containers';
 import StbLoading from './modules/stb-loading/components';
+import KQI from './modules/kqi/containers';
 import rootReducer from './reducers';
 import PageWrapper from './components/PageWrapper';
 import Notification from './components/Notification';
@@ -30,6 +31,7 @@ class App extends React.Component {
                 <Route path="/users/:action?/:id?" component={Users} />
                 <Route path="/policies/:action?/:id?" component={Policies} />
                 <Route path="/stb-loading" component={StbLoading} />
+                <Route path="/kqi/:action?" component={KQI}/>
             </div>
         );
     }

@@ -5,6 +5,7 @@ import login from '../modules/login/reducers';
 import users from '../modules/users/reducers';
 import user from './user';
 import policies from '../modules/policies/reducers';
+import kqi from '../modules/kqi/reducers';
 
 export default combineReducers({
     login,
@@ -12,4 +13,5 @@ export default combineReducers({
     users,
     user,
     policies,
+    kqi,
 });

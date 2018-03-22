@@ -1,0 +1,13 @@
+@import "../../../../../scss/vars";
+
+.kqiConfigurator {
+  width: 280px;
+  max-width: 280px !important;
+  .configuratorContent {
+    background: $white;
+    padding: 10px;
+  }
+  .modal-footer {
+    justify-content: flex-end;
+  }
+}

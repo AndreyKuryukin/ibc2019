@@ -82,5 +82,18 @@
 .rw-popup {
   width: $calendar-width;
   background-color: $border-blue;
+}
+
+.rw-calendar-popup .rw-popup {
   padding: $calendar-dropdown-padding;
+}
+
+.rw-list {
+  margin: 10px;
+  background: $white;
+}
+
+.rw-list-option.rw-state-focus, .rw-list-option.rw-state-focus:hover {
+  border-color: $orange;
+  background-color: $orange;
 }
