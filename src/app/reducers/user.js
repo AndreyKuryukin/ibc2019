@@ -15,16 +15,12 @@ const initialState = {
             link: '/policies'
         },
         {
-            title: 'KQI',
+            title: 'KPI/KQI',
             link: '/kqi'
         },
         {
-            title: 'Отчеты',
-            link: '/users'
-        },
-        {
-            title: 'Ещё что-то',
-            link: '/users'
+            title: 'Выход',
+            link: '/login'
         }
     ]
 };

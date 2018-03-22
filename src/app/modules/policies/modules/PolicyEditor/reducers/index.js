@@ -4,7 +4,6 @@ const initialState = {
     policy: {
         name: '',
         notification_template: '',
-        type: '',
         threshold: {
             cease_duration: '',
             cease_value: '',

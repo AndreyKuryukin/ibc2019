@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Row, Col  } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
@@ -9,8 +8,92 @@ import Panel from '../../../../../components/Panel';
 import ls from 'i18n';
 
 import styles from './styles.scss';
+import * as _ from "lodash";
+import Conjunction from "./Conjunction";
 
 class Condition extends React.PureComponent {
+    static propTypes = {
+        condition: PropTypes.object,
+        onChange: PropTypes.func
+    };
+
+    static defaultProps = {
+        getPolicyProperty: () => null,
+        setPolicyProperty: () => null
+    };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            condition: {
+                conditionDuration: 0,
+                conjunction: {
+                    type: 'AND',
+                    conjunctionList: []
+                }
+            }
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.condition !== this.props.condition) {
+            this.setState(nextProps.condition)
+        }
+    }
+
+    getOperators = () => {
+        return [{
+            title: ls('AND', 'И'),
+            value: "AND"
+        }, {
+            title: ls('OR', 'ИЛИ'),
+            value: "OR"
+        }]
+    };
+
+    getConditionProperty = (path, defaultValue) => _.get(this.state.condition, path, defaultValue);
+
+    setConditionProperty = (path, value) => {
+        const conditionValues = _.set({}, path, value);
+        const condition = _.merge(
+            {},
+            this.state.condition,
+            conditionValues,
+        );
+        const state = {...this.state, condition};
+        this.setState(state);
+        this.props.onChange(state);
+    };
+
+    addConjunction = () => {
+        const list = this.getConditionProperty('conjunction.conjunctionList');
+        const conjunctionList = [...list, {
+            value: ''
+        }];
+        this.setConditionProperty('conjunction.conjunctionList', conjunctionList)
+    };
+
+    removeConjunction = index => {
+        const conjList = this.getConditionProperty('conjunction.conjunctionList', []);
+        conjList.splice(index, 1);
+        this.setConditionProperty('conjunction.conjunctionList', conjList);
+    };
+
+    renderConjunctions = (conjunctionList) => {
+        return conjunctionList.map((conj, index) => <Conjunction
+            key={`conjunction-${index}`}
+            conjunction={conj}
+            parameterList={['received',
+                'linkFaults',
+                'lostOverflow',
+                'lost']}
+            objectTypeList={['STB', 'TEST']}
+            operatorList={['>', '<', '=']}
+            onChange={conjunction => this.setConditionProperty(`conjunction.conjunctionList.${index}`, conjunction)}
+            onRemove={() => this.removeConjunction(index)}
+        />)
+    };
+
     render() {
         return (
             <Panel
@@ -18,13 +101,18 @@ class Condition extends React.PureComponent {
             >
                 <Field
                     id="operator"
+                    required
                     labelText={`${ls('POLICIES_CONDITION_FIELD_OPERATOR', 'Оператор')}:`}
                 >
                     <Select
                         id="operator"
+                        required
+                        defaultValue="AND"
                         type="select"
-                        options={[]}
-                        onChange={() => {}}
+                        value={this.getConditionProperty('conjunction.type')}
+                        options={this.getOperators()}
+                        onChange={() => {
+                        }}
                     />
                 </Field>
                 <Field
@@ -34,62 +122,16 @@ class Condition extends React.PureComponent {
                     <Input
                         id="maxInterval"
                         name="maxInterval"
-                        value={''}
-                        onChange={() => {}}
+                        type="number"
+                        value={this.getConditionProperty('conjunction.conditionDuration')}
+                        onChange={() => {
+                        }}
                     />
                 </Field>
                 <div className={styles.conditionsWrapper}>
-                    <Icon icon="addIcon" onClick={this.onAdd}/>
+                    <Icon icon="addIcon" onClick={this.addConjunction}/>
                     <div className={styles.conditions}>
-                        <div className={styles.conditionBlock}>
-                            <div className={styles.parameters}>
-                                <Field
-                                    id="object"
-                                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
-                                    labelWidth="30%"
-                                    inputWidth="70%"
-                                >
-                                    <Select
-                                        id="object"
-                                        type="select"
-                                        options={[]}
-                                        onChange={() => {}}
-                                    />
-                                </Field>
-                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                    <div style={{ width: '60%' }}>
-                                        <Field
-                                            id="parameter"
-                                            labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Параметр')}:`}
-                                        >
-                                            <Select
-                                                id="parameter"
-                                                type="select"
-                                                options={[]}
-                                                onChange={() => {}}
-                                            />
-                                        </Field>
-                                    </div>
-                                    <div style={{ width: '20%', paddingLeft: 5 }}>
-                                        <Select
-                                            type="select"
-                                            placeholder={''}
-                                            options={[]}
-                                            onChange={() => {}}
-                                        />
-                                    </div>
-                                    <div style={{ width: '20%', paddingLeft: 5 }}>
-                                        <Input
-                                            name="threshold"
-                                            value={''}
-                                            placeholder={''}
-                                            onChange={() => {}}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <span className={styles.remove}>×</span>
-                        </div>
+                        {this.renderConjunctions(this.getConditionProperty('conjunction.conjunctionList'))}
                     </div>
                 </div>
             </Panel>
