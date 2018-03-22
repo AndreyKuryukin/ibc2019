@@ -1,0 +1,26 @@
+@import "../../scss/vars";
+
+.react-date-picker {
+  height: $input-height;
+  z-index: 5;
+  .react-date-picker__button {
+    border: 1px solid $input-border-color;
+    .react-date-picker__button__input input, .react-date-picker__button__input input {
+      padding: 0;
+    }
+  }
+  .react-date-picker__button__icon {
+    padding: 0;
+  }
+}
+
+.datePickerWrapper {
+  display: flex;
+  align-items: center;
+  .datePickerTitle {
+    margin-right: 5px;
+  }
+  & + & {
+    margin-left: 5px;
+  }
+}
