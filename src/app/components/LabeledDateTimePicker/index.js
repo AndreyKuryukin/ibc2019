@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+// import DateTimePicker from 'react-widgets/lib/DateTimePicker';
+import DateTimePicker from '../DateTimePicker';
 import ls from 'i18n';
 
 import styles from './styles.scss';
@@ -8,6 +9,7 @@ import styles from './styles.scss';
 class DatePicker extends React.PureComponent {
     static propTypes = {
         title: PropTypes.string,
+        inputWidth: PropTypes.number,
         disabled: PropTypes.bool,
         valid: PropTypes.bool,
         time: PropTypes.bool,
@@ -20,6 +22,7 @@ class DatePicker extends React.PureComponent {
 
     static defaultProps = {
         title: '',
+        inputWidth: null,
         disabled: false,
         valid: false,
         time: false,
@@ -34,6 +37,7 @@ class DatePicker extends React.PureComponent {
         const {
             title,
             style,
+            inputWidth,
             valid,
             ...rest,
         } = this.props;
@@ -45,6 +49,7 @@ class DatePicker extends React.PureComponent {
             <div className={styles.datePickerWrapper}  style={style}>
                 <span className={styles.datePickerTitle}>{title}</span>
                 <DateTimePicker
+                    inputWidth={inputWidth}
                     messages={datePickerTitles}
                     format={'DD.MM.YYYY'}
                     {...rest}
