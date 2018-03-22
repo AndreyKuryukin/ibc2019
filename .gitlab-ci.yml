@@ -13,6 +13,8 @@ variables:
 
 node-build:
   image: node:8.9.4 
+  only:
+  - web
   stage: build
   script:
   - apt-get update
