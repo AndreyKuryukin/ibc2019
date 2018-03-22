@@ -1,8 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input } from 'reactstrap';
-
-import _ from 'lodash';
+import { Input } from 'reactstrap';
 
 import styles from './styles.scss';
 import ls from "i18n";
