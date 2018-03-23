@@ -1,13 +1,42 @@
 @import "../../../../../scss/vars";
 
 .kqiConfigurator {
-  width: 280px;
-  max-width: 280px !important;
+  width: 650px;
+  max-width: 650px !important;
   .configuratorContent {
     background: $white;
     padding: 10px;
   }
   .modal-footer {
     justify-content: flex-end;
+  }
+}
+
+.kpiFormila {
+  font-weight: bold;
+  margin-top: 24px;
+  .kpiConfigTitle {
+    color: $dark-blue;
+    margin-bottom: 8px;
+  }
+  .fractionContainer {
+    display: flex;
+    flex-direction: row;
+    .fractionItself {
+      display: flex;
+      flex-direction: column;
+      .fractionNumerator {
+        border-bottom: 2px solid;
+        text-align: center;
+      }
+      .fractionDenominator {
+        text-align: center;
+      }
+    }
+    .fractionMultiplier {
+      line-height: 30px;
+      text-align: center;
+      margin-left: 12px;
+    }
   }
 }

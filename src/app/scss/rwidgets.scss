@@ -82,6 +82,7 @@
 .rw-popup {
   width: $calendar-width;
   background-color: $border-blue;
+  border: $border-blue 1px solid;
 }
 
 .rw-calendar-popup .rw-popup {
