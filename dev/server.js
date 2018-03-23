@@ -32,7 +32,8 @@ const plugins = [
     './login',
     './roles',
     './users',
-    './policies'
+    './policies',
+    './kqi',
 ];
 
 app.use((req, res, next) => {

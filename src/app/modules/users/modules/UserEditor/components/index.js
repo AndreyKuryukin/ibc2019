@@ -79,10 +79,20 @@ class UserEditor extends React.Component {
 
     onClose = () => {
         this.context.history.push('/users');
-    }
+    };
+
+    roleIdsToRoles = (roleIds) => {
+        return roleIds.map(id => _.find(this.props.rolesList, role => role.id === id));
+    };
+
+    groupIdsToGroups = (groupIds) => {
+        return groupIds.map(id => _.find(this.props.groupsList, role => role.id === id));
+    };
 
     onSubmit = () => {
         const user = _.omit(this.state.user, 'confirm');
+        user.roles = this.roleIdsToRoles(user.roles);
+        user.groups = this.groupIdsToGroups(user.groups);
         if (typeof this.props.onSubmit === 'function') {
             this.props.onSubmit(this.props.userId, user);
         }

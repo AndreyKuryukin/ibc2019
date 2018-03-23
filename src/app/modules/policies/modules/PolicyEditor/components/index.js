@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader, Row, Col } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
@@ -14,11 +14,13 @@ import styles from './styles.scss';
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         policyId: PropTypes.number,
         policy: PropTypes.object,
+        scopes: PropTypes.array,
+        types: PropTypes.array,
         active: PropTypes.bool,
         onSubmit: PropTypes.func,
         onClose: PropTypes.func,
@@ -28,6 +30,8 @@ class PolicyEditor extends React.PureComponent {
     static defaultProps = {
         policyId: null,
         policy: null,
+        scopes: [],
+        types: [],
         active: false,
         onSubmit: () => null,
         onClose: () => null,
@@ -65,26 +69,31 @@ class PolicyEditor extends React.PureComponent {
             this.state.policy,
             policyValues,
         );
-
         this.setState({
             policy,
         });
-    }
+    };
 
     onClose = () => {
         this.context.history.push('/policies');
         this.props.onClose();
-    }
+    };
 
     onSubmit = () => {
         if (typeof this.props.onSubmit === 'function') {
             // this.props.onSubmit(this.props.userId, this.state.user);
             this.props.onSubmit(this.props.policyId, this.state.policy);
         }
-    }
+    };
+
+    mapScopes = (scopes) => {
+        return scopes.map(scope => ({ value: scope, title: scope }))
+    };
 
     render() {
-        const { active, policyId } = this.props;
+        const { active, policyId, scopes, types } = this.props;
+        const { policy } = this.state;
+        console.log(policy);
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
@@ -100,6 +109,8 @@ class PolicyEditor extends React.PureComponent {
                             <Configuration
                                 getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
                                 setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
+                                types={types}
+                                policy={policy}
                             />
                             <Panel
                                 title={ls('POLICIES_SCOPE_TITLE', 'Область применения')}
@@ -111,8 +122,9 @@ class PolicyEditor extends React.PureComponent {
                                     <Select
                                         id="iField"
                                         type="select"
-                                        options={[]}
-                                        onChange={() => {}}
+                                        options={this.mapScopes(scopes)}
+                                        value={this.getPolicyProperty('scope_type')}
+                                        onChange={scope_type => this.setPolicyProperty('scope_type', scope_type)}
                                     />
                                 </Field>
                                 <Field
@@ -123,7 +135,8 @@ class PolicyEditor extends React.PureComponent {
                                         id="jField"
                                         type="select"
                                         options={[]}
-                                        onChange={() => {}}
+                                        onChange={() => {
+                                        }}
                                     />
                                 </Field>
                             </Panel>
@@ -154,6 +167,7 @@ class PolicyEditor extends React.PureComponent {
                                             <Input
                                                 id="cease_value"
                                                 name="cease_value"
+                                                type="number"
                                                 value={this.getPolicyProperty('threshold.cease_value')}
                                                 onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                             />
@@ -163,7 +177,10 @@ class PolicyEditor extends React.PureComponent {
                             </Panel>
                         </div>
                         <div className={styles.policyEditorColumn}>
-                            <Condition />
+                            <Condition
+                                condition={this.getPolicyProperty('condition')}
+                                onChange={condition => this.setPolicyProperty('condition', condition)}
+                            />
                         </div>
                     </div>
                 </ModalBody>

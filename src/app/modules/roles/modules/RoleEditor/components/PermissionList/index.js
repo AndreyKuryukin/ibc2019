@@ -52,9 +52,11 @@ class RolesListGrid extends React.PureComponent {
     });
 
     onCheckAll = (value) => {
-        const allIds = treeData.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), []);
+        const allIds = value ?
+            this.props.subjectsData.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), [])
+            : [];
         this.setState({
-            checked: value ? allIds : [],
+            checked: value,
         });
 
         this.props.onCheck(allIds);
@@ -70,7 +72,11 @@ class RolesListGrid extends React.PureComponent {
         let checkedPartially = false;
         let checked = this.state.checked.includes(node.id);
         if (node.children && node.children.length > 0) {
-            checkedPartially = !checked && getChildrenIds(node).some(id => this.state.checked.includes(id));
+            const childrenIds = getChildrenIds(node);
+            if (childrenIds.length === childrenIds.filter(id => this.state.checked.includes(id)).length) {
+                checked = true;
+            }
+            checkedPartially = !checked && childrenIds.some(id => this.state.checked.includes(id));
         }
 
         return (
@@ -90,7 +96,6 @@ class RolesListGrid extends React.PureComponent {
     };
 
     filter = (data, searchText) => data.filter(node => search(node.name, searchText) || (node.children && this.filter(node.children, searchText).length > 0));
-
 
     render() {
         const { subjectsData } = this.state;

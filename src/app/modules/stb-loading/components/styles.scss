@@ -1,0 +1,30 @@
+@import '../../../scss/vars';
+
+.stbLoadingWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+}
+
+.controls {
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $white;
+  .controlsGroup {
+    display: flex;
+    height: $input-height;
+    .btn {
+      font-size: 12px;
+      margin-left: 5px;
+      padding: 0 5px;
+    }
+  }
+  .search {
+    width: 20em;
+  }
+}

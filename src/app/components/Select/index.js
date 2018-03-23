@@ -5,10 +5,11 @@ import styles from './styles.scss';
 
 const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 
-class RoleEditor extends React.PureComponent {
+class Select extends React.PureComponent {
 
     static defaultProps = {
         options: [],
+        defaultValue: null,
         onChange: () => null,
     };
 
@@ -43,7 +44,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     render() {
-        const { placeholder, options, children, ...rest } = this.props;
+        const { placeholder, defaultValue, options, children, ...rest } = this.props;
         const value = this.getValue();
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
@@ -63,4 +64,4 @@ class RoleEditor extends React.PureComponent {
     }
 }
 
-export default RoleEditor;
+export default Select;

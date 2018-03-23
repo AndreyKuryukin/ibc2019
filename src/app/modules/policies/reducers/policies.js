@@ -1,4 +1,3 @@
-import _ from 'lodash';
 import { FETCH_POLICIES_SUCCESS } from '../actions';
 import { CREATE_POLICY, UPDATE_POLICY } from '../modules/PolicyEditor/actions';
 

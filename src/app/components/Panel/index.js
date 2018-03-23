@@ -10,6 +10,7 @@ class Panel extends React.PureComponent {
         className: PropTypes.string,
         style: PropTypes.object,
         bodyStyle: PropTypes.object,
+        horizontal: PropTypes.bool,
         children: PropTypes.node,
     };
 
@@ -18,16 +19,17 @@ class Panel extends React.PureComponent {
         className: '',
         style: null,
         bodyStyle: null,
+        horizontal: false,
         children: null,
     };
 
     render() {
-        const { title, className, style, bodyStyle, children } = this.props;
+        const { title, className, style, bodyStyle, children, horizontal } = this.props;
 
         return (
             <div className={classnames(styles.panel, className)} style={style}>
                 <div className={styles.panelHeader}>{title}</div>
-                <div className={styles.panelBody} style={bodyStyle}>{children}</div>
+                <div className={classnames(styles.panelBody, { [styles.horizontal]: horizontal })} style={bodyStyle}>{children}</div>
             </div>
         );
     }

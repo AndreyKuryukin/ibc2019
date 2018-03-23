@@ -1,0 +1,25 @@
+@import "../../../../../scss/vars";
+
+.kqiCalculator {
+  width: 880px;
+  max-width: 880px !important;
+  .kqiCalculatorContent {
+    display: flex;
+    flex-direction: column;
+    .panel + .panel {
+      margin-top: 1px;
+    }
+    .panelsGroup {
+      display: flex;
+      margin-top: 1px;
+      flex-grow: 1;
+      .panel + .panel {
+        margin-top: 0;
+        margin-left: 1px;
+      }
+    }
+  }
+  .modal-footer {
+    justify-content: flex-end;
+  }
+}

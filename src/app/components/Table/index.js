@@ -41,13 +41,16 @@ class Table extends React.Component {
     constructor(props) {
         super(props);
 
+        const defaultSortDirection = 'asc';
+        const sortBy = Table.getDefaultSortBy(props.columns);
+
         this.state = {
-            data: props.data,
+            data: sortBy ? naturalSort(props.data, [defaultSortDirection], node => [_.get(node, `${sortBy}`)]) : props.data,
             cntrlIsPressed: false,
             selected: [],
             sort: {
-                by: Table.getDefaultSortBy(props.columns),
-                direction: 'asc',
+                by: sortBy,
+                direction: defaultSortDirection,
             },
             columnFilterValues: Immutable.Map(),
         }

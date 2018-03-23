@@ -11,7 +11,7 @@ import rest from '../../../../../rest';
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+    };
 
     static propTypes = {
         roleId: PropTypes.number,

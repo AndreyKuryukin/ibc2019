@@ -31,17 +31,23 @@ body {
 @import 'images.scss';
 @import 'rwidgets.scss';
 
-input:not([type=checkbox]), input:not([type=radio]) {
+input:not([type=checkbox]), input:not([type=radio]), select {
   height: $input-height;
-  font-size: $default-font-size;
+  font-size: $default-font-size !important;
 }
-input::-webkit-input-placeholder,
-textarea::-webkit-input-placeholder {
-  color: $placeholder !important;
-}
+
 input[type=checkbox], input[type=radio] {
   display: none;
 }
 .btn-action, .btn-outline-action, .btn-outline-action:hover {
   color: #fff;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type='number'] {
+  -moz-appearance:textfield;
 }
