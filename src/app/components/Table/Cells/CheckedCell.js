@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from '../../Checkbox';
+import Radio from "../../Radio/index";
 
 class CheckedCell extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
+        type: PropTypes.oneOf(['check', 'radio']),
         text: PropTypes.string,
         value: PropTypes.bool,
         checkedPartially: PropTypes.bool,
@@ -15,6 +17,7 @@ class CheckedCell extends React.PureComponent {
     static defaultProps = {
         text: '',
         value: false,
+        type: 'check',
         style: {},
         onChange: () => null,
     };
@@ -26,20 +29,22 @@ class CheckedCell extends React.PureComponent {
     };
 
     render() {
+        const { type, text, value, checkedPartially, id } = this.props;
         const style = {
-            marginRight: this.props.text ? 10 : 0,
+            marginRight: text ? 10 : 0,
             ...this.props.style,
         };
+        const Component = type === 'check' ? Checkbox : Radio;
         return (
-            <div className="table-cell-content" title={this.props.text}>
-                <Checkbox
-                    id={this.props.id}
+            <div className="table-cell-content" title={text}>
+                <Component
+                    id={id}
                     style={style}
                     onChange={this.onChange}
-                    checked={this.props.value}
-                    checkedPartially={this.props.checkedPartially}
+                    checked={value}
+                    checkedPartially={checkedPartially}
                 />
-                <span className="truncated">{this.props.text}</span>
+                <span className="truncated">{text}</span>
             </div>
         );
     }

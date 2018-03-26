@@ -10,6 +10,7 @@ import ls from 'i18n';
 import Configuration from './Configuration';
 import Condition from './Condition';
 import styles from './styles.scss';
+import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
@@ -98,11 +99,12 @@ class PolicyEditor extends React.PureComponent {
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
+            <DraggableWrapper>
             <Modal
                 isOpen={active}
                 className={styles.policyEditor}
             >
-                <ModalHeader toggle={this.onClose}>{modalTitle}</ModalHeader>
+                <ModalHeader toggle={this.onClose} className="handle">{modalTitle}</ModalHeader>
                 <ModalBody>
                     <div className={styles.policyEditorContent}>
                         <div className={styles.policyEditorColumn}>
@@ -189,6 +191,7 @@ class PolicyEditor extends React.PureComponent {
                     <Button color="action" onClick={this.onSubmit}>{ls('POLICIES_SUBMIT', 'Сохранить')}</Button>
                 </ModalFooter>
             </Modal>
+            </DraggableWrapper>
         );
     }
 }

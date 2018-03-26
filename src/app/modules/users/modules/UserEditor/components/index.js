@@ -11,6 +11,8 @@ import Panel from '../../../../../components/Panel';
 import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
 import Divisions from "./Divisions";
+import classnames from "classnames";
+import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 
 class UserEditor extends React.Component {
     static contextTypes = {
@@ -60,8 +62,9 @@ class UserEditor extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         const isCheckedIdsChanged = this.state.checkedIds !== nextState.checkedIds;
-
-        return !isCheckedIdsChanged;
+        const isRolesListChanged = this.state.rolesList !== nextProps.rolesList;
+        const isGroupsListChanged = this.state.groupsList !== nextProps.groupsList;
+        return true //isCheckedIdsChanged || isRolesListChanged || isGroupsListChanged;
     }
 
     getUserProperty = (key, defaultValue) => _.get(this.state.user, key, defaultValue);
@@ -106,15 +109,17 @@ class UserEditor extends React.Component {
             groupsList,
             divisions,
         } = this.props;
-
         return (
+            <DraggableWrapper>
             <Modal
                 isOpen={active}
                 title={userId ? ls('USER_EDIT_USER', 'Редактирование пользователя') : ls('USER_ADD_USER', 'Создание пользователя')}
                 onClose={this.onClose}
                 onSubmit={this.onSubmit}
-                className={styles.userEditor}
+                className={classnames(styles.userEditor, 'handle')}
                 modalClassName={styles.userEditor}
+                submitTitle={userId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}
+                cancelTitle={ls('CANCEL', 'Отмена')}
             >
                 <div
                     className={styles.userEditorContent}
@@ -279,6 +284,7 @@ class UserEditor extends React.Component {
                     </div>
                 </div>
             </Modal>
+            </DraggableWrapper>
         );
     }
 }

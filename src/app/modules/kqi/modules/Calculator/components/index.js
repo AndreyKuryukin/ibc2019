@@ -20,6 +20,7 @@ import {
     LOCATION_GROUPING,
     SERVICE_TYPES,
 } from '../constants';
+import moment from "moment";
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -167,6 +168,7 @@ class Calculator extends React.PureComponent {
                 <div style={{ display: 'flex' }}>
                     <DatePicker
                         value={_.get(this.state.config, 'start_date_time', null)}
+                        max={_.get(this.state.config, 'end_date_time', null)}
                         onChange={value => this.setConfigProperty('start_date_time', value)}
                         inputWidth={90}
                         format={'DD.MM.YYYY HH:mm'}

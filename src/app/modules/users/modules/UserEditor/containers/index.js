@@ -43,10 +43,12 @@ class UserEditor extends React.PureComponent {
             .then(([rolesResponse, groupsResponse, userResponse]) => {
                 const roles = rolesResponse.data;
                 const groups = groupsResponse.data;
-                const user = userResponse.data;
+                if (userResponse) {
+                    this.props.onFetchUserSuccess(userResponse.data);
+                }
                 this.props.onFetchRolesSuccess(roles);
                 this.props.onFetchGroupsSuccess(groups);
-                this.props.onFetchUserSuccess(user);
+
             });
     };
 
