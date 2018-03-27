@@ -17,6 +17,7 @@ class Grid extends React.PureComponent {
         isAllChecked: PropTypes.bool,
         checkedPartially: PropTypes.bool,
         noCheckAll: PropTypes.bool,
+        noSearch: PropTypes.bool,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
         onCheckAll: PropTypes.func,
@@ -30,6 +31,7 @@ class Grid extends React.PureComponent {
         checkedPartially: false,
         tree: false,
         noCheckAll: false,
+        noSearch: false,
         headerRowRender: null,
         bodyRowRender: () => null,
         onCheckAll: () => null,
@@ -45,6 +47,7 @@ class Grid extends React.PureComponent {
             checkedPartially,
             tree,
             noCheckAll,
+            noSearch,
             ...rest
         } = this.props;
 
@@ -57,11 +60,11 @@ class Grid extends React.PureComponent {
                         checked={isAllChecked}
                         checkedPartially={checkedPartially}
                     />}
-                    <Input
+                    {!noSearch && <Input
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.gridSearch}
                         onChange={e => onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
-                    />
+                    />}
                 </div>
                 <div className={styles.gridBody}>
                     {tree ? <TreeView

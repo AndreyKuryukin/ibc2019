@@ -168,6 +168,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="login"
                                     labelText={ls('USER_LOGIN_FIELD_TITLE', 'Логин')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                     required
                                 >
                                     <Input
@@ -180,6 +182,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="password"
                                     labelText={ls('USER_PASSWORD_FIELD_TITLE', 'Пароль')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                     required
                                 >
                                     <Input
@@ -193,6 +197,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="confirm"
                                     labelText={ls('USER_CONFIRM_FIELD_TITLE', 'Подтвердите пароль')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                     required
                                 >
                                     <Input
@@ -206,6 +212,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="name"
                                     labelText={ls('USER_NAME_FIELD_TITLE', 'Имя')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="name"
@@ -217,6 +225,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="last-name"
                                     labelText={ls('USER_LAST_NAME_FIELD_TITLE', 'Фамилия')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="last-name"
@@ -228,6 +238,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="email"
                                     labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="email"
@@ -239,6 +251,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="phone"
                                     labelText={ls('USER_PHONE_FIELD_TITLE', 'Телефон')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="phone"

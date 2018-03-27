@@ -32,11 +32,11 @@ export const LOCATION_GROUPING = {
 
 export const LAST_MILE_TECHNOLOGIES = {
     FTTB: 'FTTB',
-    GPON: 'GPON',
-    XDSL: 'XDSL',
+    PON: 'PON',
+    XDSL: 'xDSL',
 };
 
 export const LAST_INCH_TECHNOLOGIES = {
-    WIFI: 'WIFI',
-    LAN: 'LAN',
+    WIFI: 'WiFi',
+    ETHERNET: 'Ethernet',
 };

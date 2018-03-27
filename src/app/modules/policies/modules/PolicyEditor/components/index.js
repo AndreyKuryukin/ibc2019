@@ -165,6 +165,8 @@ class PolicyEditor extends React.PureComponent {
                                         <Field
                                             id="cease_value"
                                             labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
+                                            labelWidth="50%"
+                                            inputWidth="50%"
                                         >
                                             <Input
                                                 id="cease_value"
