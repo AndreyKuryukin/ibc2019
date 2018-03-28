@@ -97,7 +97,6 @@ class App extends React.Component {
         const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];
         const localToken = localStorage.getItem('jwtToken');
         if (token && token !== localToken) {
-            debugger;
             localStorage.setItem('jwtToken', token);
             rest.setCommonHeader('Authorization', token);
         }

@@ -10,7 +10,8 @@ import * as _ from "lodash";
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-    }
+        pageBlur: PropTypes.func.isRequired
+    };
 
     static propTypes = {
         policyId: PropTypes.number,
@@ -29,6 +30,10 @@ class PolicyEditor extends React.PureComponent {
         onCreatePolicySuccess: () => null,
         onReset: () => null,
     };
+
+    componentDidMount() {
+        this.context.pageBlur && this.context.pageBlur(true);
+    }
 
     onChildMount = () => {
         const requests = [];
