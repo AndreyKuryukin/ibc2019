@@ -19,6 +19,9 @@
     @include imgByPath('delete_hover.png');
   }
 }
+.deleteIconHover {
+  @include iconBuilder(22px, 22px, 'delete_hover.png');
+}
 .groupIcon {
   @include iconBuilder(22px, 22px, 'group.png');
   &:hover {

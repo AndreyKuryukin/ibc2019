@@ -17,6 +17,7 @@ import {
 class UserEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -32,6 +33,10 @@ class UserEditor extends React.PureComponent {
         onUpdateUserSuccess: () => null,
         onCreateUserSuccess: () => null,
     };
+
+    componentDidMount() {
+        this.context.pageBlur && this.context.pageBlur(true);
+    }
 
     onChildMount = () => {
         const queries = [rest.get('/api/v1/role'), rest.get('/api/v1/group')];

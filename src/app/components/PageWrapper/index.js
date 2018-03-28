@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar } from 'reactstrap';
+import _ from 'lodash';
 
 import styles from './styles.scss';
 import { withRouter } from "react-router-dom";
@@ -11,13 +12,15 @@ class PageWrapper extends React.Component {
 
     static childContextTypes = {
         navBar: PropTypes.object.isRequired,
+        pageBlur: PropTypes.object.isRequired,
     };
 
     getChildContext = () => ({
         navBar: {
             setPageTitle: this.setPageTitle,
             hide: this.hide,
-        }
+        },
+        pageBlur: this.pageBlur
     });
 
     static propTypes = {};
@@ -27,8 +30,15 @@ class PageWrapper extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false
+            isOpen: false,
+            blur: false
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (_.get(nextProps, 'location.pathname', 'a') !== _.get(this.props, 'location.pathname', 'b')) {
+            this.setState({blur: false})
+        }
     }
 
     toggle = () => {
@@ -50,8 +60,12 @@ class PageWrapper extends React.Component {
     renderMenuItems = (items = []) => items.map((item, index) => <DropdownItem key={`menu-item-${index}`}
         onClick={() => this.onMenuClick(item)}>{item.title}</DropdownItem>);
 
+    pageBlur = (blur) => {
+        this.setState({blur})
+    };
+
     render() {
-        return <div className={styles.pageWrapper}>
+        return <div className={classNames(styles.pageWrapper, {[styles.blur]: this.state.blur})}>
             <Navbar color="faded"
                     light
                     className={classNames({
