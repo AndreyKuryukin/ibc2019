@@ -6,9 +6,10 @@ import PropTypes from 'prop-types';
 
 import LoginComponent from '../components';
 import { signInSuccess } from '../actions/index';
-import { signIn } from '../../../rest/index';
+import rest, { signIn } from '../../../rest/index';
 import { ERRORS } from "../../../costants/errors";
 import ls from "i18n";
+import { LOGIN_REQUEST, SIGN_IN_URL } from "../../../costants/login";
 
 
 class Login extends React.PureComponent {
@@ -27,11 +28,13 @@ class Login extends React.PureComponent {
         this.state = {};
     }
 
-    onSubmit = (...loginPassword) => {
+    onSubmit = (login, password) => {
         this.setState({ loading: true });
-        signIn(...loginPassword)
-            .then((userName) => {
-                this.setState({ loading: false });
+        rest.post(SIGN_IN_URL, {
+                [LOGIN_REQUEST.LOGIN]: login,
+                [LOGIN_REQUEST.PASSWORD]: password,
+            })
+            .then((userName) => {this.setState({ loading: false });
                 this.props.onLoginSuccess(userName);
                 this.context.notifications.close('login-failed');
                 this.props.history.push('/roles');
