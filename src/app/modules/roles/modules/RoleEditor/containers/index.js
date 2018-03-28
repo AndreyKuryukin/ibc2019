@@ -11,6 +11,7 @@ import rest from '../../../../../rest';
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -52,6 +53,7 @@ class RoleEditor extends React.PureComponent {
                     this.props.onFetchSubjectsSuccess(response.data);
                 })
         }
+        this.context.pageBlur && this.context.pageBlur(true);
     }
 
     onSubmit = (roleId, roleData) => {

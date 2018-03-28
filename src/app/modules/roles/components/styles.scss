@@ -1,3 +1,5 @@
+@import "../../../scss/vars";
+
 .rolesContainer {
   display: flex;
   flex-grow: 1;
@@ -30,3 +32,26 @@
     margin-left: auto;
   }
 }
+.confirmationMsg {
+  width: 200px;
+  color: $white;
+  padding-left: 8px;
+  display: flex;
+  &:before {
+    content: url(../../../../resources/img/warning.png);
+    height: 15px;
+    width: 15px;
+    display: block;
+    margin-right: 8px
+  }
+}
+
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 8px 0;
+  *:not(:last-child) {
+    margin-right: 8px;
+  }
+}
+

@@ -61,28 +61,7 @@ class Roles extends React.PureComponent {
     };
 
     onRemove = (ids) => {
-        this.context.notifications.notify({
-            title: ls('ROLES_REMOVE_CONFIRM_TITLE', 'Подтвердите действие:'),
-            message: ls('ROLES_REMOVE_CONFIRM_MESSAGE', 'Удаление роли'),
-            type: 'CONFIRMATION',
-            code: 'remove-roles',
-            actions: [
-                <Button color='action'
-                        onClick={() => {
-                            this.context.notifications.close('remove-roles');
-                            this.onRemoveConfirmed(ids)
-                        }}>
-                    {ls('GENERAL_REMOVE', "Удалить")}
-                </Button>,
-                <Button outline
-                        color="action"
-                        style={{color: 'black'}}
-                        onClick={() => this.context.notifications.close('remove-roles')}>
-                    {ls('GENERAL_CANCEL', "Отмена")}
-                </Button>,
-            ]
-        });
-
+        this.onRemoveConfirmed(ids)
     };
 
     render() {
