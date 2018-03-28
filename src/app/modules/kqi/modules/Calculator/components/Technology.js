@@ -11,7 +11,7 @@ class Technology extends React.PureComponent {
         id: PropTypes.string.isRequired,
         title: PropTypes.string,
         label: PropTypes.string,
-        technologies: PropTypes.object,
+        technologies: PropTypes.array,
         onTechnologyChange: PropTypes.func,
         onGroupingChange: PropTypes.func,
     };
@@ -19,7 +19,7 @@ class Technology extends React.PureComponent {
     static defaultProps = {
         title: '',
         label: '',
-        technologies: null,
+        technologies: [],
         onTechnologyChange: () => null,
         onGroupingChange: () => null,
     };

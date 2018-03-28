@@ -104,7 +104,6 @@ class Calculator extends React.PureComponent {
             config['manufacture_grouping'] = value.length > 1;
         }
 
-        console.log(config);
         this.setState({ config });
     };
 
@@ -131,11 +130,11 @@ class Calculator extends React.PureComponent {
             last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
             last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
             manufacture_grouping: _.get(config, 'manufacture_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            equipment_grouping: _.get(config, 'equipment_grouping', []) ? [_.get(config, 'equipment_grouping')] : [GROUPING_TYPES.NONE],
-            abonent_grouping: _.get(config, 'abonent_grouping', []) ? [_.get(config, 'abonent_grouping')] : [GROUPING_TYPES.NONE],
+            equipment_grouping: _.get(config, 'equipment_grouping') ? [_.get(config, 'equipment_grouping')] : [GROUPING_TYPES.NONE],
+            abonent_grouping: _.get(config, 'abonent_grouping') ? [_.get(config, 'abonent_grouping')] : [GROUPING_TYPES.NONE],
         };
-        console.log(preparedConfig);
-        // this.props.onSubmit(preparedConfig);
+
+        this.props.onSubmit(preparedConfig);
     };
 
     render() {
