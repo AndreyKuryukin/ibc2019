@@ -1,9 +1,9 @@
 export const OPERATOR_TYPES = {
-    EQ: 'EQ',
-    GT: 'GT',
-    GE: 'GE',
-    LT: 'LT',
-    LE: 'LE',
+    EQ: '=',
+    GT: '>',
+    GE: '>=',
+    LT: '<',
+    LE: '<=',
 };
 
 export const OBJECT_TYPES = {

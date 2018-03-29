@@ -34,11 +34,15 @@ class Field extends React.PureComponent {
     }
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, inputWidth, required, children, style } = this.props;
+        const { id, labelText, labelWidth, labelAlign, disabled, inputWidth, required, children, style } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
-            { [styles.required]: required },
-            { [styles.rightLabel]: labelAlign === 'right' },
+            {
+                [styles.required]: required,
+                [styles.rightLabel]: labelAlign === 'right',
+                [styles.disabled]: disabled,
+
+            },
         );
         return (
             <div className={classes} style={style}>

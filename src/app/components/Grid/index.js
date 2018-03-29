@@ -16,6 +16,7 @@ class Grid extends React.PureComponent {
         columns: PropTypes.arrayOf(PropTypes.object),
         isAllChecked: PropTypes.bool,
         checkedPartially: PropTypes.bool,
+        noCheckAll: PropTypes.bool,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
         onCheckAll: PropTypes.func,
@@ -28,6 +29,7 @@ class Grid extends React.PureComponent {
         isAllChecked: false,
         checkedPartially: false,
         tree: false,
+        noCheckAll: false,
         headerRowRender: null,
         bodyRowRender: () => null,
         onCheckAll: () => null,
@@ -42,18 +44,19 @@ class Grid extends React.PureComponent {
             onSearchTextChange,
             checkedPartially,
             tree,
+            noCheckAll,
             ...rest
         } = this.props;
 
         return (
             <div className={styles.gridWrapper}>
                 <div className={styles.gridControls}>
-                    <Checkbox
+                    {!noCheckAll && <Checkbox
                         id={`${id}-all`}
                         onChange={onCheckAll}
                         checked={isAllChecked}
                         checkedPartially={checkedPartially}
-                    />
+                    />}
                     <Input
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.gridSearch}

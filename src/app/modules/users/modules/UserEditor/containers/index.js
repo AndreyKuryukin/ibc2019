@@ -17,6 +17,7 @@ import {
 class UserEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -33,6 +34,10 @@ class UserEditor extends React.PureComponent {
         onCreateUserSuccess: () => null,
     };
 
+    componentDidMount() {
+        this.context.pageBlur && this.context.pageBlur(true);
+    }
+
     onChildMount = () => {
         const queries = [rest.get('/api/v1/role'), rest.get('/api/v1/group')];
         if (this.props.userId) {
@@ -43,10 +48,12 @@ class UserEditor extends React.PureComponent {
             .then(([rolesResponse, groupsResponse, userResponse]) => {
                 const roles = rolesResponse.data;
                 const groups = groupsResponse.data;
-                const user = userResponse.data;
+                if (userResponse) {
+                    this.props.onFetchUserSuccess(userResponse.data);
+                }
                 this.props.onFetchRolesSuccess(roles);
                 this.props.onFetchGroupsSuccess(groups);
-                this.props.onFetchUserSuccess(user);
+
             });
     };
 

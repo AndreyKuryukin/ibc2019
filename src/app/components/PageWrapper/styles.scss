@@ -1,5 +1,9 @@
 @import "../../scss/vars";
 
+.blur {
+  filter: blur(3px);
+}
+
 .pageWrapper {
   display: flex;
   flex-grow: 1;

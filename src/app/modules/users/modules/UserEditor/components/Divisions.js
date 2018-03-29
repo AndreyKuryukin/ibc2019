@@ -53,6 +53,7 @@ class Divisions extends React.Component {
                 style={{ marginLeft: 0 }}
                 value={checked}
                 checkedPartially={false}
+                type={'radio'}
                 text={node[column.name]}
             />
         );
@@ -76,6 +77,7 @@ class Divisions extends React.Component {
                             name: 'name',
                         }
                     ]}
+                    noCheckAll
                     bodyRowRender={this.bodyRowRender}
                     checkedPartially={false}
                     isAllChecked={false}

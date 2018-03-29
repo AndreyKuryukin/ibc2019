@@ -11,15 +11,16 @@ import Checkbox from "../../../../../components/Checkbox";
 import DatePicker from "../../../../../components/DateTimePicker";
 import styles from './styles.scss';
 import {
-    GROUPING_TYPES,
-    EQUIPMENT_TYPE_GROUPING,
     ABONENT_GROUP_GROUPING,
-    SERVICE_TYPES,
     DATE_TIME_GROUPING,
-    LOCATION_GROUPING,
-    LAST_MILE_TECHNOLOGIES,
+    EQUIPMENT_TYPE_GROUPING,
+    GROUPING_TYPES,
     LAST_INCH_TECHNOLOGIES,
+    LAST_MILE_TECHNOLOGIES,
+    LOCATION_GROUPING,
+    SERVICE_TYPES,
 } from '../constants';
+import moment from "moment";
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -74,7 +75,7 @@ class Calculator extends React.PureComponent {
         }
     }
 
-    static mapObjectToOptions (object) {
+    static mapObjectToOptions(object) {
         return _.map(object, (title, value) => ({ value, title }));
     }
 
@@ -111,7 +112,7 @@ class Calculator extends React.PureComponent {
         const { config } = this.state;
         const preparedConfig = {
             ...config,
-            date_time_grouping: _.get(config, 'date_time_grouping') ? [_.get(config, 'date_time_grouping')] : [GROUPING_TYPES.NONE] ,
+            date_time_grouping: _.get(config, 'date_time_grouping') ? [_.get(config, 'date_time_grouping')] : [GROUPING_TYPES.NONE],
             location_grouping: _.get(config, 'location_grouping') ? [_.get(config, 'location_grouping')] : [GROUPING_TYPES.NONE],
             last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
             last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
@@ -129,6 +130,7 @@ class Calculator extends React.PureComponent {
             labelText: `${ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}:`,
             labelWidth: '20%',
             inputWidth: '80%',
+            required: true,
             children: (
                 <Select
                     id="service-type"
@@ -141,6 +143,7 @@ class Calculator extends React.PureComponent {
             labelText: `${ls('KQI_CALCULATOR_KQI_FIELD_LABEL', 'KQI')}:`,
             labelWidth: '20%',
             inputWidth: '80%',
+            required: true,
             children: (
                 <Select
                     id="kqi"
@@ -157,6 +160,7 @@ class Calculator extends React.PureComponent {
             labelText: `${ls('KQI_CALCULATOR_TIME_INTERVAL_FIELD_LABEL', 'Временной интервал')}:`,
             labelWidth: '32%',
             inputWidth: '68%',
+            required: true,
             style: {
                 flex: '1 1 0',
             },
@@ -164,6 +168,7 @@ class Calculator extends React.PureComponent {
                 <div style={{ display: 'flex' }}>
                     <DatePicker
                         value={_.get(this.state.config, 'start_date_time', null)}
+                        max={_.get(this.state.config, 'end_date_time', null)}
                         onChange={value => this.setConfigProperty('start_date_time', value)}
                         inputWidth={90}
                         format={'DD.MM.YYYY HH:mm'}
@@ -205,6 +210,7 @@ class Calculator extends React.PureComponent {
             labelText: `${ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'Местоположение')}:`,
             labelWidth: '32%',
             inputWidth: '66%',
+            required: true,
             style: {
                 flex: '1 1 0',
             },

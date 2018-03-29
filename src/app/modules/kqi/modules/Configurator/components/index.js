@@ -6,11 +6,9 @@ import _ from 'lodash';
 
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
+import Formula from './Formula';
 import styles from './styles.scss';
-import {
-    OBJECT_TYPES,
-    OPERATOR_TYPES,
-} from '../constants';
+import { OBJECT_TYPES, OPERATOR_TYPES, } from '../constants';
 
 class Configurator extends React.PureComponent {
     static contextTypes = {
@@ -51,7 +49,7 @@ class Configurator extends React.PureComponent {
         }
     }
 
-    static mapObjectToOptions (object) {
+    static mapObjectToOptions(object) {
         return _.map(object, (title, value) => ({ value, title }));
     }
 
@@ -65,17 +63,27 @@ class Configurator extends React.PureComponent {
 
     onChangeParameterType = (value) => {
         const parameterType = _.get(this.props.paramTypesById, `${value}`, null);
-
         this.setConfigProperty('parameter_type', parameterType);
-    }
+    };
 
     onClose = () => {
         this.context.history.push('/kqi');
-    }
+    };
 
     onSubmit = () => {
         this.props.onSubmit(this.state.config);
-    }
+    };
+
+    mapConfig = (config) => {
+        const conf = { ...config };
+        if (config.parameter_type) {
+            conf.parameter_type = config.parameter_type.name;
+        }
+        if (config.operator_type) {
+            conf.operator_type = OPERATOR_TYPES[config.operator_type];
+        }
+        return conf;
+    };
 
     render() {
         const { config } = this.state;
@@ -93,6 +101,7 @@ class Configurator extends React.PureComponent {
                             labelText={ls('KQI_CONFIGURATOR_NAME_LABEL', 'Название:')}
                             labelWidth="35%"
                             inputWidth="65%"
+                            required
                         >
                             <Input
                                 id="name"
@@ -105,6 +114,7 @@ class Configurator extends React.PureComponent {
                             labelText={ls('KQI_CONFIGURATOR_OBJECT_TYPE_LABEL', 'Тип объекта:')}
                             labelWidth="35%"
                             inputWidth="65%"
+                            required
                         >
                             <Select
                                 options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
@@ -116,6 +126,7 @@ class Configurator extends React.PureComponent {
                             labelText={ls('KQI_PARAMETER_LABEL', 'Параметр:')}
                             labelWidth="35%"
                             inputWidth="65%"
+                            required
                         >
                             <Select
                                 options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
@@ -127,6 +138,7 @@ class Configurator extends React.PureComponent {
                             labelText={ls('KQI_OPERATOR_LABEL', 'Оператор:')}
                             labelWidth="35%"
                             inputWidth="65%"
+                            required
                         >
                             <Select
                                 options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
@@ -138,6 +150,7 @@ class Configurator extends React.PureComponent {
                             labelText={ls('KQI_LEVEL_LABEL', 'Значение:')}
                             labelWidth="35%"
                             inputWidth="65%"
+                            required
                         >
                             <Input
                                 type="number"
@@ -146,6 +159,10 @@ class Configurator extends React.PureComponent {
                                 onChange={event => this.setConfigProperty('level', event.currentTarget.value)}
                             />
                         </Field>
+                        <Formula
+                            config={this.mapConfig(config)}
+                        />
+
                     </div>
                 </ModalBody>
                 <ModalFooter>

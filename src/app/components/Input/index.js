@@ -77,7 +77,6 @@ class Input extends React.Component {
 
         const classes = mapToCssModules(classNames(
             className,
-            styles.placeholder,
             valid === false && 'is-invalid',
             valid && 'is-valid',
             bsSize ? `form-control-${bsSize}` : false,

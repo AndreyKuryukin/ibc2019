@@ -58,7 +58,6 @@ class Roles extends React.Component {
 
     onRemove = () => {
         this.props.onRemove(this.state.checkedIds);
-        this.removeConfirmToggle();
     };
 
     onSearchTextChange = (searchText) => {

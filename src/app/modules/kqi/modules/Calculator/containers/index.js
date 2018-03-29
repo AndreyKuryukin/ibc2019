@@ -10,6 +10,7 @@ import {
 class Calculator extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -35,6 +36,10 @@ class Calculator extends React.PureComponent {
         this.state = {
             isLoading: false,
         };
+    }
+
+    componentDidMount() {
+        this.context.pageBlur && this.context.pageBlur(true);
     }
 
     onMount = () => {
