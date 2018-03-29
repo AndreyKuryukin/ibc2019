@@ -105,6 +105,11 @@ $notification-left-padding: 4px;
 $notification-padding: $notification-top-padding $notification-right-padding $notification-bottom-padding $notification-left-padding;
 $notification-border: 1px solid $notification-border-color;
 
+//DROPDOWNS
+$dropdown-border-width: 0;
+$dropdown-bg: $border-blue;
+$dropdown-padding-y: 8px;
+
 @import "~bootstrap/scss/functions";
 @import '~bootstrap/scss/variables';
 @import '~bootstrap/scss/mixins';

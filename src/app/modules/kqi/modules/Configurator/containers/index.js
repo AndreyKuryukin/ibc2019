@@ -8,6 +8,7 @@ import { fetchParameterTypesSuccess } from '../actions';
 class Configurator extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -32,6 +33,10 @@ class Configurator extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        this.context.pageBlur && this.context.pageBlur(true);
+    }
+
     onMount = () => {
         this.setState({isLoading: true});
 
@@ -45,7 +50,7 @@ class Configurator extends React.PureComponent {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
     onSubmitKPI = (kpiConfig) => {
         this.setState({ isLoading: true });
