@@ -1,0 +1,25 @@
+@import '../../../scss/vars';
+
+.reportsWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  padding: 1em;
+}
+
+.controls {
+  padding: .5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: $white;
+  .search {
+    width: 20em;
+  }
+}
+
+.reportText {
+  margin: 0 10px;
+}

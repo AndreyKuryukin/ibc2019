@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import classnames from 'classnames';
 
+import { naturalSort } from '../../util/sort';
 import Table from '../Table';
 import styles from './styles.scss';
 
@@ -23,26 +24,42 @@ class TreeView extends React.Component {
         expanded: PropTypes.arrayOf(PropTypes.oneOfType([
             PropTypes.number,
             PropTypes.string
-        ]))
+        ])),
     };
 
     static defaultProps = {
         data: [],
         expanded: [],
-        headerRowRender: () => null,
+        headerRowRender: null,
         bodyRowRender: () => null,
     };
 
+    static getDefaultSortBy(columns) {
+        const defaultSortColumn = columns.find(column => column.sortable);
+
+        return defaultSortColumn ? defaultSortColumn.name : null;
+    }
+
     constructor(props) {
         super(props);
+
+        const sortBy = TreeView.getDefaultSortBy(props.columns);
+
         this.state = {
-            expanded: []
-        }
+            expanded: [],
+            sort: {
+                columnName: sortBy,
+                direction: 'asc',
+            },
+        };
     }
+
+    sort = (data, columnName, direction) => naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')]);
 
     mapData = (data, parents = []) => {
         const result = [];
-        data.forEach((node, index) => {
+        const sortedData = this.sort(data, this.state.sort.columnName, this.state.sort.direction);
+        sortedData.forEach((node, index) => {
             node.isLast = (index + 1) === data.length;
             if (!_.isEmpty(node.children)) {
                 result.push({ ...node, expandable: true, parents });
@@ -80,12 +97,12 @@ class TreeView extends React.Component {
 
     simpleCell = (column, node) => {
         return <div className={styles.cellContainer}>
-            {this.transitCells(node.parents)}
-            <div className={classnames({
+            {this.isColumnFirst(column) && this.transitCells(node.parents)}
+            {this.isColumnFirst(column) && <div className={classnames({
                 [styles.lastCell]: node.isLast,
                 [styles.middleCell]: !node.isLast,
             })}
-            />
+            />}
             {this.props.bodyRowRender(column, node)}
         </div>
     };
@@ -98,10 +115,11 @@ class TreeView extends React.Component {
         );
     };
 
+    isColumnFirst = column => column.name === this.props.columns[0].name;
     isExpanded = id => this.state.expanded.findIndex(uid => uid === id) !== -1;
 
     bodyRowRender = (column, node) => {
-        if (!_.isEmpty(node.children)) {
+        if (!_.isEmpty(node.children) && this.isColumnFirst(column)) {
             return this.expandableCell(column, node)
         }
         return this.simpleCell(column, node);
@@ -114,6 +132,7 @@ class TreeView extends React.Component {
             {...rest}
             data={newData}
             bodyRowRender={this.bodyRowRender}
+            customSortFunction={(columnName, direction) => { this.setState({ sort: { columnName, direction }}) }}
         />
     }
 }
