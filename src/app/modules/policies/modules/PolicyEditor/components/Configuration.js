@@ -36,6 +36,8 @@ class Configuration extends React.PureComponent {
                 <Field
                     id="name"
                     labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}:`}
+                    labelWidth="50%"
+                    inputWidth="50%"
                     required
                 >
                     <Input
@@ -49,6 +51,8 @@ class Configuration extends React.PureComponent {
                     id="aggregation"
                     required
                     labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}:`}
+                    labelWidth="50%"
+                    inputWidth="50%"
                 >
                     <Select
                         id="aggregation"
@@ -79,6 +83,8 @@ class Configuration extends React.PureComponent {
                         <Field
                             id="rise_value"
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}:`}
+                            labelWidth="50%"
+                            inputWidth="50%"
                         >
                             <Input
                                 id="rise_value"
