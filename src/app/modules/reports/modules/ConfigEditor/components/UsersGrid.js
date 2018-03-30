@@ -36,7 +36,7 @@ class UsersGrid extends React.PureComponent {
             onChange={(value) => this.onCheck(value, node)}
             style={{ marginLeft: 0 }}
             value={this.state.checked.includes(node.id)}
-            text={node[column.name]}
+            text={`${_.get(node, 'first_name', '')} ${_.get(node, 'last_name', '')}`}
         />
     );
 
@@ -48,11 +48,10 @@ class UsersGrid extends React.PureComponent {
             checked = value ? this.props.usersData.map(node => node.id) : [];
         }
 
-        this.props.onCheck(checked);
-
         this.setState({
             checked,
         });
+        this.props.onCheck(checked);
     };
 
     onSearchTextChange = (searchText) => {

@@ -130,4 +130,13 @@ module.exports = (app) => {
         reports[0].report_config[0].reports.shift();
         res.end();
     });
+    app.post('/api/v1/reports/configs', (req, res) => {
+        res.send(Object.assign(
+            {},
+            req.body,
+            {
+                id: Date.now()
+            }
+        ));
+    });
 };

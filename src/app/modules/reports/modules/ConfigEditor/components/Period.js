@@ -20,10 +20,12 @@ const INTERVALS = {
 class Period extends React.PureComponent {
     static propTypes = {
         onIntervalChange: PropTypes.func,
+        onAutoCheck: PropTypes.func,
     };
 
     static defaultProps = {
         onIntervalChange: () => null,
+        onAutoCheck: () => null,
     };
 
     constructor(props) {
@@ -65,13 +67,14 @@ class Period extends React.PureComponent {
                 start: interval !== INTERVALS.OTHER ? start.toDate() : this.state.start,
                 end: interval !== INTERVALS.OTHER ? end.toDate() : this.state.end,
             }, () => {
-                this.props.onIntervalChange(this.state.start, this.state.end);
+                this.props.onIntervalChange(interval, this.state.start, this.state.end);
             });
         }
     };
 
     onAutoCheck = (value) => {
         this.setState({ isAutoChecked: value });
+        this.props.onAutoCheck(value);
     };
 
     render() {
@@ -188,6 +191,7 @@ class Period extends React.PureComponent {
                         id="auto-checkbox"
                         checked={this.state.isAutoChecked}
                         onChange={this.onAutoCheck}
+                        disabled={this.state.interval === INTERVALS.OTHER}
                     />
                 </Field>
             </Panel>
