@@ -70,8 +70,12 @@ class PolicyEditor extends React.PureComponent {
         const conditionString = _.get(policy, 'condition.condition', '');
         const conditionJson = decodeURIComponent(conditionString);
         if (conditionJson) {
-            const condition = JSON.parse(conditionJson);
-            _.set(policy, 'condition.condition', condition);
+            try {
+                const condition = JSON.parse(conditionJson);
+                _.set(policy, 'condition.condition', condition);
+            } catch (e) {
+                _.set(policy, 'condition.condition')
+            }
         }
         return policy;
     };
