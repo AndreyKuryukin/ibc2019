@@ -7,6 +7,7 @@ import Login from '../modules/login/containers';
 import Roles from '../modules/roles/containers';
 import Users from '../modules/users/container';
 import Policies from '../modules/policies/containers';
+import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import rest from '../rest';
@@ -39,6 +40,10 @@ class App extends React.Component {
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
+            'REPORTS': {
+                path: '/reports/:action?',
+                component: Reports
+            },
             'STB_LOADING': {
                 path: "/stb-loading",
                 component: StbLoading
@@ -53,7 +58,7 @@ class App extends React.Component {
     defaultUser = {
         userName: '',
         login: '',
-        subjects: ['LOGIN', 'USERS', 'ROLES', 'POLICIES', 'STB_LOADING', 'KQI'],
+        subjects: ['LANDING', 'LOGIN', 'USERS', 'ROLES', 'POLICIES', 'REPORTS', 'STB_LOADING', 'KQI'],
         menu: [
             {
                 title: 'Роли',
@@ -66,6 +71,10 @@ class App extends React.Component {
             {
                 title: 'Политики',
                 link: '/policies'
+            },
+            {
+                title: 'Отчёты',
+                link: '/reports'
             },
             {
                 title: 'KPI/KQI',
@@ -110,7 +119,6 @@ class App extends React.Component {
     renderRoutes = (subjects = []) => {
 
         const subjectMap = this.getMapedSubjects() || {};
-        subjects.unshift('LANDING');
         return subjects.map(subject => <Route key={subject} {...subjectMap[subject]}/>)
     };
 

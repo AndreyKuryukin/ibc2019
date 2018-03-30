@@ -1,25 +1,42 @@
 @import "../../../../../scss/vars";
 
 .kqiCalculator {
-  width: 1000px;
-  max-width: 1000px !important;
+  width: 940px;
+  max-width: 940px !important;
   .kqiCalculatorContent {
     display: flex;
     flex-direction: column;
     .panel + .panel {
       margin-top: 1px;
     }
-    .panelsGroup {
+    .bottomContent {
       display: flex;
       margin-top: 1px;
       flex-grow: 1;
-      .panel + .panel {
-        margin-top: 0;
+      .panels {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
         margin-left: 1px;
       }
     }
   }
   .modal-footer {
     justify-content: flex-end;
+  }
+}
+
+.groupingBlock {
+  display: flex;
+  flex: 1 1 0;
+}
+
+.manufactures {
+  display: flex;
+  height: 205px;
+  .manufactureLabel {
+    display: flex;
+    flex-direction: column;
+    padding: 15px 0;
   }
 }

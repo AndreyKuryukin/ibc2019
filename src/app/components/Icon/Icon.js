@@ -17,15 +17,14 @@ class Icon extends React.PureComponent {
         disabled: false,
         style: null,
         onClick: () => null,
-    }
+    };
 
     render() {
+        const {icon, ...rest} = this.props;
         return (
             <div
-                className={classnames(styles.iconBlock, this.props.icon)}
-                onClick={this.props.onClick}
-                title={this.props.title}
-                style={this.props.style}
+                className={classnames(styles.iconBlock, icon)}
+                {...rest}
             />
         );
     }

@@ -6,6 +6,7 @@ import users from '../modules/users/reducers';
 import user from './user';
 import policies from '../modules/policies/reducers';
 import kqi from '../modules/kqi/reducers';
+import reports from '../modules/reports/reducers';
 
 export default combineReducers({
     login,
@@ -14,4 +15,5 @@ export default combineReducers({
     user,
     policies,
     kqi,
+    reports,
 });

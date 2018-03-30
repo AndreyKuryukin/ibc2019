@@ -103,6 +103,8 @@ class Condition extends React.PureComponent {
                     id="operator"
                     required
                     labelText={`${ls('POLICIES_CONDITION_FIELD_OPERATOR', 'Оператор')}:`}
+                    labelWidth="50%"
+                    inputWidth="50%"
                 >
                     <Select
                         id="operator"
@@ -118,6 +120,8 @@ class Condition extends React.PureComponent {
                 <Field
                     id="maxInterval"
                     labelText={`${ls('POLICIES_CONDITION_FIELD_MAX_INTERVAL', 'Максимальный интервал')}:`}
+                    labelWidth="50%"
+                    inputWidth="50%"
                 >
                     <Input
                         id="maxInterval"

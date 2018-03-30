@@ -139,6 +139,8 @@ class RoleEditor extends React.PureComponent {
                         >
                             <Field
                                 labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли:')}
+                                labelWidth="50%"
+                                inputWidth="50%"
                                 required
                             >
                                 <Input value={role.name}
@@ -148,6 +150,8 @@ class RoleEditor extends React.PureComponent {
 
                             <Field
                                 labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из:')}
+                                labelWidth="50%"
+                                inputWidth="50%"
                             >
                                 <Select type="select"
                                         options={this.getSourceOptions(filteredSourceOptions)}

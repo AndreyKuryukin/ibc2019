@@ -20,6 +20,7 @@ class Table extends React.Component {
         className: PropTypes.string,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
+        customSortFunction: PropTypes.func,
         selectable: PropTypes.bool,
     };
 
@@ -30,6 +31,7 @@ class Table extends React.Component {
         selectable: false,
         headerRowRender: null,
         bodyRowRender: () => null,
+        customSortFunction: null,
     };
 
     static getDefaultSortBy(columns) {
@@ -45,7 +47,7 @@ class Table extends React.Component {
         const sortBy = Table.getDefaultSortBy(props.columns);
 
         this.state = {
-            data: sortBy ? naturalSort(props.data, [defaultSortDirection], node => [_.get(node, `${sortBy}`)]) : props.data,
+            data: sortBy ? naturalSort(props.data, [defaultSortDirection], node => [_.get(node, `${sortBy}`, '')]) : props.data,
             cntrlIsPressed: false,
             selected: [],
             sort: {
@@ -121,7 +123,9 @@ class Table extends React.Component {
         const { by, direction } = this.state.sort;
         const nextDirection = (direction === 'asc' && by === columnName) ? 'desc' : 'asc';
 
-        const sortedData = naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`)]);
+        const sortedData = this.props.customSortFunction
+            ? this.props.customSortFunction(columnName, nextDirection)
+            : naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`)]);
 
         this.setState({
             sort: {
@@ -161,7 +165,7 @@ class Table extends React.Component {
     };
 
     render() {
-        const { columns, headerRowRender, bodyRowRender, className, ...rest } = this.props;
+        const { columns, headerRowRender, bodyRowRender, className, customSortFunction, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
             <div className={styles.tableContainer} style={{

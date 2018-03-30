@@ -25,8 +25,8 @@ class Field extends React.PureComponent {
     static defaultProps = {
         id: '',
         labelText: '',
-        labelWidth: '50%',
-        inputWidth: '50%',
+        labelWidth: null,
+        inputWidth: null,
         labelAlign: 'left',
         required: false,
         children: null,
