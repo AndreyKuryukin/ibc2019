@@ -1,0 +1,19 @@
+@import '../../../../../scss/vars';
+
+.configEditor {
+  width: 295px !important;
+  max-width: 295px !important;
+  .configEditorContent {
+    display: flex;
+    flex-direction: column;
+    > div + div {
+      margin-top: 1px;
+    }
+  }
+}
+
+.intervalsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}

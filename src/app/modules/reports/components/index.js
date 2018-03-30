@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Controls from './ReportsControls';
 import Table from './ReportsTable';
 import styles from './styles.scss';
+import ConfigEditor from '../modules/ConfigEditor/components';
 
 class Reports extends React.PureComponent {
     static childContextTypes = {
@@ -49,6 +50,10 @@ class Reports extends React.PureComponent {
     };
 
     render() {
+        const { match } = this.props;
+        const { params } = match;
+        const isEditorActive = params.action === 'add';
+
         return (
             <div className={styles.reportsWrapper}>
                 <Controls
@@ -60,6 +65,9 @@ class Reports extends React.PureComponent {
                     preloader={this.props.isLoading}
                     removeResult={this.props.removeResult}
                 />
+                {isEditorActive && <ConfigEditor
+                    active={isEditorActive}
+                />}
             </div>
         );
     }

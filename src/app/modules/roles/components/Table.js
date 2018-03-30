@@ -123,7 +123,7 @@ class RolesTable extends React.PureComponent {
                     />
                 );
         }
-    }
+    };
 
     filter = (data, columns, searchText) => {
         const searchableColumns = columns.filter(col => col.searchable);
