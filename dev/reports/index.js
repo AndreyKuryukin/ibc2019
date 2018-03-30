@@ -85,9 +85,9 @@ const reports = [{
         }]
     }, {
         config_name: 'Ежемесячный',
-        config_id: 6,
+        config_id: 67,
         reports: [{
-            id: 7,
+            id: 77,
             file_name: 'ttt 1',
             file_path: 'http://localhost:8088',
             create_start: '',
@@ -98,7 +98,7 @@ const reports = [{
             comment: 'qwe',
             notify_users_name: ['User 1', 'User 2'],
         }, {
-            id: 8,
+            id: 87,
             file_name: 'fff 2',
             file_path: 'http://localhost:8088',
             create_start: '',

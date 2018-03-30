@@ -26,33 +26,19 @@ class UsersGrid extends React.PureComponent {
     }
 
     getColumns = () => [{
-        name: 'checked',
-        width: 28,
-    }, {
         name: 'name',
         searchable: true,
     }];
 
-    bodyRowRender = (column, node) => {
-        switch (column.name) {
-            case 'checked': {
-                return (
-                    <CheckedCell
-                        id={`report-user-grid-${node.id}`}
-                        onChange={value => this.onCheck(value, node)}
-                        style={{ marginLeft: 0 }}
-                        value={this.state.checked.includes(node.id)}
-                    />
-                );
-            }
-            default:
-                return (
-                    <DefaultCell
-                        content={node[column.name]}
-                    />
-                );
-        }
-    };
+    bodyRowRender = (column, node) => (
+        <CheckedCell
+            id={`report-user-grid-${node.id}`}
+            onChange={(value) => this.onCheck(value, node)}
+            style={{ marginLeft: 0 }}
+            value={this.state.checked.includes(node.id)}
+            text={node[column.name]}
+        />
+    );
 
     onCheck = (value, node) => {
         let checked = [];
