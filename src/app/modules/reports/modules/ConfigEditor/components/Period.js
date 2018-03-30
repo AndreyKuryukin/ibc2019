@@ -18,6 +18,14 @@ const INTERVALS = {
 };
 
 class Period extends React.PureComponent {
+    static propTypes = {
+        onIntervalChange: PropTypes.func,
+    };
+
+    static defaultProps = {
+        onIntervalChange: () => null,
+    };
+
     constructor(props) {
         super(props);
 
@@ -60,6 +68,10 @@ class Period extends React.PureComponent {
                 this.props.onIntervalChange(this.state.start, this.state.end);
             });
         }
+    };
+
+    onAutoCheck = (value) => {
+        this.setState({ isAutoChecked: value });
     };
 
     render() {
@@ -174,8 +186,8 @@ class Period extends React.PureComponent {
                 >
                     <Checkbox
                         id="auto-checkbox"
-                        checked={false}
-                        onChange={null}
+                        checked={this.state.isAutoChecked}
+                        onChange={this.onAutoCheck}
                     />
                 </Field>
             </Panel>
