@@ -80,19 +80,25 @@ class ReportsTable extends React.PureComponent {
         id: config.config_id,
         type: 'config',
         name: config.config_name,
-        children: config.reports.map(this.mapReport),
+        children: _.get(config, 'reports', []).map(this.mapReport),
     });
 
     mapTemplate = template => ({
         id: template.templ_id,
         type: 'template',
         name: template.templ_name,
-        children: template.report_config.map(this.mapConfig),
+        children: _.get(template, 'report_config', []).map(this.mapConfig),
+    });
+
+    mapGroups = group => ({
+        id: group.id,
+        name: group.name,
+        children: _.get(group, 'templates', []).map(this.mapTemplate)
     });
 
     mapData = createSelector(
         props => props.data,
-        data => data.map(this.mapTemplate)
+        data => data.map(this.mapGroups)
     );
 
     headerRowRender = (column, sort) => (
@@ -143,7 +149,7 @@ class ReportsTable extends React.PureComponent {
                     }}
                 />;
             case 'delete':
-                return (node.type !== 'template' && node.type !== 'config') &&
+                return (node.type === 'PDF' || node.type === 'XLS') &&
                     <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
             default:
                 return !node.type ? <DefaultCell
