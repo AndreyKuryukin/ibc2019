@@ -58,7 +58,7 @@ class App extends React.Component {
     defaultUser = {
         userName: '',
         login: '',
-        subjects: ['LOGIN', 'USERS', 'ROLES', 'POLICIES', 'REPORTS', 'STB_LOADING', 'KQI'],
+        subjects: ['LANDING', 'LOGIN', 'USERS', 'ROLES', 'POLICIES', 'REPORTS', 'STB_LOADING', 'KQI'],
         menu: [
             {
                 title: 'Роли',
@@ -119,7 +119,6 @@ class App extends React.Component {
     renderRoutes = (subjects = []) => {
 
         const subjectMap = this.getMapedSubjects() || {};
-        subjects.unshift('LANDING');
         return subjects.map(subject => <Route key={subject} {...subjectMap[subject]}/>)
     };
 

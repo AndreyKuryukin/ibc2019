@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ReportsComponent from '../components';
-import { fetchReportsSuccess } from '../actions';
+import { fetchReportsSuccess, removeResult } from '../actions';
 import rest from '../../../rest';
 
 class Reports extends React.PureComponent {
@@ -49,6 +49,13 @@ class Reports extends React.PureComponent {
             });
     };
 
+    removeResult = (report_id) => {
+        rest.delete('/api/v1/reports/results/:id', null, { urlParams: { id: report_id } })
+            .then(() => {
+                this.fetchReports();
+            })
+    };
+
     render() {
         return (
             <ReportsComponent
@@ -57,6 +64,7 @@ class Reports extends React.PureComponent {
                 reportsData={this.props.reportsData}
                 onMount={this.fetchReports}
                 isLoading={this.state.isLoading}
+                removeResult={this.removeResult}
             />
         );
     }
@@ -68,6 +76,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     onFetchReportsSuccess: reports => dispatch(fetchReportsSuccess(reports)),
+    onRemoveResult: id => dispatch(removeResult(id)),
 });
 
 export default connect(

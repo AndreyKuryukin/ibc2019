@@ -3,10 +3,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
 import { createSelector } from 'reselect';
-
 import TreeView from '../../../components/TreeView';
 import { DefaultCell, IconCell } from '../../../components/Table/Cells';
-import search from '../../../util/search';
 import styles from './styles.scss';
 import ReportCell from './ReportCell';
 
@@ -38,6 +36,7 @@ class ReportsTable extends React.PureComponent {
         name: 'state',
         sortable: true,
         searchable: true,
+        width: 75
     }, {
         title: ls('REPORTS_FORMAT_COLUMN_TITLE', 'Формат'),
         name: 'format',
@@ -61,8 +60,7 @@ class ReportsTable extends React.PureComponent {
     }, {
         title: '',
         name: 'delete',
-        sortable: true,
-        searchable: true,
+        width: 25
     }];
 
     mapReport = report => ({
@@ -80,12 +78,14 @@ class ReportsTable extends React.PureComponent {
 
     mapConfig = config => ({
         id: config.config_id,
+        type: 'config',
         name: config.config_name,
         children: config.reports.map(this.mapReport),
     });
 
     mapTemplate = template => ({
         id: template.templ_id,
+        type: 'template',
         name: template.templ_name,
         children: template.report_config.map(this.mapConfig),
     });
@@ -102,16 +102,25 @@ class ReportsTable extends React.PureComponent {
         />
     );
 
+    remove = (node) => {
+        switch (node.type) {
+            case 'PDF':
+            case 'XLS':
+                this.props.removeResult(node.id, _.last(node.parents))
+        }
+    };
+
     bodyRowRender = (column, node) => {
-        switch(column.name) {
+        switch (column.name) {
             case 'name':
+                const type = _.get(node, 'type', '').toLowerCase();
                 return (
                     <ReportCell
-                        formatIcon="addIcon"
-                        rebuildIcon="addIcon"
-                        isFormatIconHidden={node.expandable}
-                        isRebuildIconHidden={node.expandable}
+                        formatIcon={type && `icon-${type}`}
+                        iconTitle={type && type.toUpperCase()}
                         text={node[column.name]}
+                        disabled={node.state === 'FAILED'}
+                        href={node.path}
                     />
                 );
             case 'notify':
@@ -120,18 +129,26 @@ class ReportsTable extends React.PureComponent {
                         content={node[column.name] ? node[column.name].join(', ') : ''}
                     />
                 );
+            case 'state':
+                const state = _.get(node, 'state', '').toLowerCase();
+                return <IconCell
+                    icon={`icon-state-${state}`}
+                    iconProps={{
+                        title: ls(`REPORTS_STATUS_${state.toUpperCase()}`, 'Статус')
+                    }}
+                    cellStyle={{
+                        display: 'flex',
+                        width: '100%',
+                        justifyContent: 'center'
+                    }}
+                />;
             case 'delete':
-                return (
-                    <IconCell
-                        icon="deleteIcon"
-                    />
-                );
+                return (node.type !== 'template' && node.type !== 'config') &&
+                    <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
             default:
-                return (
-                    <DefaultCell
-                        content={node[column.name]}
-                    />
-                );
+                return !node.type ? <DefaultCell
+                    content={node[column.name]}
+                /> : '';
         }
     };
 

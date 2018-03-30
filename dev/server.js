@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var path = require('path');
+const path = require('path');
 const proxy = require('express-http-proxy');
 const querystring = require('querystring');
 const request = require('request');
@@ -10,6 +10,8 @@ const _ = require('lodash');
 const PROXY_HOST = process.env.PROXY_HOST;
 const PROXY_PORT = process.env.PROXY_PORT || 8080;
 const AUTHORIZE = process.env.AUTHORIZE === 'true';
+const INTERCEPT = process.argv.indexOf('--intercept') !== -1;
+
 
 const PORT = process.env.PORT || 8088;
 
@@ -29,11 +31,11 @@ app.set('etag', false);
 app.set('port', (PORT));
 
 const plugins = [
-    './login',
-    './roles',
-    './users',
-    './policies',
-    './kqi',
+    // './login',
+    // './roles',
+    // './users',
+    // './policies',
+    // './kqi',
     './reports',
 ];
 
@@ -79,10 +81,14 @@ if (PROXY_HOST) {
     const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
     const config = {
         proxyReqPathResolver: (req) => {
-            console.log(target + require('url').parse(req.originalUrl).path + ` ${req.header('method')}`);
+            console.log(target + require('url').parse(req.originalUrl).path + ` ${req.headers['method']}`);
             return target + require('url').parse(req.originalUrl).path;
         },
     };
+    if (INTERCEPT) {
+        console.log('Intercept mode ON');
+        plugIn(app, plugins);
+    }
     app.use('/api/*', proxy(target, config));
     useStatic();
     console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);

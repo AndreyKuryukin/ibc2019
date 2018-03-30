@@ -58,6 +58,7 @@ class Reports extends React.PureComponent {
                     data={this.props.reportsData}
                     searchText={this.state.searchText}
                     preloader={this.props.isLoading}
+                    removeResult={this.props.removeResult}
                 />
             </div>
         );

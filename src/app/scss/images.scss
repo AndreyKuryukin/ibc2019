@@ -61,3 +61,22 @@
     @include imgByPath('calc_kqi_hover.png');
   }
 }
+
+.icon-pdf {
+  @include iconBuilder(22px, 22px, 'PDF.png');
+}
+.icon-xls {
+  @include iconBuilder(22px, 22px, 'XLS.png');
+}
+.icon-template {
+  @include iconBuilder(22px, 22px, 'template.png');
+}
+.icon-state-failed {
+  @include iconBuilder(22px, 22px, 'failed.png');
+}
+.icon-state-running {
+  @include iconBuilder(22px, 22px, 'running.png');
+}
+.icon-state-success {
+  @include iconBuilder(22px, 22px, 'success.png');
+}

@@ -1,60 +1,66 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import Icon from '../../../components/Icon/Icon';
 import styles from './styles.scss';
+import classnames from "classnames";
 
 class ReportCell extends React.PureComponent {
     static propTypes = {
-        formatIcon: PropTypes.string.isRequired,
-        rebuildIcon: PropTypes.string.isRequired,
+        formatIcon: PropTypes.string,
         href: PropTypes.string,
+        iconTitle: PropTypes.string,
         text: PropTypes.string,
-        isFormatIconHidden: PropTypes.bool,
-        isRebuildIconHidden: PropTypes.bool,
-        onRebuildIconClick: PropTypes.func,
-        onLinkClick: PropTypes.func,
+        disabled: PropTypes.bool,
     };
 
     static defaultProps = {
         href: '',
+        iconTitle: '',
         text: '',
         isFormatIconHidden: false,
         isRebuildIconHidden: false,
         onRebuildIconClick: () => null,
-        onLinkClick: () => null,
+    };
+
+    getReportFile = (url) => {
+        const fakeLink = document.createElement('a');
+        fakeLink.setAttribute('download', 'url');
+        fakeLink.setAttribute('href', url);
+        fakeLink.click();
     };
 
     render() {
         const {
             formatIcon,
-            rebuildIcon,
             href,
             text,
-            isFormatIconHidden,
-            isRebuildIconHidden,
-            onRebuildIconClick,
-            onLinkClick,
+            iconTitle,
+            disabled
         } = this.props;
 
+        const linkProps = {
+            style: {
+                color: '#212529'
+            }
+        };
+        if (href) {
+            linkProps.onClick = () => {
+                this.getReportFile(href);
+            };
+            linkProps.style.textDecoration = 'underline';
+        }
+
         return (
-            <div className="table-cell-content" title={text}>
-                {!isFormatIconHidden && <Icon
+            <div className={classnames("table-cell-content", { [styles.disabledCell]: disabled })} title={text}>
+                {formatIcon && <Icon
+                    title={iconTitle}
                     icon={formatIcon}
                 />}
-                <span className={`truncated ${styles.reportText}`}>
-                    {href ? (
-                        <Link
-                            onClick={onLinkClick}
-                            to={href}
-                            style={{ color: '#212529', textDecoration: 'underline' }}
-                        >{text}</Link>
-                    ) : text}
+                <span className={`truncated ${styles.reportText}`}
+                      {...linkProps}
+                >
+                    {text}
                 </span>
-                {!isRebuildIconHidden && <Icon
-                    icon={rebuildIcon}
-                    onClick={onRebuildIconClick}
-                />}
             </div>
         );
     }

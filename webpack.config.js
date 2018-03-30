@@ -15,6 +15,7 @@ const PROXY_PORT = process.env.PROXY_PORT;
 
 if (prodMode) {
     plugins.push(new MinifyPlugin());
+    plugins.push(new BundleAnalyzerPlugin());
 }
 
 if (devMode) {
@@ -55,6 +56,7 @@ module.exports = {
                             modules: true,
                             importLoaders: 1,
                             localIdentName: '[local]',
+                            minimize: prodMode
                         },
                     }, 'fast-sass-loader'],
                 }),
@@ -63,7 +65,15 @@ module.exports = {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader?modules&importLoaders=1&localIdentName=[local]'],
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            importLoaders: 1,
+                            localIdentName: '[local]',
+                            minimize: prodMode
+                        },
+                    }],
                 }),
             },
             {

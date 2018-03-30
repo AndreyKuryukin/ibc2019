@@ -23,3 +23,13 @@
 .reportText {
   margin: 0 10px;
 }
+
+.disabledCell {
+  pointer-events: none;
+  opacity: 0.4;
+}
+
+.deleteStyle {
+  color: $grey;
+  cursor: pointer;
+}
