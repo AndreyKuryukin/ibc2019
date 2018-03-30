@@ -58,7 +58,7 @@ const reports = [{
             }]
         }]
     }, {
-        templ_name: 'Скорость загрузки STB',
+        templ_name: 'Базовый отчёт ОТТ',
         templ_id: 5,
         report_config: [{
             config_name: 'Ежедневный',
@@ -118,8 +118,30 @@ const reports = [{
     id: 102,
     name: 'Оперативные отчёты',
     templates: [{
-
-    }]
+        templ_name: 'Антирейтинг каналов по данным STB',
+        templ_id: 'a',
+    }, {
+        templ_name: 'Антирейтинг каналов по данным VB/Telescreen',
+        templ_id: 'b',
+    }, {
+        templ_name: 'Антирейтинг каналов по данным STB',
+        templ_id: 'v',
+    }, {
+        templ_name: 'Антирейтинг свитчей доступ',
+        templ_id: 'd',
+    }, {
+        templ_name: 'Антирейтинг свитчей агрегация',
+        templ_id: 'a',
+    }, {
+        templ_name: 'Скорость загрузки STB',
+        templ_id: 'e',
+    }, {
+        templ_name: 'Скорость переключения каналов',
+        templ_id: 't',
+    }, {
+        templ_name: 'Отчёт об авариях',
+        templ_id: 'j',
+    },]
 }];
 
 module.exports = (app) => {

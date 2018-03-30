@@ -149,7 +149,7 @@ class PolicyEditor extends React.PureComponent {
                                         <div style={{ width: '70%' }}>
                                             <Field
                                                 id="cease_duration"
-                                                labelText={ls('POLICIES_ADD', 'Создать политику')}
+                                                labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
                                                 labelWidth="67%"
                                                 inputWidth="33%"
                                             >

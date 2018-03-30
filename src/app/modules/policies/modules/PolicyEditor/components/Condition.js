@@ -66,7 +66,7 @@ class Condition extends React.PureComponent {
     };
 
     addConjunction = () => {
-        const list = this.getConditionProperty('conjunction.conjunctionList');
+        const list = this.getConditionProperty('conjunction.conjunctionList', []);
         const conjunctionList = [...list, {
             value: ''
         }];
@@ -79,7 +79,7 @@ class Condition extends React.PureComponent {
         this.setConditionProperty('conjunction.conjunctionList', conjList);
     };
 
-    renderConjunctions = (conjunctionList) => {
+    renderConjunctions = (conjunctionList = []) => {
         return conjunctionList.map((conj, index) => <Conjunction
             key={`conjunction-${index}`}
             conjunction={conj}
