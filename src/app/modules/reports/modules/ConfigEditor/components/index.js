@@ -48,8 +48,8 @@ class ConfigEditor extends React.PureComponent {
                 template_id: null,
                 type: 'pdf',
                 period: {
-                    regularity: 'other',
-                    auto: false,
+                    regularity: '',
+                    auto: true,
                     start_date: null,
                     end_date: null,
                 },
@@ -69,27 +69,34 @@ class ConfigEditor extends React.PureComponent {
 
     setConfigProperty = (key, value) => {
         const config = _.set({ ...this.state.config }, `${key}`, value);
+
+        if (key === 'period.auto') {
+            config.notify_users = value ? _.get('notify_users', []) : [];
+        }
+
         this.setState({ config });
     };
 
     onClose = () => {
         this.context.history.push('/reports');
-        this.props.onClose();
     };
 
     onSubmit = () => {
         this.props.onSubmit(this.state.config);
+
+        // console.log(this.state.config);
     };
 
-    onIntervalChange = (regularity, start, end) => {
+    onIntervalChange = (regularity, start, end, auto = false) => {
         this.setState({
             config: {
                 ...this.state.config,
+                notify_users: auto ? _.get('notify_users', []) : [],
                 period: {
-                    ...this.state.config.period,
                     regularity,
                     start_date: start,
                     end_date: end,
+                    auto,
                 },
             },
         });
@@ -111,8 +118,8 @@ class ConfigEditor extends React.PureComponent {
                                 <Field
                                     id="config-name"
                                     labelText={`${ls('REPORTS_CONFIG_EDITOR_NAME_FIELD', 'Название')}:`}
-                                    labelWidth="35%"
-                                    inputWidth="65%"
+                                    labelWidth="30%"
+                                    inputWidth="70%"
                                 >
                                     <Input
                                         id="config-name"
@@ -124,21 +131,22 @@ class ConfigEditor extends React.PureComponent {
                                 <Field
                                     id="template-id"
                                     labelText={`${ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}:`}
-                                    labelWidth="35%"
-                                    inputWidth="65%"
+                                    labelWidth="30%"
+                                    inputWidth="70%"
                                 >
                                     <Select
                                         id="template-id"
                                         options={[]}
                                         value={this.getConfigProperty('template_id')}
                                         onChange={value => this.setConfigProperty('template_id', value)}
+                                        placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
                                     />
                                 </Field>
                                 <Field
                                     id="type"
                                     labelText={`${ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}:`}
-                                    labelWidth="35%"
-                                    inputWidth="65%"
+                                    labelWidth="30%"
+                                    inputWidth="70%"
                                 >
                                     <Select
                                         id="type"
@@ -160,6 +168,7 @@ class ConfigEditor extends React.PureComponent {
                                 <UsersGrid
                                     usersData={this.props.users}
                                     onCheck={value => this.setConfigProperty('notify_users', value)}
+                                    disabled={!this.getConfigProperty('period.auto', false)}
                                 />
                             </Panel>
                             <Panel

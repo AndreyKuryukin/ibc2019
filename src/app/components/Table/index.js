@@ -165,7 +165,7 @@ class Table extends React.Component {
     };
 
     render() {
-        const { columns, headerRowRender, bodyRowRender, className, customSortFunction, ...rest } = this.props;
+        const { columns, headerRowRender, bodyRowRender, className, customSortFunction, selectable, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
             <div className={styles.tableContainer} style={{
