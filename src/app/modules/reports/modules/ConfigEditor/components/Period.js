@@ -18,6 +18,10 @@ const INTERVALS = {
 };
 
 class Period extends React.PureComponent {
+    static contextTypes = {
+        notifications: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         onIntervalChange: PropTypes.func,
         onAutoCheck: PropTypes.func,
@@ -34,27 +38,48 @@ class Period extends React.PureComponent {
         this.state = {
             start: null,
             end: null,
-            interval: INTERVALS.OTHER,
-            isAutoChecked: false,
+            interval: INTERVALS.WEEK,
+            isAutoChecked: true,
         };
     }
 
+    componentDidMount() {
+        this.onIntervalChange(this.state.interval, true);
+    }
+
     onStartChange = (start) => {
+        if (this.state.interval !== INTERVALS.OTHER) {
+            this.context.notifications.notify({
+                title: ls('WARNING', 'Предупреждение'),
+                message: ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета'),
+                type: 'WARNING',
+            });
+        }
         this.setState({
             start,
             interval: INTERVALS.OTHER,
+            isAutoChecked: false,
         });
 
-        this.props.onIntervalChange(start, this.state.end);
+        this.props.onIntervalChange(INTERVALS.OTHER, start, this.state.end);
     };
 
     onEndChange = (end) => {
+        if (this.state.interval !== INTERVALS.OTHER) {
+            this.context.notifications.notify({
+                title: ls('WARNING', 'Предупреждение'),
+                message: ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета'),
+                type: 'WARNING',
+            });
+        }
+
         this.setState({
             end,
             interval: INTERVALS.OTHER,
+            isAutoChecked: false,
         });
 
-        this.props.onIntervalChange(this.state.start, end);
+        this.props.onIntervalChange(INTERVALS.OTHER, this.state.start, end);
     };
 
     onIntervalChange = (interval, value) => {
@@ -66,8 +91,16 @@ class Period extends React.PureComponent {
                 interval,
                 start: interval !== INTERVALS.OTHER ? start.toDate() : this.state.start,
                 end: interval !== INTERVALS.OTHER ? end.toDate() : this.state.end,
+                isAutoChecked: interval !== INTERVALS.OTHER ? this.state.isAutoChecked : false,
             }, () => {
-                this.props.onIntervalChange(interval, this.state.start, this.state.end);
+                if (interval === INTERVALS.OTHER) {
+                    this.context.notifications.notify({
+                        title: ls('WARNING', 'Предупреждение'),
+                        message: ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета'),
+                        type: 'WARNING',
+                    });
+                }
+                this.props.onIntervalChange(interval, this.state.start, this.state.end, this.state.isAutoChecked);
             });
         }
     };
@@ -88,6 +121,7 @@ class Period extends React.PureComponent {
                         labelText={ls('TIME_INTERVAL_DAY', 'День')}
                         inputWidth={15}
                         labelAlign="right"
+                        title={ls('TIME_INTERVAL_DAY_TITLE', 'Предыдущие сутки с 00:00 до 24:00')}
                     >
                         <Radio
                             id="day-interval"
@@ -105,6 +139,7 @@ class Period extends React.PureComponent {
                             marginTop: 0,
                             marginLeft: 10,
                         }}
+                        title={ls('TIME_INTERVAL_WEEK_TITLE', 'Предыдущая неделя с 00:00 часов понедельника до 24:00 часов воскресения')}
                     >
                         <Radio
                             id="week-interval"
@@ -122,6 +157,7 @@ class Period extends React.PureComponent {
                             marginTop: 0,
                             marginLeft: 10,
                         }}
+                        title={ls('TIME_INTERVAL_MONTH_TITLE', 'Предыдущий месяц 00:00 часов 1-го числа до 24:00 часов последнего числа')}
                     >
                         <Radio
                             id="month-interval"
@@ -138,6 +174,7 @@ class Period extends React.PureComponent {
                         style={{
                             marginTop: 0,
                         }}
+                        title={ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета')}
                     >
                         <Radio
                             id="other-interval"
@@ -162,6 +199,7 @@ class Period extends React.PureComponent {
                         onChange={this.onStartChange}
                         inputWidth={114}
                         format={'DD.MM.YYYY HH:mm'}
+                        disabled={this.state.interval !== INTERVALS.OTHER}
                         time
                     />
                 </Field>
@@ -177,6 +215,7 @@ class Period extends React.PureComponent {
                         onChange={this.onEndChange}
                         inputWidth={114}
                         format={'DD.MM.YYYY HH:mm'}
+                        disabled={this.state.interval !== INTERVALS.OTHER}
                         time
                     />
                 </Field>
@@ -186,6 +225,7 @@ class Period extends React.PureComponent {
                     labelWidth="90%"
                     inputWidth="10%"
                     labelAlign="right"
+                    title={ls('REPORTS_CONFIG_EDITOR_AUTO_FIELD_TITLE', 'Автогенерация отчёта в зависимости от заданного периода')}
                 >
                     <Checkbox
                         id="auto-checkbox"

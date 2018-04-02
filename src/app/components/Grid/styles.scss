@@ -1,7 +1,17 @@
 .gridWrapper {
   display: flex;
+  position: relative;
   flex-grow: 1;
   flex-direction: column;
+  &.disabled:before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: rgba(255, 255, 255, 0.5);
+    z-index: 10;
+  }
   .gridControls {
     display: flex;
     flex-grow: 0;
