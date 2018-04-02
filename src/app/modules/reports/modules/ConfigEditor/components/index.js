@@ -12,6 +12,14 @@ import Period from './Period';
 import UsersGrid from './UsersGrid';
 import styles from './styles.scss';
 
+const REPORT_TYPE_OPTIONS = [{
+    value: 'PDF',
+    title: 'PDF'
+}, {
+    value: 'XLS',
+    title: 'XLS'
+}];
+
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -19,15 +27,15 @@ class ConfigEditor extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        users: PropTypes.array,
         onSubmit: PropTypes.func,
-        onClose: PropTypes.func,
         onMount: PropTypes.func,
     };
 
     static defaultProps = {
         active: false,
+        users: [],
         onSubmit: () => null,
-        onClose: () => null,
         onMount: () => null,
     };
 
@@ -51,16 +59,18 @@ class ConfigEditor extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
+    }
+
     getConfigProperty = (key, defaultValue) => _.get(this.state.config, key, defaultValue);
 
     setConfigProperty = (key, value) => {
-        const config = {
-            ...this.state.config,
-            [key]: value,
-        };
-
+        const config = _.set({ ...this.state.config }, `${key}`, value);
         this.setState({ config });
-    }
+    };
 
     onClose = () => {
         this.context.history.push('/reports');
@@ -68,7 +78,21 @@ class ConfigEditor extends React.PureComponent {
     };
 
     onSubmit = () => {
-        console.log(this.state.config);
+        this.props.onSubmit(this.state.config);
+    };
+
+    onIntervalChange = (regularity, start, end) => {
+        this.setState({
+            config: {
+                ...this.state.config,
+                period: {
+                    ...this.state.config.period,
+                    regularity,
+                    start_date: start,
+                    end_date: end,
+                },
+            },
+        });
     };
 
     render() {
@@ -118,24 +142,24 @@ class ConfigEditor extends React.PureComponent {
                                 >
                                     <Select
                                         id="type"
-                                        options={[]}
+                                        options={REPORT_TYPE_OPTIONS}
                                         value={this.getConfigProperty('type')}
                                         onChange={value => this.setConfigProperty('type', value)}
                                     />
                                 </Field>
                             </Panel>
-                            <Period />
+                            <Period
+                                onIntervalChange={this.onIntervalChange}
+                                onAutoCheck={value => this.setConfigProperty('period.auto', value)}
+                            />
                             <Panel
                                 title={ls('REPORTS_CONFIG_EDITOR_USERS_TITLE', 'Пользователи')}
                                 style={{ height: 250 }}
                                 bodyStyle={{ padding: 0 }}
                             >
                                 <UsersGrid
-                                    usersData={[
-                                        { id: 1, name: 'Probe 1' },
-                                        { id: 2, name: 'Probe 2' },
-                                        { id: 3, name: 'Probe 3' },
-                                    ]}
+                                    usersData={this.props.users}
+                                    onCheck={value => this.setConfigProperty('notify_users', value)}
                                 />
                             </Panel>
                             <Panel

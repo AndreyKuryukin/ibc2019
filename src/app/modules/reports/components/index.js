@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Controls from './ReportsControls';
 import Table from './ReportsTable';
 import styles from './styles.scss';
-import ConfigEditor from '../modules/ConfigEditor/components';
+import ConfigEditor from '../modules/ConfigEditor/containers';
 
 class Reports extends React.PureComponent {
     static childContextTypes = {
