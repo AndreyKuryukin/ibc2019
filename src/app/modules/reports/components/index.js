@@ -15,12 +15,16 @@ class Reports extends React.PureComponent {
         reportsData: PropTypes.array,
         isLoading: PropTypes.bool,
         onMount: PropTypes.func,
+        onRemoveResult: PropTypes.func,
+        onResultRetry: PropTypes.func,
     };
 
     static defaultProps = {
         reportsData: [],
         isLoading: false,
         onMount: () => null,
+        onRemoveResult: () => null,
+        onResultRetry: () => null,
     };
 
     constructor(props) {
@@ -63,7 +67,8 @@ class Reports extends React.PureComponent {
                     data={this.props.reportsData}
                     searchText={this.state.searchText}
                     preloader={this.props.isLoading}
-                    removeResult={this.props.removeResult}
+                    onRemoveResult={this.props.onRemoveResult}
+                    onResultRetry={this.props.onResultRetry}
                 />
                 {isEditorActive && <ConfigEditor
                     active={isEditorActive}

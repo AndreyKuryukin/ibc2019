@@ -26,6 +26,7 @@ class App extends React.Component {
             },
             'LOGIN': {
                 path: '/login',
+                exact: true,
                 component: Login
             },
             'USERS': {
