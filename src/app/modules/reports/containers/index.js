@@ -56,6 +56,13 @@ class Reports extends React.PureComponent {
             })
     };
 
+    retryResult = (report_id) => {
+        rest.post('/api/v1/reports/results/:id', null, { urlParams: { id: report_id } })
+            .then(() => {
+                this.fetchReports();
+            })
+    };
+
     render() {
         return (
             <ReportsComponent
@@ -64,7 +71,8 @@ class Reports extends React.PureComponent {
                 reportsData={this.props.reportsData}
                 onMount={this.fetchReports}
                 isLoading={this.state.isLoading}
-                removeResult={this.removeResult}
+                onRemoveResult={this.removeResult}
+                onResultRetry={this.retryResult}
             />
         );
     }
