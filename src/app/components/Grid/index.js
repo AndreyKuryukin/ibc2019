@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
+import classNames from 'classnames';
 import Input from '../Input';
 import Checkbox from '../Checkbox';
 import Table from '../Table';
@@ -18,6 +19,7 @@ class Grid extends React.PureComponent {
         checkedPartially: PropTypes.bool,
         noCheckAll: PropTypes.bool,
         noSearch: PropTypes.bool,
+        disabled: PropTypes.bool,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
         onCheckAll: PropTypes.func,
@@ -32,6 +34,7 @@ class Grid extends React.PureComponent {
         tree: false,
         noCheckAll: false,
         noSearch: false,
+        disabled: false,
         headerRowRender: null,
         bodyRowRender: () => null,
         onCheckAll: () => null,
@@ -48,11 +51,15 @@ class Grid extends React.PureComponent {
             tree,
             noCheckAll,
             noSearch,
+            disabled,
             ...rest
         } = this.props;
 
         return (
-            <div className={styles.gridWrapper}>
+            <div className={classNames({
+                [styles.gridWrapper]: true,
+                [styles.disabled]: disabled
+            })}>
                 <div className={styles.gridControls}>
                     {!noCheckAll && <Checkbox
                         id={`${id}-all`}

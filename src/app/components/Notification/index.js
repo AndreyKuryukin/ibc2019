@@ -79,6 +79,7 @@ class Notification extends React.PureComponent {
 
     renderContainer = (props) => {
         return <div id={Notification.NOTIFICATION_PORTAL_ID}
+                    key={Notification.NOTIFICATION_PORTAL_ID}
                     className={classnames(styles.notification, props.className)}
         >
             {this.renderNotifications()}
