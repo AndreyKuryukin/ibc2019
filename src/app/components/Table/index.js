@@ -6,13 +6,14 @@ import styles from './styles.scss';
 import { naturalSort } from '../../util/sort';
 import HeaderCell from './HeaderCell';
 import Immutable from 'immutable';
-import classnames from "classnames";
+import classnames from 'classnames';
 import search from '../../util/search';
+import Preloader from '../Preloader';
 
 class Table extends React.Component {
     static childContextTypes = {
         sort: PropTypes.func,
-    }
+    };
 
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.object),
@@ -22,6 +23,7 @@ class Table extends React.Component {
         bodyRowRender: PropTypes.func,
         customSortFunction: PropTypes.func,
         selectable: PropTypes.bool,
+        preloader: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -29,6 +31,7 @@ class Table extends React.Component {
         columns: [],
         className: '',
         selectable: false,
+        preloader: false,
         headerRowRender: null,
         bodyRowRender: () => null,
         customSortFunction: null,
@@ -165,53 +168,55 @@ class Table extends React.Component {
     };
 
     render() {
-        const { columns, headerRowRender, bodyRowRender, className, customSortFunction, ...rest } = this.props;
+        const { columns, headerRowRender, bodyRowRender, className, customSortFunction, preloader, ...rest } = this.props;
         const { data = [], selected, sort } = this.state;
         return (
-            <div className={styles.tableContainer} style={{
-                backgroundPositionY: headerRowRender ? `${this.getHeadHeight()}px` : 0,
-            }}>
-                <ReactstrapTable striped bordered {...rest} className={classnames('table-hover', className)}>
-                    {headerRowRender && <thead
-                        ref={thead => (this.thead = thead)}
-                    >
-                        <tr>
-                            {columns.map(column => (
-                                <HeaderCell
-                                    key={column.name}
-                                    filterable={!!column.filter}
-                                    headerRowRender={() => headerRowRender(column, sort)}
-                                    onClick={() => this.onHeaderCellClick(column)}
-                                    onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
-                                    width={column.width}
-                                >
-                                    {headerRowRender(column, sort)}
-                                </HeaderCell>
-                            ))}
-                        </tr>
-                    </thead>}
-                    <tbody>
-                    {data.map(node => (
-                        <tr key={node.id}
-                            onClick={() => this.onRowClick(node)}
-                            className={classnames({ [styles.selected]: selected === node.id })}
+            <Preloader active={preloader}>
+                <div className={styles.tableContainer} style={{
+                    backgroundPositionY: headerRowRender ? `${this.getHeadHeight()}px` : 0,
+                }}>
+                    <ReactstrapTable striped bordered {...rest} className={classnames('table-hover', className)}>
+                        {headerRowRender && <thead
+                            ref={thead => (this.thead = thead)}
                         >
-                            {columns.map(column => (
-                                <td
-                                    key={column.name}
-                                    style={{
-                                        width: column.width,
-                                        maxWidth: column.width,
-                                    }}
-                                >
-                                    {bodyRowRender(column, node)}
-                                </td>
-                            ))}
-                        </tr>
-                    ))}
-                    </tbody>
-                </ReactstrapTable>
-            </div>
+                            <tr>
+                                {columns.map(column => (
+                                    <HeaderCell
+                                        key={column.name}
+                                        filterable={!!column.filter}
+                                        headerRowRender={() => headerRowRender(column, sort)}
+                                        onClick={() => this.onHeaderCellClick(column)}
+                                        onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
+                                        width={column.width}
+                                    >
+                                        {headerRowRender(column, sort)}
+                                    </HeaderCell>
+                                ))}
+                            </tr>
+                        </thead>}
+                        <tbody>
+                        {data.map(node => (
+                            <tr key={node.id}
+                                onClick={() => this.onRowClick(node)}
+                                className={classnames({ [styles.selected]: selected === node.id })}
+                            >
+                                {columns.map(column => (
+                                    <td
+                                        key={column.name}
+                                        style={{
+                                            width: column.width,
+                                            maxWidth: column.width,
+                                        }}
+                                    >
+                                        {bodyRowRender(column, node)}
+                                    </td>
+                                ))}
+                            </tr>
+                        ))}
+                        </tbody>
+                    </ReactstrapTable>
+                </div>
+            </Preloader>
         );
     }
 }
