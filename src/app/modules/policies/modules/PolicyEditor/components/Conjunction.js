@@ -15,7 +15,6 @@ class Conjunction extends React.PureComponent {
             value: PropTypes.string
         }),
         parameterList: PropTypes.array,
-        objectTypeList: PropTypes.array,
         operatorList: PropTypes.array,
         onChange: PropTypes.func,
         onRemove: PropTypes.func,
@@ -26,7 +25,6 @@ class Conjunction extends React.PureComponent {
             value: ''
         },
         parameterList: [],
-        objectTypeList: [],
         operatorList: [],
         onChange: () => null,
         onRemove: () => null,
@@ -57,23 +55,19 @@ class Conjunction extends React.PureComponent {
 
     parseConjunctionString = (conjunctionString = '') => {
         const parts = conjunctionString.split(' ');
-        const parameter = _.get(parts, '0', '').split('.');
-        const objectType = _.get(parameter, '0');
-        const parameterType = _.get(parameter, '1');
+        const parameterType = _.get(parts, '0', '');
         const operator = _.get(parts, '1');
         const value = _.get(parts, '2');
         return {
-            objectType, parameterType, operator, value
-        }
+            parameterType, operator, value
+        };
     };
 
     composeConjunctionString = (object) => {
         const { objectType = '', parameterType = '', operator = '', value = '' } = object;
-        const conjString = `${objectType}${parameterType ? '.' : ''}${parameterType} ${operator} ${value}`;
+        const conjString = `${parameterType} ${operator} ${value}`;
         return conjString.trim();
     };
-
-    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
 
     mapParameters = parameters => parameters.map(param => ({ title: param, value: param }));
 
@@ -83,24 +77,9 @@ class Conjunction extends React.PureComponent {
         const { conjunction = {
             value: this.parseConjunctionString(_.get(this.props, 'conjunction.value'))
         } } = this.state;
-        const { objectTypeList, parameterList, operatorList } = this.props;
+        const { parameterList, operatorList } = this.props;
         return <div className={styles.conditionBlock}>
             <div className={styles.parameters}>
-                <Field
-                    id="object"
-                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
-                    labelWidth="30%"
-                    inputWidth="70%"
-                >
-                    <Select
-                        id="object"
-                        type="select"
-                        value={_.get(conjunction, 'value.objectType')}
-                        defaultValue="STB"
-                        options={this.mapObjectTypes(objectTypeList)}
-                        onChange={(value) => this.setConjunctionProperty('value.objectType', value)}
-                    />
-                </Field>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                     <div style={{ width: '60%' }}>
                         <Field

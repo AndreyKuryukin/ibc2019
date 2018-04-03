@@ -73,6 +73,8 @@ class Condition extends React.PureComponent {
         this.setConditionProperty('conjunction.conjunctionList', conjunctionList)
     };
 
+    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
+
     removeConjunction = index => {
         const conjList = this.getConditionProperty('conjunction.conjunctionList', []);
         conjList.splice(index, 1);
@@ -87,7 +89,6 @@ class Condition extends React.PureComponent {
                 'linkFaults',
                 'lostOverflow',
                 'lost']}
-            objectTypeList={['STB', 'TEST']}
             operatorList={['>', '<', '=']}
             onChange={conjunction => this.setConditionProperty(`conjunction.conjunctionList.${index}`, conjunction)}
             onRemove={() => this.removeConjunction(index)}
@@ -130,6 +131,21 @@ class Condition extends React.PureComponent {
                         value={this.getConditionProperty('conjunction.conditionDuration')}
                         onChange={() => {
                         }}
+                    />
+                </Field>
+                <Field
+                    id="object"
+                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
+                    labelWidth="50%"
+                    inputWidth="50%"
+                >
+                    <Select
+                        id="object"
+                        type="select"
+                        value={this.getConditionProperty('conjunction.objectType', '')}
+                        defaultValue="STB"
+                        options={this.mapObjectTypes(['STB', 'TEST'])}
+                        onChange={value => this.setConditionProperty('conjunction.objectType', value)}
                     />
                 </Field>
                 <div className={styles.conditionsWrapper}>
