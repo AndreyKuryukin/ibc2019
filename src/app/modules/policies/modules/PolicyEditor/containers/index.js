@@ -49,13 +49,16 @@ class PolicyEditor extends React.PureComponent {
             .then(([typesResp, scopeResp, policyResp]) => {
                 const types = typesResp.data;
                 const scopes = scopeResp.data;
-                const policy = policyResp.data;
+
                 this.props.onFetchTypesSuccess(types);
                 this.props.onFetchScopesSuccess(scopes);
-                this.props.onFetchPolicySuccess(policy);
-
+                if (policyResp) {
+                    this.props.onFetchPolicySuccess(policyResp.data);
+                }
             })
-
+            .catch((e) => {
+                console.error(e);
+            });
     };
 
     encodeConditions = (policyData) => {
