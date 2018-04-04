@@ -118,11 +118,11 @@ class PolicyEditor extends React.PureComponent {
                                     title={ls('POLICIES_SCOPE_TITLE', 'Область применения')}
                                 >
                                     <Field
-                                        id="iField"
+                                        id="scope-type"
                                         inputWidth="100%"
                                     >
                                         <Select
-                                            id="iField"
+                                            id="scope-type"
                                             type="select"
                                             options={this.mapScopes(scopes)}
                                             value={this.getPolicyProperty('scope_type')}
@@ -130,15 +130,14 @@ class PolicyEditor extends React.PureComponent {
                                         />
                                     </Field>
                                     <Field
-                                        id="jField"
+                                        id="scope"
                                         inputWidth="100%"
                                     >
                                         <Select
-                                            id="jField"
+                                            id="scope"
                                             type="select"
                                             options={[]}
-                                            onChange={() => {
-                                            }}
+                                            onChange={() => null}
                                         />
                                     </Field>
                                 </Panel>
