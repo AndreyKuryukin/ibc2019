@@ -35,6 +35,9 @@
   .fieldInput {
     background: $white;
   }
+  .invalidField {
+    border: 1px solid red
+  }
   .form-check-input {
     position: relative;
     margin-left: 0;

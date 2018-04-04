@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Badge, Button, Form} from 'reactstrap';
+import { Button, Form } from 'reactstrap';
 
 import Input from '../../../components/Input';
 import _ from 'lodash';
 import ls from '../../../../i18n';
 import styles from './login.scss';
-import ErrorWrapper from "../../../components/Errors/ErrorWrapper";
 
 class Login extends React.PureComponent {
     static propTypes = {
@@ -18,14 +17,21 @@ class Login extends React.PureComponent {
 
     static defaultProps = {
         onSubmit: () => null,
-        errors: [],
+        errors: {},
     };
 
     constructor(props) {
         super(props);
         this.state = {
             language: 'ru',
+            errors: {}
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.errors !== this.state.errors) {
+            this.setState({ errors: nextProps.errors })
+        }
     }
 
     onSubmit = (e) => {
@@ -34,33 +40,13 @@ class Login extends React.PureComponent {
         this.props.onSubmit(login, password);
     };
 
-    inputValue = (event, valuePath) => this.setState({ [valuePath]: _.get(event, 'currentTarget.value') });
-
-    getLanguageOptions = () => [{
-        value: 'ru',
-        text: ls('RUSSIAN_LANGUAGE', 'Русский'),
-    }, {
-        value: 'en',
-        text: ls('ENGLISH_LANGUAGE', 'English'),
-    }];
-
-    getErrors = (loginFailed) => {
-        if (loginFailed) {
-            return [{
-                type: 'VALIDATION',
-                severity: 'CRITICAL',
-                target: 'login',
-            },{
-                type: 'VALIDATION',
-                severity: 'CRITICAL',
-                target: 'password',
-            }]
-        }
-        return [];
+    inputValue = (event, valuePath) => {
+        const errors = _.omit({ ...this.state.errors }, valuePath);
+        this.setState({ [valuePath]: _.get(event, 'currentTarget.value'), errors });
     };
 
     render() {
-        const {loginFailed} = this.props;
+        const { errors } = this.state;
         return (
             <div className={styles.loginContainer}>
                 <div className={styles.shield}/>
@@ -70,29 +56,22 @@ class Login extends React.PureComponent {
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
                     >
-                        <ErrorWrapper
-                            errors={this.getErrors(loginFailed)}
-                            className={styles.errorGroup}
-                        >
-                            <Input
-                                name="login"
-                                required
-                                value={this.state.login}
-                                placeholder={ls('LOGIN_LOGIN', 'Логин')}
-                                onChange={event => this.inputValue(event, 'login')}
-                            />
+                        <Input
+                            value={this.state.login}
+                            placeholder={ls('LOGIN_LOGIN', 'Логин')}
+                            onChange={event => this.inputValue(event, 'login')}
+                            valid={_.isEmpty(errors.login)}
+                        />
 
-                            <Input
-                                type="password"
-                                name="password"
-                                id="password"
-                                required
-                                value={this.state.password}
-                                placeholder={ls('LOGIN_PASSWD', 'Пароль')}
-                                onChange={(event) => this.inputValue(event, 'password')}
-                            />
+                        <Input
+                            type="password"
+                            id="password"
+                            value={this.state.password}
+                            placeholder={ls('LOGIN_PASSWD', 'Пароль')}
+                            onChange={(event) => this.inputValue(event, 'password')}
+                            valid={_.isEmpty(errors.password)}
+                        />
 
-                        </ErrorWrapper>
                         <Button
                             type="submit"
                             color="action"
