@@ -113,8 +113,7 @@ class Condition extends React.PureComponent {
                         type="select"
                         value={this.getConditionProperty('conjunction.type')}
                         options={this.getOperators()}
-                        onChange={() => {
-                        }}
+                        onChange={value => this.setConditionProperty('conjunction.type', value)}
                     />
                 </Field>
                 <Field
@@ -128,8 +127,7 @@ class Condition extends React.PureComponent {
                         name="maxInterval"
                         type="number"
                         value={this.getConditionProperty('conjunction.conditionDuration')}
-                        onChange={() => {
-                        }}
+                        onChange={event => this.setConditionProperty('conjunction.conditionDuration', _.get(event, 'target.value', ''))}
                     />
                 </Field>
                 <div className={styles.conditionsWrapper}>
