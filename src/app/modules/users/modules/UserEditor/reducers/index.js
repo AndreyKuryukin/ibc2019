@@ -1,8 +1,10 @@
-import { FETCH_USER_SUCCESS, FETCH_ROLES_SUCCESS, FETCH_GROUPS_SUCCESS } from '../actions';
+import { FETCH_USER_SUCCESS, FETCH_ROLES_SUCCESS, FETCH_GROUPS_SUCCESS, RESET_USER } from '../actions';
 
 const initialState = {
     user: {
         email: '',
+        password: '',
+        confirm: '',
         login: '',
         phone: '',
         description: '',
@@ -37,6 +39,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 groups: action.payload.groups,
+            };
+        case RESET_USER:
+            return {
+                ...state,
+                user: initialState.user,
             };
         default:
             return state;

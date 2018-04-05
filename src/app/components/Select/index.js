@@ -10,6 +10,7 @@ class Select extends React.PureComponent {
     static defaultProps = {
         options: [],
         noEmptyOption: false,
+        valid: true,
         defaultValue: null,
         onChange: () => null,
     };
@@ -45,8 +46,9 @@ class Select extends React.PureComponent {
     };
 
     render() {
-        const { placeholder, defaultValue, options, noEmptyOption, children, ...rest } = this.props;
+        const { placeholder, defaultValue, options, noEmptyOption, children, valid, ...rest } = this.props;
         const value = this.getValue() || PLACEHOLDER_VALUE;
+        const invalid = valid !== null && !valid;
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
         }
@@ -56,6 +58,7 @@ class Select extends React.PureComponent {
                     value={value}
                     onChange={this.onChange}
                     className={(this.state.defaultSelected || _.isUndefined(value)) && styles.placeholder}
+                    invalid={invalid}
                 >
                     {!noEmptyOption && this.renderPlaceholder(placeholder, _.isUndefined(value))}
                     {this.renderOptions(options)}

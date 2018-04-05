@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
+import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Panel from '../../../../../components/Panel';
 import PermissionList from './PermissionList'
@@ -25,6 +26,7 @@ class RoleEditor extends React.PureComponent {
         sourceOptions: PropTypes.array,
         subjectsData: PropTypes.array,
         subjectsByRole: PropTypes.object,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
@@ -35,13 +37,15 @@ class RoleEditor extends React.PureComponent {
         },
         sourceOptions: [],
         subjectsData: [],
-        subjectsByRole: {}
+        subjectsByRole: {},
+        errors: null,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            role: props.roleId ? props.role : {},
+            role: props.role,
+            errors: props.errors,
         };
     }
 
@@ -54,6 +58,10 @@ class RoleEditor extends React.PureComponent {
                 role,
             });
         }
+
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
     }
 
     setRoleProperty = (key, value) => {
@@ -63,6 +71,7 @@ class RoleEditor extends React.PureComponent {
         };
         this.setState({
             role,
+            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
         });
     };
 
@@ -122,7 +131,7 @@ class RoleEditor extends React.PureComponent {
 
     render() {
         const { roleId, subjectsData, sourceOptions } = this.props;
-        const { role } = this.state;
+        const { role, errors } = this.state;
         const filteredSourceOptions = roleId ? sourceOptions.filter(opt => opt[0] !== roleId) : sourceOptions;
 
         return (
@@ -138,13 +147,17 @@ class RoleEditor extends React.PureComponent {
                             title={ls('ROLE_MAIN_INFO_PANEL_TITLE', 'Главная информация')}
                         >
                             <Field
+                                id="name"
                                 labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли:')}
                                 labelWidth="50%"
                                 inputWidth="50%"
                                 required
                             >
-                                <Input value={role.name}
-                                       onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                                <Input
+                                    id="name"
+                                    value={role.name}
+                                    onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                                    valid={errors && _.isEmpty(errors.name)}
                                 />
                             </Field>
 

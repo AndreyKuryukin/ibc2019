@@ -20,6 +20,12 @@ const REPORT_TYPE_OPTIONS = [{
     title: 'XLS'
 }];
 
+const NAME_PATTERNS = {
+    ['TEMPLATE_ID']: ls('REPORT_TEMPLATE_PATTERN', '<Имя_шаблона>'),
+    ['PERIOD.REGULARITY']: ls('REPORT_REGULARITY_PATTERN', '<Период_построения>'),
+    ['TYPE']: ls('REPORT_TYPE_PATTERN', '<Формат>'),
+};
+
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -30,6 +36,7 @@ class ConfigEditor extends React.PureComponent {
         users: PropTypes.array,
         onSubmit: PropTypes.func,
         onMount: PropTypes.func,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
@@ -37,6 +44,7 @@ class ConfigEditor extends React.PureComponent {
         users: [],
         onSubmit: () => null,
         onMount: () => null,
+        errors: null,
     };
 
     constructor(props) {
@@ -46,7 +54,7 @@ class ConfigEditor extends React.PureComponent {
             config: {
                 config_name: '',
                 template_id: null,
-                type: 'pdf',
+                type: 'PDF',
                 period: {
                     regularity: '',
                     auto: true,
@@ -56,6 +64,7 @@ class ConfigEditor extends React.PureComponent {
                 notify_users: [],
                 comment: '',
             },
+            errors: null,
         };
     }
 
@@ -65,7 +74,20 @@ class ConfigEditor extends React.PureComponent {
         }
     }
 
-    getConfigProperty = (key, defaultValue) => _.get(this.state.config, key, defaultValue);
+    componentWillReceiveProps(nextProps) {
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+    }
+
+    getConfigProperty = (key, defaultValue) => {
+        if (key === 'config_name') {
+            return ['template_id', 'period.regularity', 'type']
+                .map(field => `${this.getConfigProperty(field) || NAME_PATTERNS[field.toUpperCase()]}`)
+                .join('_');
+        }
+        return _.get(this.state.config, key, defaultValue);
+    };
 
     setConfigProperty = (key, value) => {
         const config = _.set({ ...this.state.config }, `${key}`, value);
@@ -74,7 +96,10 @@ class ConfigEditor extends React.PureComponent {
             config.notify_users = value ? _.get('notify_users', []) : [];
         }
 
-        this.setState({ config });
+        this.setState({
+            config,
+            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
+        });
     };
 
     onClose = () => {
@@ -88,6 +113,11 @@ class ConfigEditor extends React.PureComponent {
     };
 
     onIntervalChange = (regularity, start, end, auto = false) => {
+        const removeKeys = [
+            ...(start ? ['period.start_date'] : []),
+            ...(end ? ['period.end_date'] : []),
+        ];
+
         this.setState({
             config: {
                 ...this.state.config,
@@ -99,10 +129,12 @@ class ConfigEditor extends React.PureComponent {
                     auto,
                 },
             },
+            errors: _.omit(this.state.errors, removeKeys),
         });
     };
 
     render() {
+        const { errors } = this.state;
         return (
             <DraggableWrapper>
                 <Modal
@@ -120,19 +152,30 @@ class ConfigEditor extends React.PureComponent {
                                     labelText={`${ls('REPORTS_CONFIG_EDITOR_NAME_FIELD', 'Название')}:`}
                                     labelWidth="30%"
                                     inputWidth="70%"
+                                    required
                                 >
-                                    <Input
-                                        id="config-name"
-                                        name="config-name"
-                                        value={this.getConfigProperty('config_name')}
-                                        onChange={event => this.setConfigProperty('config_name', _.get(event, 'target.value'))}
-                                    />
+                                    {!this.state.config.period.auto ? (
+                                        <Input
+                                            id="config-name"
+                                            name="config-name"
+                                            value={this.getConfigProperty('config_name')}
+                                            onChange={event => this.setConfigProperty('config_name', _.get(event, 'target.value'))}
+                                            valid={errors && _.isEmpty(errors.config_name)}
+                                        />
+                                        ) : (
+                                            <div
+                                                title={this.getConfigProperty('config_name')}
+                                            >
+                                                {this.getConfigProperty('config_name')}
+                                            </div>
+                                        )}
                                 </Field>
                                 <Field
                                     id="template-id"
                                     labelText={`${ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}:`}
                                     labelWidth="30%"
                                     inputWidth="70%"
+                                    required
                                 >
                                     <Select
                                         id="template-id"
@@ -140,6 +183,7 @@ class ConfigEditor extends React.PureComponent {
                                         value={this.getConfigProperty('template_id')}
                                         onChange={value => this.setConfigProperty('template_id', value)}
                                         placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
+                                        valid={errors && _.isEmpty(errors.template_id)}
                                     />
                                 </Field>
                                 <Field
@@ -147,21 +191,24 @@ class ConfigEditor extends React.PureComponent {
                                     labelText={`${ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}:`}
                                     labelWidth="30%"
                                     inputWidth="70%"
+                                    required
                                 >
                                     <Select
                                         id="type"
                                         options={REPORT_TYPE_OPTIONS}
                                         value={this.getConfigProperty('type')}
                                         onChange={value => this.setConfigProperty('type', value)}
+                                        valid={errors && _.isEmpty(errors.type)}
                                     />
                                 </Field>
                             </Panel>
                             <Period
                                 onIntervalChange={this.onIntervalChange}
                                 onAutoCheck={value => this.setConfigProperty('period.auto', value)}
+                                errors={_.get(errors, 'period', null)}
                             />
                             <Panel
-                                title={ls('REPORTS_CONFIG_EDITOR_USERS_TITLE', 'Пользователи')}
+                                title={ls('REPORTS_CONFIG_EDITOR_NOTIFY_USERS_TITLE', 'Рассылка для')}
                                 style={{ height: 250 }}
                                 bodyStyle={{ padding: 0 }}
                             >

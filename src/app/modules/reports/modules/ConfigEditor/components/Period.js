@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
 import moment from 'moment';
+import _ from 'lodash';
 import Panel from '../../../../../components/Panel';
 import Radio from '../../../../../components/Radio';
 import Checkbox from '../../../../../components/Checkbox';
@@ -25,11 +26,13 @@ class Period extends React.PureComponent {
     static propTypes = {
         onIntervalChange: PropTypes.func,
         onAutoCheck: PropTypes.func,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
         onIntervalChange: () => null,
         onAutoCheck: () => null,
+        errors: null
     };
 
     constructor(props) {
@@ -111,6 +114,7 @@ class Period extends React.PureComponent {
     };
 
     render() {
+        const { errors } = this.props;
         return (
             <Panel
                 title={ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
@@ -192,6 +196,7 @@ class Period extends React.PureComponent {
                     style={{
                         marginTop: 5,
                     }}
+                    required
                 >
                     <DateTimePicker
                         value={this.state.start}
@@ -201,6 +206,7 @@ class Period extends React.PureComponent {
                         format={'DD.MM.YYYY HH:mm'}
                         disabled={this.state.interval !== INTERVALS.OTHER}
                         time
+                        valid={errors && _.isEmpty(errors.start_date)}
                     />
                 </Field>
                 <Field
@@ -208,6 +214,7 @@ class Period extends React.PureComponent {
                     labelText={`${ls('REPORTS_CONFIG_EDITOR_START_DATE_FIELD', 'Окончание')}:`}
                     labelWidth="35%"
                     inputWidth="65%"
+                    required
                 >
                     <DateTimePicker
                         value={this.state.end}
@@ -217,6 +224,7 @@ class Period extends React.PureComponent {
                         format={'DD.MM.YYYY HH:mm'}
                         disabled={this.state.interval !== INTERVALS.OTHER}
                         time
+                        valid={errors && _.isEmpty(errors.end_date)}
                     />
                 </Field>
                 <Field

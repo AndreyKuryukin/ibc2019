@@ -35,6 +35,25 @@ class PolicyEditor extends React.PureComponent {
         this.context.pageBlur && this.context.pageBlur(true);
     }
 
+    validationConfig = {
+        name: {
+            required: true
+        },
+        condition: () => ({
+            condition: () => ({
+                conditionDuration: {
+                    required: true,
+                    min: 0,
+                },
+                conjunction: () => ({
+                    conjunctionList: [{
+
+                    }],
+                }),
+            }),
+        }),
+    };
+
     onChildMount = () => {
         const requests = [];
         requests.push(rest.get('/api/v1/policy/policyTypes'));

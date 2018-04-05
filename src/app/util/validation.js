@@ -30,15 +30,30 @@ const mapErrors = (valueResult, messages) =>
     }, []);
 
 export const validateForm = (form, config, messages = defaultMessages, customValidators = {}, prefix) =>
-    _.reduce(form, (result, value, fieldName) => {
-        const valueConfig = _.get(config, fieldName);
+    _.reduce(config, (result, valueConfig, fieldName) => {
+        const value = _.get(form, fieldName);
         if (_.isFunction(valueConfig)) {
             const cfg = valueConfig();
-            const subForm = form[key];
-            const formPrefix = [prefix, key].join('.');
-            result[fieldName] = validateForm(subForm, cfg, messages, customValidators, formPrefix);
+            const subForm = form[fieldName];
+            const formPrefix = [prefix, fieldName].join('.');
+            const subFormResult = validateForm(subForm, cfg, messages, customValidators, formPrefix);
+            if (!_.isEmpty(subFormResult)) {
+                result[fieldName] = subFormResult;
+            }
             return result;
         }
+
+        if (_.isArray(valueConfig)) {
+            const cfg = valueConfig[0];
+            const subFormsResult = value.map(subForm => validateForm(subForm, cfg, messages, customValidators));
+
+            if (!_.isEmpty(subFormsResult)) {
+                result[fieldName] = subFormsResult;
+            }
+
+            return result;
+        }
+
         const valueResult = validateValue(value, valueConfig, customValidators);
         const errorMessages = mapErrors(valueResult, messages);
         if (!_.isEmpty(errorMessages)) {
