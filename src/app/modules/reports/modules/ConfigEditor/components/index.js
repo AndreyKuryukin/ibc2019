@@ -29,14 +29,12 @@ class ConfigEditor extends React.PureComponent {
         active: PropTypes.bool,
         users: PropTypes.array,
         onSubmit: PropTypes.func,
-        onMount: PropTypes.func,
     };
 
     static defaultProps = {
         active: false,
         users: [],
         onSubmit: () => null,
-        onMount: () => null,
     };
 
     constructor(props) {
@@ -57,12 +55,6 @@ class ConfigEditor extends React.PureComponent {
                 comment: '',
             },
         };
-    }
-
-    componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
-        }
     }
 
     getConfigProperty = (key, defaultValue) => _.get(this.state.config, key, defaultValue);

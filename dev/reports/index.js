@@ -178,7 +178,7 @@ const findById = (data, id) => {
 };
 
 module.exports = (app) => {
-    app.get('/api/v1/report', (req, res) => {
+    app.get('/api/v1/report/config', (req, res) => {
         res.send(reports);
     });
     app.delete('/api/v1/reports/results/:id', (req, res) => {
