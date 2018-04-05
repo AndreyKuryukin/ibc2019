@@ -127,8 +127,8 @@ class Condition extends React.PureComponent {
                         id="maxInterval"
                         name="maxInterval"
                         type="number"
-                        value={this.getConditionProperty('conjunction.conditionDuration')}
-                        onChange={event => this.setConditionProperty('conjunction.conditionDuration', _.get(event, 'target.value', ''))}
+                        value={this.getConditionProperty('conditionDuration')}
+                        onChange={event => this.setConditionProperty('conditionDuration', _.get(event, 'target.value', ''))}
                     />
                 </Field>
                 <Field
@@ -140,10 +140,10 @@ class Condition extends React.PureComponent {
                     <Select
                         id="object"
                         type="select"
-                        value={this.getConditionProperty('conjunction.objectType', '')}
+                        value={this.getConditionProperty('objectType', '')}
                         defaultValue="STB"
                         options={this.mapObjectTypes(['STB', 'TEST'])}
-                        onChange={value => this.setConditionProperty('conjunction.objectType', value)}
+                        onChange={value => this.setConditionProperty('objectType', value)}
                     />
                 </Field>
                 <div className={styles.conditionsWrapper}>
