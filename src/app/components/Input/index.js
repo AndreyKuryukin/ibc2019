@@ -36,6 +36,7 @@ class Input extends React.Component {
             static: staticInput,
             plaintext,
             innerRef,
+            errorMessage,
             ...attributes
         } = this.props;
 
@@ -88,7 +89,10 @@ class Input extends React.Component {
         }
 
         return (
+            <div>
+                {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}
             <Tag {...attributes} ref={innerRef} className={classes} />
+            </div>
         );
     }
 }

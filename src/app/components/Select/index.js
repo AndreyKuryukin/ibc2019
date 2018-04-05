@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Input } from 'reactstrap';
 import styles from './styles.scss';
+import classnames from "classnames";
 
 const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 
@@ -45,17 +46,21 @@ class Select extends React.PureComponent {
     };
 
     render() {
-        const { placeholder, defaultValue, options, noEmptyOption, children, ...rest } = this.props;
+        const { placeholder, options, noEmptyOption, children, valid, errorMessage, ...rest } = this.props;
         const value = this.getValue() || PLACEHOLDER_VALUE;
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
         }
         return (
             <div className={styles.selectWrapper}>
+                {valid === false && <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
                 <Input type="select" {...rest}
-                    value={value}
-                    onChange={this.onChange}
-                    className={(this.state.defaultSelected || _.isUndefined(value)) && styles.placeholder}
+                       value={value}
+                       onChange={this.onChange}
+                       invalid={valid === false}
+                       className={classnames({
+                           [styles.placeholder]: (value === PLACEHOLDER_VALUE || _.isUndefined(value)),
+                       })}
                 >
                     {!noEmptyOption && this.renderPlaceholder(placeholder, _.isUndefined(value))}
                     {this.renderOptions(options)}

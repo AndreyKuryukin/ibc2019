@@ -1,0 +1,13 @@
+@import './vars';
+
+.fieldInvalid {
+  display: block;
+  position: absolute;
+  top: 0;
+  background: url(../../resources/img/field-error.png) no-repeat center white;
+  right: 0;
+  width: 15px;
+  height: $input-height - 4px;
+  margin: 2px;
+  padding: 2px;
+}

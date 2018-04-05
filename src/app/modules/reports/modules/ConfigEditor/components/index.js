@@ -124,6 +124,8 @@ class ConfigEditor extends React.PureComponent {
                                     <Input
                                         id="config-name"
                                         name="config-name"
+                                        valid={false}
+                                        errorMessage={'Jib,rf'}
                                         value={this.getConfigProperty('config_name')}
                                         onChange={event => this.setConfigProperty('config_name', _.get(event, 'target.value'))}
                                     />
@@ -139,6 +141,8 @@ class ConfigEditor extends React.PureComponent {
                                         options={[]}
                                         value={this.getConfigProperty('template_id')}
                                         onChange={value => this.setConfigProperty('template_id', value)}
+                                        valid={false}
+                                        errorMessage={'Jib,rf'}
                                         placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
                                     />
                                 </Field>
