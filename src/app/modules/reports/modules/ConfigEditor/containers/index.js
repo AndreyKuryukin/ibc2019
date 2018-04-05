@@ -9,6 +9,7 @@ import rest from '../../../../../rest';
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -23,9 +24,9 @@ class ConfigEditor extends React.PureComponent {
         onFetchUsersSuccess: () => null,
     };
 
-    onMount = () => {
+    componentDidMount() {
+        this.context.pageBlur && this.context.pageBlur(true);
         this.setState({ isLoading: true });
-
         rest.get('/api/v1/user')
             .then((response) => {
                 const users = response.data;
@@ -37,7 +38,7 @@ class ConfigEditor extends React.PureComponent {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
-    };
+    }
 
     onSubmit = (config) => {
         this.setState({ isLoading: true });
@@ -61,7 +62,6 @@ class ConfigEditor extends React.PureComponent {
             <ConfigEditorComponent
                 active={this.props.active}
                 users={this.props.users}
-                onMount={this.onMount}
                 onSubmit={this.onSubmit}
             />
         )
