@@ -37,6 +37,7 @@ const plugins = [
     // './policies',
     // './kqi',
     './reports',
+    './sources',
 ];
 
 app.use((req, res, next) => {
