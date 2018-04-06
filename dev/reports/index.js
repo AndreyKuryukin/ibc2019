@@ -174,7 +174,7 @@ const reports = [{
 
 
 module.exports = (app) => {
-    app.get('/api/v1/report/config', (req, res) => {
+    app.get('/api/v1/report/results', (req, res) => {
         res.send(reports);
     });
     app.delete('/api/v1/reports/results/:id', (req, res) => {
