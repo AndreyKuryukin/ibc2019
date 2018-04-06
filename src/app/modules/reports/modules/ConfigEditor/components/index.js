@@ -151,22 +151,23 @@ class ConfigEditor extends React.PureComponent {
                         <div className={styles.configEditorContent}>
                             <div className={styles.configEditorColumn}>
                                 <Panel
-                                    title={ls('REPORTS_CONFIG_EDITOR_SETTINGS_TITLE', 'Настройки отчёта')}
-                                >
-                                    <Field
-                                        id="config-name"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_NAME_FIELD', 'Название')}:`}
-                                        labelWidth="30%"
-                                        inputWidth="70%"
-                                        required
+                                title={ls('REPORTS_CONFIG_EDITOR_SETTINGS_TITLE', 'Настройки отчёта')}
+                            >
+                                <Field
+                                    id="config-name"
+                                    labelText={`${ls('REPORTS_CONFIG_EDITOR_NAME_FIELD', 'Название')}:`}
+                                    labelWidth="30%"
+                                    inputWidth="70%"
+                                required
                                     >
                                         {!this.state.config.period.auto ? (
-                                            <Input
-                                                id="config-name"
-                                                name="config-name"
-                                                value={this.getConfigProperty('config_name')}
-                                                onChange={event => this.setConfigProperty('config_name', _.get(event, 'target.value'))}
-                                                valid={errors && _.isEmpty(errors.config_name)}
+                                    <Input
+                                        id="config-name"
+                                        name="config-name"
+                                        valid={false}
+                                        errorMessage={'Jib,rf'}value={this.getConfigProperty('config_name')}
+                                        onChange={event => this.setConfigProperty('config_name', _.get(event, 'target.value'))}
+                                    valid={errors && _.isEmpty(errors.config_name)}
                                             />
                                             ) : (
                                                 <div
@@ -175,42 +176,38 @@ class ConfigEditor extends React.PureComponent {
                                                     {this.getConfigProperty('config_name')}
                                                 </div>
                                             )}
-                                    </Field>
-                                    <Field
+                                </Field>
+                                <Field
+                                    id="template-id"
+                                    labelText={`${ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}:`}
+                                    labelWidth="30%"
+                                    inputWidth="70%"
+                                required>
+                                    <Select
                                         id="template-id"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}:`}
-                                        labelWidth="30%"
-                                        inputWidth="70%"
-                                        required
-                                    >
-                                        <Select
-                                            id="template-id"
-                                            options={[]}
-                                            value={this.getConfigProperty('template_id')}
-                                            onChange={value => this.setConfigProperty('template_id', value)}
-                                            placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
-                                            valid={errors && _.isEmpty(errors.template_id)}
-                                        />
-                                    </Field>
-                                    <Field
+                                        options={[]}
+                                        value={this.getConfigProperty('template_id')}
+                                        onChange={value => this.setConfigProperty('template_id', value)}valid={false}
+                                        errorMessage={'Jib,rf'}
+                                        placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
+                                    valid={errors && _.isEmpty(errors.template_id)}/>
+                                </Field>
+                                <Field
+                                    id="type"
+                                    labelText={`${ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}:`}
+                                    labelWidth="30%"
+                                    inputWidth="70%"
+                                required>
+                                    <Select
                                         id="type"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}:`}
-                                        labelWidth="30%"
-                                        inputWidth="70%"
-                                        required
-                                    >
-                                        <Select
-                                            id="type"
-                                            options={REPORT_TYPE_OPTIONS}
-                                            value={this.getConfigProperty('type')}
-                                            placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}
-                                            onChange={value => this.setConfigProperty('type', value)}
-                                            valid={errors && _.isEmpty(errors.type)}
-                                        />
-                                    </Field>
-                                    <Field
-                                        id="mrf"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_MRF_FIELD', 'МРФ')}:`}
+                                        options={REPORT_TYPE_OPTIONS}
+                                        value={this.getConfigProperty('type')}
+                                        placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}onChange={value => this.setConfigProperty('type', value)}
+                                    valid={errors && _.isEmpty(errors.type)}/>
+                                </Field>
+                            <Field
+                            id="mrf"
+                                labelText={`${ls('REPORTS_CONFIG_EDITOR_MRF_FIELD', 'МРФ')}:`}
                                         labelWidth="30%"
                                         inputWidth="70%"
                                         required
@@ -219,28 +216,28 @@ class ConfigEditor extends React.PureComponent {
                                             id="mrf"
                                             options={REPORT_MRF_OPTIONS}
                                             value={this.getConfigProperty('mrf')}
-                                            placeholder={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD_PLACEHOLDER', 'Выберите МРФ')}
+                                placeholder={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                                             onChange={value => this.setConfigProperty('mrf', value)}
-                                            valid={errors && _.isEmpty(errors.mrf)}
-                                        />
-                                    </Field>
+                            valid={errors && _.isEmpty(errors.mrf)}
+                            />
+                                </Field>
                                 </Panel>
                                 <Period
-                                    onIntervalChange={this.onIntervalChange}
+                            onIntervalChange={this.onIntervalChange}
                                     onAutoCheck={value => this.setConfigProperty('period.auto', value)}
-                                    errors={_.get(errors, 'period', null)}
+                                    errors={_.get(errors,'period', null)}
                                 />
-                                <Panel
-                                    title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
-                                >
-                                    <Input
-                                        type="textarea"
-                                        value={this.getConfigProperty('comment')}
-                                        onChange={event => this.setConfigProperty('comment', _.get(event, 'target.value'))}
-                                        rows={6}
-                                    />
-                                </Panel>
-                            </div>
+                            <Panel
+
+                                title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
+                            >
+                                <Input
+                                    type="textarea"
+                                    value={this.getConfigProperty('comment')}
+                                    onChange={event => this.setConfigProperty('comment', _.get(event, 'target.value'))}
+                                    rows={6}
+                                />
+                            </Panel></div>
                             <div className={styles.configEditorColumn}>
                                 <Panel
                                     title={ls('REPORTS_CONFIG_EDITOR_NOTIFY_USERS_TITLE', 'Рассылка для')}

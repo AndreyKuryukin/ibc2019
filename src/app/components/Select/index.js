@@ -55,6 +55,7 @@ class Select extends React.PureComponent {
         }
         return (
             <div className={styles.selectWrapper}>
+                {valid === false && <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
                 <Input type="select" {...rest}
                        value={value}
                        onChange={this.onChange}
