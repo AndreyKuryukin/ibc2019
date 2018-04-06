@@ -16,6 +16,8 @@ import {
     resetUser,
 } from '../actions';
 
+import ls from 'i18n';
+
 class UserEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -46,10 +48,12 @@ class UserEditor extends React.PureComponent {
             required: true
         },
         password: {
-            required: true
+            required: true,
+            passwordEqual: true
         },
         confirm: {
-            required: true
+            required: true,
+            passwordEqual: true
         },
     };
 
@@ -77,7 +81,13 @@ class UserEditor extends React.PureComponent {
     };
 
     onSubmit = (userId, userData) => {
-        const errors = validateForm(userData, this.validationConfig);
+        const customValidators = {
+            passwordEqual: (value, testValue) => userData.password === userData.confirm
+        };
+        const customErrorMessages = {
+            passwordEqual: ls('PASSWORD_NOT_EQUAL', 'Пароли не совпадают')
+        };
+        const errors = validateForm(userData, this.validationConfig, customErrorMessages, customValidators);
         if (_.isEmpty(errors)) {
             const submit = userId ? rest.put : rest.post;
             const success = (response) => {

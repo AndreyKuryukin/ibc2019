@@ -38,7 +38,7 @@ const mapErrors = (valueResult, messages) =>
        return result;
     }, {});
 
-export const validateForm = (form, config, messages = defaultMessages, customValidators = {}, prefix) =>
+export const validateForm = (form, config, messages = {}, customValidators = {}, prefix) =>
     _.reduce(config, (result, valueConfig, fieldName) => {
         const value = _.get(form, fieldName);
         if (_.isFunction(valueConfig)) {
@@ -54,9 +54,9 @@ export const validateForm = (form, config, messages = defaultMessages, customVal
 
         if (_.isArray(valueConfig)) {
             const [selfConfig, elemConfig] = valueConfig;
-            const selfResult = validateValue(value, selfConfig, customValidators);
+            const selfResult = validateValue(value, selfConfig, {...validators, ...customValidators});
             if (!_.isEmpty(selfResult)) {
-                result[fieldName] = mapErrors(selfResult, messages);
+                result[fieldName] = mapErrors(selfResult, {...defaultMessages, ...messages});
             } else {
                 const subFormsResult = value.reduce((subforms, subForm, index) => {
                     const subformErrors = validateForm(subForm, elemConfig, messages, customValidators);
@@ -75,8 +75,8 @@ export const validateForm = (form, config, messages = defaultMessages, customVal
             return result;
         }
 
-        const valueResult = validateValue(value, valueConfig, customValidators);
-        const errorMessages = mapErrors(valueResult, messages);
+        const valueResult = validateValue(value, valueConfig, {...validators, ...customValidators});
+        const errorMessages = mapErrors(valueResult, {...defaultMessages, ...messages});
         if (!_.isEmpty(errorMessages)) {
             result[fieldName] = errorMessages;
         }
