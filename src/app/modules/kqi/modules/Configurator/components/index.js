@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 
+import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
 import Formula from './Formula';
@@ -21,6 +22,7 @@ class Configurator extends React.PureComponent {
         paramTypesById: PropTypes.object,
         onMount: PropTypes.func,
         onSubmit: PropTypes.func.isRequired,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
@@ -28,6 +30,7 @@ class Configurator extends React.PureComponent {
         paramTypes: [],
         paramTypesById: null,
         onMount: () => null,
+        errors: null,
     };
 
     constructor(props) {
@@ -40,12 +43,19 @@ class Configurator extends React.PureComponent {
                 operator_type: '',
                 level: '',
             },
+            errors: null,
         };
     }
 
     componentDidMount() {
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
         }
     }
 
@@ -58,7 +68,10 @@ class Configurator extends React.PureComponent {
             ...this.state.config,
             [key]: value,
         };
-        this.setState({ config });
+        this.setState({
+            config,
+            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
+        });
     };
 
     onChangeParameterType = (value) => {
@@ -86,7 +99,7 @@ class Configurator extends React.PureComponent {
     };
 
     render() {
-        const { config } = this.state;
+        const { config, errors } = this.state;
         return (
             <Modal
                 isOpen={this.props.active}
@@ -107,6 +120,7 @@ class Configurator extends React.PureComponent {
                                 id="name"
                                 value={config.name}
                                 onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
+                                valid={errors && _.isEmpty(errors.name)}
                             />
                         </Field>
                         <Field
@@ -119,6 +133,7 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
                                 onChange={value => this.setConfigProperty('object_type', value)}
+                                valid={errors && _.isEmpty(errors.object_type)}
                             />
                         </Field>
                         <Field
@@ -131,6 +146,7 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
                                 onChange={this.onChangeParameterType}
+                                valid={errors && _.isEmpty(errors.parameter_type)}
                             />
                         </Field>
                         <Field
@@ -143,6 +159,7 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
                                 onChange={value => this.setConfigProperty('operator_type', value)}
+                                valid={errors && _.isEmpty(errors.operator_type)}
                             />
                         </Field>
                         <Field
@@ -155,8 +172,9 @@ class Configurator extends React.PureComponent {
                             <Input
                                 type="number"
                                 id="level"
-                                value={config.value}
+                                value={config.level}
                                 onChange={event => this.setConfigProperty('level', event.currentTarget.value)}
+                                valid={errors && _.isEmpty(errors.level)}
                             />
                         </Field>
                         <Formula

@@ -5,13 +5,15 @@ import _ from 'lodash';
 import { selectSelectedUser, selectUserRoles } from '../selectors';
 import RoleEditorComponent from '../components';
 import rest from '../../../../../rest';
+import { validateForm } from '../../../../../util/validation';
 import {
     createUser,
     fetchDivisionsSuccess,
     fetchGroupsSuccess,
     fetchRolesSuccess,
     fetchUserSuccess,
-    updateUser
+    updateUser,
+    resetUser,
 } from '../actions';
 
 class UserEditor extends React.PureComponent {
@@ -32,6 +34,23 @@ class UserEditor extends React.PureComponent {
         onFetchGroupsSuccess: () => null,
         onUpdateUserSuccess: () => null,
         onCreateUserSuccess: () => null,
+        onResetUser: () => null,
+    };
+
+    state = {
+        errors: null,
+    };
+
+    validationConfig = {
+        login: {
+            required: true
+        },
+        password: {
+            required: true
+        },
+        confirm: {
+            required: true
+        },
     };
 
     componentDidMount() {
@@ -58,16 +77,24 @@ class UserEditor extends React.PureComponent {
     };
 
     onSubmit = (userId, userData) => {
-        const submit = userId ? rest.put : rest.post;
-        const success = (response) => {
-            const callback = userId ? this.props.onUpdateUserSuccess : this.props.onCreateUserSuccess;
-            const user = response.data;
-            callback(user);
-            this.context.history.push('/users');
-        };
+        const errors = validateForm(userData, this.validationConfig);
+        if (_.isEmpty(errors)) {
+            const submit = userId ? rest.put : rest.post;
+            const success = (response) => {
+                const callback = userId ? this.props.onUpdateUserSuccess : this.props.onCreateUserSuccess;
+                const user = response.data;
+                callback(user);
+                this.context.history.push('/users');
+            };
 
-        submit('/api/v1/user', userData)
-            .then(success);
+            submit('/api/v1/user', _.omit(userData, 'confirm'))
+                .then(success)
+                .catch((e) => {
+                    console.error(e);
+                });
+        } else {
+            this.setState({ errors });
+        }
     };
 
     render() {
@@ -75,6 +102,8 @@ class UserEditor extends React.PureComponent {
             <RoleEditorComponent
                 onMount={this.onChildMount}
                 onSubmit={this.onSubmit}
+                onClose={this.props.onResetUser}
+                errors={this.state.errors}
                 {...this.props}
             />
         );
@@ -94,6 +123,7 @@ const mapDispatchToProps = dispatch => ({
     onFetchGroupsSuccess: groups => dispatch(fetchGroupsSuccess(groups)),
     onUpdateUserSuccess: role => dispatch(updateUser(role)),
     onCreateUserSuccess: role => dispatch(createUser(role)),
+    onResetUser: () => dispatch(resetUser()),
 });
 
 export default connect(
