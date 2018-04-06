@@ -73,7 +73,7 @@ class Configuration extends React.PureComponent {
                             required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}:`}
                             labelWidth="67%"
-                            inputWidth="17%"
+                            inputWidth="33%"
                         >
                             <Input
                                 id="rise_duration"
@@ -85,7 +85,7 @@ class Configuration extends React.PureComponent {
                             />
                         </Field>
                     </div>
-                    <div style={{ width: '25%' }}>
+                    <div style={{ width: '28%' }}>
                         <Field
                             id="rise_value"
                             required

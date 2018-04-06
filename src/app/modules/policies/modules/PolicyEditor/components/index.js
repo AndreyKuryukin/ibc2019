@@ -172,7 +172,7 @@ class PolicyEditor extends React.PureComponent {
                                                 />
                                             </Field>
                                         </div>
-                                        <div style={{ width: '30%' }}>
+                                        <div style={{ width: '28%' }}>
                                             <Field
                                                 id="cease_value"
                                                 labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
