@@ -10,6 +10,7 @@ import { validateForm } from '../../../../../util/validation';
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -49,8 +50,8 @@ class ConfigEditor extends React.PureComponent {
     };
 
     onMount = () => {
+        this.context.pageBlur && this.context.pageBlur(true);
         this.setState({ isLoading: true });
-
         rest.get('/api/v1/user')
             .then((response) => {
                 const users = response.data;
@@ -62,7 +63,7 @@ class ConfigEditor extends React.PureComponent {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
-    };
+    }
 
     onSubmit = (config) => {
         const errors = validateForm(config, this.validationConfig);

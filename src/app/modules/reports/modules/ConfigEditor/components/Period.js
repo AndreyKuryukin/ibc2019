@@ -8,8 +8,8 @@ import Radio from '../../../../../components/Radio';
 import Checkbox from '../../../../../components/Checkbox';
 import Field from '../../../../../components/Field';
 import DateTimePicker from '../../../../../components/DateTimePicker';
-import Select from '../../../../../components/Select';
 import styles from './styles.scss';
+import Icon from "../../../../../components/Icon/Icon";
 
 const INTERVALS = {
     DAY: 'day',
@@ -117,7 +117,12 @@ class Period extends React.PureComponent {
         const { errors } = this.props;
         return (
             <Panel
-                title={ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
+                title={<div style={{display: 'flex'}}>{ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
+                <Icon
+                    icon={'help-icon'}
+                    title={ls('TIME_INTERVAL_DAY_TITLE', 'Предыдущие сутки с 00:00 до 24:00')}
+                />
+                </div>}
             >
                 <div className={styles.intervalsGroup}>
                     <Field
