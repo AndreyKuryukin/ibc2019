@@ -173,10 +173,6 @@ const reports = [{
 }];
 
 
-const findById = (data, id) => {
-
-};
-
 module.exports = (app) => {
     app.get('/api/v1/report/config', (req, res) => {
         res.send(reports);

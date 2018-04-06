@@ -6,8 +6,6 @@ import Icon from "../../../components/Icon/Icon";
 import * as _ from "lodash";
 import styles from './styles.scss';
 
-
-
 class SourcesControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,

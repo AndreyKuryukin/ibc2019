@@ -3,6 +3,7 @@ import _ from 'lodash';
 import { Input } from 'reactstrap';
 import styles from './styles.scss';
 import classnames from "classnames";
+import ls from 'i18n';
 
 const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 
@@ -11,6 +12,7 @@ class Select extends React.PureComponent {
     static defaultProps = {
         options: [],
         noEmptyOption: false,
+        errorMessage: ls('DEFAULT_ERROR_MSG', 'Это поле заполнено неверно'),
         valid: true,
         defaultValue: null,
         onChange: () => null,
@@ -47,7 +49,7 @@ class Select extends React.PureComponent {
     };
 
     render() {
-        const { placeholder, defaultValue, options, noEmptyOption, children, valid, ...rest } = this.props;
+        const { placeholder, errorMessage, options, noEmptyOption, children, valid, ...rest } = this.props;
         const value = this.getValue();
         const invalid = valid !== null && !valid;
         if (!_.isEmpty(children)) {
