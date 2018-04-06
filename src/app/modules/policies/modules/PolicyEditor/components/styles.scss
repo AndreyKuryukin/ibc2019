@@ -19,6 +19,11 @@
   }
 }
 
+.invalidBorder {
+  border: 1px solid $danger !important;
+  color: $danger
+}
+
 .conditionsWrapper {
   display: flex;
   flex-grow: 1;

@@ -70,6 +70,7 @@ class Configuration extends React.PureComponent {
                     <div style={{ width: '75%' }}>
                         <Field
                             id="rise_duration"
+                            required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}:`}
                             labelWidth="67%"
                             inputWidth="17%"
@@ -78,6 +79,7 @@ class Configuration extends React.PureComponent {
                                 id="rise_duration"
                                 type="number"
                                 name="rise_duration"
+                                valid={_.isEmpty(_.get(errors,'threshold.rise_duration'))}
                                 value={getPolicyProperty('threshold.rise_duration')}
                                 onChange={event => setPolicyProperty('threshold.rise_duration', _.get(event, 'target.value'))}
                             />
@@ -86,6 +88,7 @@ class Configuration extends React.PureComponent {
                     <div style={{ width: '25%' }}>
                         <Field
                             id="rise_value"
+                            required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}:`}
                             labelWidth="50%"
                             inputWidth="50%"
@@ -94,6 +97,7 @@ class Configuration extends React.PureComponent {
                                 id="rise_value"
                                 type="number"
                                 name="rise_value"
+                                valid={_.isEmpty(_.get(errors,'threshold.rise_value'))}
                                 value={getPolicyProperty('threshold.rise_value')}
                                 onChange={event => setPolicyProperty('threshold.rise_value', _.get(event, 'target.value'))}
                             />

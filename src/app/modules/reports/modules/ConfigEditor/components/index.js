@@ -20,6 +20,11 @@ const REPORT_TYPE_OPTIONS = [{
     title: 'XLS'
 }];
 
+const REPORT_MRF_OPTIONS = [{
+    value: 'Волга',
+    title: 'Волга'
+}];
+
 const NAME_PATTERNS = {
     ['TEMPLATE_ID']: ls('REPORT_TEMPLATE_PATTERN', '<Имя_шаблона>'),
     ['PERIOD.REGULARITY']: ls('REPORT_REGULARITY_PATTERN', '<Период_построения>'),
@@ -198,8 +203,25 @@ class ConfigEditor extends React.PureComponent {
                                             id="type"
                                             options={REPORT_TYPE_OPTIONS}
                                             value={this.getConfigProperty('type')}
+                                            placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}
                                             onChange={value => this.setConfigProperty('type', value)}
                                             valid={errors && _.isEmpty(errors.type)}
+                                        />
+                                    </Field>
+                                    <Field
+                                        id="mrf"
+                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_MRF_FIELD', 'МРФ')}:`}
+                                        labelWidth="30%"
+                                        inputWidth="70%"
+                                        required
+                                    >
+                                        <Select
+                                            id="mrf"
+                                            options={REPORT_MRF_OPTIONS}
+                                            value={this.getConfigProperty('mrf')}
+                                            placeholder={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD_PLACEHOLDER', 'Выберите МРФ')}
+                                            onChange={value => this.setConfigProperty('mrf', value)}
+                                            valid={errors && _.isEmpty(errors.mrf)}
                                         />
                                     </Field>
                                 </Panel>
@@ -208,6 +230,16 @@ class ConfigEditor extends React.PureComponent {
                                     onAutoCheck={value => this.setConfigProperty('period.auto', value)}
                                     errors={_.get(errors, 'period', null)}
                                 />
+                                <Panel
+                                    title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
+                                >
+                                    <Input
+                                        type="textarea"
+                                        value={this.getConfigProperty('comment')}
+                                        onChange={event => this.setConfigProperty('comment', _.get(event, 'target.value'))}
+                                        rows={6}
+                                    />
+                                </Panel>
                             </div>
                             <div className={styles.configEditorColumn}>
                                 <Panel
@@ -219,16 +251,6 @@ class ConfigEditor extends React.PureComponent {
                                         usersData={this.props.users}
                                         onCheck={value => this.setConfigProperty('notify_users', value)}
                                         disabled={!this.getConfigProperty('period.auto', false)}
-                                    />
-                                </Panel>
-                                <Panel
-                                    title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
-                                >
-                                    <Input
-                                        type="textarea"
-                                        value={this.getConfigProperty('comment')}
-                                        onChange={event => this.setConfigProperty('comment', _.get(event, 'target.value'))}
-                                        rows={6}
                                     />
                                 </Panel>
                             </div>

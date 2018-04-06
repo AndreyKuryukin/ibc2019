@@ -39,6 +39,9 @@ class ConfigEditor extends React.PureComponent {
         type: {
             required: true,
         },
+        mrf: {
+            required: true,
+        },
         period: () => ({
             start_date: {
                 required: true,

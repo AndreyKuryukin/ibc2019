@@ -34,7 +34,7 @@ class SourcesControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.controls}>
-                <Icon icon="addIcon" onClick={this.onRefresh}/>
+                <Icon icon="refresh-icon" onClick={this.onRefresh}/>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}

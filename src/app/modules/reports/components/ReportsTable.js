@@ -80,7 +80,7 @@ class ReportsTable extends React.PureComponent {
 
     mapReport = (config, report, isLastSuccess) => ({
         id: report.id,
-        name: report.file_name,
+        name: report.name,
         path: report.file_path,
         start: report.create_start,
         end: report.create_end,
@@ -94,13 +94,13 @@ class ReportsTable extends React.PureComponent {
 
 
     mapConfig = config => ({
-        id: config.config_id,
+        id: config.id,
         type: config.type,
         author: config.author,
         comment: config.comment,
         notify: config.notify_users_name,
-        name: config.config_name,
-        children: _.get(config, 'reports', []).map((() => {
+        name: config.name,
+        children: (config.reports || []).map((() => {
             let lastSuccessEnd = 0;
             return (report) => {
                 const state = _.get(report, 'state', '').toLowerCase();
@@ -114,15 +114,15 @@ class ReportsTable extends React.PureComponent {
     });
 
     mapTemplate = template => ({
-        id: template.templ_id,
+        id: template.id,
         type: 'template',
-        name: template.templ_name,
+        name: template.name,
         children: _.get(template, 'report_config', []).map(this.mapConfig),
     });
 
     mapGroups = group => ({
-        id: group.id,
-        name: group.name,
+        id: group.type,
+        name: group.type,
         children: _.get(group, 'templates', []).map(this.mapTemplate)
     });
 

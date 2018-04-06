@@ -1,6 +1,6 @@
 const reports = [{
     id: 101,
-    name: 'Статистические отчёты',
+    type: 'Статистические отчёты',
     templates: [{
         templ_name: 'Базовый отчёт IPTV',
         templ_id: 1,
@@ -100,7 +100,7 @@ const reports = [{
     }]
 }, {
     id: 102,
-    name: 'Оперативные отчёты',
+    type: 'Оперативные отчёты',
     templates: [{
         templ_name: 'Антирейтинг каналов по данным STB',
         templ_id: 'a',

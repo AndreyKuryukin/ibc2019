@@ -29,12 +29,14 @@ const validateValue = (value, config, customValidators) =>
 
 const mapErrors = (valueResult, messages) =>
     _.reduce(valueResult, (result, isValid, validatorName) => {
-        const title = _.get(messages, validatorName, '');
-        const severity = 'CRITICAL';
-        const type = 'VALIDATION';
-        result.push({ type, title, severity });
-        return result;
-    }, []);
+        if (!isValid) {
+            const title = _.get(messages, validatorName, '');
+            const severity = 'CRITICAL';
+            const type = 'VALIDATION';
+            return { type, title, severity };
+        }
+       return result;
+    }, {});
 
 export const validateForm = (form, config, messages = defaultMessages, customValidators = {}, prefix) =>
     _.reduce(config, (result, valueConfig, fieldName) => {

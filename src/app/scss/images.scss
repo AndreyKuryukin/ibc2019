@@ -99,3 +99,7 @@
 .help-icon {
   @include iconBuilder(22px, 22px, 'help.png');
 }
+
+.refresh-icon {
+  @include iconBuilder(22px, 22px, 'refresh.png');
+}

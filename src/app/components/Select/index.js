@@ -2,6 +2,7 @@ import React from 'react';
 import _ from 'lodash';
 import { Input } from 'reactstrap';
 import styles from './styles.scss';
+import classnames from "classnames";
 
 const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 
@@ -23,10 +24,10 @@ class Select extends React.PureComponent {
     onChange = (event) => {
         const value = event.currentTarget.value;
         if (value === PLACEHOLDER_VALUE) {
-            this.setState({ defaultSelected: true, value: null });
+            this.setState({ value: null });
             this.props.onChange(null);
         } else {
-            this.setState({ defaultSelected: false, value: value });
+            this.setState({ value: value });
             this.props.onChange(value);
         }
     };
@@ -47,7 +48,7 @@ class Select extends React.PureComponent {
 
     render() {
         const { placeholder, defaultValue, options, noEmptyOption, children, valid, ...rest } = this.props;
-        const value = this.getValue() || PLACEHOLDER_VALUE;
+        const value = this.getValue();
         const invalid = valid !== null && !valid;
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
@@ -55,12 +56,12 @@ class Select extends React.PureComponent {
         return (
             <div className={styles.selectWrapper}>
                 <Input type="select" {...rest}
-                    value={value}
-                    onChange={this.onChange}
-                    className={(this.state.defaultSelected || _.isUndefined(value)) && styles.placeholder}
-                    invalid={invalid}
+                       value={value}
+                       onChange={this.onChange}
+                       className={classnames({ [styles.placeholder]: (_.isEmpty(value)) })}
+                       invalid={invalid}
                 >
-                    {!noEmptyOption && this.renderPlaceholder(placeholder, _.isUndefined(value))}
+                    {!noEmptyOption && this.renderPlaceholder(placeholder)}
                     {this.renderOptions(options)}
                 </Input>
             </div>

@@ -117,11 +117,15 @@ class Period extends React.PureComponent {
         const { errors } = this.props;
         return (
             <Panel
-                title={<div style={{display: 'flex'}}>{ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
-                <Icon
-                    icon={'help-icon'}
-                    title={ls('TIME_INTERVAL_DAY_TITLE', 'Предыдущие сутки с 00:00 до 24:00')}
-                />
+                title={<div
+                    style={{ display: 'flex' }}>{ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
+                    <Icon
+                        icon={'help-icon'}
+                        title={
+                            ls('TIME_INTERVAL_DAY_COMMON_TITLE', 'День - предыдущие сутки с 00:00 до 24:00') + '\n'
+                            + ls('TIME_INTERVAL_WEEK_COMMON_TITLE', 'Неделя - предыдущая неделя с 00:00 часов понедельника до 24:00 часов воскресения') + '\n'
+                            + ls('TIME_INTERVAL_MONTH_COMMON_TITLE', 'Месяц - предыдущий месяц 00:00 часов 1-го числа до 24:00 часов последнего числа')}
+                    />
                 </div>}
             >
                 <div className={styles.intervalsGroup}>
