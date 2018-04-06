@@ -50,10 +50,16 @@ class Reports extends React.PureComponent {
     };
 
     removeResult = (report_id) => {
+        this.setState({ isLoading: true });
+
         rest.delete('/api/v1/reports/results/:id', null, { urlParams: { id: report_id } })
             .then(() => {
                 this.fetchReports();
             })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
+            });
     };
 
     render() {

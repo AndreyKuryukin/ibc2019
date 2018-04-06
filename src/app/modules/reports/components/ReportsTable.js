@@ -167,6 +167,7 @@ class ReportsTable extends React.PureComponent {
                 columns={this.getColumns()}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
+                preloader={this.props.preloader}
             />
         );
     }

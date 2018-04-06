@@ -61,7 +61,7 @@ class KQI extends React.PureComponent {
                 <Table
                     data={this.props.kqiData}
                     searchText={this.state.searchText}
-                    preloader={false}
+                    preloader={this.props.isLoading}
                 />
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} />}
                 {isCalculatorActive && <Calculator active={isCalculatorActive} />}
