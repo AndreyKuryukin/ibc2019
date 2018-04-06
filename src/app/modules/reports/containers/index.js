@@ -37,7 +37,7 @@ class Reports extends React.PureComponent {
     fetchReports = () => {
         this.setState({ isLoading: true });
 
-        rest.get('/api/v1/report/config')
+        rest.get('/api/v1/report/results')
             .then((response) => {
                 const reports = response.data;
                 this.props.onFetchReportsSuccess(reports);
