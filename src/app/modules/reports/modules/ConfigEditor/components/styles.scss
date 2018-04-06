@@ -1,13 +1,20 @@
 @import '../../../../../scss/vars';
 
 .configEditor {
-  width: 295px !important;
-  max-width: 295px !important;
+  width: 560px !important;
+  max-width: 560px !important;
   .configEditorContent {
     display: flex;
-    flex-direction: column;
-    > div + div {
-      margin-top: 1px;
+    .configEditorColumn {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      > div + div {
+        margin-top: 1px;
+      }
+    }
+    .configEditorColumn + .configEditorColumn {
+      margin-left: 1px;
     }
   }
 }

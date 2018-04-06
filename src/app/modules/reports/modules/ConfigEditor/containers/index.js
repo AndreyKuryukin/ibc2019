@@ -5,6 +5,7 @@ import _ from 'lodash';
 import ConfigEditorComponent from '../components';
 import { fetchUsersSuccess } from '../actions';
 import rest from '../../../../../rest';
+import { validateForm } from '../../../../../util/validation';
 
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
@@ -24,7 +25,31 @@ class ConfigEditor extends React.PureComponent {
         onFetchUsersSuccess: () => null,
     };
 
-    componentDidMount() {
+    state = {
+        errors: null,
+    };
+
+    validationConfig = {
+        config_name: {
+            required: true,
+        },
+        template_id: {
+            required: true,
+        },
+        type: {
+            required: true,
+        },
+        period: () => ({
+            start_date: {
+                required: true,
+            },
+            end_date: {
+                required: true,
+            },
+        }),
+    };
+
+    onMount = () => {
         this.context.pageBlur && this.context.pageBlur(true);
         this.setState({ isLoading: true });
         rest.get('/api/v1/user')
@@ -41,28 +66,35 @@ class ConfigEditor extends React.PureComponent {
     }
 
     onSubmit = (config) => {
-        this.setState({ isLoading: true });
+        const errors = validateForm(config, this.validationConfig);
+        if (_.isEmpty(errors)) {
+            this.setState({ isLoading: true });
 
-        rest.post('/api/v1/reports/configs', config)
-            .then((response) => {
-                const newConfig = response.data;
-                console.log(newConfig);
+            rest.post('/api/v1/reports/configs', config)
+                .then((response) => {
+                    const newConfig = response.data;
+                    console.log(newConfig);
 
-                this.setState({ isLoading: false });
-                this.context.history.push('/reports');
-            })
-            .catch((e) => {
-                console.error(e);
-                this.setState({ isLoading: false });
-            });
-    }
+                    this.setState({ isLoading: false });
+                    this.context.history.push('/reports');
+                })
+                .catch((e) => {
+                    console.error(e);
+                    this.setState({ isLoading: false });
+                });
+        } else {
+            this.setState({ errors });
+        }
+    };
 
     render() {
         return (
             <ConfigEditorComponent
                 active={this.props.active}
                 users={this.props.users}
+                onMount={this.onMount}
                 onSubmit={this.onSubmit}
+                errors={this.state.errors}
             />
         )
     }

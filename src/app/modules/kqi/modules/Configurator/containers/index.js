@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import ConfiguratorComponent from '../components';
 import rest from '../../../../../rest';
+import { validateForm } from '../../../../../util/validation';
 import { fetchParameterTypesSuccess } from '../actions';
 
 class Configurator extends React.PureComponent {
@@ -37,6 +39,28 @@ class Configurator extends React.PureComponent {
         this.context.pageBlur && this.context.pageBlur(true);
     }
 
+    state = {
+        errors: null,
+    };
+
+    validationConfig = {
+        name: {
+            required: true
+        },
+        object_type: {
+            required: true
+        },
+        operator_type: {
+            required: true
+        },
+        parameter_type: {
+            required: true
+        },
+        level: {
+            required: true
+        },
+    };
+
     onMount = () => {
         this.setState({isLoading: true});
 
@@ -53,18 +77,24 @@ class Configurator extends React.PureComponent {
     };
 
     onSubmitKPI = (kpiConfig) => {
-        this.setState({ isLoading: true });
+        const errors = validateForm(kpiConfig, this.validationConfig);
 
-        rest.post('/api/v1/kqi', kpiConfig)
-            .then((response) => {
-                const kpi = response.data;
-                this.setState({ isLoading: false });
-                this.context.history.push('/kqi');
-            })
-            .catch((e) => {
-                console.error(e);
-                this.setState({ isLoading: false });
-            });
+        if (_.isEmpty(errors)) {
+            this.setState({ isLoading: true });
+
+            rest.post('/api/v1/kqi', kpiConfig)
+                .then((response) => {
+                    const kpi = response.data;
+                    this.setState({ isLoading: false });
+                    this.context.history.push('/kqi');
+                })
+                .catch((e) => {
+                    console.error(e);
+                    this.setState({ isLoading: false });
+                });
+        } else {
+            this.setState({ errors });
+        }
     };
 
     render() {
@@ -75,6 +105,7 @@ class Configurator extends React.PureComponent {
                 paramTypesById={this.props.paramTypesById}
                 onMount={this.onMount}
                 onSubmit={this.onSubmitKPI}
+                errors={this.state.errors}
             />
         );
     }

@@ -15,12 +15,14 @@ class Configuration extends React.PureComponent {
         getPolicyProperty: PropTypes.func,
         setPolicyProperty: PropTypes.func,
         types: PropTypes.array,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
         getPolicyProperty: () => null,
         setPolicyProperty: () => null,
-        types: []
+        types: [],
+        errors: PropTypes.object,
     };
 
     mapTypes = (types) => {
@@ -28,7 +30,7 @@ class Configuration extends React.PureComponent {
     };
 
     render() {
-        const { getPolicyProperty, setPolicyProperty, types } = this.props;
+        const { getPolicyProperty, setPolicyProperty, types, errors } = this.props;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -45,6 +47,7 @@ class Configuration extends React.PureComponent {
                         name="name"
                         value={getPolicyProperty('name')}
                         onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
+                        valid={errors && _.isEmpty(errors.name)}
                     />
                 </Field>
                 <Field
@@ -60,6 +63,7 @@ class Configuration extends React.PureComponent {
                         options={this.mapTypes(types)}
                         value={getPolicyProperty('policy_type')}
                         onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
+                        valid={errors && _.isEmpty(errors.policy_type)}
                     />
                 </Field>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>

@@ -7,6 +7,7 @@ import { selectSelectedRole, selectSourceOptions, selectSubjects, selectSubjects
 import { createRole, updateRole } from '../../../actions';
 import { fetchRoleSuccess, fetchSubjectsSuccess } from '../actions';
 import rest from '../../../../../rest';
+import { validateForm } from "../../../../../util/validation";
 
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
@@ -26,6 +27,16 @@ class RoleEditor extends React.PureComponent {
         onUpdateRoleSuccess: () => null,
         onCreateRoleSuccess: () => null,
         onFetchRoleSuccess: () => null,
+    };
+
+    state = {
+        errors: null,
+    };
+
+    validationConfig = {
+        name: {
+            required: true
+        },
     };
 
     componentDidMount() {
@@ -57,22 +68,31 @@ class RoleEditor extends React.PureComponent {
     }
 
     onSubmit = (roleId, roleData) => {
-        const submit = roleId ? rest.put : rest.post;
-        const success = (response) => {
-            const callback = roleId ? this.props.onUpdateRoleSuccess : this.props.onCreateRoleSuccess;
-            const role = response.data;
-            callback(role);
-            this.context.history.push('/roles');
-        };
+        const errors = validateForm(roleData, this.validationConfig);
+        if (_.isEmpty(errors)) {
+            const submit = roleId ? rest.put : rest.post;
+            const success = (response) => {
+                const callback = roleId ? this.props.onUpdateRoleSuccess : this.props.onCreateRoleSuccess;
+                const role = response.data;
+                callback(role);
+                this.context.history.push('/roles');
+            };
 
-        submit('/api/v1/role', roleData)
-            .then(success);
+            submit('/api/v1/role', roleData)
+                .then(success)
+                .catch((e) => {
+                    console.error(e);
+                });
+        } else {
+            this.setState({ errors });
+        }
     };
 
     render() {
         return (
             <RoleEditorComponent
                 onSubmit={this.onSubmit}
+                errors={this.state.errors}
                 {...this.props}
             />
         );

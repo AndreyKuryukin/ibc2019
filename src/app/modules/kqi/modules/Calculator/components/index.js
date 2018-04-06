@@ -43,6 +43,7 @@ class Calculator extends React.PureComponent {
         usergroupsList: PropTypes.array,
         onSubmit: PropTypes.func.isRequired,
         onMount: PropTypes.func,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
@@ -54,6 +55,7 @@ class Calculator extends React.PureComponent {
         usergroupsList: [],
         onSubmit: () => null,
         onMount: () => null,
+        errors: null,
     };
 
     constructor(props) {
@@ -73,12 +75,19 @@ class Calculator extends React.PureComponent {
                 abonent_group: '',
                 kqi_config_id: null,
             },
+            errors: null,
         };
     }
 
     componentDidMount() {
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
+        }
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
         }
     }
 
@@ -104,7 +113,10 @@ class Calculator extends React.PureComponent {
             config['manufacture_grouping'] = value.length > 1;
         }
 
-        this.setState({ config });
+        this.setState({
+            config,
+            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
+        });
     };
 
     onClose = () => {
@@ -112,12 +124,19 @@ class Calculator extends React.PureComponent {
     };
 
     onIntervalChange = (start, end) => {
+        const removeKeys = [
+            ...(start ? ['start_date_time'] : []),
+            ...(end ? ['end_date_time'] : []),
+        ];
+
         this.setState({
             config: {
                 ...this.state.config,
                 start_date_time: start,
                 end_date_time: end,
+
             },
+            errors: _.omit(this.state.errors, removeKeys),
         });
     };
 
@@ -155,11 +174,13 @@ class Calculator extends React.PureComponent {
                             kqiOptions={Calculator.mapListToOptions(this.props, 'kqiList')}
                             onServiceTypeChange={value => this.setConfigProperty('service_type', value)}
                             onKQIChange={value => this.setConfigProperty('kqi_config_id', value)}
+                            errors={this.state.errors}
                         />
                         <Period
                             onIntervalChange={this.onIntervalChange}
                             groupingOptions={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
                             onGroupingTypeChange={value => this.setConfigProperty('date_time_grouping', value)}
+                            errors={this.state.errors}
                         />
                         <Location
                             locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}

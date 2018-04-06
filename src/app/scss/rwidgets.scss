@@ -2,6 +2,11 @@
 
 .rw-widget {
   font-size: inherit;
+  &.invalid {
+    input {
+      border-color: #dc3545;
+    }
+  }
   .rw-widget-picker {
     display: block;
     height: $input-height;

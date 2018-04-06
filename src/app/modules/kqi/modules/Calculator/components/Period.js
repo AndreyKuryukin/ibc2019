@@ -23,12 +23,14 @@ class Period extends React.PureComponent {
         groupingOptions: PropTypes.array,
         onIntervalChange: PropTypes.func,
         onGroupingTypeChange: PropTypes.func,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
         groupingOptions: [],
         onIntervalChange: () => null,
         onGroupingTypeChange: () => null,
+        errors: null,
     };
 
     static mapObjectToOptions(object) {
@@ -99,6 +101,7 @@ class Period extends React.PureComponent {
     };
 
     render() {
+        const { errors } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_PERIOD_TITLE', 'Период')}
@@ -175,6 +178,7 @@ class Period extends React.PureComponent {
                     inputWidth={90}
                     format={'DD.MM.YYYY HH:mm'}
                     time
+                    valid={errors && _.isEmpty(errors.start_date_time)}
                 />
                 <DateTimePicker
                     value={this.state.end}
@@ -184,6 +188,7 @@ class Period extends React.PureComponent {
                     format={'DD.MM.YYYY HH:mm'}
                     style={{ marginLeft: 15 }}
                     time
+                    valid={errors && _.isEmpty(errors.end_date_time)}
                 />
                 <div className={styles.groupingBlock}>
                     <Checkbox

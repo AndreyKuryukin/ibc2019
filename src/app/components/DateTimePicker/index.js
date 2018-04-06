@@ -17,6 +17,7 @@ class DateTimePicker extends React.PureComponent {
         max: PropTypes.instanceOf(Date),
         date: PropTypes.bool,
         time: PropTypes.bool,
+        valid: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -25,6 +26,7 @@ class DateTimePicker extends React.PureComponent {
         max: new Date(2099, 11, 31),
         date: true,
         time: false,
+        valid: true,
     };
 
     constructor(props) {
@@ -67,6 +69,7 @@ class DateTimePicker extends React.PureComponent {
             date,
             min,
             max,
+            valid,
             ...rest
         } = this.props;
 
@@ -78,8 +81,10 @@ class DateTimePicker extends React.PureComponent {
         };
         const minDate = min || DateTimePicker.MIN_DATE;
         const maxDate = max || DateTimePicker.MAX_DATE;
+        const invalid = valid !== null && !valid;
 
         return <Picker popupTransition={this.transitionClass(inputProps)}
+                       className={invalid ? 'invalid' : ''}
                        inputProps={inputProps}
                        style={{ width }}
                        onToggle={this.onToggle}

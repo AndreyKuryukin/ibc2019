@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
 
-import * as _ from "lodash";
+import _ from 'lodash';
 import ls from "i18n";
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
@@ -18,55 +18,47 @@ class Conjunction extends React.PureComponent {
         operatorList: PropTypes.array,
         onChange: PropTypes.func,
         onRemove: PropTypes.func,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
         conjunction: {
-            value: ''
+            value: {}
         },
         parameterList: [],
         operatorList: [],
         onChange: () => null,
         onRemove: () => null,
+        errors: null,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            value: this.parseConjunctionString(props.conjunction.value)
+            value: props.conjunction.value,
+            errors: null,
         }
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.conjunction !== nextProps.conjunction) {
             const conjunction = { ..._.get(nextProps, 'conjunction', {}) };
-            conjunction.value = this.parseConjunctionString(conjunction.value);
+
             this.setState(conjunction)
+        }
+        if (this.props.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
         }
     }
 
     setConjunctionProperty = (path, value) => {
-        const conjunction = _.set({ ...this.state }, path, value);
-        this.setState(conjunction);
-        conjunction.value = this.composeConjunctionString(conjunction.value);
+        const newValue = _.set({ ...this.state.value }, path, value);
+        this.setState({
+            value: newValue,
+            errors: _.omit(this.state.errors, path),
+        });
 
-        this.props.onChange(conjunction)
-    };
-
-    parseConjunctionString = (conjunctionString = '') => {
-        const parts = conjunctionString.split(' ');
-        const parameterType = _.get(parts, '0', '');
-        const operator = _.get(parts, '1');
-        const value = _.get(parts, '2');
-        return {
-            parameterType, operator, value
-        };
-    };
-
-    composeConjunctionString = (object) => {
-        const { objectType = '', parameterType = '', operator = '', value = '' } = object;
-        const conjString = `${parameterType} ${operator} ${value}`;
-        return conjString.trim();
+        this.props.onChange({ value: newValue });
     };
 
     mapParameters = parameters => parameters.map(param => ({ title: param, value: param }));
@@ -74,9 +66,7 @@ class Conjunction extends React.PureComponent {
     mapOperators = operators => operators.map(operator => ({ title: operator, value: operator }));
 
     render() {
-        const { conjunction = {
-            value: this.parseConjunctionString(_.get(this.props, 'conjunction.value'))
-        } } = this.state;
+        const { value, errors } = this.state;
         const { parameterList, operatorList } = this.props;
         return <div className={styles.conditionBlock}>
             <div className={styles.parameters}>
@@ -91,9 +81,10 @@ class Conjunction extends React.PureComponent {
                             <Select
                                 id="parameter"
                                 type="select"
-                                value={_.get(conjunction, 'value.parameterType')}
+                                value={_.get(value, 'parameterType')}
                                 options={this.mapParameters(parameterList)}
-                                onChange={(value) => this.setConjunctionProperty('value.parameterType', value)}
+                                onChange={(value) => this.setConjunctionProperty('parameterType', value)}
+                                valid={errors && _.isEmpty(_.get(errors, 'parameterType', null))}
                             />
                         </Field>
                     </div>
@@ -101,17 +92,19 @@ class Conjunction extends React.PureComponent {
                         <Select
                             type="select"
                             placeholder={''}
-                            value={_.get(conjunction, 'value.operator')}
+                            value={_.get(value, 'operator')}
                             options={this.mapOperators(operatorList)}
-                            onChange={(value) => this.setConjunctionProperty('value.operator', value)}
+                            onChange={(value) => this.setConjunctionProperty('operator', value)}
+                            valid={errors && _.isEmpty(_.get(errors, 'operator', null))}
                         />
                     </div>
                     <div style={{ width: '20%', paddingLeft: 5 }}>
                         <Input
                             name="value"
-                            value={_.get(conjunction, 'value.value')}
+                            value={_.get(value, 'value')}
                             type="number"
-                            onChange={(event) => this.setConjunctionProperty('value.value', _.get(event, 'currentTarget.value'))}
+                            onChange={(event) => this.setConjunctionProperty('value', _.get(event, 'currentTarget.value'))}
+                            valid={errors && _.isEmpty(_.get(errors, 'value', null))}
                         />
                     </div>
                 </div>
