@@ -26,9 +26,9 @@ const REPORT_MRF_OPTIONS = [{
 }];
 
 const REGULARITY_MAP = {
-    'week': ls('WEEKLY', 'Еженедельный'),
-    'day': ls('DAILY', 'Ежедневный'),
-    'month': ls('MONTHLY', 'Ежемесячный'),
+    'WEEK': ls('WEEKLY', 'Еженедельный'),
+    'DAY': ls('DAILY', 'Ежедневный'),
+    'MONTH': ls('MONTHLY', 'Ежемесячный'),
 };
 
 const NAME_PATTERNS = {
