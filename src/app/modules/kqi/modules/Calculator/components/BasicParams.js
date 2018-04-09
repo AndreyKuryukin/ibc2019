@@ -2,11 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
 import _ from 'lodash';
-import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
-import { SERVICE_TYPES } from '../constants';
 
 class BasicParams extends React.PureComponent {
     static propTypes = {
@@ -14,6 +12,7 @@ class BasicParams extends React.PureComponent {
         kqiOptions: PropTypes.array,
         onServiceTypeChange: PropTypes.func,
         onKQIChange: PropTypes.func,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
@@ -21,9 +20,11 @@ class BasicParams extends React.PureComponent {
         kqiOptions: [],
         onServiceTypeChange: () => null,
         onKQIChange: () => null,
+        errors: null,
     };
 
     render() {
+        const { errors } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_BASIC_PARAMETERS_TITLE', 'Основные параметры')}
@@ -51,6 +52,7 @@ class BasicParams extends React.PureComponent {
                         id="kqi"
                         options={this.props.kqiOptions}
                         onChange={this.props.onKQIChange}
+                        valid={errors && _.isEmpty(errors.kqi_config_id)}
                     />
                 </Field>
             </Panel>

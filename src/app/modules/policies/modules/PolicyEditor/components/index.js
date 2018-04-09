@@ -20,6 +20,7 @@ class PolicyEditor extends React.PureComponent {
     static propTypes = {
         policyId: PropTypes.number,
         policy: PropTypes.object,
+        errors: PropTypes.object,
         scopes: PropTypes.array,
         types: PropTypes.array,
         active: PropTypes.bool,
@@ -31,6 +32,7 @@ class PolicyEditor extends React.PureComponent {
     static defaultProps = {
         policyId: null,
         policy: null,
+        errors: null,
         scopes: [],
         types: [],
         active: false,
@@ -44,6 +46,7 @@ class PolicyEditor extends React.PureComponent {
 
         this.state = {
             policy: props.policy,
+            errors: null,
         };
     }
 
@@ -59,6 +62,10 @@ class PolicyEditor extends React.PureComponent {
                 policy: nextProps.policy,
             });
         }
+
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
     }
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
@@ -72,6 +79,7 @@ class PolicyEditor extends React.PureComponent {
         );
         this.setState({
             policy,
+            errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : this.state.errors,
         });
     };
 
@@ -93,11 +101,12 @@ class PolicyEditor extends React.PureComponent {
 
     render() {
         const { active, policyId, scopes, types } = this.props;
-        const { policy } = this.state;
+        const { policy, errors } = this.state;
 
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
+
         return (
             <DraggableWrapper>
                 <Modal
@@ -113,16 +122,17 @@ class PolicyEditor extends React.PureComponent {
                                     setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
                                     types={types}
                                     policy={policy}
+                                    errors={errors}
                                 />
                                 <Panel
                                     title={ls('POLICIES_SCOPE_TITLE', 'Область применения')}
                                 >
                                     <Field
-                                        id="iField"
+                                        id="scope-type"
                                         inputWidth="100%"
                                     >
                                         <Select
-                                            id="iField"
+                                            id="scope-type"
                                             type="select"
                                             options={this.mapScopes(scopes)}
                                             value={this.getPolicyProperty('scope_type')}
@@ -130,15 +140,14 @@ class PolicyEditor extends React.PureComponent {
                                         />
                                     </Field>
                                     <Field
-                                        id="jField"
+                                        id="scope"
                                         inputWidth="100%"
                                     >
                                         <Select
-                                            id="jField"
+                                            id="scope"
                                             type="select"
                                             options={[]}
-                                            onChange={() => {
-                                            }}
+                                            onChange={() => null}
                                         />
                                     </Field>
                                 </Panel>
@@ -152,26 +161,30 @@ class PolicyEditor extends React.PureComponent {
                                                 labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
                                                 labelWidth="67%"
                                                 inputWidth="33%"
+                                                required
                                             >
                                                 <Input
                                                     id="cease_duration"
                                                     name="cease_duration"
+                                                    valid={_.isEmpty(_.get(errors,'threshold.cease_duration'))}
                                                     value={this.getPolicyProperty('threshold.cease_duration')}
                                                     onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
                                         </div>
-                                        <div style={{ width: '30%' }}>
+                                        <div style={{ width: '28%' }}>
                                             <Field
                                                 id="cease_value"
                                                 labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
                                                 labelWidth="50%"
                                                 inputWidth="50%"
+                                                required
                                             >
                                                 <Input
                                                     id="cease_value"
                                                     name="cease_value"
                                                     type="number"
+                                                    valid={_.isEmpty(_.get(errors,'threshold.cease_value'))}
                                                     value={this.getPolicyProperty('threshold.cease_value')}
                                                     onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                                 />
@@ -184,6 +197,7 @@ class PolicyEditor extends React.PureComponent {
                                 <Condition
                                     condition={this.getPolicyProperty('condition')}
                                     onChange={condition => this.setPolicyProperty('condition', condition)}
+                                    errors={errors && _.get(errors, 'condition.condition')}
                                 />
                             </div>
                         </div>

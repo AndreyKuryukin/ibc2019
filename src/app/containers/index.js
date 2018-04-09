@@ -10,6 +10,7 @@ import Policies from '../modules/policies/containers';
 import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
+import Sources from '../modules/sources/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
@@ -26,6 +27,7 @@ class App extends React.Component {
             },
             'LOGIN': {
                 path: '/login',
+                exact: true,
                 component: Login
             },
             'USERS': {
@@ -51,6 +53,10 @@ class App extends React.Component {
             'KQI': {
                 path: "/kqi/:action?",
                 component: KQI
+            },
+            'SOURCES': {
+                path: "/sources",
+                component: Sources
             }
         }
     };
@@ -58,7 +64,7 @@ class App extends React.Component {
     defaultUser = {
         userName: '',
         login: '',
-        subjects: ['LANDING', 'LOGIN', 'USERS', 'ROLES', 'POLICIES', 'REPORTS', 'STB_LOADING', 'KQI'],
+        subjects: ['LANDING', 'LOGIN', 'USERS', 'ROLES', 'POLICIES', 'REPORTS', 'STB_LOADING', 'KQI', 'SOURCES'],
         menu: [
             {
                 title: 'Роли',
@@ -79,6 +85,10 @@ class App extends React.Component {
             {
                 title: 'KPI/KQI',
                 link: '/kqi'
+            },
+            {
+                title: 'Источники',
+                link: '/sources'
             },
             {
                 title: 'Выход',

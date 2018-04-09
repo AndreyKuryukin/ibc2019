@@ -20,6 +20,7 @@ class Field extends React.PureComponent {
         required: PropTypes.bool,
         children: PropTypes.node,
         style: PropTypes.object,
+        title: PropTypes.string,
     }
 
     static defaultProps = {
@@ -31,10 +32,11 @@ class Field extends React.PureComponent {
         required: false,
         children: null,
         style: {},
+        title: '',
     }
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, disabled, inputWidth, required, children, style } = this.props;
+        const { id, labelText, labelWidth, labelAlign, disabled, inputWidth, required, children, style, title } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
             {
@@ -45,7 +47,11 @@ class Field extends React.PureComponent {
             },
         );
         return (
-            <div className={classes} style={style}>
+            <div
+                className={classes}
+                style={style}
+                title={title || null}
+            >
                 <label
                     htmlFor={id}
                     className={styles.fieldLabel}

@@ -15,12 +15,14 @@ class Configuration extends React.PureComponent {
         getPolicyProperty: PropTypes.func,
         setPolicyProperty: PropTypes.func,
         types: PropTypes.array,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
         getPolicyProperty: () => null,
         setPolicyProperty: () => null,
-        types: []
+        types: [],
+        errors: PropTypes.object,
     };
 
     mapTypes = (types) => {
@@ -28,7 +30,7 @@ class Configuration extends React.PureComponent {
     };
 
     render() {
-        const { getPolicyProperty, setPolicyProperty, types } = this.props;
+        const { getPolicyProperty, setPolicyProperty, types, errors } = this.props;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -45,6 +47,7 @@ class Configuration extends React.PureComponent {
                         name="name"
                         value={getPolicyProperty('name')}
                         onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
+                        valid={errors && _.isEmpty(errors.name)}
                     />
                 </Field>
                 <Field
@@ -60,28 +63,32 @@ class Configuration extends React.PureComponent {
                         options={this.mapTypes(types)}
                         value={getPolicyProperty('policy_type')}
                         onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
+                        valid={errors && _.isEmpty(errors.policy_type)}
                     />
                 </Field>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                     <div style={{ width: '75%' }}>
                         <Field
                             id="rise_duration"
+                            required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}:`}
                             labelWidth="67%"
-                            inputWidth="17%"
+                            inputWidth="33%"
                         >
                             <Input
                                 id="rise_duration"
                                 type="number"
                                 name="rise_duration"
+                                valid={_.isEmpty(_.get(errors,'threshold.rise_duration'))}
                                 value={getPolicyProperty('threshold.rise_duration')}
                                 onChange={event => setPolicyProperty('threshold.rise_duration', _.get(event, 'target.value'))}
                             />
                         </Field>
                     </div>
-                    <div style={{ width: '25%' }}>
+                    <div style={{ width: '28%' }}>
                         <Field
                             id="rise_value"
+                            required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}:`}
                             labelWidth="50%"
                             inputWidth="50%"
@@ -90,6 +97,7 @@ class Configuration extends React.PureComponent {
                                 id="rise_value"
                                 type="number"
                                 name="rise_value"
+                                valid={_.isEmpty(_.get(errors,'threshold.rise_value'))}
                                 value={getPolicyProperty('threshold.rise_value')}
                                 onChange={event => setPolicyProperty('threshold.rise_value', _.get(event, 'target.value'))}
                             />

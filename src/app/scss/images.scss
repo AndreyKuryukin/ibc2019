@@ -80,3 +80,26 @@
 .icon-state-success {
   @include iconBuilder(22px, 22px, 'success.png');
 }
+.icon-retry {
+  @include iconBuilder(22px, 22px, 'retry.png');
+}
+
+.source-running {
+  @include iconBuilder(22px, 22px, 'source-running.png');
+}
+
+.source-success {
+  @include iconBuilder(22px, 22px, 'source-success.png');
+}
+
+.source-failed {
+  @include iconBuilder(22px, 22px, 'source-failed.png');
+}
+
+.help-icon {
+  @include iconBuilder(22px, 22px, 'help.png');
+}
+
+.refresh-icon {
+  @include iconBuilder(22px, 22px, 'refresh.png');
+}

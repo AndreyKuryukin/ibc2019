@@ -1,24 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import ls from 'i18n';
 import { createSelector } from 'reselect';
 import TreeView from '../../../components/TreeView';
 import { DefaultCell, IconCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 import ReportCell from './ReportCell';
+import { DATE_TIME } from "../../../costants/date";
 
 class ReportsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        onRemoveResult: PropTypes.func,
+        onResultRetry: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
+        onRemoveResult: () => null,
+        onResultRetry: () => null,
     };
 
     getColumns = () => [{
@@ -26,11 +32,18 @@ class ReportsTable extends React.PureComponent {
         name: 'name',
         sortable: true,
         searchable: true,
+        width: 500
     }, {
         title: ls('REPORTS_CREATED_COLUMN_TITLE', 'Создан'),
-        name: 'created',
+        name: 'end',
         sortable: true,
         searchable: true,
+    }, {
+        title: '',
+        name: 'retry',
+        sortable: false,
+        searchable: false,
+        width: 40
     }, {
         title: ls('REPORTS_STATE_COLUMN_TITLE', 'Состояние'),
         name: 'state',
@@ -39,7 +52,7 @@ class ReportsTable extends React.PureComponent {
         width: 75
     }, {
         title: ls('REPORTS_FORMAT_COLUMN_TITLE', 'Формат'),
-        name: 'format',
+        name: 'type',
         sortable: true,
         searchable: true,
     }, {
@@ -57,42 +70,59 @@ class ReportsTable extends React.PureComponent {
         name: 'notify',
         sortable: true,
         searchable: true,
+        width: 200
     }, {
         title: '',
         name: 'delete',
         width: 25
     }];
 
-    mapReport = report => ({
+
+    mapReport = (config, report, isLastSuccess) => ({
         id: report.id,
-        name: report.file_name,
+        name: report.name,
         path: report.file_path,
         start: report.create_start,
         end: report.create_end,
         state: report.state,
-        type: report.type,
-        author: report.author,
-        comment: report.comment,
-        notify: report.notify_users_name,
+        type: config.type,
+        author: config.author,
+        comment: config.comment,
+        notify: config.notify_users_name,
+        isLastSuccess
     });
 
+
     mapConfig = config => ({
-        id: config.config_id,
-        type: 'config',
-        name: config.config_name,
-        children: _.get(config, 'reports', []).map(this.mapReport),
+        id: config.id,
+        type: config.type,
+        author: config.author,
+        comment: config.comment,
+        notify: config.notify_users_name,
+        name: config.name,
+        children: (config.reports || []).map((() => {
+            let lastSuccessEnd = 0;
+            return (report) => {
+                const state = _.get(report, 'state', '').toLowerCase();
+                const create_end = moment(_.get(report, 'create_end')).unix();
+                if ((state === 'success' || state === 'running') && create_end >= lastSuccessEnd) {
+                    lastSuccessEnd = create_end;
+                }
+                return this.mapReport(config, report, () => create_end === lastSuccessEnd);
+            }
+        })()),
     });
 
     mapTemplate = template => ({
-        id: template.templ_id,
+        id: template.id,
         type: 'template',
-        name: template.templ_name,
+        name: template.name,
         children: _.get(template, 'report_config', []).map(this.mapConfig),
     });
 
     mapGroups = group => ({
-        id: group.id,
-        name: group.name,
+        id: group.type,
+        name: group.type,
         children: _.get(group, 'templates', []).map(this.mapTemplate)
     });
 
@@ -112,7 +142,7 @@ class ReportsTable extends React.PureComponent {
         switch (node.type) {
             case 'PDF':
             case 'XLS':
-                this.props.removeResult(node.id, _.last(node.parents))
+                this.props.onRemoveResult(node.id, _.last(node.parents))
         }
     };
 
@@ -129,13 +159,36 @@ class ReportsTable extends React.PureComponent {
                         href={node.path}
                     />
                 );
-            case 'notify':
+            case 'notify': {
                 return (
                     <DefaultCell
                         content={node[column.name] ? node[column.name].join(', ') : ''}
                     />
                 );
-            case 'state':
+            }
+            case 'retry': {
+                const state = _.get(node, 'state', '').toLowerCase();
+                return state === 'failed' || (node.isLastSuccess && node.isLastSuccess() && state !== 'running') ?
+                    <IconCell
+                        icon={`icon-retry`}
+                        iconProps={{
+                            title: ls(`REPORTS_REGENERATE`, 'Перестроить')
+                        }}
+                        onIconClick={() => this.props.onResultRetry(node.id)}
+                        cellStyle={{
+                            display: 'flex',
+                            width: '100%',
+                            justifyContent: 'center'
+                        }}
+                    /> : ''
+            }
+            case 'start':
+            case 'end': {
+                return <DefaultCell
+                    content={node[column.name] ? moment(node[column.name]).format(DATE_TIME) : ''}
+                />;
+            }
+            case 'state': {
                 const state = _.get(node, 'state', '').toLowerCase();
                 return <IconCell
                     icon={`icon-state-${state}`}
@@ -148,13 +201,21 @@ class ReportsTable extends React.PureComponent {
                         justifyContent: 'center'
                     }}
                 />;
-            case 'delete':
+            }
+            case 'delete': {
                 return (node.type === 'PDF' || node.type === 'XLS') &&
                     <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
-            default:
-                return !node.type ? <DefaultCell
+            }
+            case 'type': {
+                return <DefaultCell
+                    content={ls(`REPORT_TYPE_${node[column.name]}`, '')}
+                />
+            }
+            default: {
+                return <DefaultCell
                     content={node[column.name]}
-                /> : '';
+                />;
+            }
         }
     };
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
 import styles from './styles.scss';
+import ls from "i18n";
 
 const propTypes = {
     children: PropTypes.node,
@@ -36,6 +37,7 @@ class Input extends React.Component {
             static: staticInput,
             plaintext,
             innerRef,
+            errorMessage = ls('DEFAULT_ERROR_MSG', 'Это поле заполнено неверно'),
             ...attributes
         } = this.props;
 
@@ -88,7 +90,10 @@ class Input extends React.Component {
         }
 
         return (
+            <div className={className}>
+                {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}
             <Tag {...attributes} ref={innerRef} className={classes} />
+            </div>
         );
     }
 }

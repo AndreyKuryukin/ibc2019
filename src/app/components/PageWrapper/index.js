@@ -12,7 +12,7 @@ class PageWrapper extends React.Component {
 
     static childContextTypes = {
         navBar: PropTypes.object.isRequired,
-        pageBlur: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired,
     };
 
     getChildContext = () => ({

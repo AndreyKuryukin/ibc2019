@@ -1,11 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import CalculatorComponent from '../components';
 import rest from '../../../../../rest';
 import {
     fetchListsSuccess,
 } from '../actions';
+import { validateForm } from '../../../../../util/validation';
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -30,11 +32,24 @@ class Calculator extends React.PureComponent {
         onFetchListsSuccess: () => null,
     };
 
+    validationConfig = {
+        kqi_config_id: {
+            required: true
+        },
+        start_date_time: {
+            required: true
+        },
+        end_date_time: {
+            required: true
+        },
+    };
+
     constructor(props) {
         super(props);
 
         this.state = {
             isLoading: false,
+            errors: null,
         };
     }
 
@@ -74,18 +89,22 @@ class Calculator extends React.PureComponent {
     };
 
     onSubmitKQI = (kqi) => {
-        this.setState({ isLoading: true });
-        console.log(kqi);
-        rest.post('/api/v1/kqi/calculate', kqi)
-            .then((response) => {
-                const kqi = response.data;
-                this.setState({ isLoading: false });
-                this.context.history.push('/kqi');
-            })
-            .catch((e) => {
-                console.error(e);
-                this.setState({ isLoading: false });
-            });
+        const errors = validateForm(kqi, this.validationConfig);
+        if (_.isEmpty(errors)) {
+            this.setState({ isLoading: true });
+            rest.post('/api/v1/kqi/calculate', kqi)
+                .then((response) => {
+                    const kqi = response.data;
+                    this.setState({ isLoading: false });
+                    this.context.history.push('/kqi');
+                })
+                .catch((e) => {
+                    console.error(e);
+                    this.setState({ isLoading: false });
+                });
+        } else {
+            this.setState({ errors });
+        }
     };
 
     render() {
@@ -99,6 +118,7 @@ class Calculator extends React.PureComponent {
                 usergroupsList={this.props.usergroupsList}
                 onSubmit={this.onSubmitKQI}
                 onMount={this.onMount}
+                errors={this.state.errors}
             />
         );
     }

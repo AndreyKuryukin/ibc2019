@@ -19,10 +19,16 @@
   }
 }
 
+.errorMark {
+  right: 15px
+}
+
 .placeholder {
   color: $placeholder !important;
+  font-style: italic;
 }
 
 .option {
-  color: black
+  color: black;
+  font-style: normal;
 }

@@ -19,6 +19,11 @@
   }
 }
 
+.invalidBorder {
+  border: 1px solid $danger !important;
+  color: $danger
+}
+
 .conditionsWrapper {
   display: flex;
   flex-grow: 1;
@@ -41,9 +46,6 @@
       .parameters {
         width: 95%;
         float: left;
-        > div:first-child {
-          margin-bottom: 5px;
-        }
       }
       .remove {
         float: right;

@@ -18,7 +18,7 @@
   flex-direction: row;
   align-items: center;
   position: relative;
-  &.required {
+  &.required .fieldLabel {
     color: $orange;
   }
   &.rightLabel {
@@ -34,6 +34,9 @@
   }
   .fieldInput {
     background: $white;
+  }
+  .invalidField {
+    border: 1px solid red
   }
   .form-check-input {
     position: relative;
