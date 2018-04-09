@@ -132,7 +132,7 @@ class RolesTable extends React.PureComponent {
     };
 
     render() {
-        const { data, searchText } = this.props;
+        const { data, searchText, preloader } = this.props;
         const columns = this.getColumns();
         const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
@@ -140,6 +140,7 @@ class RolesTable extends React.PureComponent {
                    bodyRowRender={this.bodyRowRender}
                    data={resultData}
                    columns={columns}
+                   preloader={preloader}
             />
         );
     }
