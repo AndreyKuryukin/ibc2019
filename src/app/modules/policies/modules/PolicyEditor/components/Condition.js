@@ -8,8 +8,9 @@ import Panel from '../../../../../components/Panel';
 import ls from 'i18n';
 
 import styles from './styles.scss';
-import  _ from 'lodash';
+import _ from 'lodash';
 import Conjunction from "./Conjunction";
+import classnames from "classnames";
 
 class Condition extends React.PureComponent {
     static propTypes = {
@@ -109,8 +110,18 @@ class Condition extends React.PureComponent {
         />)
     };
 
+    getConjunctionListError = (errors) => {
+        const conjunctionError = _.get(errors, `conjunction.conjunctionList`);
+        if (!_.isArray(conjunctionError) && _.isObject(conjunctionError)) {
+            return conjunctionError;
+        }
+    };
+
     render() {
         const { errors } = this.state;
+        const conjError = this.getConjunctionListError(errors);
+        const conjList = this.getConditionProperty('conjunction.conjunctionList');
+        const showListError = _.isEmpty(conjList) && !_.isEmpty(conjError);
         return (
             <Panel
                 title={ls('POLICIES_CONDITION_TITLE', 'Условие')}
@@ -168,8 +179,8 @@ class Condition extends React.PureComponent {
                 </Field>
                 <div className={styles.conditionsWrapper}>
                     <Icon icon="addIcon" onClick={this.addConjunction}/>
-                    <div className={styles.conditions}>
-                        {this.renderConjunctions(this.getConditionProperty('conjunction.conjunctionList'))}
+                    <div className={classnames(styles.conditions, { [styles.invalidBorder]: showListError})}>
+                        {showListError ? conjError.title : this.renderConjunctions(conjList)}
                     </div>
                 </div>
             </Panel>

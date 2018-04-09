@@ -47,6 +47,20 @@ class PolicyEditor extends React.PureComponent {
         policy_type: {
             required: true,
         },
+        threshold: () => ({
+            cease_duration: {
+                required: true,
+            },
+            cease_value: {
+                required: true,
+            },
+            rise_duration: {
+                required: true,
+            },
+            rise_value: {
+                required: true,
+            }
+        }),
         condition: () => ({
             condition: () => ({
                 conditionDuration: {
@@ -63,19 +77,19 @@ class PolicyEditor extends React.PureComponent {
                     conjunctionList: [{
                         notEmpty: true,
                     },
-                    {
-                        value: () => ({
-                            parameterType: {
-                                required: true,
-                            },
-                            operator: {
-                                required: true,
-                            },
-                            value: {
-                                required: true,
-                            },
-                        }),
-                    }],
+                        {
+                            value: () => ({
+                                parameterType: {
+                                    required: true,
+                                },
+                                operator: {
+                                    required: true,
+                                },
+                                value: {
+                                    required: true,
+                                },
+                            }),
+                        }],
                 }),
             }),
         }),

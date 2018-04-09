@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import ConfigEditorComponent from '../components';
-import { fetchUsersSuccess } from '../actions';
+import { fetchUsersSuccess, fetchTemplatesSuccess } from '../actions';
 import rest from '../../../../../rest';
 import { validateForm } from '../../../../../util/validation';
 
@@ -17,12 +17,14 @@ class ConfigEditor extends React.PureComponent {
         active: PropTypes.bool,
         users: PropTypes.array,
         onFetchUsersSuccess: PropTypes.func,
+        onFetchTemplatesSuccess: PropTypes.func,
     };
 
     static defaultProps = {
         active: false,
         users: [],
         onFetchUsersSuccess: () => null,
+        onFetchTemplatesSuccess: () => null,
     };
 
     state = {
@@ -39,6 +41,9 @@ class ConfigEditor extends React.PureComponent {
         type: {
             required: true,
         },
+        mrf: {
+            required: true,
+        },
         period: () => ({
             start_date: {
                 required: true,
@@ -52,11 +57,12 @@ class ConfigEditor extends React.PureComponent {
     onMount = () => {
         this.context.pageBlur && this.context.pageBlur(true);
         this.setState({ isLoading: true });
-        rest.get('/api/v1/user')
-            .then((response) => {
-                const users = response.data;
-
+        Promise.all([rest.get('/api/v1/user'), rest.get('/api/v1/report/config/templateTypes')])
+            .then(([userResponse, templatesResponse]) => {
+                const users = userResponse.data;
+                const templates = templatesResponse.data;
                 this.props.onFetchUsersSuccess(users);
+                this.props.onFetchTemplatesSuccess(templates);
                 this.setState({ isLoading: false });
             })
             .catch((e) => {
@@ -67,20 +73,18 @@ class ConfigEditor extends React.PureComponent {
 
     onSubmit = (config) => {
         const errors = validateForm(config, this.validationConfig);
+        console.log(errors);
         if (_.isEmpty(errors)) {
-            this.setState({ isLoading: true });
+            this.setState({ isLoading: true, errors });
 
-            rest.post('/api/v1/reports/configs', config)
-                .then((response) => {
-                    const newConfig = response.data;
-                    console.log(newConfig);
-
+            rest.post('/api/v1/report/config', config)
+                .then(() => {
                     this.setState({ isLoading: false });
                     this.context.history.push('/reports');
                 })
                 .catch((e) => {
                     console.error(e);
-                    this.setState({ isLoading: false });
+                    this.setState({ isLoading: false});
                 });
         } else {
             this.setState({ errors });
@@ -92,6 +96,7 @@ class ConfigEditor extends React.PureComponent {
             <ConfigEditorComponent
                 active={this.props.active}
                 users={this.props.users}
+                templates={this.props.templates}
                 onMount={this.onMount}
                 onSubmit={this.onSubmit}
                 errors={this.state.errors}
@@ -102,10 +107,12 @@ class ConfigEditor extends React.PureComponent {
 
 const mapStateToProps = state => ({
     users: state.reports.editor.users,
+    templates: state.reports.editor.templates,
 });
 
 const mapDispatchToProps = dispatch => ({
     onFetchUsersSuccess: users => dispatch(fetchUsersSuccess(users)),
+    onFetchTemplatesSuccess: users => dispatch(fetchTemplatesSuccess(users)),
     onSubmitConfigSuccess: config => null,
 });
 

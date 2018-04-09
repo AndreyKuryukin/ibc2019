@@ -6,8 +6,6 @@ import Icon from "../../../components/Icon/Icon";
 import * as _ from "lodash";
 import styles from './styles.scss';
 
-
-
 class SourcesControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -34,7 +32,7 @@ class SourcesControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.controls}>
-                <Icon icon="addIcon" onClick={this.onRefresh}/>
+                <Icon icon="refresh-icon" onClick={this.onRefresh}/>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}

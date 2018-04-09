@@ -188,6 +188,7 @@ class UserEditor extends React.Component {
                                         value={this.getUserProperty('login', '')}
                                         onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
                                         valid={errors && _.isEmpty(errors.login)}
+                                        errorMessage={_.get(errors, 'login.title')}
                                     />
                                 </Field>
                                 <Field
@@ -204,6 +205,7 @@ class UserEditor extends React.Component {
                                         value={this.getUserProperty('password', '')}
                                         onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
                                         valid={errors && _.isEmpty(errors.password)}
+                                        errorMessage={_.get(errors, 'password.title')}
                                     />
                                 </Field>
                                 <Field
@@ -220,6 +222,7 @@ class UserEditor extends React.Component {
                                         value={this.getUserProperty('confirm', '')}
                                         onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
                                         valid={errors && _.isEmpty(errors.confirm)}
+                                        errorMessage={_.get(errors, 'confirm.title')}
                                     />
                                 </Field>
                                 <Field

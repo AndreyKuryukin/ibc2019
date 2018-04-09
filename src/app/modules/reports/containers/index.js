@@ -37,7 +37,7 @@ class Reports extends React.PureComponent {
     fetchReports = () => {
         this.setState({ isLoading: true });
 
-        rest.get('/api/v1/report/results')
+        rest.get('/api/v1/report/result')
             .then((response) => {
                 const reports = response.data;
                 this.props.onFetchReportsSuccess(reports);
@@ -50,7 +50,7 @@ class Reports extends React.PureComponent {
     };
 
     removeResult = (report_id) => {
-        rest.delete('/api/v1/report/results/:id', null, { urlParams: { id: report_id } })
+        rest.delete('/api/v1/report/result/:id', null, { urlParams: { id: report_id } })
             .then(() => {
                 this.fetchReports();
             })

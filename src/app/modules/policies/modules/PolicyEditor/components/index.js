@@ -161,26 +161,30 @@ class PolicyEditor extends React.PureComponent {
                                                 labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
                                                 labelWidth="67%"
                                                 inputWidth="33%"
+                                                required
                                             >
                                                 <Input
                                                     id="cease_duration"
                                                     name="cease_duration"
+                                                    valid={_.isEmpty(_.get(errors,'threshold.cease_duration'))}
                                                     value={this.getPolicyProperty('threshold.cease_duration')}
                                                     onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
                                                 />
                                             </Field>
                                         </div>
-                                        <div style={{ width: '30%' }}>
+                                        <div style={{ width: '28%' }}>
                                             <Field
                                                 id="cease_value"
                                                 labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
                                                 labelWidth="50%"
                                                 inputWidth="50%"
+                                                required
                                             >
                                                 <Input
                                                     id="cease_value"
                                                     name="cease_value"
                                                     type="number"
+                                                    valid={_.isEmpty(_.get(errors,'threshold.cease_value'))}
                                                     value={this.getPolicyProperty('threshold.cease_value')}
                                                     onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
                                                 />
