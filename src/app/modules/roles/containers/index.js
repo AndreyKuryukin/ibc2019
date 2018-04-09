@@ -47,6 +47,10 @@ class Roles extends React.PureComponent {
                 const roles = response.data;
                 this.props.onFetchRolesSuccess(roles);
                 this.setState({ isLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
             });
     };
 
@@ -56,6 +60,10 @@ class Roles extends React.PureComponent {
             ids.map(id => rest.delete('/api/v1/role/:roleId', {}, { urlParams: { roleId: id } }))
         ).then(([...deletedIds]) => {
             this.props.onDeleteRolesSuccess(ids);
+            this.setState({ isLoading: false });
+        })
+        .catch((e) => {
+            console.error(e);
             this.setState({ isLoading: false });
         });
     };

@@ -14,6 +14,7 @@ class UsersTable extends React.PureComponent {
         divisionsById: PropTypes.object,
         searchText: PropTypes.string,
         onCheck: PropTypes.func,
+        preloader: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -21,6 +22,7 @@ class UsersTable extends React.PureComponent {
         divisionsById: {},
         searchText: '',
         onCheck: () => null,
+        preloader: false,
     };
 
     constructor(props) {
@@ -196,6 +198,7 @@ class UsersTable extends React.PureComponent {
                    columns={columns}
                    headerRowRender={this.headerRowRender}
                    bodyRowRender={this.bodyRowRender}
+                   preloader={this.props.preloader}
             />
         );
     }

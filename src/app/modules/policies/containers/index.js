@@ -42,6 +42,10 @@ class Policies extends React.PureComponent {
                 const policies = response.data;
                 this.props.onFetchPoliciesSuccess(policies);
                 this.setState({ isLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
             });
     }
 

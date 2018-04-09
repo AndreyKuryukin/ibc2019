@@ -70,6 +70,7 @@ export class KQITable extends React.PureComponent {
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
+                preloader={this.props.preloader}
             />
         );
     }

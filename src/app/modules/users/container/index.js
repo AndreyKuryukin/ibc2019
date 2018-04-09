@@ -53,6 +53,10 @@ class Users extends React.PureComponent {
                 this.props.onFetchUsersSuccess(users);
                 this.props.onFetchDivisionsSuccess(divisions);
                 this.setState({ isLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
             });
     };
 

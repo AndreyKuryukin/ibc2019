@@ -131,6 +131,7 @@ class Users extends React.Component {
                         divisionsById={this.props.divisionsById}
                         searchText={searchText}
                         onCheck={this.onCheck}
+                        preloader={this.props.isLoading}
                     />
 
                     {isEditorActive && <UserEditor

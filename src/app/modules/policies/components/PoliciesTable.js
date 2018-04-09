@@ -154,6 +154,7 @@ class PoliciesTable extends React.PureComponent {
                 bodyRowRender={this.bodyRowRender}
                 data={filteredData}
                 columns={columns}
+                preloader={this.props.preloader}
             />
         );
     }
