@@ -8,7 +8,7 @@ import TreeView from '../../../components/TreeView';
 import { DefaultCell, IconCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 import ReportCell from './ReportCell';
-import { DATE_TIME } from "../../../costants/date";
+import { DATE_TIME } from '../../../costants/date';
 
 class ReportsTable extends React.PureComponent {
     static propTypes = {
@@ -77,13 +77,25 @@ class ReportsTable extends React.PureComponent {
         width: 25
     }];
 
+    getReportTimeStatus = (report) => {
+        switch(report.state) {
+            case 'RUNNING': {
+                return `c ${moment(report.start).format(DATE_TIME)}`;
+            }
+            case 'FAILED':
+            case 'SUCCESS':
+                return `в ${moment(report.end).format(DATE_TIME)}`;
+            default:
+                return '';
+        }
+    };
 
     mapReport = (config, report, isLastSuccess) => ({
         id: report.id,
         name: report.name,
         path: report.file_path,
-        start: report.create_start,
-        end: report.create_end,
+        start: report.create_start_time,
+        end: report.create_end_time,
         state: report.state,
         type: config.type,
         author: config.author,
@@ -193,7 +205,7 @@ class ReportsTable extends React.PureComponent {
                 return <IconCell
                     icon={`icon-state-${state}`}
                     iconProps={{
-                        title: ls(`REPORTS_STATUS_${state.toUpperCase()}`, 'Статус')
+                        title: `${ls(`REPORTS_STATUS_${state.toUpperCase()}`, 'Статус')} ${state ? this.getReportTimeStatus(node) : ''}`
                     }}
                     cellStyle={{
                         display: 'flex',

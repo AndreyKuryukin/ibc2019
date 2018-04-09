@@ -27,7 +27,7 @@ const REPORT_MRF_OPTIONS = [{
 
 const REGULARITY_MAP = {
     'week': ls('WEEKLY', 'Еженедельный'),
-    'day': ls('DAYLY', 'Ежедневный'),
+    'day': ls('DAILY', 'Ежедневный'),
     'month': ls('MONTHLY', 'Ежемесячный'),
 };
 
@@ -248,6 +248,11 @@ class ConfigEditor extends React.PureComponent {
                                             errorMessage={_.get(errors, 'type.title')}
                                         />
                                     </Field>
+
+                                </Panel>
+                                <Panel
+                                    title={ls('REPORTS_CONFIG_EDITOR_MRF_TITLE', 'МРФ')}
+                                >
                                     <Field
                                         id="mrf"
                                         labelText={`${ls('REPORTS_CONFIG_EDITOR_MRF_FIELD', 'МРФ')}:`}
