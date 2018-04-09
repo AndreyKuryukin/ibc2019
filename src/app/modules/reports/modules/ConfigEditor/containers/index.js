@@ -73,7 +73,7 @@ class ConfigEditor extends React.PureComponent {
 
     onSubmit = (config) => {
         const errors = validateForm(config, this.validationConfig);
-        console.log(errors);
+
         if (_.isEmpty(errors)) {
             this.setState({ isLoading: true, errors });
 
