@@ -97,6 +97,7 @@ module.exports = {
         ...plugins,
         new CopyWebpackPlugin([
             'src/static/index.html',
+            'src/resources/img/favicon.ico',
         ]),
         new ExtractTextPlugin('styles.css', {
             allChunks: true,

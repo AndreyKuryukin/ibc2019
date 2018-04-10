@@ -55,7 +55,9 @@ function useStatic() {
     app.use('/*.js', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../build/app.js'));
     });
-
+    app.use('/*.ico', function (req, res) {
+        res.sendFile(path.resolve(__dirname, '../build/favicon.ico'));
+    });
     app.use('/*', express.static(buildPath, {
         index: 'index.html',
     }));
