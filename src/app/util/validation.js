@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import ls from "i18n";
+import ls from '../../i18n';
 
 const validators = {
     required: (value, testValue) => value == '0' || !!value === testValue,
