@@ -1,11 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import Table from './Table';
-import Controls from './Controls';
+import classnames from 'classnames';
+import CalculationsTable from './CalculationsTable';
+import CalculationsControls from './CalculationsControls';
+import ConfigsTable from './ConfigsTable';
+import ConfigsControls from './ConfigsControls';
 import styles from './styles.scss';
 import Configurator from '../modules/Configurator/containers';
 import Calculator from '../modules/Calculator/containers';
+import ResultsViewer from '../modules/ResultsViewer/components';
 
 class KQI extends React.PureComponent {
     static childContextTypes = {
@@ -30,7 +33,8 @@ class KQI extends React.PureComponent {
         super(props);
 
         this.state = {
-            searchText: '',
+            configsSearchText: '',
+            calculationsSearchText: '',
         };
     }
 
@@ -46,25 +50,43 @@ class KQI extends React.PureComponent {
         }
     }
 
-    onSearchTextChange = (searchText) => {
-        this.setState({ searchText });
-    }
+    onConfigsSearchTextChange = (searchText) => {
+        this.setState({ configsSearchText: searchText });
+    };
+
+    onCalculationsSearchTextChange = (searchText) => {
+        this.setState({ calculationsSearchText: searchText });
+    };
 
     render() {
         const { params } = this.props.match;
         const isConfiguratorActive = params.action === 'configure';
         const isCalculatorActive = params.action === 'calculate';
+        const isResultsViewerActive = params.action === 'view';
+
+        console.log(isResultsViewerActive);
 
         return (
             <div className={styles.kqiWrapper}>
-                <Controls onSearchTextChange={this.onSearchTextChange} />
-                <Table
-                    data={this.props.kqiData}
-                    searchText={this.state.searchText}
-                    preloader={this.props.isLoading}
-                />
+                <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
+                    <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange} />
+                    <ConfigsTable
+                        data={this.props.kqiData}
+                        searchText={this.state.configsSearchText}
+                        preloader={this.props.isLoading}
+                    />
+                </div>
+                <div className={classnames(styles.kqiColumn, styles.calculationsTableContainer)}>
+                    <CalculationsControls onSearchTextChange={this.onCalculationsSearchTextChange} />
+                    <CalculationsTable
+                        data={this.props.kqiData}
+                        searchText={this.state.calculationsSearchText}
+                        preloader={this.props.isLoading}
+                    />
+                </div>
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} />}
                 {isCalculatorActive && <Calculator active={isCalculatorActive} />}
+                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive} />}
             </div>
         );
     }

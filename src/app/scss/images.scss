@@ -103,3 +103,6 @@
 .refresh-icon {
   @include iconBuilder(22px, 22px, 'refresh.png');
 }
+.edit-icon {
+  @include iconBuilder(22px, 22px, 'delete.png');
+}

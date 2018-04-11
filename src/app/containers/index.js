@@ -51,7 +51,7 @@ class App extends React.Component {
                 component: StbLoading
             },
             'KQI': {
-                path: "/kqi/:action?",
+                path: "/kqi/:action?/:id?",
                 component: KQI
             },
             'SOURCES': {

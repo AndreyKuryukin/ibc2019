@@ -4,23 +4,15 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import Panel from '../../../../../components/Panel';
-import Select from '../../../../../components/Select';
-import Field from '../../../../../components/Field';
-import Checkbox from '../../../../../components/Checkbox';
-import DatePicker from '../../../../../components/DateTimePicker';
 import styles from './styles.scss';
 import {
-    ABONENT_GROUP_GROUPING,
     DATE_TIME_GROUPING,
-    EQUIPMENT_TYPE_GROUPING,
     GROUPING_TYPES,
     LAST_INCH_TECHNOLOGIES,
     LAST_MILE_TECHNOLOGIES,
     LOCATION_GROUPING,
     SERVICE_TYPES,
 } from '../constants';
-import moment from "moment";
 import Period from './Period';
 import BasicParams from './BasicParams';
 import Location from './Location';
