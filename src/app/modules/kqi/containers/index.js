@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import KQIComponent from '../components';
 import ls from 'i18n';
 import rest from '../../../rest';
-import { fetchListOfKQIResultsSuccess } from '../actions';
+import {
+    fetchKQIConfigsSuccess,
+    fetchKQIProjectionsSuccess,
+} from '../actions';
 
 class KQI extends React.PureComponent {
     static contextTypes = {
@@ -15,19 +18,24 @@ class KQI extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         kqiData: PropTypes.array,
+        projectionsData: PropTypes.array,
         onFetchKQISuccess: PropTypes.func,
+        onFetchProjectionsSuccess: PropTypes.func,
     };
 
     static defaultProps = {
         kqiData: [],
+        projectionsData: [],
         onFetchKQISuccess: () => null,
+        onFetchProjectionsSuccess: () => null,
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            isLoading: false,
+            isConfigsLoading: false,
+            isProjectionsLoading: false,
         };
     }
 
@@ -36,17 +44,36 @@ class KQI extends React.PureComponent {
     }
 
     onFetchKQI = () => {
-        // this.setState({ isLoading: true });
-        // rest.get('/api/v1/kqi')
-        //     .then((response) => {
-        //         const kqi = response.data;
-        //         this.props.onFetchKQISuccess(kqi);
-        //         this.setState({ isLoading: false });
-        //     })
-        //     .catch((e) => {
-        //         console.error(e);
-        //         this.setState({ isLoading: false });
-        //     });
+        this.setState({ isConfigsLoading: true });
+        rest.get('/api/v1/kqi')
+            .then((response) => {
+                const kqi = response.data;
+                this.props.onFetchKQISuccess(kqi);
+                this.setState({ isConfigsLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isConfigsLoading: false });
+            });
+    };
+
+    onSelectConfig = (kqiId) => {
+        this.setState({ isProjectionsLoading: true });
+
+        const urlParams = {
+            kqiId,
+        };
+        rest.get('/api/v1/kqi/:kqiId/projection', { urlParams })
+            .then((response) => {
+                const projections = response.data;
+                this.props.onFetchProjectionsSuccess(projections);
+                this.props.history.push(`/kqi/view/${kqiId}`);
+                this.setState({ isProjectionsLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isProjectionsLoading: false });
+            });
     };
 
     render() {
@@ -55,19 +82,24 @@ class KQI extends React.PureComponent {
                 match={this.props.match}
                 history={this.props.history}
                 kqiData={this.props.kqiData}
+                projectionsData={this.props.projectionsData}
                 onMount={this.onFetchKQI}
-                isLoading={this.state.isLoading}
+                isConfigsLoading={this.state.isConfigsLoading}
+                isProjectionsLoading={this.state.isProjectionsLoading}
+                onSelectConfig={this.onSelectConfig}
             />
         );
     }
 }
 
 const mapStateToProps = state => ({
-    kqiData: [],
+    kqiData: state.kqi.kqi.configs,
+    projectionsData: state.kqi.kqi.projections,
 });
 
 const mapDispatchToProps = dispatch => ({
-    onFetchKQISuccess: kqi => dispatch(fetchListOfKQIResultsSuccess(kqi)),
+    onFetchKQISuccess: kqi => dispatch(fetchKQIConfigsSuccess(kqi)),
+    onFetchProjectionsSuccess: projections => dispatch(fetchKQIProjectionsSuccess(projections)),
 });
 
 export default connect(

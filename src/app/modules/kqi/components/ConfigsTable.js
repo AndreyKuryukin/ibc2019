@@ -7,23 +7,19 @@ import Table from '../../../components/Table';
 import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 
-const mock = [{
-    id: 1,
-    name: 'Krc',
-    count: '2',
-}];
-
 class ConfigsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        onSelectConfig: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
+        onSelectConfig: null,
     };
 
     getColumns = () => [{
@@ -33,7 +29,7 @@ class ConfigsTable extends React.PureComponent {
         sortable: true,
     }, {
         title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество проекций'),
-        name: 'count',
+        name: 'projection_count',
         searchable: true,
         sortable: true,
     }, {
@@ -100,11 +96,12 @@ class ConfigsTable extends React.PureComponent {
 
         return (
             <Table
-                data={mock}
+                data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}
+                onSelectRow={this.props.onSelectConfig}
             />
         );
     }

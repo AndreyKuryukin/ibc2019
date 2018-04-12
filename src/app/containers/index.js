@@ -51,7 +51,7 @@ class App extends React.Component {
                 component: StbLoading
             },
             'KQI': {
-                path: "/kqi/:action?/:id?",
+                path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
                 component: KQI
             },
             'SOURCES': {

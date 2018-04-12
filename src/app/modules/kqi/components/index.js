@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
-import CalculationsTable from './CalculationsTable';
-import CalculationsControls from './CalculationsControls';
+import ProjectionsTable from './ProjectionsTable';
+import ProjectionsControls from './ProjectionsControls';
 import ConfigsTable from './ConfigsTable';
 import ConfigsControls from './ConfigsControls';
 import styles from './styles.scss';
@@ -19,15 +19,21 @@ class KQI extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         kqiData: PropTypes.array,
-        isLoading: PropTypes.bool,
+        projectionsData: PropTypes.array,
+        isConfigsLoading: PropTypes.bool,
+        isProjectionsLoading: PropTypes.bool,
         onMount: PropTypes.func,
+        onSelectConfig: PropTypes.func,
     };
 
     static defaultProps = {
-        isLoading: false,
+        kqiData: [],
+        projectionsData: [],
+        isConfigsLoading: false,
+        isProjectionsLoading: false,
         onMount: () => null,
+        onSelectConfig: null,
     };
-
 
     constructor(props) {
         super(props);
@@ -58,13 +64,19 @@ class KQI extends React.PureComponent {
         this.setState({ calculationsSearchText: searchText });
     };
 
+    onResultsViewerClose = () => {
+        const { params } = this.props.match;
+        const configId = params.configId || null;
+
+        this.props.history.push(`/kqi/view/${configId}`);
+    };
+
     render() {
         const { params } = this.props.match;
         const isConfiguratorActive = params.action === 'configure';
         const isCalculatorActive = params.action === 'calculate';
-        const isResultsViewerActive = params.action === 'view';
-
-        console.log(isResultsViewerActive);
+        const isResultsViewerActive = !!params.projectionId;
+        const configId = params.configId || null;
 
         return (
             <div className={styles.kqiWrapper}>
@@ -73,20 +85,22 @@ class KQI extends React.PureComponent {
                     <ConfigsTable
                         data={this.props.kqiData}
                         searchText={this.state.configsSearchText}
-                        preloader={this.props.isLoading}
+                        preloader={this.props.isConfigsLoading}
+                        onSelectConfig={this.props.onSelectConfig}
                     />
                 </div>
                 <div className={classnames(styles.kqiColumn, styles.calculationsTableContainer)}>
-                    <CalculationsControls onSearchTextChange={this.onCalculationsSearchTextChange} />
-                    <CalculationsTable
-                        data={this.props.kqiData}
+                    <ProjectionsControls onSearchTextChange={this.onCalculationsSearchTextChange} />
+                    <ProjectionsTable
+                        data={this.props.projectionsData}
                         searchText={this.state.calculationsSearchText}
-                        preloader={this.props.isLoading}
+                        preloader={this.props.isProjectionsLoading}
+                        configId={configId}
                     />
                 </div>
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} />}
                 {isCalculatorActive && <Calculator active={isCalculatorActive} />}
-                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive} />}
+                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive} onClose={this.onResultsViewerClose} />}
             </div>
         );
     }

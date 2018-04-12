@@ -38,9 +38,9 @@ class Configurator extends React.PureComponent {
         this.state = {
             config: {
                 name: '',
-                object_type: '',
-                parameter_type: null,
-                operator_type: '',
+                ['kpi-object_type']: '',
+                kpi_parameter_type: null,
+                operator: '',
                 level: '',
             },
             errors: null,
@@ -75,8 +75,8 @@ class Configurator extends React.PureComponent {
     };
 
     onChangeParameterType = (value) => {
-        const parameterType = _.get(this.props.paramTypesById, `${value}`, null);
-        this.setConfigProperty('parameter_type', parameterType);
+
+        this.setConfigProperty('kpi_parameter_type', value);
     };
 
     onClose = () => {
@@ -89,11 +89,11 @@ class Configurator extends React.PureComponent {
 
     mapConfig = (config) => {
         const conf = { ...config };
-        if (config.parameter_type) {
-            conf.parameter_type = config.parameter_type.name;
+        if (config.kpi_parameter_type) {
+            conf.kpi_parameter_type = _.get(this.props.paramTypesById, `${config.kpi_parameter_type}.name`, '');
         }
-        if (config.operator_type) {
-            conf.operator_type = OPERATOR_TYPES[config.operator_type];
+        if (config.operator) {
+            conf.operator = OPERATOR_TYPES[config.operator];
         }
         return conf;
     };
@@ -132,8 +132,8 @@ class Configurator extends React.PureComponent {
                         >
                             <Select
                                 options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
-                                onChange={value => this.setConfigProperty('object_type', value)}
-                                valid={errors && _.isEmpty(errors.object_type)}
+                                onChange={value => this.setConfigProperty('kpi-object_type', value)}
+                                valid={errors && _.isEmpty(errors['kpi-object_type'])}
                             />
                         </Field>
                         <Field
@@ -146,7 +146,7 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
                                 onChange={this.onChangeParameterType}
-                                valid={errors && _.isEmpty(errors.parameter_type)}
+                                valid={errors && _.isEmpty(errors.kpi_parameter_type)}
                             />
                         </Field>
                         <Field
@@ -158,8 +158,8 @@ class Configurator extends React.PureComponent {
                         >
                             <Select
                                 options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
-                                onChange={value => this.setConfigProperty('operator_type', value)}
-                                valid={errors && _.isEmpty(errors.operator_type)}
+                                onChange={value => this.setConfigProperty('operator', value)}
+                                valid={errors && _.isEmpty(errors.operator)}
                             />
                         </Field>
                         <Field

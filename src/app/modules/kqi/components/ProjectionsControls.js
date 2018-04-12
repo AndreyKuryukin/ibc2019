@@ -6,7 +6,7 @@ import ls from 'i18n';
 import styles from './styles.scss';
 import Icon from "../../../components/Icon/Icon";
 
-class CalculationsControls extends React.PureComponent {
+class ProjectionsControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -43,5 +43,5 @@ class CalculationsControls extends React.PureComponent {
     }
 }
 
-export default CalculationsControls;
+export default ProjectionsControls;
 
