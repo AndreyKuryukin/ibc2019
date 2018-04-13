@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalBody, ModalHeader, ModalFooter } from 'reactstrap';
+import { Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
-import { Input } from 'reactstrap';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 import ResultsTable from './ResultsTable';
 import styles from './styles.scss';
+import Graph from "./Graph";
 
 class ResultsViewer extends React.PureComponent {
     static contextTypes = {
@@ -14,10 +14,22 @@ class ResultsViewer extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        match: PropTypes.object,
+        results: PropTypes.array,
+        resHistory: PropTypes.object,
+        onMount: PropTypes.func,
+        fetchHistory: PropTypes.func,
+        isLoading: PropTypes.bool
     };
 
     static defaultProps = {
         active: false,
+        match: {},
+        results: [],
+        resHistory: {},
+        onMount: () => null,
+        fetchHistory: () => null,
+        isLoading: false
     };
 
     constructor(props) {
@@ -42,7 +54,12 @@ class ResultsViewer extends React.PureComponent {
         this.setState({ searchText });
     };
 
+    onCheck = (checked) => {
+        this.props.fetchHistory(checked);
+    };
+
     render() {
+        const { resHistory, results } = this.props;
         return (
             <DraggableWrapper>
                 <Modal
@@ -66,17 +83,18 @@ class ResultsViewer extends React.PureComponent {
                                     />
                                 </div>
                                 <ResultsTable
-                                    data={[]}
+                                    data={results}
                                     searchText={this.state.searchText}
                                     prealoder={false}
+                                    onCheck={this.onCheck}
                                 />
                             </div>
                             <div className={styles.kqiResultsViewerGraphContainer}>
-                                {/*Graph component*/}
+                                <Graph data={resHistory}/>
                             </div>
                         </div>
                     </ModalBody>
-                    <ModalFooter />
+                    <ModalFooter/>
                 </Modal>
             </DraggableWrapper>
         );

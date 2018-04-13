@@ -104,7 +104,7 @@ export class CalculationsTable extends React.PureComponent {
             case 'projections':
                 return (
                     <LinkCell
-                        href={`/kqi/view/${node.id}`}
+                        href={`/kqi/view/${node.id}/`}
                         content={node[column.name]}
                     />
                 );

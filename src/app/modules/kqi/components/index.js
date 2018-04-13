@@ -8,7 +8,8 @@ import ConfigsControls from './ConfigsControls';
 import styles from './styles.scss';
 import Configurator from '../modules/Configurator/containers';
 import Calculator from '../modules/Calculator/containers';
-import ResultsViewer from '../modules/ResultsViewer/components';
+import ResultsViewer from '../modules/ResultsViewer/containers';
+import * as _ from "lodash";
 
 class KQI extends React.PureComponent {
     static childContextTypes = {
@@ -59,17 +60,16 @@ class KQI extends React.PureComponent {
     };
 
     render() {
-        const { params } = this.props.match;
-        const isConfiguratorActive = params.action === 'configure';
-        const isCalculatorActive = params.action === 'calculate';
-        const isResultsViewerActive = params.action === 'view';
-
-        console.log(isResultsViewerActive);
+        const { params = {} } = this.props.match;
+        const { action, resultId, projectionId, configId } = params;
+        const isConfiguratorActive = action === 'configure';
+        const isCalculatorActive = action === 'calculate';
+        const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
 
         return (
             <div className={styles.kqiWrapper}>
                 <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
-                    <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange} />
+                    <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange}/>
                     <ConfigsTable
                         data={this.props.kqiData}
                         searchText={this.state.configsSearchText}
@@ -77,16 +77,20 @@ class KQI extends React.PureComponent {
                     />
                 </div>
                 <div className={classnames(styles.kqiColumn, styles.calculationsTableContainer)}>
-                    <CalculationsControls onSearchTextChange={this.onCalculationsSearchTextChange} />
+                    <CalculationsControls onSearchTextChange={this.onCalculationsSearchTextChange}/>
                     <CalculationsTable
                         data={this.props.kqiData}
                         searchText={this.state.calculationsSearchText}
                         preloader={this.props.isLoading}
                     />
                 </div>
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive} />}
-                {isCalculatorActive && <Calculator active={isCalculatorActive} />}
-                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive} />}
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive}/>}
+                {isCalculatorActive && <Calculator active={isCalculatorActive}/>}
+                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
+                                                         projectionId={projectionId}
+                                                         resultId={resultId}
+                                                         configId={configId}
+                />}
             </div>
         );
     }

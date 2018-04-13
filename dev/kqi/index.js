@@ -1,26 +1,61 @@
 module.exports = (app) => {
     const kqiResults = [
         {
-            id: 1,
-            branch: 'Нижегородский',
-            technology: 'DSL',
-            result: '99%',
-            weight: '0.1',
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Все',
+            date_time: '2018-04-01T00:12:21.434',
+            value: 99.95,
+            weight: 0.1
         },
         {
-            id: 2,
-            branch: 'Кировский',
-            technology: 'GPON',
-            result: '99.9%',
-            weight: '0.2',
-        },
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Некоторые',
+            date_time: '2018-04-01T00:12:21.434',
+            value: 99.95,
+            weight: 0.1
+        }
+    ];
+
+    const history = [
         {
-            id: 3,
-            branch: 'Пензенский',
-            technology: 'Ethernet',
-            result: '98%',
-            weight: '0.04',
-        },
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Некоторые',
+            date_time: '2018-04-01T00:12:21.434',
+            values: [
+                {
+                    date_time: '2018-04-01T00:12:30',
+                    value: 52
+                },
+                {
+                    date_time: '2018-04-01T00:12:40',
+                    value: 47
+                },
+                {
+                    date_time: '2018-04-01T00:12:50',
+                    value: 68
+                },
+                {
+                    date_time: '2018-04-01T00:13:00',
+                    value: 41
+                },
+                {
+                    date_time: '2018-04-01T00:13:10',
+                    value: 79
+                },
+            ]
+        }
     ];
 
     const kpi = [
@@ -88,8 +123,13 @@ module.exports = (app) => {
         },
     ];
 
-    app.get('/api/v1/kqi/all', (req, res) => {
+
+    app.get('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
         res.send(kqiResults);
+    });
+
+    app.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
+        res.send(history);
     });
 
 
