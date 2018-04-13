@@ -47,13 +47,13 @@ class Configurator extends React.PureComponent {
         name: {
             required: true
         },
-        object_type: {
+        ['kpi-object_type']: {
             required: true
         },
-        operator_type: {
+        operator: {
             required: true
         },
-        parameter_type: {
+        kpi_parameter_type: {
             required: true
         },
         level: {
@@ -62,7 +62,7 @@ class Configurator extends React.PureComponent {
     };
 
     onMount = () => {
-        this.setState({isLoading: true});
+        this.setState({ isLoading: true });
 
         rest.get('/api/v1/kqi/parameterTypes')
             .then((response) => {

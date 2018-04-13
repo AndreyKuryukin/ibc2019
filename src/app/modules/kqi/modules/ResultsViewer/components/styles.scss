@@ -1,0 +1,34 @@
+@import '../../../../../scss/vars';
+
+.kqiResultsViewer {
+  width: 900px;
+  max-width: 900px !important;
+  .kqiResultsViewerContent {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
+    height: 630px;
+    .kqiResultsViewerTableContainer {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      .searchBar {
+        display: flex;
+        padding: .5rem;
+        align-items: center;
+        background: $white;
+        .search {
+          width: 300px;
+          margin-left: auto;
+        }
+      }
+    }
+    .kqiResultsViewerGraphContainer {
+      display: flex;
+      height: 230px;
+      margin-top: 5px;
+      background: $white;
+      padding: 5px;
+    }
+  }
+}

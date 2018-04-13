@@ -6,7 +6,7 @@ import ls from 'i18n';
 import styles from './styles.scss';
 import Icon from "../../../components/Icon/Icon";
 
-class KQIControls extends React.PureComponent {
+class ConfigsControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -27,16 +27,11 @@ class KQIControls extends React.PureComponent {
         this.context.history.push('/kqi/configure');
     };
 
-    onCalculate = () => {
-        this.context.history.push('/kqi/calculate');
-    };
-
     render() {
         return (
             <div className={styles.kqiControls}>
                 <div className={styles.buttonsGroup}>
                     <Icon icon="kqiAdd" onClick={this.onConfigure} />
-                    <Icon icon="kqiCalculate" onClick={this.onCalculate} />
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
@@ -48,5 +43,5 @@ class KQIControls extends React.PureComponent {
     }
 }
 
-export default KQIControls;
+export default ConfigsControls;
 

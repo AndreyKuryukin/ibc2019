@@ -1,12 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
+import search from '../../../../../util/search';
+import TreeView from '../../../../../components/TreeView';
+import { DefaultCell } from '../../../../../components/Table/Cells';
 
-import search from '../../../util/search';
-import Table from '../../../components/Table';
-import { DefaultCell } from '../../../components/Table/Cells';
+const mock = [{
+    id: 1,
+    branch: 'Нижегородский',
+    result: '99%',
+    weight: '0.1',
+    children: [{
+        id: 2,
+        branch: 'DSL',
+        result: '98%',
+        weight: '0.2',
+    }, {
+        id: 3,
+        branch: 'GPON',
+        result: '92%',
+        weight: '0.15',
+    }, {
+        id: 4,
+        branch: 'Ethernet',
+        result: '93.5%',
+        weight: '0.1',
+    }],
+}];
 
-export class KQITable extends React.PureComponent {
+class ResultsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -22,11 +44,6 @@ export class KQITable extends React.PureComponent {
     getColumns = () => [{
         title: ls('KQI_BRANCH_COLUMN_TITLE', 'Филиал'),
         name: 'branch',
-        searchable: true,
-        sortable: true,
-    }, {
-        title: ls('KQI_TECHNOLOGY_COLUMN_TITLE', 'Технология ПМ'),
-        name: 'technology',
         searchable: true,
         sortable: true,
     }, {
@@ -54,19 +71,14 @@ export class KQITable extends React.PureComponent {
         />
     );
 
-    filter = (data, columns, searchText) => {
-        const searchableColumns = columns.filter(col => col.searchable);
-        return data.filter(
-            node => searchableColumns.find(column => search(node[column.name], searchText)))
-    };
-
     render() {
         const { data, searchText } = this.props;
         const columns = this.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
+
         return (
-            <Table
-                data={filteredData}
+            <TreeView
+                data={mock}
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
@@ -76,4 +88,4 @@ export class KQITable extends React.PureComponent {
     }
 }
 
-export default KQITable;
+export default ResultsTable;

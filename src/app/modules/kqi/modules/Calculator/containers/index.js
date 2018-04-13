@@ -33,14 +33,17 @@ class Calculator extends React.PureComponent {
     };
 
     validationConfig = {
-        kqi_config_id: {
-            required: true
+        name: {
+            required: true,
+        },
+        kqi_id: {
+            required: true,
         },
         start_date_time: {
-            required: true
+            required: true,
         },
         end_date_time: {
-            required: true
+            required: true,
         },
     };
 
@@ -88,11 +91,11 @@ class Calculator extends React.PureComponent {
         });
     };
 
-    onSubmitKQI = (kqi) => {
-        const errors = validateForm(kqi, this.validationConfig);
+    onSubmitKQI = (projection) => {
+        const errors = validateForm(projection, this.validationConfig);
         if (_.isEmpty(errors)) {
             this.setState({ isLoading: true });
-            rest.post('/api/v1/kqi/calculate', kqi)
+            rest.post('/api/v1/kqi/projection', projection)
                 .then((response) => {
                     const kqi = response.data;
                     this.setState({ isLoading: false });

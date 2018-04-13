@@ -2,11 +2,23 @@
 
 .kqiWrapper {
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
   height: 100%;
   width: 100%;
   padding: 1em;
+  .kqiColumn {
+    display: flex;
+    flex-direction: column;
+  }
+  .kqiColumn + .kqiColumn {
+    margin-left: 5px;
+  }
+  .configsTableContainer {
+    width: 340px;
+  }
+  .calculationsTableContainer {
+    flex-grow: 1;
+  }
 }
 
 .kqiControls {
@@ -24,4 +36,14 @@
   .search {
     width: 20em;
   }
+}
+
+.deleteStyle {
+  color: $grey;
+  cursor: pointer;
+}
+.autoCount {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
 }
