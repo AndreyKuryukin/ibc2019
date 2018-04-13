@@ -26,9 +26,9 @@ const REPORT_MRF_OPTIONS = [{
 }];
 
 const REGULARITY_MAP = {
-    'week': ls('WEEKLY', 'Еженедельный'),
-    'day': ls('DAILY', 'Ежедневный'),
-    'month': ls('MONTHLY', 'Ежемесячный'),
+    'WEEK': ls('WEEKLY', 'Еженедельный'),
+    'DAY': ls('DAILY', 'Ежедневный'),
+    'MONTH': ls('MONTHLY', 'Ежемесячный'),
 };
 
 const NAME_PATTERNS = {
@@ -98,8 +98,8 @@ class ConfigEditor extends React.PureComponent {
     }
 
     getConfigProperty = (key, defaultValue) => {
-        if (key === 'config_name') {
-            return this.composeConfigName()
+        if (key === 'config_name' && _.get(this.state.config, 'period.auto')) {
+            return this.composeConfigName();
         }
         return _.get(this.state.config, key, defaultValue);
     };
@@ -109,16 +109,16 @@ class ConfigEditor extends React.PureComponent {
         const templateId = this.getConfigProperty('template_id');
         const template = _.find(this.state.templates, tpl => tpl.id === templateId);
         if (template) {
-            name.push(template.name)
+            name.push(template.name);
         } else {
-            name.push(NAME_PATTERNS['template_id'.toUpperCase()])
+            name.push(NAME_PATTERNS['template_id'.toUpperCase()]);
         }
 
         const regularity = this.getConfigProperty('period.regularity');
         if (regularity) {
-            name.push(REGULARITY_MAP[regularity])
+            name.push(REGULARITY_MAP[regularity]);
         } else {
-            name.push(NAME_PATTERNS['period.regularity'.toUpperCase()])
+            name.push(NAME_PATTERNS['period.regularity'.toUpperCase()]);
         }
         name.push(`${this.getConfigProperty('type') || NAME_PATTERNS['type'.toUpperCase()]}`);
         return name.join('_');
@@ -164,7 +164,7 @@ class ConfigEditor extends React.PureComponent {
                 ...this.state.config,
                 notify_users: auto ? _.get('notify_users', []) : [],
                 period: {
-                    regularity,
+                    regularity: regularity.toUpperCase(),
                     start_date: start,
                     end_date: end,
                     auto,
@@ -176,7 +176,7 @@ class ConfigEditor extends React.PureComponent {
 
     render() {
         const { errors, templates } = this.state;
-        console.log(errors);
+
         return (
             <DraggableWrapper>
                 <Modal
@@ -267,7 +267,7 @@ class ConfigEditor extends React.PureComponent {
                                             placeholder={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                                             onChange={value => this.setConfigProperty('mrf', value)}
                                             valid={!_.get(errors, 'mrf', false)}
-                                            errorMessage={_.get(errors, 'mrf')}
+                                            errorMessage={_.get(errors, 'mrf.title')}
                                         />
                                     </Field>
                                 </Panel>
