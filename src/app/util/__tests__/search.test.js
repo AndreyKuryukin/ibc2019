@@ -11,7 +11,7 @@ describe('searching', () => {
         expect(search(str, '123')).toBeFalsy();
     });
 
-    it('search not in  string', () => {
+    it('search not in string', () => {
         expect(search(null, '123')).toBeFalsy();
     });
 });

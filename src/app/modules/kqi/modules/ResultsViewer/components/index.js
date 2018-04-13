@@ -46,10 +46,6 @@ class ResultsViewer extends React.PureComponent {
         }
     }
 
-    onClose = () => {
-        this.context.history.push('/kqi');
-    };
-
     onSearchTextChange = (searchText) => {
         this.setState({ searchText });
     };
@@ -68,7 +64,7 @@ class ResultsViewer extends React.PureComponent {
                 >
                     <ModalHeader
                         className="handle"
-                        toggle={this.onClose}
+                        toggle={this.props.onClose}
                     >
                         {ls('KQI_RESULTS_VIEWER_TITLE', 'Результаты вычисления KQI')}
                     </ModalHeader>
