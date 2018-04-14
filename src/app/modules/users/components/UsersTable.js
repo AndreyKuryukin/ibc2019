@@ -104,7 +104,7 @@ class UsersTable extends React.PureComponent {
         this.props.onCheck(checked);
     };
 
-    headerRowRender = (column) => {
+    headerRowRender = (column, sort) => {
         switch (column.name) {
             case 'checked': {
                 const checkedPartially = this.props.data.length !== 0 && this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
@@ -123,6 +123,7 @@ class UsersTable extends React.PureComponent {
                 return (
                     <DefaultCell
                         content={column.title}
+                        sortDirection={sort.by === column.name ? sort.direction : null}
                     />
                 );
         }
@@ -143,7 +144,11 @@ class UsersTable extends React.PureComponent {
                 );
             }
             case 'email' : {
-                return <MailLink href={node.email}>{node.email}</MailLink>
+                return (
+                    <DefaultCell
+                        content={<MailLink href={node.email}>{node.email}</MailLink>}
+                    />
+                );
             }
             case 'login':
                 return (
@@ -167,13 +172,24 @@ class UsersTable extends React.PureComponent {
                     />
                 );
             case 'name':
-                return `${node['first_name']} ${node['last_name']}`;
+                return (
+                    <DefaultCell
+                        content={`${node['first_name']} ${node['last_name']}`}
+                    />
+                );
             case 'last_connection':
-                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
             case 'created':
-                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
+                return (
+                    <DefaultCell
+                        content={node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : ''}
+                    />
+                );
             case 'disabled':
-                return node[column.name] ? ls('NO', 'Нет') : ls('YES', 'Да');
+                return (
+                    <DefaultCell
+                        content={node[column.name] ? ls('NO', 'Нет') : ls('YES', 'Да')}
+                    />
+                );
             default:
                 return (
                     <DefaultCell

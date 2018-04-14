@@ -1,9 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './styles.scss';
-import classNames from 'classnames';
-import ColumnFilterTrigger from '../ColumnFilter/ColumnFilterTrigger';
-import ColumnFilterForm from '../ColumnFilter/ColumnFilterForm';
 
 class HeaderCell extends React.PureComponent {
     static propTypes = {
@@ -15,7 +12,8 @@ class HeaderCell extends React.PureComponent {
         ]),
         onClick: PropTypes.func,
         onColumnFilterChange: PropTypes.func,
-    }
+        isLast: PropTypes.bool,
+    };
 
     static defaultProps = {
         children: null,
@@ -23,71 +21,18 @@ class HeaderCell extends React.PureComponent {
         width: null,
         onClick: () => null,
         onColumnFilterChange: () => null,
-    }
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            isFilterTriggerActive: false,
-            isFilterFormActive: false,
-        };
-    }
-
-    onMouseEnter = () => {
-        this.setState({
-            isFilterTriggerActive: true,
-        });
-    }
-
-    onMouseLeave = () => {
-        this.setState({
-            isFilterTriggerActive: false,
-        });
-    }
-
-
-    onTriggerClick = (e) => {
-        this.setState({
-            isFilterFormActive: !this.state.isFilterFormActive,
-        });
-        e.stopPropagation();
-    }
-
-    onColumnFilterChange = (filterValues) => {
-        this.setState({
-            isFilterTriggerActive: !!filterValues.values().next().value,
-        });
-        this.props.onColumnFilterChange(filterValues);
-    }
+        isLast: false,
+    };
 
     render() {
-        const {
-            filterable,
-            width,
-            onClick,
-        } = this.props;
-        const { isFilterTriggerActive, isFilterFormActive } = this.state;
-        const classes = classNames(
-            styles.headerCell,
-            styles.thFix,
-        );
+        const { children, width, onClick, isLast } = this.props;
+        const style = { width };
+
         return (
-            <th
-                className={classes}
-                onClick={onClick}
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
-                style={{
-                    width,
-                    maxWidth: width,
-                }}
-            >
-                {this.props.children}
-                {filterable && <ColumnFilterTrigger active={isFilterTriggerActive} onClick={this.onTriggerClick} />}
-                {filterable && <ColumnFilterForm active={isFilterFormActive} onColumnFilterChange={this.props.onColumnFilterChange} />}
-            </th>
-        );
+            <div className={styles.headerCell} style={style} onClick={onClick}>
+                {children}
+            </div>
+        )
     }
 }
 

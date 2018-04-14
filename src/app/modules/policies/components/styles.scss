@@ -23,7 +23,7 @@
   }
 }
 
-.policyTable thead tr {
+.policyTable .tableHeader {
   height: 44px;
 }
 
@@ -33,6 +33,7 @@
 }
 .policyCell {
   display: flex;
+  flex-grow: 1;
   margin: 0 -$table-cell-left-right-padding;
   flex-wrap: wrap;
   .title {
@@ -49,7 +50,7 @@
   .subtitle + .subtitle {
     border-left: $table-left-border;
   }
-  .subtitle + .subtitle:before {
+  .inHeader + .inHeader:before {
     content: '';
     display: block;
     position: absolute;

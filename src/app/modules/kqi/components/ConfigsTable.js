@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-
+import memoize from 'memoizejs';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
@@ -22,7 +22,7 @@ class ConfigsTable extends React.PureComponent {
         onSelectConfig: null,
     };
 
-    getColumns = () => [{
+    getColumns = memoize(() => [{
         title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
@@ -32,6 +32,7 @@ class ConfigsTable extends React.PureComponent {
         name: 'projection_count',
         searchable: true,
         sortable: true,
+        width: 150,
     }, {
         title: '',
         name: 'edit',
@@ -40,7 +41,7 @@ class ConfigsTable extends React.PureComponent {
         title: '',
         name: 'delete',
         width: 25,
-    }];
+    }]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell

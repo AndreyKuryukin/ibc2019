@@ -90,6 +90,7 @@ class PoliciesTable extends React.PureComponent {
                         name="threshold"
                         columns={column.columns}
                         sort={sort}
+                        isInHeader
                     />
                 );
             default:
