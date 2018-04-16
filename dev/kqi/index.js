@@ -128,8 +128,13 @@ module.exports = (app) => {
         },
     ];
 
-    app.get('/api/v1/kqi', (req, res) => {
+
+    app.get('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
         res.send(kqiResults);
+    });
+
+    app.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
+        res.send(history);
     });
 
     app.get('/api/v1/kqi/:id/projection', (req, res) => {

@@ -1,49 +1,96 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-import search from '../../../../../util/search';
 import TreeView from '../../../../../components/TreeView';
 import { DefaultCell } from '../../../../../components/Table/Cells';
-
-const mock = [{
-    id: 1,
-    branch: 'Нижегородский',
-    result: '99%',
-    weight: '0.1',
-    children: [{
-        id: 2,
-        branch: 'DSL',
-        result: '98%',
-        weight: '0.2',
-    }, {
-        id: 3,
-        branch: 'GPON',
-        result: '92%',
-        weight: '0.15',
-    }, {
-        id: 4,
-        branch: 'Ethernet',
-        result: '93.5%',
-        weight: '0.1',
-    }],
-}];
+import * as _ from "lodash";
+import CheckedCell from "../../../../../components/Table/Cells/CheckedCell";
 
 class ResultsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        onCheck: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
+        onCheck: () => null,
     };
+
+    hierarchy = [
+        'location',
+        'last_mile_technology',
+        'last_inch_technology',
+        'manufacturer',
+        'equipment_type',
+        'abonent_group',
+        'date_time',
+        'value'
+    ];
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            checked: [],
+            checkedNodes: [],
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(nextProps.data, this.state.data)) {
+            const mapedData = this.mapData(nextProps.data);
+            this.setState({ data: mapedData })
+        }
+    }
+
+    composeResultId = (result, index) => `${Object.values(result).join('_').trim()}-${index}`;
+
+    mapData = data => _.reduce(data, (final, result) => {
+
+        const deepSeries = _.reduce(this.hierarchy, (res, fieldName) => {
+            if (result[fieldName]) {
+                res.push(fieldName)
+            }
+            return res;
+        }, []);
+
+        const recursiveAdd = (children, index = 0) => {
+            const name = deepSeries[index];
+            const nextName = deepSeries[index + 1];
+            const targetNode = _.find(children, { name: result[name] });
+            if (targetNode) {
+                if (_.isUndefined(targetNode.children)) {
+                    targetNode.children = [];
+                }
+                targetNode.children = recursiveAdd(targetNode.children, index + 1);
+                return children;
+            }
+            if (nextName === 'value') {
+                return [{
+                    name: result[name],
+                    id: this.composeResultId(result, index),
+                    result: result.value,
+                    weight: result.weight,
+                    originalResultNode: result
+                }]
+            } else {
+                return children.concat([{
+                    name: result[name],
+                    id: this.composeResultId(result, index),
+                    children: recursiveAdd([], index + 1)
+                }]);
+            }
+        };
+        return recursiveAdd(final);
+    }, []);
 
     getColumns = () => [{
         title: ls('KQI_BRANCH_COLUMN_TITLE', 'Филиал'),
-        name: 'branch',
+        name: 'name',
         searchable: true,
         sortable: true,
     }, {
@@ -65,20 +112,48 @@ class ResultsTable extends React.PureComponent {
         />
     );
 
-    bodyRowRender = (column, node) => (
-        <DefaultCell
-            content={node[column.name]}
-        />
-    );
+    onCheck = (value, node) => {
+        const checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id);
+        const checkedNodes = value ? [...this.state.checkedNodes, node] : this.state.checkedNodes.filter(checked => checked.id !== node.id);
+        this.props.onCheck(checkedNodes.map(checked => checked.originalResultNode));
+        this.setState({
+            checked,
+            checkedNodes
+        });
+    };
+
+
+    bodyRowRender = (column, node) => {
+        switch (column.name) {
+            case 'name': {
+                if (!_.isUndefined(node.result)) {
+                    const isRowChecked = this.state.checked.includes(node.id);
+                    return <CheckedCell id={node.id}
+                                        text={node.name}
+                                        onChange={(value) => this.onCheck(value, node)}
+                                        value={isRowChecked}
+                    />
+                }
+                return <DefaultCell
+                    content={node[column.name]}
+                />
+            }
+            default: {
+                return <DefaultCell
+                    content={node[column.name]}
+                />
+            }
+        }
+    };
 
     render() {
-        const { data, searchText } = this.props;
+        const { searchText } = this.props;
+        const { data = [] } = this.state;
         const columns = this.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
-
         return (
             <TreeView
-                data={mock}
+                data={data}
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}

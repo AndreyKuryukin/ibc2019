@@ -11,7 +11,8 @@ import ConfigsControls from './ConfigsControls';
 import styles from './styles.scss';
 import Configurator from '../modules/Configurator/containers';
 import Calculator from '../modules/Calculator/containers';
-import ResultsViewer from '../modules/ResultsViewer/components';
+import ResultsViewer from '../modules/ResultsViewer/containers';
+import * as _ from "lodash";
 import Panel from '../../../components/Panel';
 
 class KQI extends React.PureComponent {
@@ -81,11 +82,11 @@ class KQI extends React.PureComponent {
     };
 
     render() {
-        const { params } = this.props.match;
-        const isConfiguratorActive = params.action === 'configure';
-        const isCalculatorActive = params.action === 'calculate';
-        const isResultsViewerActive = !!params.projectionId;
-        const configId = params.configId || null;
+        const { params = {} } = this.props.match;
+        const { action, resultId, projectionId, configId } = params;
+        const isConfiguratorActive = action === 'configure';
+        const isCalculatorActive = action === 'calculate';
+        const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
         const cfgName = configId ? _.get(this.getConfigsByIdFromProps(this.props), `${configId}.name`, '') : '';
 
         return (
@@ -95,7 +96,7 @@ class KQI extends React.PureComponent {
                         title={ls('KQI_SYSTEM_TITLE', 'Система')}
                         bodyStyle={{ padding: 0 }}
                     >
-                        <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange} />
+                        <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange}/>
                         <ConfigsTable
                             data={this.props.kqiData}
                             searchText={this.state.configsSearchText}
@@ -109,7 +110,7 @@ class KQI extends React.PureComponent {
                         title={`${ls('KQI_PROJECTIONS_TITLE', 'Проекции')} ${cfgName}`}
                         bodyStyle={{ padding: 0 }}
                     >
-                        <ProjectionsControls onSearchTextChange={this.onCalculationsSearchTextChange} />
+                        <ProjectionsControls onSearchTextChange={this.onCalculationsSearchTextChange}/>
                         <ProjectionsTable
                             data={this.props.projectionsData}
                             searchText={this.state.calculationsSearchText}
@@ -118,9 +119,14 @@ class KQI extends React.PureComponent {
                         />
                     </Panel>
                 </div>
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive} />}
-                {isCalculatorActive && <Calculator active={isCalculatorActive} />}
-                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive} onClose={this.onResultsViewerClose} />}
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive}/>}
+                {isCalculatorActive && <Calculator active={isCalculatorActive}/>}
+                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
+                                                         projectionId={projectionId}
+                                                         resultId={resultId}
+                                                         configId={configId}
+                                                         onClose={this.onResultsViewerClose}
+                />}
             </div>
         );
     }
