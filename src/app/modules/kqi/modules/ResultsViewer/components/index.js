@@ -19,7 +19,8 @@ class ResultsViewer extends React.PureComponent {
         resHistory: PropTypes.object,
         onMount: PropTypes.func,
         fetchHistory: PropTypes.func,
-        isLoading: PropTypes.bool
+        isLoading: PropTypes.bool,
+        onClose: PropTypes.func
     };
 
     static defaultProps = {
@@ -29,7 +30,8 @@ class ResultsViewer extends React.PureComponent {
         resHistory: {},
         onMount: () => null,
         fetchHistory: () => null,
-        isLoading: false
+        isLoading: false,
+        onClose: () => null
     };
 
     constructor(props) {
@@ -83,6 +85,7 @@ class ResultsViewer extends React.PureComponent {
                                     searchText={this.state.searchText}
                                     prealoder={false}
                                     onCheck={this.onCheck}
+                                    expandAll
                                 />
                             </div>
                             <div className={styles.kqiResultsViewerGraphContainer}>

@@ -24,18 +24,27 @@ class Graph extends React.PureComponent {
         const labels = _.reduce(historyData, (labels, result) => {
             return labels.concat(result.values.map(value => moment(value.date_time).format(DATE_TIME)));
         }, []);
+
+        const getRandomColorHex = () => {
+            const hex = "0123456789ABCDEF";
+            let color = "#";
+            for (let i = 1; i <= 6; i++) {
+                color += hex[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        };
+
         const data = {
             labels,
             datasets: historyData.map(result => {
                 const label = Object.values(result).filter(value => _.isString(value)).join('_');
                 // const labels = result.values.map(value => moment(value.date_time).format(DATE_TIME));
                 const borderColor = [
-                    'rgba(255,99,132,1)',
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
+                    getRandomColorHex(),
+                    getRandomColorHex(),
+                    getRandomColorHex(),
+                    getRandomColorHex(),
+                    getRandomColorHex()
                 ];
                 const data = result.values.map(value => value.value);
                 return { label, data, borderColor, lineTension: 0 }

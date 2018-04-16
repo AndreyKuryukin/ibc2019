@@ -1,6 +1,65 @@
 module.exports = (app) => {
     const kqiResults = [
         {
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Все',
+            date_time: '2018-04-01T00:12:21.434',
+            value: 99.95,
+            weight: 0.1
+        },
+        {
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Некоторые',
+            date_time: '2018-04-01T00:12:21.434',
+            value: 99.95,
+            weight: 0.1
+        }
+    ];
+
+    const history = [
+        {
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Некоторые',
+            date_time: '2018-04-01T00:12:21.434',
+            values: [
+                {
+                    date_time: '2018-04-01T00:12:30',
+                    value: 25
+                },
+                {
+                    date_time: '2018-04-01T00:12:40',
+                    value: 47
+                },
+                {
+                    date_time: '2018-04-01T00:12:50',
+                    value: 68
+                },
+                {
+                    date_time: '2018-04-01T00:13:00',
+                    value: 41
+                },
+                {
+                    date_time: '2018-04-01T00:13:10',
+                    value: 79
+                },
+            ]
+        }
+    ];
+
+    const kpi = [
+        {
             id: 1,
             name: 'Кгс',
             kpi_parameter_type: '23',
@@ -173,17 +232,8 @@ module.exports = (app) => {
         ));
     });
 
-    app.get('/api/v1/kpi/all', (req, res) => {
+    app.get('/api/v1/kqi', (req, res) => {
         res.send(kpi);
     });
 
-    app.post('/api/v1/kpi', (req, res) => {
-        res.send(Object.assign(
-            {},
-            req.body,
-            {
-                id: Date.now()
-            }
-        ));
-    });
 };
