@@ -66,7 +66,7 @@ class Calculator extends React.PureComponent {
                 equipment_type: '',
                 abonent_group: '',
                 kqi_id: null,
-                auto_gen: false,
+                auto_gen: true,
             },
             errors: null,
         };
@@ -116,7 +116,7 @@ class Calculator extends React.PureComponent {
         this.context.history.push('/kqi');
     };
 
-    onIntervalChange = (start, end, period) => {
+    onIntervalChange = (start, end, period, groupingType) => {
         const removeKeys = [
             ...(start ? ['start_date_time'] : []),
             ...(end ? ['end_date_time'] : []),
@@ -128,6 +128,7 @@ class Calculator extends React.PureComponent {
                 start_date_time: start,
                 end_date_time: end,
                 period,
+                date_time_grouping: groupingType,
             },
             errors: _.omit(this.state.errors, removeKeys),
         });
