@@ -57,16 +57,20 @@ class KqiResults extends React.PureComponent {
 
     fetchHistory = (nodes) => {
         const { configId, projectionId, resultId } = this.props;
-        rest.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', nodes, {
-            urlParams: {
-                configId,
-                projectionId,
-                resultId
-            }
-        }).then((response) => {
-            const history = response.data;
-            this.props.onFetchResultHistorySuccess(history)
-        })
+        if (_.isEmpty(nodes)) {
+            this.props.onFetchResultHistorySuccess([])
+        } else {
+            rest.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', nodes, {
+                urlParams: {
+                    configId,
+                    projectionId,
+                    resultId
+                }
+            }).then((response) => {
+                const history = response.data;
+                this.props.onFetchResultHistorySuccess(history)
+            })
+        }
     };
 
     render() {
@@ -80,6 +84,7 @@ class KqiResults extends React.PureComponent {
                 onMount={this.onFetchKQI}
                 isLoading={this.state.isLoading}
                 fetchHistory={this.fetchHistory}
+                onClose={this.props.onClose}
             />
         );
     }

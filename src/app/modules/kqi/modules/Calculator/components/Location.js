@@ -60,7 +60,7 @@ class Location extends React.PureComponent {
             >
                 <Field
                     id="location"
-                    labelText={`${ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'Местоположение')}:`}
+                    labelText={`${ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'МРФ')}:`}
                     labelWidth="32%"
                     inputWidth="66%"
                     style={{

@@ -46,12 +46,18 @@ class TreeView extends React.Component {
         const sortBy = TreeView.getDefaultSortBy(props.columns);
 
         this.state = {
-            expanded: [],
+            expanded: props.expanded || [],
             sort: {
                 columnName: sortBy,
                 direction: 'asc',
             },
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(nextProps.expanded, this.state.expanded)) {
+            this.setState({expanded: nextProps.expanded});
+        }
     }
 
     sort = (data, columnName, direction) => naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')]);

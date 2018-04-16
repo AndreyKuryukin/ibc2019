@@ -11,6 +11,7 @@ class ResultsTable extends React.PureComponent {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        expandAll: PropTypes.bool,
         onCheck: PropTypes.func,
     };
 
@@ -45,48 +46,57 @@ class ResultsTable extends React.PureComponent {
             const mapedData = this.mapData(nextProps.data);
             this.setState({ data: mapedData })
         }
+        if (!_.isEqual(nextProps.expandAll, this.state.expandAll)) {
+            this.setState({expandAll: nextProps.expandAll})
+        }
     }
 
     composeResultId = (result, index) => `${Object.values(result).join('_').trim()}-${index}`;
 
-    mapData = data => _.reduce(data, (final, result) => {
-
-        const deepSeries = _.reduce(this.hierarchy, (res, fieldName) => {
-            if (result[fieldName]) {
-                res.push(fieldName)
-            }
-            return res;
-        }, []);
-
-        const recursiveAdd = (children, index = 0) => {
-            const name = deepSeries[index];
-            const nextName = deepSeries[index + 1];
-            const targetNode = _.find(children, { name: result[name] });
-            if (targetNode) {
-                if (_.isUndefined(targetNode.children)) {
-                    targetNode.children = [];
+    mapData = data => {
+        const nodeIds = [];
+        const mapedData =  _.reduce(data, (final, result) => {
+            const deepSeries = _.reduce(this.hierarchy, (res, fieldName) => {
+                if (result[fieldName]) {
+                    res.push(fieldName)
                 }
-                targetNode.children = recursiveAdd(targetNode.children, index + 1);
-                return children;
-            }
-            if (nextName === 'value') {
-                return [{
-                    name: result[name],
-                    id: this.composeResultId(result, index),
-                    result: result.value,
-                    weight: result.weight,
-                    originalResultNode: result
-                }]
-            } else {
-                return children.concat([{
-                    name: result[name],
-                    id: this.composeResultId(result, index),
-                    children: recursiveAdd([], index + 1)
-                }]);
-            }
-        };
-        return recursiveAdd(final);
-    }, []);
+                return res;
+            }, []);
+
+            const recursiveAdd = (children, index = 0) => {
+                const name = deepSeries[index];
+                const nextName = deepSeries[index + 1];
+                const targetNode = _.find(children, { name: result[name] });
+                if (targetNode) {
+                    if (_.isUndefined(targetNode.children)) {
+                        targetNode.children = [];
+                    }
+                    targetNode.children = recursiveAdd(targetNode.children, index + 1);
+                    return children;
+                }
+                const id = this.composeResultId(result, index);
+                nodeIds.push(id);
+                if (nextName === 'value') {
+                    return [{
+                        name: result[name],
+                        id,
+                        result: result.value,
+                        weight: result.weight,
+                        originalResultNode: result
+                    }]
+                } else {
+                    return children.concat([{
+                        name: result[name],
+                        id,
+                        children: recursiveAdd([], index + 1)
+                    }]);
+                }
+            };
+            return recursiveAdd(final);
+        }, []);
+        this.setState({nodeIds});
+        return mapedData;
+    };
 
     getColumns = () => [{
         title: ls('KQI_BRANCH_COLUMN_TITLE', 'Филиал'),
@@ -148,16 +158,17 @@ class ResultsTable extends React.PureComponent {
 
     render() {
         const { searchText } = this.props;
-        const { data = [] } = this.state;
+        const { data = [], expandAll, nodeIds } = this.state;
         const columns = this.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <TreeView
-                data={data}
+                data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}
+                expanded={expandAll ? nodeIds : []}
             />
         );
     }
