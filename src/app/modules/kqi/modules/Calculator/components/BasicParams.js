@@ -56,6 +56,7 @@ class BasicParams extends React.PureComponent {
                 >
                     <Select
                         id="service-type"
+                        placeholder={ls('KQI_CALCULATOR_SERVICE_FIELD_PLACEHOLDER', 'Выберите услугу')}
                         options={this.props.serviceTypesOptions}
                         onChange={this.props.onServiceTypeChange}
                     />
@@ -69,6 +70,7 @@ class BasicParams extends React.PureComponent {
                 >
                     <Select
                         id="kqi"
+                        placeholder={ls('KQI_CALCULATOR_KQI_FIELD_PLACEHOLDER', 'Выберите KQI')}
                         options={this.props.kqiOptions}
                         onChange={this.props.onKQIChange}
                         valid={errors && _.isEmpty(errors.kqi_id)}

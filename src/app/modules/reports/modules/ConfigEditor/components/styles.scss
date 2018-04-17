@@ -24,3 +24,10 @@
   flex-wrap: wrap;
   align-items: center;
 }
+
+.truncated_field {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

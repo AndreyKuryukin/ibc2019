@@ -5,6 +5,10 @@ const languageMap = {
     REPORTS_STATUS_RUNNING: 'В процессе',
     REPORTS_STATUS_SUCCESS: 'Готово',
 
+    KQI_STATUS_FAILED: 'Ошибка',
+    KQI_STATUS_RUNNING: 'В процессе',
+    KQI_STATUS_SUCCESS: 'Готово',
+
     REPORT_TYPE_PDF: 'PDF',
     REPORT_TYPE_XLS: 'XLS',
 };

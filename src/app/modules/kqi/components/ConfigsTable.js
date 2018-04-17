@@ -13,13 +13,15 @@ class ConfigsTable extends React.PureComponent {
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         onSelectConfig: PropTypes.func,
+        onEditConfig: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
-        onSelectConfig: null,
+        onSelectConfig: () => null,
+        onEditConfig: () => null,
     };
 
     getColumns = () => [{
@@ -60,9 +62,12 @@ class ConfigsTable extends React.PureComponent {
                 );
             case 'edit': 
                 return (
-                    <IconCell
-                        icon="edit-icon"
-                        onIconClick={() => null}
+                    <div
+                        className="edit-icon"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            this.props.onEditConfig(node.id)
+                        }}
                     />
                 );
             case 'delete':

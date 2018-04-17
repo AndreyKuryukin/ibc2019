@@ -12,7 +12,6 @@ import styles from './styles.scss';
 import Configurator from '../modules/Configurator/containers';
 import Calculator from '../modules/Calculator/containers';
 import ResultsViewer from '../modules/ResultsViewer/containers';
-import * as _ from "lodash";
 import Panel from '../../../components/Panel';
 
 class KQI extends React.PureComponent {
@@ -29,6 +28,7 @@ class KQI extends React.PureComponent {
         isProjectionsLoading: PropTypes.bool,
         onMount: PropTypes.func,
         onSelectConfig: PropTypes.func,
+        onEditConfig: PropTypes.func,
     };
 
     static defaultProps = {
@@ -37,6 +37,7 @@ class KQI extends React.PureComponent {
         isConfigsLoading: false,
         isProjectionsLoading: false,
         onMount: () => null,
+        onEditConfig: () => null,
         onSelectConfig: null,
     };
 
@@ -81,6 +82,10 @@ class KQI extends React.PureComponent {
         this.props.history.push(`/kqi/view/${configId}`);
     };
 
+    onEditConfig = (id) => {
+        this.props.history.push(`/kqi/configure/${id}`);
+    };
+
     render() {
         const { params = {} } = this.props.match;
         const { action, resultId, projectionId, configId } = params;
@@ -102,6 +107,7 @@ class KQI extends React.PureComponent {
                             searchText={this.state.configsSearchText}
                             preloader={this.props.isConfigsLoading}
                             onSelectConfig={this.props.onSelectConfig}
+                            onEditConfig={this.onEditConfig}
                         />
                     </Panel>
                 </div>
@@ -119,7 +125,7 @@ class KQI extends React.PureComponent {
                         />
                     </Panel>
                 </div>
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive}/>}
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={configId}/>}
                 {isCalculatorActive && <Calculator active={isCalculatorActive}/>}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}

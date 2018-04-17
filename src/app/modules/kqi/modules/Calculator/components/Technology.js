@@ -54,6 +54,7 @@ class Technology extends React.PureComponent {
                 >
                     <Select
                         id={this.props.id}
+                        placeholder={ls('KQI_CALCULATOR_TECHNOLOGY_PLACEHOLDER', 'Выберите технологию')}
                         options={this.props.technologies}
                         onChange={this.props.onTechnologyChange}
                     />

@@ -208,8 +208,8 @@ class ConfigEditor extends React.PureComponent {
                                                 errorMessage={_.get(errors, 'config_name.title')}
                                             />
                                         ) : (
-                                            <div
-                                                title={this.getConfigProperty('config_name')}
+                                            <div className={styles.truncated_field}
+                                                  title={this.getConfigProperty('config_name')}
                                             >
                                                 {this.getConfigProperty('config_name')}
                                             </div>

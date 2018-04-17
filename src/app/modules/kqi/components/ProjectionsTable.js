@@ -149,6 +149,19 @@ export class ProjectionsTable extends React.PureComponent {
                         content={node[column.name] ? moment(node[column.name]).format(DATE_TIME) : ''}
                     />
                 );
+             case 'graph':
+                return (
+                    <IconCell
+                        icon="graph-icon"
+                    />
+                );
+                case 'status':
+                return (
+                    <IconCell
+                        icon={`icon-state-${node.status.toLowerCase()}`}
+                        iconProps={{title: ls(`KQI_STATUS_${node.status.toUpperCase()}`)}}
+                    />
+                );
             default:
                 return (
                     <DefaultCell

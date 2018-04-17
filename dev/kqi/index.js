@@ -62,7 +62,7 @@ module.exports = (app) => {
         {
             id: 1,
             name: 'Кгс',
-            kpi_parameter_type: '23',
+            kpi_parameter_type: '1',
             ['kpi-object_type']: 'STB',
             operator: 'EQ',
             level: '1.1',
@@ -187,9 +187,25 @@ module.exports = (app) => {
         },
     ];
 
+    const parameters = [
+        {
+            id: 1,
+            name: 'loading',
+        },
+        {
+            id: 2,
+            name: 'bandwidth',
+        },
+    ];
+
 
     app.get('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
         res.send(kqiResults);
+    });
+
+
+    app.get('/api/v1/kqi/:configId', (req, res) => {
+        res.send(kpi[0]);
     });
 
     app.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
@@ -206,19 +222,23 @@ module.exports = (app) => {
         }
     });
 
-    app.get('/api/v1/kqi/location', (req, res) => {
+    app.get('/api/v1/common/location', (req, res) => {
         res.send(locations);
     });
 
-    app.get('/api/v1/kqi/manufacture', (req, res) => {
+    app.get('/api/v1/common/manufacture', (req, res) => {
         res.send(manufacturers);
     });
 
-    app.get('/api/v1/kqi/equipment', (req, res) => {
+    app.get('/api/v1/common/equipment', (req, res) => {
         res.send(equipments);
     });
 
-    app.get('/api/v1/kqi/usergroup', (req, res) => {
+    app.get('/api/v1/common/parameters', (req, res) => {
+        res.send(parameters);
+    });
+
+    app.get('/api/v1/common/usergroup', (req, res) => {
         res.send(usergroups);
     });
 

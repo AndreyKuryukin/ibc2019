@@ -71,6 +71,7 @@ class Location extends React.PureComponent {
                         id="location"
                         options={this.props.locationOptions}
                         onChange={this.props.onLocationChange}
+                        placeholder={ls('KQI_CALCULATOR_LOCATION_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                     />
                 </Field>
                 <div className={styles.groupingBlock}>

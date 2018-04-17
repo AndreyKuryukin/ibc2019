@@ -104,5 +104,8 @@
   @include iconBuilder(22px, 22px, 'refresh.png');
 }
 .edit-icon {
-  @include iconBuilder(22px, 22px, 'delete.png');
+  @include iconBuilder(22px, 22px, 'config.png');
+}
+.graph-icon {
+  @include iconBuilder(22px, 22px, 'graph_icon.png');
 }

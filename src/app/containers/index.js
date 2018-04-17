@@ -130,7 +130,17 @@ class App extends React.Component {
             id: 'login-page',
             name: 'LOGIN',
             link: '/login'
-        }
+        },
+        {
+            id: 'users-page',
+            name: 'USERS',
+            link: '/users'
+        },
+        {
+            id: 'login-page',
+            name: 'ROLES',
+            link: '/roles'
+        },
     ];
 
     renderRoutes = (subjects = []) => {
