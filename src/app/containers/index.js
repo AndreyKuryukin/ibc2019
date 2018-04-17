@@ -39,7 +39,7 @@ class App extends React.Component {
                 path: "/roles/:action?/:id?",
                 component: Roles
             },
-            'POLICIES': {
+            'POLICY': {
                 path: "/policies/:action?/:id?",
                 component: Policies
             },

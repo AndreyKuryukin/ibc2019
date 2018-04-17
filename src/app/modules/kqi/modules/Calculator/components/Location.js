@@ -82,7 +82,7 @@ class Location extends React.PureComponent {
                         checked={this.state.isGroupingChecked || _.get(config, 'location_grouping')}
                         onChange={this.onGroupingCheck}
                         style={{ marginLeft: 18 }}
-                        disabled={disabled}
+                        disabled={disabled || !!_.get(config, 'location')}
                     />
                     <Field
                         id="location-grouping"

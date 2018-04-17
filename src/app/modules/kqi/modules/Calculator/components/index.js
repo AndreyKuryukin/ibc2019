@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
@@ -8,7 +8,6 @@ import styles from './styles.scss';
 import {
     DATE_TIME_GROUPING,
     GROUPING_TYPES,
-    LAST_INCH_TECHNOLOGIES,
     LAST_MILE_TECHNOLOGIES,
     LOCATION_GROUPING,
     SERVICE_TYPES,
@@ -16,10 +15,6 @@ import {
 import Period from './Period';
 import BasicParams from './BasicParams';
 import Location from './Location';
-import Technology from './Technology';
-import Manufacture from './Manufacture';
-import Equipment from './Equipment';
-import UserGroups from './UserGroups';
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -186,7 +181,12 @@ class Calculator extends React.PureComponent {
                         <Location
                             locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}
                             groupingOptions={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
-                            onLocationChange={value => this.setConfigProperty('location', value)}
+                            onLocationChange={value => {
+                                this.setConfigProperty('location', value);
+                                if (!value) {
+                                    this.setConfigProperty('location_grouping', null)
+                                }
+                            }}
                             onGroupingTypeChange={value => this.setConfigProperty('location_grouping', value)}
                             config={this.state.config}
                             disabled={disableForm}
