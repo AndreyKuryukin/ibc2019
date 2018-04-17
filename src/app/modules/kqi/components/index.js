@@ -126,7 +126,7 @@ class KQI extends React.PureComponent {
                     </Panel>
                 </div>
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={configId}/>}
-                {isCalculatorActive && <Calculator active={isCalculatorActive}/>}
+                {isCalculatorActive && <Calculator active={isCalculatorActive} projectionId={projectionId}/>}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}
                                                          resultId={resultId}

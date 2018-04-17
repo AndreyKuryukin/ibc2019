@@ -5,9 +5,10 @@ import moment from 'moment';
 import { createSelector } from 'reselect';
 import search from '../../../util/search';
 import TreeView from '../../../components/TreeView';
-import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
+import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 import { DATE, DATE_TIME } from '../../../costants/date';
+import _ from "lodash";
 
 const NODE_TYPES = {
     PROJECTION: 'projection',
@@ -111,14 +112,17 @@ export class ProjectionsTable extends React.PureComponent {
     );
 
     bodyRowRender = (column, node) => {
-        switch(column.name) {
+        switch (column.name) {
             case 'projection':
-                const endOfPath = node.type === NODE_TYPES.RESULT
-                    ? `/${_.get(node, 'parents.0.id')}/${node.id}`
-                    : `/${node.id}`;
+                let href;
+                if (node.type === NODE_TYPES.RESULT) {
+                    href = `/kqi/view/${this.props.configId}/${_.get(node, 'parents.0.id')}/${node.id}/`
+                } else if (node.type === NODE_TYPES.PROJECTION) {
+                    href = `/kqi/calculate/${this.props.configId}/${node.id}`
+                }
                 return (
                     <LinkCell
-                        href={`/kqi/view/${this.props.configId}${endOfPath}/`}
+                        href={href}
                         content={node[column.name]}
                     />
                 );
@@ -149,17 +153,17 @@ export class ProjectionsTable extends React.PureComponent {
                         content={node[column.name] ? moment(node[column.name]).format(DATE_TIME) : ''}
                     />
                 );
-             case 'graph':
+            case 'graph':
                 return (
                     <IconCell
                         icon="graph-icon"
                     />
                 );
-                case 'status':
+            case 'status':
                 return (
                     <IconCell
                         icon={`icon-state-${node.status.toLowerCase()}`}
-                        iconProps={{title: ls(`KQI_STATUS_${node.status.toUpperCase()}`)}}
+                        iconProps={{ title: ls(`KQI_STATUS_${node.status.toUpperCase()}`) }}
                     />
                 );
             default:
@@ -174,7 +178,7 @@ export class ProjectionsTable extends React.PureComponent {
     filter = (data, searchableColumns, searchText) =>
         data.filter(
             node => searchableColumns.find(column => search(node[column.name], searchText))
-            || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
+                || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
         );
 
     render() {

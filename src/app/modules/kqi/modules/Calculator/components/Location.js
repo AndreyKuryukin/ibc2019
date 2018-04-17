@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 import Checkbox from '../../../../../components/Checkbox';
-import { LOCATION_GROUPING } from '../constants';
 import styles from './styles.scss';
+import _ from "lodash";
 
 class Location extends React.PureComponent {
     static propTypes = {
@@ -53,6 +52,7 @@ class Location extends React.PureComponent {
     };
 
     render() {
+        const { config, disabled } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_LOCATION_TITLE', 'Расположение')}
@@ -71,15 +71,18 @@ class Location extends React.PureComponent {
                         id="location"
                         options={this.props.locationOptions}
                         onChange={this.props.onLocationChange}
+                        value={_.get(config, 'location')}
                         placeholder={ls('KQI_CALCULATOR_LOCATION_FIELD_PLACEHOLDER', 'Выберите МРФ')}
+                        disabled={disabled}
                     />
                 </Field>
                 <div className={styles.groupingBlock}>
                     <Checkbox
                         id="location-grouping-check"
-                        checked={this.state.isGroupingChecked}
+                        checked={this.state.isGroupingChecked || _.get(config, 'location_grouping')}
                         onChange={this.onGroupingCheck}
                         style={{ marginLeft: 18 }}
+                        disabled={disabled}
                     />
                     <Field
                         id="location-grouping"
@@ -92,8 +95,9 @@ class Location extends React.PureComponent {
                     >
                         <Select
                             id="location-grouping"
-                            disabled={!this.state.isGroupingChecked}
+                            disabled={!this.state.isGroupingChecked || disabled}
                             options={this.props.groupingOptions}
+                            value={_.get(config, 'location_grouping')}
                             onChange={this.onGroupingTypeChange}
                             noEmptyOption
                         />

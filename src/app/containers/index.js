@@ -14,6 +14,7 @@ import Sources from '../modules/sources/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
+import _ from "lodash";
 
 
 class App extends React.Component {
@@ -61,42 +62,6 @@ class App extends React.Component {
         }
     };
 
-    defaultUser = {
-        userName: '',
-        login: '',
-        subjects: ['LANDING', 'LOGIN', 'USERS', 'ROLES', 'POLICIES', 'REPORTS', 'STB_LOADING', 'KQI', 'SOURCES'],
-        menu: [
-            {
-                title: 'Роли',
-                link: '/roles'
-            },
-            {
-                title: 'Пользователи',
-                link: '/users'
-            },
-            {
-                title: 'Политики',
-                link: '/policies'
-            },
-            {
-                title: 'Отчёты',
-                link: '/reports'
-            },
-            {
-                title: 'KPI/KQI',
-                link: '/kqi'
-            },
-            {
-                title: 'Источники',
-                link: '/sources'
-            },
-            {
-                title: 'Выход',
-                link: '/login'
-            }
-        ]
-    };
-
     constructor(props) {
         super(props);
         rest.onResponseCode('401', this.navigateLogin);
@@ -137,7 +102,7 @@ class App extends React.Component {
             link: '/users'
         },
         {
-            id: 'login-page',
+            id: 'roles-page',
             name: 'ROLES',
             link: '/roles'
         },
@@ -147,7 +112,8 @@ class App extends React.Component {
         const subjectMap = this.getMapedSubjects() || {};
         const commonSubjects = this.getCommonRoutes();
         const totalSubjects = commonSubjects.concat(subjects);
-        return totalSubjects.map(subject => <Route
+        const subj = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
+        return subj.map(subject => <Route
             key={subject.id} {...subjectMap[subject.name.toUpperCase()]}/>);
     };
 

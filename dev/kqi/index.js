@@ -95,19 +95,19 @@ module.exports = (app) => {
             results: [
                 {
                     id: 10,
-                    creation_date: new Date(),
+                    creation_date: '2018-04-01T00:13:10',
                     author: 'User 1',
                     status: 'SUCCESS'
                 },
                 {
                     id: 11,
-                    creation_date: new Date(),
+                    creation_date: '2018-04-01T00:13:10',
                     author: 'User 2',
                     status: 'FAILED'
                 },
                 {
                     id: 12,
-                    creation_date: new Date(),
+                    creation_date: '2018-04-01T00:13:10',
                     author: 'User 3',
                     status: 'RUNNING'
                 }
@@ -119,7 +119,7 @@ module.exports = (app) => {
             results: [
                 {
                     id: 20,
-                    creation_date: new Date(),
+                    creation_date: '2018-04-01T00:13:10',
                     author: 'User 4',
                     status: 'FAILED'
                 }
@@ -135,7 +135,7 @@ module.exports = (app) => {
             results: [
                 {
                     id: 40,
-                    creation_date: new Date(),
+                    creation_date: '2018-04-01T00:13:10',
                     author: 'User 5',
                     status: 'FAILED'
                 }
@@ -251,6 +251,32 @@ module.exports = (app) => {
             }
         ));
     });
+
+    app.get('/api/v1/kqi/projection/:projectionId', (req, res) => {
+        res.send({
+            name: "Some Name",
+            auto_gen: true,
+            service_type: "IPTV",
+            kqi_id: 1,
+            period: "DAY",
+            start_date_time: '2018-04-01T00:13:10',
+            end_date_time: '2018-04-01T00:13:10',
+            date_time_grouping: "DAY",
+            location: 1,
+            location_grouping: "BRANCH",
+            last_mile_technology: "FTTB",
+            last_mile_technology_grouping: "SELF",
+            last_inch_technology: "WIFI",
+            last_inch_technology_grouping: "SELF",
+            manufacturer: [1],
+            manufacturer_grouping: "NONE",
+            equipment_type: 1,
+            equipment_type_grouping: "HW",
+            abonent_group: "1",
+            abonent_group_grouping: "ABONENT"
+        });
+    });
+
 
     app.get('/api/v1/kqi', (req, res) => {
         res.send(kpi);

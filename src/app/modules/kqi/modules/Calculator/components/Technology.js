@@ -5,6 +5,7 @@ import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 import Checkbox from '../../../../../components/Checkbox';
+import _ from "lodash";
 
 class Technology extends React.PureComponent {
     static propTypes = {
@@ -38,6 +39,7 @@ class Technology extends React.PureComponent {
     };
 
     render() {
+        const {value, groupingValue, disabled} = this.props;
         return (
             <Panel
                 title={this.props.title}
@@ -57,6 +59,8 @@ class Technology extends React.PureComponent {
                         placeholder={ls('KQI_CALCULATOR_TECHNOLOGY_PLACEHOLDER', 'Выберите технологию')}
                         options={this.props.technologies}
                         onChange={this.props.onTechnologyChange}
+                        value={value}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -71,8 +75,9 @@ class Technology extends React.PureComponent {
                 >
                     <Checkbox
                         id={`${this.props.id}-grouping`}
-                        checked={this.state.isGroupingChecked}
+                        checked={this.state.isGroupingChecked || groupingValue}
                         onChange={this.onGroupingCheck}
+                        disabled={disabled}
                     />
                 </Field>
             </Panel>

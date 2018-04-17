@@ -113,7 +113,6 @@ class Configurator extends React.PureComponent {
 
     render() {
         const { config, configId } = this.props;
-        console.log(configId, config);
         return (
             <ConfiguratorComponent
                 isLoading={this.state.isLoading}
