@@ -24,7 +24,7 @@ class ConfigsTable extends React.PureComponent {
         onEditConfig: () => null,
     };
 
-    getColumns = memoize(() => [{
+    static getColumns = memoize(() => [{
         title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
@@ -100,7 +100,7 @@ class ConfigsTable extends React.PureComponent {
 
     render() {
         const { data, searchText } = this.props;
-        const columns = this.getColumns();
+        const columns = ConfigsTable.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
 
         return (

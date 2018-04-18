@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 import ls from 'i18n';
+import memoize from 'memoizejs';
 import { createSelector } from 'reselect';
 import TreeView from '../../../components/TreeView';
 import { DefaultCell, IconCell } from '../../../components/Table/Cells';
@@ -21,7 +22,7 @@ class SourcesTable extends React.PureComponent {
         preloader: false,
     };
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         title: ls('SOURCE_NAME_COLUMN_TITLE', 'Источники'),
         name: 'name',
         sortable: true,
@@ -32,18 +33,16 @@ class SourcesTable extends React.PureComponent {
         name: 'status',
         sortable: true,
         searchable: true,
-        width: 40
+        width: 70
     }, {
         title: ls('SOURCE_LAST_DATA_COLUMN_TITLE', 'Дата последнего получения данных'),
         name: 'last_data_received',
         sortable: false,
         searchable: false,
         width: 200
-    }];
+    }]);
 
-    mapSources = (sources) => {
-        return sources;
-    };
+    mapSources = sources => sources;
 
     mapData = createSelector(
         props => props.data,
@@ -89,7 +88,7 @@ class SourcesTable extends React.PureComponent {
         return (
             <TreeView
                 data={mappedData}
-                columns={this.getColumns()}
+                columns={SourcesTable.getColumns()}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
             />

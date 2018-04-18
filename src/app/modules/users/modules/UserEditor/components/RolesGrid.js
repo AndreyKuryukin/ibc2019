@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import memoize from 'memoizejs';
 import { CheckedCell, DefaultCell } from '../../../../../components/Table/Cells';
 import Grid from '../../../../../components/Grid';
 import search from '../../../../../util/search';
@@ -31,10 +32,10 @@ class RolesGrid extends React.PureComponent {
         }
     }
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         name: 'name',
         searchable: true,
-    }];
+    }]);
 
     onCheck = (value, node) => {
         let checked = [];
@@ -48,7 +49,7 @@ class RolesGrid extends React.PureComponent {
             checked,
         });
         this.props.onCheck(checked);
-    }
+    };
 
     bodyRowRender = (column, node) => (
         <CheckedCell
@@ -75,7 +76,7 @@ class RolesGrid extends React.PureComponent {
     render() {
         const { checked, searchText } = this.state;
         const { data } = this.props;
-        const columns = this.getColumns();
+        const columns = RolesGrid.getColumns();
         const checkedPartially = data.length !== 0 && checked.length > 0 && checked.length < this.props.data.length;
         const isAllChecked = !checkedPartially && data.length !== 0 && checked.length === data.length;
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;

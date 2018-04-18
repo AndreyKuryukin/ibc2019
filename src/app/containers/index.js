@@ -106,6 +106,21 @@ class App extends React.Component {
             name: 'ROLES',
             link: '/roles'
         },
+        {
+            id: 'reports-page',
+            name: 'REPORTS',
+            link: '/reports'
+        },
+        {
+            id: 'sources-page',
+            name: 'SOURCES',
+            link: '/sources'
+        },
+        {
+            id: 'stb-loading-page',
+            name: 'STB_LOADING',
+            link: '/stb-loading'
+        }
     ];
 
     renderRoutes = (subjects = []) => {
