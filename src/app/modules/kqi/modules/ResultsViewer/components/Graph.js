@@ -2,8 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 import * as _ from "lodash";
-import moment from "moment";
-import { DATE_TIME } from "../../../../../costants/date";
 
 class Graph extends React.PureComponent {
     static contextTypes = {
@@ -20,10 +18,28 @@ class Graph extends React.PureComponent {
         data: [],
     };
 
+    getColorForResult = (() => {
+        const colorMap = {};
+        return (result) => {
+            const getRandomColorHex = () => {
+                const hex = "0123456789ABCDEF";
+                let color = "#";
+                for (let i = 1; i <= 6; i++) {
+                    color += hex[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            };
+            if (!colorMap[result.id]) {
+                colorMap[result.id] = getRandomColorHex();
+            }
+            return colorMap[result.id];
+        }
+    })();
+
     mapData = (historyData) => {
-        const labels = _.reduce(historyData, (labels, result) => {
-            return labels.concat(result.values.map(value => moment(value.date_time).format(DATE_TIME)));
-        }, []);
+        // const labels = _.reduce(historyData, (labels, result) => {
+        //     return labels.concat(result.values.map(value => new Date(value.date_time)));
+        // }, []);
 
         const getRandomColorHex = () => {
             const hex = "0123456789ABCDEF";
@@ -35,22 +51,14 @@ class Graph extends React.PureComponent {
         };
 
         const data = {
-            labels,
             datasets: historyData.map(result => {
                 const label = Object.values(result).filter(value => _.isString(value)).join('_');
-                // const labels = result.values.map(value => moment(value.date_time).format(DATE_TIME));
-                const borderColor = [
-                    getRandomColorHex(),
-                    getRandomColorHex(),
-                    getRandomColorHex(),
-                    getRandomColorHex(),
-                    getRandomColorHex()
-                ];
-                const data = result.values.map(value => value.value);
+                const borderColor = this.getColorForResult(result);
+                const data = result.values.map(value => ({ y: value.value, t: value.date_time }));
                 return { label, data, borderColor, lineTension: 0 }
             })
         };
-        console.log(data, historyData);
+        console.log(data);
         return data;
 
         // return {
@@ -78,7 +86,7 @@ class Graph extends React.PureComponent {
             scales: {
                 yAxes: [{
                     ticks: {
-                        beginAtZero: true,
+                        beginAtZero: false,
                         max: 100,
                         steps: 10,
                         callback: (value, index, values) => {
@@ -89,7 +97,11 @@ class Graph extends React.PureComponent {
                         display: true,
                         labelString: 'Результат (%)'
                     },
-                }]
+                }],
+                xAxes: [{
+                    type: 'time',
+                    distribution: 'series'
+                }],
             }
         };
         return <Line data={this.mapData(this.props.data)} options={options}/>;

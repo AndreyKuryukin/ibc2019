@@ -30,6 +30,7 @@ module.exports = (app) => {
 
     const history = [
         {
+            id: 1,
             location: 'Нижегородский',
             last_mile_technology: 'FTTB',
             last_inch_technology: 'WIFI',
@@ -40,23 +41,95 @@ module.exports = (app) => {
             values: [
                 {
                     date_time: '2018-04-01T00:12:30',
-                    value: 25
+                    value: 99.1
                 },
                 {
-                    date_time: '2018-04-01T00:12:40',
-                    value: 47
+                    date_time: '2018-04-02T00:12:40',
+                    value: 97
                 },
                 {
-                    date_time: '2018-04-01T00:12:50',
-                    value: 68
+                    date_time: '2018-04-03T00:12:50',
+                    value: 98
                 },
                 {
-                    date_time: '2018-04-01T00:13:00',
-                    value: 41
+                    date_time: '2018-04-04T00:13:00',
+                    value: 98.5
                 },
                 {
-                    date_time: '2018-04-01T00:13:10',
-                    value: 79
+                    date_time: '2018-04-05T00:13:10',
+                    value: 98.9
+                },
+                {
+                    date_time: '2018-04-06T00:13:20',
+                    value: 99.1
+                },
+                {
+                    date_time: '2018-04-07T00:13:30',
+                    value: 97
+                },
+                {
+                    date_time: '2018-04-08T00:13:40',
+                    value: 98
+                },
+                {
+                    date_time: '2018-04-09T00:13:50',
+                    value: 98.5
+                },
+                {
+                    date_time: '2018-04-10T00:14:00',
+                    value: 98.9
+                },
+            ]
+        },
+        {
+            id: 2,
+            location: 'Нижегородский',
+            last_mile_technology: 'FTTB',
+            last_inch_technology: 'WIFI',
+            manufacturer: 'Hawai',
+            equipment_type: 'EquipmentType',
+            abonent_group: 'Все',
+            date_time: '2018-04-01T00:12:21.434',
+            values: [
+                {
+                    date_time: '2018-04-01T00:12:30',
+                    value: 99.8
+                },
+                {
+                    date_time: '2018-04-02T00:12:40',
+                    value: 99.4
+                },
+                {
+                    date_time: '2018-04-03T00:12:50',
+                    value: 97.5
+                },
+                {
+                    date_time: '2018-04-04T00:13:00',
+                    value: 98.5
+                },
+                {
+                    date_time: '2018-04-05T00:13:10',
+                    value: 98.6
+                },
+                {
+                    date_time: '2018-04-06T00:13:20',
+                    value: 99.1
+                },
+                {
+                    date_time: '2018-04-07T00:13:30',
+                    value: 97
+                },
+                {
+                    date_time: '2018-04-08T00:13:40',
+                    value: 99
+                },
+                {
+                    date_time: '2018-04-09T00:13:50',
+                    value: 98
+                },
+                {
+                    date_time: '2018-04-10T00:14:00',
+                    value: 90
                 },
             ]
         }
@@ -191,7 +264,12 @@ module.exports = (app) => {
     });
 
     app.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
-        res.send(history);
+        const body = req.body;
+        if (body) {
+            res.send(history.slice(0, body.length));
+        } else {
+            res.send(history);
+        }
     });
 
     app.get('/api/v1/kqi/:id/projection', (req, res) => {

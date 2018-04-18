@@ -210,6 +210,22 @@ class Calculator extends React.PureComponent {
             config['manufacturer_grouping'] = value.length > 1;
         }
 
+        if (key === 'abonent_group' && !!value) {
+            config['abonent_group_grouping'] = false;
+        }
+
+        if (key === 'last_mile_technology' && !!value) {
+            config['last_mile_technology_grouping'] = false;
+        }
+
+        if (key === 'last_inch_technology' && !!value) {
+            config['last_inch_technology_grouping'] = false;
+        }
+
+        if (key === 'equipment_type' && !!value) {
+            config['equipment_type_grouping'] = false;
+        }
+
         config['name'] = this.composeConfigName(config);
 
         this.setState({
@@ -314,7 +330,7 @@ class Calculator extends React.PureComponent {
                             onGroupingChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
                             disabled={disableForm}
                             value={_.get(this.state.config, 'last_mile_technology')}
-                            groupingValue={_.get(this.state.config, 'last_mile_technology_grouping') === GROUPING_TYPES.SELF}
+                            groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
                         />
                         <Technology
                             id="last-inch-technology"
@@ -325,7 +341,7 @@ class Calculator extends React.PureComponent {
                             onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}
                             disabled={disableForm}
                             value={_.get(this.state.config, 'last_inch_technology')}
-                            groupingValue={_.get(this.state.config, 'last_inch_technology_grouping') === GROUPING_TYPES.SELF}
+                            groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}
                         />
                         <div className={styles.bottomContent}>
                             <Manufacture
@@ -335,7 +351,7 @@ class Calculator extends React.PureComponent {
                                 onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
                                 disabled={disableForm}
                                 checked={_.get(this.state.config, 'manufacturer', [])}
-                                groupingValue={_.get(this.state.config, 'last_inch_technology_grouping') === GROUPING_TYPES.SELF}
+                                groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}
                             />
                             <div className={styles.panels}>
                                 <Equipment
