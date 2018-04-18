@@ -50,7 +50,6 @@ class Period extends React.PureComponent {
             start: null,
             end: null,
             interval: INTERVALS.OTHER,
-            isGroupingChecked: false,
             groupingOptions: [],
             groupingType: null,
         };
@@ -69,7 +68,6 @@ class Period extends React.PureComponent {
                 end: new Date(end),
                 interval: period ? period.toLowerCase() : '',
                 groupingType: groupingType ? groupingType.toLowerCase() : groupingType,
-                isGroupingChecked: !!groupingType
             })
         }
 
@@ -117,13 +115,12 @@ class Period extends React.PureComponent {
     };
 
     onGroupingCheck = (value) => {
+        this.setState({ isGroupingChecked: value });
         if (value) {
             this.props.onGroupingTypeChange(this.state.groupingType);
         } else {
             this.props.onGroupingTypeChange(null);
         }
-
-        this.setState({ isGroupingChecked: value });
     };
 
     onGroupingTypeChange = (value) => {

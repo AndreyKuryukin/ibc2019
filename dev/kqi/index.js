@@ -1,3 +1,7 @@
+const _ = require("lodash");
+
+const fs = require('fs');
+
 module.exports = (app) => {
     const kqiResults = [
         {
@@ -88,60 +92,38 @@ module.exports = (app) => {
         },
     ];
 
-    const projectionsByKqiId = {
-        1: [{
-            projection_id: 1,
-            projection_name: 'МРФ_Волга',
-            results: [
-                {
-                    id: 10,
-                    creation_date: '2018-04-01T00:13:10',
-                    author: 'User 1',
-                    status: 'SUCCESS'
-                },
-                {
-                    id: 11,
-                    creation_date: '2018-04-01T00:13:10',
-                    author: 'User 2',
-                    status: 'FAILED'
-                },
-                {
-                    id: 12,
-                    creation_date: '2018-04-01T00:13:10',
-                    author: 'User 3',
-                    status: 'RUNNING'
-                }
-            ]
-        }],
-        2: [{
-            projection_id: 2,
-            projection_name: 'МРФ_Волга',
-            results: [
-                {
-                    id: 20,
-                    creation_date: '2018-04-01T00:13:10',
-                    author: 'User 4',
-                    status: 'FAILED'
-                }
-            ]
-        }],
-        3: [{
-            projection_id: 3,
-            projection_name: 'МРФ_Волга',
-            results: []
-        }, {
-            projection_id: 4,
-            projection_name: 'МРФ',
-            results: [
-                {
-                    id: 40,
-                    creation_date: '2018-04-01T00:13:10',
-                    author: 'User 5',
-                    status: 'FAILED'
-                }
-            ]
-        }]
-    };
+    const projectionResults = [
+        {
+            id: 10,
+            creation_date: '2018-04-01T00:13:10',
+            author: 'User 1',
+            status: 'SUCCESS'
+        },
+        {
+            id: 11,
+            creation_date: '2018-04-01T00:13:10',
+            author: 'User 2',
+            status: 'FAILED'
+        },
+        {
+            id: 12,
+            creation_date: '2018-04-01T00:13:10',
+            author: 'User 3',
+            status: 'RUNNING'
+        },
+        {
+            id: 40,
+            creation_date: '2018-04-01T00:13:10',
+            author: 'User 5',
+            status: 'FAILED'
+        },
+        {
+            id: 20,
+            creation_date: '2018-04-01T00:13:10',
+            author: 'User 4',
+            status: 'FAILED'
+        }
+    ];
 
     const locations = [
         {
@@ -213,8 +195,30 @@ module.exports = (app) => {
     });
 
     app.get('/api/v1/kqi/:id/projection', (req, res) => {
+        const projections = readProjectionsFile();
+        const projectionsByKqi = _.reduce(projections, (result, projection) => {
+            const {
+                kqi_id: kqiId,
+                name: projection_name,
+                id: projection_id
+            } = projection;
+
+            const remapedProjection = {
+                projection_name,
+                projection_id,
+                results: projectionResults.map(res => ({ ...res, id: `${projection_id}-${res.id}` }))
+            };
+
+            if (result[kqiId]) {
+                result[kqiId].push(remapedProjection)
+            } else {
+                result[kqiId] = [remapedProjection];
+            }
+            return result;
+        }, {});
+
         if (req.params.id) {
-            const response = projectionsByKqiId[req.params.id] || null;
+            const response = projectionsByKqi[req.params.id] || [];
             res.send(response);
         } else {
             res.status = 401;
@@ -282,4 +286,27 @@ module.exports = (app) => {
         res.send(kpi);
     });
 
+    const readProjectionsFile = () => {
+        const projectionsFile = fs.readFileSync('dev/kqi/projections.json', 'utf8');
+        let projections;
+        try {
+            projections = JSON.parse(projectionsFile);
+        } catch (e) {
+            projections = [];
+        }
+        return projections;
+    };
+
+    const writeProjectionsToFile = (projections) => {
+        fs.writeFileSync('dev/kqi/projections.json', JSON.stringify(projections, undefined, 2));
+    };
+
+    app.post('/api/v1/kqi/projection', (req, res) => {
+        const projection = req.body;
+        const projections = readProjectionsFile();
+        projection.id = (new Date()).getTime();
+        projections.push(projection);
+        writeProjectionsToFile(projections);
+        res.send(projections);
+    })
 };

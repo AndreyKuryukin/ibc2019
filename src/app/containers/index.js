@@ -106,6 +106,11 @@ class App extends React.Component {
             name: 'ROLES',
             link: '/roles'
         },
+        {
+            id: 'reports-page',
+            name: 'REPORTS',
+            link: '/reports'
+        },
     ];
 
     renderRoutes = (subjects = []) => {

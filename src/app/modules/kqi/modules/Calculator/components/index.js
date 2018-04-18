@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal, ModalBody, ModalHeader } from 'reactstrap';
+import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
@@ -8,6 +8,7 @@ import styles from './styles.scss';
 import {
     DATE_TIME_GROUPING,
     GROUPING_TYPES,
+    LAST_INCH_TECHNOLOGIES,
     LAST_MILE_TECHNOLOGIES,
     LOCATION_GROUPING,
     SERVICE_TYPES,
@@ -15,6 +16,61 @@ import {
 import Period from './Period';
 import BasicParams from './BasicParams';
 import Location from './Location';
+import Technology from './Technology';
+import Manufacture from './Manufacture';
+import Equipment from './Equipment';
+import UserGroups from './UserGroups';
+import moment from "moment";
+
+const NAME_PATTERN_SEQUENCE = [
+    'period',
+    'location',
+    'location_grouping',
+    'last_mile_technology',
+    'last_mile_technology_grouping',
+    'last_inch_technology',
+    'last_inch_technology_grouping',
+    'manufacturer',
+    'manufacturer_grouping',
+    'equipment_type',
+    'equipment_type_grouping',
+    'abonent_group',
+    'abonent_group_grouping',
+];
+
+const period = {
+    WEEK: ls('WEEKLY', 'Еженедельный'),
+    DAY: ls('WEEKLY', 'Ежедневный'),
+    MONTH: ls('WEEKLY', 'Ежемесячный'),
+};
+
+const last_mile_technology_grouping = {
+    true: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПМ'),
+};
+
+const last_inch_technology_grouping = {
+    true: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПД'),
+};
+
+const manufacturer_grouping = {
+    true: ls('WITH_MANUFACTURER_GROUPING', 'С группировкой по производителю оборудования'),
+};
+
+const equipment_type_grouping = {
+    SELF: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по типу оборудования'),
+    HW: ls('WITH_HW_GROUPING', 'С группировкой по hw версии'),
+    SW: ls('WITH_SW_GROUPING', 'С группировкой по sw версии'),
+};
+
+const abonent_group_grouping = {
+    SELF: ls('WITH_ABONENT_GROUPS_GROUPING', 'С группировкой по группам абонентов'),
+    ABONENT: ls('WITH_ABONENT_GROUPING', 'Формировать список абонентов'),
+};
+
+const location_grouping = {
+    BRANCH: ls('WITH_BRANCH_GROUPING', 'С группировкой по РФ'),
+};
+
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -48,13 +104,15 @@ class Calculator extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        const start_date_time = moment().subtract(1, 'week').startOf('week').toDate();
+        const end_date_time = moment(start_date_time).endOf('week').toDate();
         this.state = {
             config: {
-                name: '',
+                name: ls('WEEKLY', 'Еженедельный'),
                 service_type: '',
-                period: '',
-                start_date_time: null,
-                end_date_time: null,
+                period: 'WEEK',
+                start_date_time,
+                end_date_time,
                 location: '',
                 last_mile_technology: '',
                 last_inch_technology: '',
@@ -89,6 +147,59 @@ class Calculator extends React.PureComponent {
         }),
     );
 
+    composeConfigName = (config) => {
+        const ENTITY_NAME_MAP = {
+            period: period,
+            location: this.props.locationsList,
+            last_mile_technology: LAST_MILE_TECHNOLOGIES,
+            last_inch_technology: LAST_INCH_TECHNOLOGIES,
+            service_type: SERVICE_TYPES,
+            manufacturer: this.props.manufactureList,
+            equipment_type: this.props.equipmentsList,
+            abonent_group: this.props.usergroupsList,
+            kqi_id: this.props.kqiList,
+            location_grouping: location_grouping,
+            last_mile_technology_grouping: last_mile_technology_grouping,
+            last_inch_technology_grouping: last_inch_technology_grouping,
+            manufacturer_grouping: manufacturer_grouping,
+            equipment_type_grouping: equipment_type_grouping,
+            abonent_group_grouping: abonent_group_grouping,
+        };
+        const composedName = _.reduce(NAME_PATTERN_SEQUENCE, (name, fieldName) => {
+            const value = config[fieldName];
+            const nameMap = ENTITY_NAME_MAP[fieldName];
+            const getNameById = (map, id) => {
+                let itemName;
+                if (_.isArray(map)) {
+                    const entity = _.find(map, item => String(item.id) === String(id));
+                    itemName = entity && entity.name;
+                } else if (_.isObject(map)) {
+                    itemName = map[id];
+                }
+                return itemName ? itemName : id;
+            };
+            if (value) {
+                if (_.isArray(value)) {
+                    if (nameMap) {
+                        const names = value.map(id => getNameById(nameMap, id));
+                        name.push(names.join(','));
+                    } else {
+                        name.push(value.join(','));
+                    }
+                } else {
+                    if (nameMap) {
+                        name.push(getNameById(nameMap, value))
+                    } else {
+                        name.push(config[fieldName])
+                    }
+                }
+            }
+            return name;
+        }, []);
+        return composedName.join('_')
+    };
+
+
     setConfigProperty = (key, value) => {
         const config = {
             ...this.state.config,
@@ -98,6 +209,8 @@ class Calculator extends React.PureComponent {
         if (key === 'manufacturer') {
             config['manufacturer_grouping'] = value.length > 1;
         }
+
+        config['name'] = this.composeConfigName(config);
 
         this.setState({
             config,
@@ -114,15 +227,16 @@ class Calculator extends React.PureComponent {
             ...(start ? ['start_date_time'] : []),
             ...(end ? ['end_date_time'] : []),
         ];
-
+        const config = {
+            ...this.state.config,
+            start_date_time: start,
+            end_date_time: end,
+            period,
+            date_time_grouping: groupingType,
+        };
+        config.name = this.composeConfigName(config);
         this.setState({
-            config: {
-                ...this.state.config,
-                start_date_time: start,
-                end_date_time: end,
-                period,
-                date_time_grouping: groupingType,
-            },
+            config,
             errors: _.omit(this.state.errors, removeKeys),
         });
     };
