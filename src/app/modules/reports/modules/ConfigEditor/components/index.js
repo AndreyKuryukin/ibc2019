@@ -65,7 +65,7 @@ class ConfigEditor extends React.PureComponent {
 
         this.state = {
             config: {
-                config_name: '',
+                config_name: '<Имя_шаблона>_Еженедельный_PDF',
                 template_id: null,
                 type: 'PDF',
                 period: {

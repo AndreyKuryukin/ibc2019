@@ -20,7 +20,7 @@
     z-index: 1;
   }
   .shield {
-    background: url(../../../../resources/img/logo-rt.png)  no-repeat left;
+    background: url(../../../../resources/img/logo-rt.png) no-repeat left;
     height: 60px;
     width: 100%;
     top: 0;
@@ -32,7 +32,7 @@
   .formContainer {
     z-index: 2;
     .sqmLabel {
-      background: url(../../../../resources/img/logo.png)  no-repeat left;
+      background: url(../../../../resources/img/logo.png) no-repeat left;
       color: $primary;
       font-weight: 600;
       margin-left: .3rem;
@@ -50,8 +50,9 @@
         width: 100%;
         margin-top: 16px;
       }
-      input {
+      > * {
         margin-top: 8px;
+        width: 100%;
       }
     }
   }

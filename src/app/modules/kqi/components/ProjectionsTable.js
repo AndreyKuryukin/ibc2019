@@ -121,7 +121,7 @@ export class ProjectionsTable extends React.PureComponent {
                     : `/${node.id}`;
                 return (
                     <LinkCell
-                        href={`/kqi/view/${this.props.configId}${endOfPath}`}
+                        href={`/kqi/view/${this.props.configId}${endOfPath}/`}
                         content={node[column.name]}
                     />
                 );

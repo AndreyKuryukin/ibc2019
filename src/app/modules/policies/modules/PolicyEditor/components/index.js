@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import moment from 'moment';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
@@ -99,6 +100,14 @@ class PolicyEditor extends React.PureComponent {
         return scopes.map(scope => ({ value: scope, title: scope }))
     };
 
+    getSeconds = (mills) => {
+        return moment.duration(mills, 'milliseconds').asSeconds();
+    };
+
+    getMilliSeconds = (secs) => {
+        return moment.duration(secs, 'seconds').asMilliseconds();
+    };
+
     render() {
         const { active, policyId, scopes, types } = this.props;
         const { policy, errors } = this.state;
@@ -155,7 +164,7 @@ class PolicyEditor extends React.PureComponent {
                                     title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                 >
                                     <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                        <div style={{ width: '70%' }}>
+                                        <div style={{ flex: 3 }}>
                                             <Field
                                                 id="cease_duration"
                                                 labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
@@ -163,16 +172,20 @@ class PolicyEditor extends React.PureComponent {
                                                 inputWidth="33%"
                                                 required
                                             >
-                                                <Input
-                                                    id="cease_duration"
-                                                    name="cease_duration"
-                                                    valid={_.isEmpty(_.get(errors,'threshold.cease_duration'))}
-                                                    value={this.getPolicyProperty('threshold.cease_duration')}
-                                                    onChange={event => this.setPolicyProperty('threshold.cease_duration', _.get(event, 'target.value'))}
-                                                />
+                                                <div style={{ display: 'flex' }}>
+                                                    <Input
+                                                        id="cease_duration"
+                                                        name="cease_duration"
+                                                        valid={_.isEmpty(_.get(errors, 'threshold.cease_duration'))}
+                                                        value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
+                                                        onChange={event => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                    />
+                                                    <span
+                                                        style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                                </div>
                                             </Field>
                                         </div>
-                                        <div style={{ width: '28%' }}>
+                                        <div style={{ flex: 2 }}>
                                             <Field
                                                 id="cease_value"
                                                 labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
@@ -180,14 +193,18 @@ class PolicyEditor extends React.PureComponent {
                                                 inputWidth="50%"
                                                 required
                                             >
-                                                <Input
-                                                    id="cease_value"
-                                                    name="cease_value"
-                                                    type="number"
-                                                    valid={_.isEmpty(_.get(errors,'threshold.cease_value'))}
-                                                    value={this.getPolicyProperty('threshold.cease_value')}
-                                                    onChange={event => this.setPolicyProperty('threshold.cease_value', _.get(event, 'target.value'))}
-                                                />
+                                                <div style={{ display: 'flex' }}>
+                                                    <Input
+                                                        id="cease_value"
+                                                        name="cease_value"
+                                                        type="number"
+                                                        valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
+                                                        value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
+                                                        onChange={event => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                    />
+                                                    <span
+                                                        style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                                </div>
                                             </Field>
                                         </div>
                                     </div>

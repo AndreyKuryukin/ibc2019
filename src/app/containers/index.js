@@ -103,12 +103,11 @@ class App extends React.Component {
         rest.onResponseCode('200', this.refreshToken);
         const token = localStorage.getItem('jwtToken');
         rest.setCommonHeader('Authorization', token);
-        props.onFetchUserSuccess(this.defaultUser);
-        // rest.get('api/v1/user')
-        //     .then((userResp) => {
-        //         const user = userResp.data;
-        //         this.props.onFetchUserSuccess(user)
-        //     })
+        rest.get('api/v1/user/current')
+            .then((userResp) => {
+                const user = userResp.data;
+                this.props.onFetchUserSuccess(user)
+            });
         this.state = { token };
     }
 
@@ -126,10 +125,20 @@ class App extends React.Component {
         history && history.push('/login')
     };
 
-    renderRoutes = (subjects = []) => {
+    getCommonRoutes = () => [
+        {
+            id: 'login-page',
+            name: 'LOGIN',
+            link: '/login'
+        }
+    ];
 
+    renderRoutes = (subjects = []) => {
         const subjectMap = this.getMapedSubjects() || {};
-        return subjects.map(subject => <Route key={subject} {...subjectMap[subject]}/>)
+        const commonSubjects = this.getCommonRoutes();
+        const totalSubjects = commonSubjects.concat(subjects);
+        return totalSubjects.map(subject => <Route
+            key={subject.id} {...subjectMap[subject.name.toUpperCase()]}/>);
     };
 
     render() {

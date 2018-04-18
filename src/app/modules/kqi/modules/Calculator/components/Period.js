@@ -49,26 +49,50 @@ class Period extends React.PureComponent {
             end: null,
             interval: INTERVALS.OTHER,
             isGroupingChecked: false,
-            groupingType: props.groupingOptions[0] ? props.groupingOptions[0].value : null,
+            groupingOptions: [],
+            groupingType: null,
         };
     }
 
-    onStartChange = (start) => {
+    getFilteredGroupingOptions = (start, end, groupingOptions) => {
+        if (!start || !end) return [];
+        if (moment(end).diff(moment(start), 'month') >= 1) {
+            return groupingOptions;
+        } else if (moment(end).diff(moment(start), 'weeks') >= 1) {
+            return groupingOptions.filter(opt => opt.value !== 'MONTH');
+        } else if (moment(end).diff(moment(start), 'days') >= 1) {
+            return groupingOptions.filter(opt => opt.value === 'DAY');
+        } else {
+            return [];
+        }
+    };
+
+    configureAndSetState = (start, end, interval) => {
+        const groupingOptions = this.getFilteredGroupingOptions(start, end, this.props.groupingOptions);
+        const groupingType = !groupingOptions.find(opt => opt.value === this.state.groupingType)
+            ? _.get(groupingOptions, '0.value', null)
+            : this.state.groupingType;
+
         this.setState({
             start,
-            interval: INTERVALS.OTHER,
+            end,
+            interval,
+            groupingOptions,
+            groupingType,
         });
 
-        this.props.onIntervalChange(start, this.state.end, INTERVALS.OTHER.toUpperCase());
+        const sentGroupingType = this.state.isGroupingChecked ? groupingType : null;
+        this.props.onIntervalChange(start, end, interval.toUpperCase(), sentGroupingType);
+    };
+
+    onStartChange = (start) => {
+        const { end } = this.state;
+        this.configureAndSetState(start, end, INTERVALS.OTHER);
     };
 
     onEndChange = (end) => {
-        this.setState({
-            end,
-            interval: INTERVALS.OTHER,
-        });
-
-        this.props.onIntervalChange(this.state.start, end, INTERVALS.OTHER.toUpperCase());
+        const { start } = this.state;
+        this.configureAndSetState(start, end, INTERVALS.OTHER);
     };
 
     onGroupingCheck = (value) => {
@@ -82,7 +106,6 @@ class Period extends React.PureComponent {
     };
 
     onGroupingTypeChange = (value) => {
-        //todo Запилить логику на выбор способа группировки исходя из выбранного интервала
         if (this.state.isGroupingChecked) {
             this.setState({ groupingType: value });
             this.props.onGroupingTypeChange(value);
@@ -91,21 +114,15 @@ class Period extends React.PureComponent {
 
     onIntervalChange = (interval, value) => {
         if (value) {
-            const start = moment().subtract(1, interval).startOf(interval);
-            const end = moment(start).endOf(interval);
-
-            this.setState({
-                interval,
-                start: interval !== INTERVALS.OTHER ? start.toDate() : this.state.start,
-                end: interval !== INTERVALS.OTHER ? end.toDate() : this.state.end,
-            }, () => {
-                this.props.onIntervalChange(this.state.start, this.state.end, interval.toUpperCase());
-            });
+            const start = interval !== INTERVALS.OTHER ?  moment().subtract(1, interval).startOf(interval).toDate() : this.state.start;
+            const end = interval !== INTERVALS.OTHER ?  moment(start).endOf(interval).toDate() : this.state.end;
+            this.configureAndSetState(start, end, interval);
         }
     };
 
     render() {
         const { errors } = this.props;
+
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_PERIOD_TITLE', 'Период')}
@@ -213,7 +230,7 @@ class Period extends React.PureComponent {
                             <Select
                                 id="date-time-grouping"
                                 value={this.state.groupingType}
-                                options={this.props.groupingOptions}
+                                options={this.state.groupingOptions}
                                 onChange={this.onGroupingTypeChange}
                                 disabled={!this.state.isGroupingChecked}
                                 noEmptyOption
@@ -223,7 +240,7 @@ class Period extends React.PureComponent {
                 </div>
                 <Field
                     id="auto-checkbox"
-                    labelText={ls('KQI_CALCULATOR_AUTOGEN_FIELD_LABEL', 'Автогенерация')}
+                    labelText={ls('KQI_CALCULATOR_AUTOGEN_FIELD_LABEL', 'Автовычисление')}
                     labelWidth="98%"
                     inputWidth="2%"
                     labelAlign="right"
