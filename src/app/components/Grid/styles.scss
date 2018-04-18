@@ -3,14 +3,18 @@
   position: relative;
   flex-grow: 1;
   flex-direction: column;
-  &.disabled:before {
-    content: '';
-    display: block;
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    background: rgba(255, 255, 255, 0.5);
-    z-index: 10;
+  &.disabled {
+    &:before {
+      content: '';
+      display: block;
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      background: rgba(255, 255, 255, 0.5);
+      z-index: 9999;
+    }
+    pointer-events: none;
+    filter: grayscale(1);
   }
   .gridControls {
     display: flex;

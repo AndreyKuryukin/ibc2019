@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
@@ -39,6 +38,8 @@ class UserGroups extends React.PureComponent {
     };
 
     render() {
+        const { value, groupingValue, disabled } = this.props;
+
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_ABONENT_TITLE', 'Абоненты')}
@@ -53,6 +54,8 @@ class UserGroups extends React.PureComponent {
                         id="abonent-group"
                         options={this.props.usergroupsList}
                         onChange={this.props.onUsergroupChange}
+                        value={value}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -65,8 +68,9 @@ class UserGroups extends React.PureComponent {
                     <Radio
                         id="self-type-abonent-grouping"
                         name="abonent-grouping"
-                        checked={this.state.grouping === ABONENT_GROUP_GROUPING.SELF}
+                        checked={this.state.grouping === ABONENT_GROUP_GROUPING.SELF || groupingValue === ABONENT_GROUP_GROUPING.SELF}
                         onChange={v => this.onGroupingChange(ABONENT_GROUP_GROUPING.SELF, v)}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -79,8 +83,9 @@ class UserGroups extends React.PureComponent {
                     <Radio
                         id="abonent-type-abonent-grouping"
                         name="abonent-grouping"
-                        checked={this.state.grouping === ABONENT_GROUP_GROUPING.ABONENT}
+                        checked={this.state.grouping === ABONENT_GROUP_GROUPING.ABONENT || groupingValue === ABONENT_GROUP_GROUPING.ABONENT}
                         onChange={v => this.onGroupingChange(ABONENT_GROUP_GROUPING.ABONENT, v)}
+                        disabled={disabled}
                     />
                 </Field>
             </Panel>

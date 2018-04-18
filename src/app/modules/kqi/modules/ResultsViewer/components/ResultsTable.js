@@ -99,7 +99,7 @@ class ResultsTable extends React.PureComponent {
     };
 
     getColumns = () => [{
-        title: ls('KQI_BRANCH_COLUMN_TITLE', 'Филиал'),
+        title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
         sortable: true,

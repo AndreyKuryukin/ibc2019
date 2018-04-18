@@ -57,6 +57,9 @@ class Configurator extends React.PureComponent {
         if (this.state.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
+        if (!_.isEmpty(nextProps.config) && this.state.config !== nextProps.config) {
+            this.setState({ config: nextProps.config });
+        }
     }
 
     static mapObjectToOptions(object) {
@@ -99,6 +102,7 @@ class Configurator extends React.PureComponent {
     };
 
     render() {
+        const disableForm = !!this.props.config;
         const { config, errors } = this.state;
         return (
             <Modal
@@ -118,6 +122,7 @@ class Configurator extends React.PureComponent {
                         >
                             <Input
                                 id="name"
+                                disabled={disableForm}
                                 value={config.name}
                                 onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
                                 valid={errors && _.isEmpty(errors.name)}
@@ -132,6 +137,8 @@ class Configurator extends React.PureComponent {
                         >
                             <Select
                                 options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
+                                disabled={disableForm}
+                                value={_.get(config, 'kpi-object_type')}
                                 onChange={value => this.setConfigProperty('kpi-object_type', value)}
                                 valid={errors && _.isEmpty(errors['kpi-object_type'])}
                             />
@@ -146,7 +153,9 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
                                 onChange={this.onChangeParameterType}
+                                value={_.get(config, 'kpi_parameter_type')}
                                 valid={errors && _.isEmpty(errors.kpi_parameter_type)}
+                                disabled={disableForm}
                             />
                         </Field>
                         <Field
@@ -159,7 +168,9 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
                                 onChange={value => this.setConfigProperty('operator', value)}
+                                value={_.get(config, 'operator')}
                                 valid={errors && _.isEmpty(errors.operator)}
+                                disabled={disableForm}
                             />
                         </Field>
                         <Field
@@ -175,6 +186,7 @@ class Configurator extends React.PureComponent {
                                 value={config.level}
                                 onChange={event => this.setConfigProperty('level', event.currentTarget.value)}
                                 valid={errors && _.isEmpty(errors.level)}
+                                disabled={disableForm}
                             />
                         </Field>
                         <Formula
@@ -187,9 +199,11 @@ class Configurator extends React.PureComponent {
                     <Button outline color="action" onClick={this.onClose}>
                         {ls('CANCEL', 'Отмена')}
                     </Button>
-                    <Button color="action" onClick={this.onSubmit}>
-                        {ls('OK', 'OK')}
-                    </Button>
+                    {
+                        !disableForm && <Button color="action" onClick={this.onSubmit}>
+                            {ls('OK', 'OK')}
+                        </Button>
+                    }
                 </ModalFooter>
             </Modal>
         );

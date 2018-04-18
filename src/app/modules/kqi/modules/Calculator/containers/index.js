@@ -4,9 +4,7 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import CalculatorComponent from '../components';
 import rest from '../../../../../rest';
-import {
-    fetchListsSuccess,
-} from '../actions';
+import { fetchListsSuccess, fetchProjectionSuccess } from '../actions';
 import { validateForm } from '../../../../../util/validation';
 
 class Calculator extends React.PureComponent {
@@ -17,6 +15,8 @@ class Calculator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        projectionId: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+        projection: PropTypes.object,
         kqiList: PropTypes.array,
         manufactureList: PropTypes.array,
         onFetchListsSuccess: PropTypes.func,
@@ -58,24 +58,31 @@ class Calculator extends React.PureComponent {
 
     componentDidMount() {
         this.context.pageBlur && this.context.pageBlur(true);
+        this.loadData();
     }
 
-    onMount = () => {
+    loadData = () => {
+        const { projectionId } = this.props;
+        const requests = [
+            rest.get('/api/v1/kqi'),
+            rest.get('/api/v1/common/location'),
+            rest.get('/api/v1/common/manufacture'),
+            rest.get('/api/v1/common/equipment'),
+            rest.get('/api/v1/common/usergroup'),
+        ];
+        if (!_.isUndefined(projectionId)) {
+            requests.push(rest.get('/api/v1/kqi/projection/:projectionId', { urlParams: { projectionId } }));
+        }
         this.setState({ isLoading: true });
 
-        Promise.all([
-            rest.get('/api/v1/kqi'),
-            rest.get('/api/v1/kqi/location/prefix'),
-            rest.get('/api/v1/kqi/manufacture/prefix'),
-            rest.get('/api/v1/kqi/equipment/prefix'),
-            rest.get('/api/v1/kqi/usergroup/prefix'),
-        ]).then(([
-            kqiResponse,
-            locationResponse,
-            manufactureResponse,
-            equipmentResponse,
-            usergroupResponse,
-        ]) => {
+        Promise.all(requests).then(([
+                                        kqiResponse,
+                                        locationResponse,
+                                        manufactureResponse,
+                                        equipmentResponse,
+                                        usergroupResponse,
+                                        projectionResponse
+                                    ]) => {
             this.props.onFetchListsSuccess({
                 kqi: kqiResponse.data,
                 locations: locationResponse.data,
@@ -84,6 +91,10 @@ class Calculator extends React.PureComponent {
                 usergroups: usergroupResponse.data,
             });
 
+            if (projectionResponse) {
+                const projection = projectionResponse.data;
+                this.props.onFetchProjectionSuccess(projection);
+            }
             this.setState({ isLoading: false });
         }).catch((e) => {
             console.error(e);
@@ -111,6 +122,7 @@ class Calculator extends React.PureComponent {
     };
 
     render() {
+        const {projection, projectionId} = this.props;
         return (
             <CalculatorComponent
                 active={this.props.active}
@@ -122,6 +134,7 @@ class Calculator extends React.PureComponent {
                 onSubmit={this.onSubmitKQI}
                 onMount={this.onMount}
                 errors={this.state.errors}
+                config={_.isUndefined(projectionId) ? null : projection}
             />
         );
     }
@@ -133,10 +146,12 @@ const mapStateToProps = state => ({
     manufactureList: state.kqi.calculator.lists.manufactures,
     equipmentsList: state.kqi.calculator.lists.equipments,
     usergroupsList: state.kqi.calculator.lists.usergroups,
+    projection: _.get(state, 'kqi.calculator.projection'),
 });
 
 const mapDispatchToProps = dispatch => ({
     onFetchListsSuccess: lists => dispatch(fetchListsSuccess(lists)),
+    onFetchProjectionSuccess: pojection => dispatch(fetchProjectionSuccess(pojection)),
 });
 
 export default connect(

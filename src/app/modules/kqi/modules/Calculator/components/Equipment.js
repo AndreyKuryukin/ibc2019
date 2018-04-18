@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-import _ from 'lodash';
 import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
@@ -14,12 +13,16 @@ class Equipment extends React.PureComponent {
         equipmentsList: PropTypes.array,
         onEquipmentTypeChange: PropTypes.func,
         onGroupingChange: PropTypes.func,
+        disabled: PropTypes.bool,
+        value: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+        groupingValue: PropTypes.string
     };
 
     static defaultProps = {
         equipmentsList: [],
         onEquipmentTypeChange: () => null,
         onGroupingChange: () => null,
+        disabled: PropTypes.bool
     };
 
     constructor(props) {
@@ -39,6 +42,7 @@ class Equipment extends React.PureComponent {
     };
 
     render() {
+        const { value, groupingValue, disabled } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_EQUIPMENT_TITLE', 'Оборудование')}
@@ -53,6 +57,8 @@ class Equipment extends React.PureComponent {
                         id="equipment-type"
                         options={this.props.equipmentsList}
                         onChange={this.props.onEquipmentTypeChange}
+                        value={value}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -65,8 +71,9 @@ class Equipment extends React.PureComponent {
                     <Radio
                         id="self-equipment-type"
                         name="equipment-type-grouping"
-                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.SELF}
+                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.SELF || groupingValue === EQUIPMENT_TYPE_GROUPING.SELF}
                         onChange={v => this.onGroupingChange(EQUIPMENT_TYPE_GROUPING.SELF, v)}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -79,8 +86,9 @@ class Equipment extends React.PureComponent {
                     <Radio
                         id="hw-equipment-type"
                         name="equipment-type-grouping"
-                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.HW}
+                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.HW || groupingValue === EQUIPMENT_TYPE_GROUPING.HW}
                         onChange={v => this.onGroupingChange(EQUIPMENT_TYPE_GROUPING.HW, v)}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -93,8 +101,9 @@ class Equipment extends React.PureComponent {
                     <Radio
                         id="sw-equipment-type"
                         name="equipment-type-grouping"
-                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.SW}
+                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.SW || groupingValue === EQUIPMENT_TYPE_GROUPING.SW}
                         onChange={v => this.onGroupingChange(EQUIPMENT_TYPE_GROUPING.SW, v)}
+                        disabled={disabled}
                     />
                 </Field>
             </Panel>

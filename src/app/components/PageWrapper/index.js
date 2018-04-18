@@ -88,7 +88,7 @@ class PageWrapper extends React.Component {
                 </div>
                 <div className={styles.pageTitle}><h5>{this.state.pageTitle}</h5></div>
                 <div className={styles.rightPanel}>
-                    <a href="/users/username">Username</a>
+                    <a href="/">Username</a>
                 </div>
             </Navbar>
             <div className={styles.pageContent}>

@@ -16,6 +16,7 @@ class Select extends React.PureComponent {
         valid: true,
         defaultValue: null,
         onChange: () => null,
+        value: null
     };
 
     constructor() {
@@ -52,16 +53,18 @@ class Select extends React.PureComponent {
         const { placeholder, errorMessage, options, noEmptyOption, children, valid, ...rest } = this.props;
         const value = this.getValue();
         const invalid = valid !== null && !valid;
+        const placeholderClass = !value ? styles.placeholder : '';
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
         }
         return (
             <div className={styles.selectWrapper}>
-                {valid === false && <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
+                {valid === false &&
+                <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
                 <Input type="select" {...rest}
                        value={value}
                        onChange={this.onChange}
-                       className={classnames({ [styles.placeholder]: (_.isEmpty(value)) })}
+                       className={placeholderClass}
                        invalid={invalid}
                 >
                     {!noEmptyOption && this.renderPlaceholder(placeholder)}
