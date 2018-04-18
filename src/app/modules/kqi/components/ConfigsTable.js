@@ -27,6 +27,9 @@ class ConfigsTable extends React.PureComponent {
         name: 'name',
         searchable: true,
         sortable: true,
+        filter: {
+            type: 'text',
+        },
     }, {
         title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество проекций'),
         name: 'projection_count',

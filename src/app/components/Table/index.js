@@ -176,9 +176,10 @@ class Table extends React.Component {
                         {columns.map((column, index) => (
                             <HeaderCell
                                 key={column.name}
+                                filterable={!!column.filter}
                                 onClick={() => this.onHeaderCellClick(column)}
+                                onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
                                 width={_.get(columnsWidths, `${[column.name]}.header`, 0)}
-                                isLast={index === columns.length - 1}
                             >
                                 {headerRowRender(column, sort)}
                             </HeaderCell>
