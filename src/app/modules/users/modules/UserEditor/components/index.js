@@ -82,9 +82,16 @@ class UserEditor extends React.Component {
             [key]: value,
         };
 
+        let errors = null;
+        if (key === 'password' || key === 'confirm') {
+            errors = user.password === user.confirm ? _.omit(this.state.errors, ['password', 'confirm']) : this.state.errors;
+        } else {
+            errors = _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors;
+        }
+
         this.setState({
             user,
-            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
+            errors,
         });
     };
 

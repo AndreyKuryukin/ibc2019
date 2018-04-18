@@ -12,7 +12,6 @@ import styles from './styles.scss';
 import Configurator from '../modules/Configurator/containers';
 import Calculator from '../modules/Calculator/containers';
 import ResultsViewer from '../modules/ResultsViewer/containers';
-import * as _ from "lodash";
 import Panel from '../../../components/Panel';
 
 class KQI extends React.PureComponent {
