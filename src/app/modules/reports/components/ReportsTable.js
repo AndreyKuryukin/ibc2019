@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
 import ls from 'i18n';
+import memoize from 'memoizejs';
 import { createSelector } from 'reselect';
 import TreeView from '../../../components/TreeView';
 import { DefaultCell, IconCell } from '../../../components/Table/Cells';
@@ -27,7 +28,7 @@ class ReportsTable extends React.PureComponent {
         onResultRetry: () => null,
     };
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         title: ls('REPORTS_NAME_COLUMN_TITLE', 'Название отчёта'),
         name: 'name',
         sortable: true,
@@ -75,7 +76,7 @@ class ReportsTable extends React.PureComponent {
         title: '',
         name: 'delete',
         width: 25
-    }];
+    }]);
 
     getReportTimeStatus = (report) => {
         switch(report.state) {
@@ -237,7 +238,7 @@ class ReportsTable extends React.PureComponent {
         return (
             <TreeView
                 data={mappedData}
-                columns={this.getColumns()}
+                columns={ReportsTable.getColumns()}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}

@@ -5,7 +5,7 @@ import _ from 'lodash';
 import ConfiguratorComponent from '../components';
 import rest from '../../../../../rest';
 import { validateForm } from '../../../../../util/validation';
-import { fetchParameterTypesSuccess } from '../actions';
+import { fetchConfigSuccess, fetchParameterTypesSuccess } from '../actions';
 
 class Configurator extends React.PureComponent {
     static contextTypes = {
@@ -15,8 +15,10 @@ class Configurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        configId: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
         paramTypes: PropTypes.array,
         paramTypesById: PropTypes.object,
+        config: PropTypes.object,
         onFetchParamTypesSuccess: PropTypes.func,
     };
 
@@ -24,7 +26,9 @@ class Configurator extends React.PureComponent {
         active: false,
         paramTypes: [],
         paramTypesById: null,
+        config: null,
         onFetchParamTypesSuccess: () => null,
+        onFetchConfigSuccess: () => null,
     };
 
     constructor(props) {
@@ -61,14 +65,25 @@ class Configurator extends React.PureComponent {
         },
     };
 
-    onMount = () => {
+    componentDidMount() {
         this.setState({ isLoading: true });
+        const { configId } = this.props;
 
-        rest.get('/api/v1/kqi/parameterTypes')
-            .then((response) => {
-                const parameterTypes = response.data;
+        const requests = [rest.get('/api/v1/common/parameters')];
+
+        if (!_.isEmpty(configId)) {
+            requests.push(rest.get('/api/v1/kqi/:configId', { urlParams: { configId } }));
+        }
+
+        Promise.all(requests)
+            .then(([typesResponse, configResponse]) => {
+                const parameterTypes = typesResponse.data;
+                const config = configResponse && configResponse.data;
                 this.props.onFetchParamTypesSuccess(parameterTypes);
-                this.setState({ isLoading: false });
+                if (config) {
+                    this.props.onFetchConfigSuccess(config);
+                }
+                this.setState({ isLoading: false })
             })
             .catch((e) => {
                 console.error(e);
@@ -84,7 +99,6 @@ class Configurator extends React.PureComponent {
 
             rest.post('/api/v1/kqi', kpiConfig)
                 .then((response) => {
-                    const kpi = response.data;
                     this.setState({ isLoading: false });
                     this.context.history.push('/kqi');
                 })
@@ -98,12 +112,14 @@ class Configurator extends React.PureComponent {
     };
 
     render() {
+        const { config, configId } = this.props;
         return (
             <ConfiguratorComponent
+                isLoading={this.state.isLoading}
                 active={this.props.active}
+                config={_.isUndefined(configId) ? null : config}
                 paramTypes={this.props.paramTypes}
                 paramTypesById={this.props.paramTypesById}
-                onMount={this.onMount}
                 onSubmit={this.onSubmitKPI}
                 errors={this.state.errors}
             />
@@ -114,10 +130,12 @@ class Configurator extends React.PureComponent {
 const mapStateToProps = state => ({
     paramTypes: state.kqi.configurator.paramTypes,
     paramTypesById: state.kqi.configurator.paramTypesById,
+    config: state.kqi.configurator.config,
 });
 
 const mapDispatchToProps = dispatch => ({
     onFetchParamTypesSuccess: paramTypes => dispatch(fetchParameterTypesSuccess(paramTypes)),
+    onFetchConfigSuccess: config => dispatch(fetchConfigSuccess(config)),
 });
 
 export default connect(

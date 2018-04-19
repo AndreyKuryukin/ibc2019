@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
+import memoize from 'memoizejs';
 import TreeView from '../../../../../components/TreeView';
 import { DefaultCell } from '../../../../../components/Table/Cells';
 import * as _ from "lodash";
@@ -98,8 +99,8 @@ class ResultsTable extends React.PureComponent {
         return mapedData;
     };
 
-    getColumns = () => [{
-        title: ls('KQI_BRANCH_COLUMN_TITLE', 'Филиал'),
+    static getColumns = memoize(() => [{
+        title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
         sortable: true,
@@ -113,7 +114,7 @@ class ResultsTable extends React.PureComponent {
         name: 'weight',
         searchable: true,
         sortable: true,
-    }];
+    }]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell
@@ -159,7 +160,7 @@ class ResultsTable extends React.PureComponent {
     render() {
         const { searchText } = this.props;
         const { data = [], expandAll, nodeIds } = this.state;
-        const columns = this.getColumns();
+        const columns = ResultsTable.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <TreeView

@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
 import { deleteRoleSuccess, fetchListOfRolesSuccess } from '../actions';
 import rest from '../../../rest';
 import { selectRolesData } from '../selectors';
@@ -62,10 +61,10 @@ class Roles extends React.PureComponent {
             this.props.onDeleteRolesSuccess(ids);
             this.setState({ isLoading: false });
         })
-        .catch((e) => {
-            console.error(e);
-            this.setState({ isLoading: false });
-        });
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
+            });
     };
 
     onRemove = (ids) => {

@@ -1,10 +1,12 @@
 import {
     FETCH_PARAMETER_TYPES_SUCCESS,
+    FETCH_CONFIG_SUCCESS
 } from '../actions';
 
 const initialState = {
     paramTypes: [],
     paramTypesById: {},
+    config: null
 };
 
 export default (state = initialState, action) => {
@@ -19,6 +21,12 @@ export default (state = initialState, action) => {
                 ...state,
                 paramTypes: action.payload.paramTypes,
                 paramTypesById,
+            };
+        }
+        case FETCH_CONFIG_SUCCESS: {
+            return {
+                ...state,
+                config: action.payload.config
             };
         }
         default:
