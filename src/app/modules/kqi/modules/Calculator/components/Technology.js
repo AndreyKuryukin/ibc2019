@@ -5,7 +5,7 @@ import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 import Checkbox from '../../../../../components/Checkbox';
-import _ from "lodash";
+import * as _ from "lodash";
 
 class Technology extends React.PureComponent {
     static propTypes = {
@@ -39,7 +39,7 @@ class Technology extends React.PureComponent {
     };
 
     render() {
-        const {value, groupingValue, disabled} = this.props;
+        const { value, disabled } = this.props;
         return (
             <Panel
                 title={this.props.title}
@@ -75,9 +75,9 @@ class Technology extends React.PureComponent {
                 >
                     <Checkbox
                         id={`${this.props.id}-grouping`}
-                        checked={this.state.isGroupingChecked || groupingValue}
+                        checked={_.get(this.props, 'groupingValue', this.state.isGroupingChecked)}
                         onChange={this.onGroupingCheck}
-                        disabled={disabled}
+                        disabled={disabled || value}
                     />
                 </Field>
             </Panel>

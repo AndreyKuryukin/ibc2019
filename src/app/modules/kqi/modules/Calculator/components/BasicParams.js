@@ -73,7 +73,7 @@ class BasicParams extends React.PureComponent {
                     <Select
                         id="kqi"
                         placeholder={ls('KQI_CALCULATOR_KQI_FIELD_PLACEHOLDER', 'Выберите KQI')}
-                        options={this.props.kqiOptions}
+                        options={kqiOptions}
                         value={_.get(config, 'kqi_id')}
                         onChange={value => this.props.onChange('kqi_id', value)}
                         valid={errors && _.isEmpty(errors.kqi_id)}

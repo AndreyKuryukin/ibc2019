@@ -111,16 +111,6 @@ class App extends React.Component {
             name: 'REPORTS',
             link: '/reports'
         },
-        {
-            id: 'sources-page',
-            name: 'SOURCES',
-            link: '/sources'
-        },
-        {
-            id: 'stb-loading-page',
-            name: 'STB_LOADING',
-            link: '/stb-loading'
-        }
     ];
 
     renderRoutes = (subjects = []) => {

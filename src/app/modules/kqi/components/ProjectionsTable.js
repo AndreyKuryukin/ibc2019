@@ -165,6 +165,7 @@ export class ProjectionsTable extends React.PureComponent {
             case 'status':
                 return (
                     <IconCell
+                        cellStyle={{justifyContent: 'center'}}
                         icon={`icon-state-${node.status.toLowerCase()}`}
                         iconProps={{ title: ls(`KQI_STATUS_${node.status.toUpperCase()}`) }}
                     />
