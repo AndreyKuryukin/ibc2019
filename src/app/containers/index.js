@@ -27,35 +27,51 @@ class App extends React.Component {
                 exact: true
             },
             'LOGIN': {
+                title: 'Выход',
+                link: '/login',
                 path: '/login',
                 exact: true,
                 component: Login
             },
             'USERS': {
+                title: 'Пользователи',
+                link: '/users',
                 path: "/users/:action?/:id?",
                 component: Users
             },
             'ROLES': {
+                title: 'Роли',
+                link: '/roles',
                 path: "/roles/:action?/:id?",
                 component: Roles
             },
             'POLICY': {
+                title: 'Политики',
+                link: '/policies',
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
             'REPORTS': {
+                title: 'Отчёты',
+                link: '/reports',
                 path: '/reports/:action?',
                 component: Reports
             },
             'STB_LOADING': {
+                title: 'Время загрузки STB',
+                link: '/stb-loading',
                 path: "/stb-loading",
                 component: StbLoading
             },
             'KQI': {
+                title: 'KQI',
+                link: '/kqi',
                 path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
                 component: KQI
             },
             'SOURCES': {
+                title: 'Источники',
+                link: '/sources',
                 path: "/sources",
                 component: Sources
             }
@@ -71,7 +87,21 @@ class App extends React.Component {
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data;
-                this.props.onFetchUserSuccess(user)
+                const subjectMap = this.getMapedSubjects() || {};
+                const commonSubjects = this.getCommonRoutes();
+                const totalSubjects = commonSubjects.concat(user.subjects);
+                const subj = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
+                user.subjects = subj;
+                user.menu = user.subjects.map(subject => ({
+                    title: subjectMap[subject.name.toUpperCase()].title,
+                    link: subjectMap[subject.name.toUpperCase()].link,
+                }));
+                this.props.onFetchUserSuccess(user);
+            })
+            .catch(() => {
+                this.props.onFetchUserSuccess({
+                    subjects: this.getCommonRoutes(),
+                });
             });
         this.state = { token };
     }
@@ -115,11 +145,9 @@ class App extends React.Component {
 
     renderRoutes = (subjects = []) => {
         const subjectMap = this.getMapedSubjects() || {};
-        const commonSubjects = this.getCommonRoutes();
-        const totalSubjects = commonSubjects.concat(subjects);
-        const subj = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
-        return subj.map(subject => <Route
-            key={subject.id} {...subjectMap[subject.name.toUpperCase()]}/>);
+
+        return subjects.map(subject => <Route
+            key={subject.name} {...subjectMap[subject.name.toUpperCase()]}/>);
     };
 
     render() {

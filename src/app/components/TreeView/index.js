@@ -55,8 +55,8 @@ class TreeView extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_.isEqual(nextProps.expanded, this.state.expanded)) {
-            this.setState({expanded: nextProps.expanded});
+        if (!_.isEqual(nextProps.expanded, this.props.expanded)) {
+            this.setState({ expanded: nextProps.expanded });
         }
     }
 
@@ -70,10 +70,10 @@ class TreeView extends React.Component {
             if (!_.isEmpty(node.children)) {
                 result.push({ ...node, expandable: true, parents });
                 if (this.isExpanded(node.id)) {
-                    result.push(...this.mapData(node.children, [...parents, node]))
+                    result.push(...this.mapData(node.children, [...parents, node]));
                 }
             } else {
-                result.push({ ...node, parents })
+                result.push({ ...node, parents });
             }
         });
         return result;
@@ -83,11 +83,11 @@ class TreeView extends React.Component {
         this.setState({
             expanded: this.isExpanded(id) ? this.state.expanded.filter(nodeId => nodeId !== id) :
                 _.uniq([...this.state.expanded, id])
-        })
+        });
     };
 
-    expandableCell = (column, node) => {
-        return <div className={styles.cellContainer}>
+    expandableCell = (column, node) => (
+        <div className={styles.cellContainer}>
             {this.transitCells(node.parents)}
             <div className={classnames({
                 [styles.lastExpandableCell]: node.isLast,
@@ -99,10 +99,10 @@ class TreeView extends React.Component {
             />
             {this.props.bodyRowRender(column, node)}
         </div>
-    };
+    );
 
-    simpleCell = (column, node) => {
-        return <div className={styles.cellContainer}>
+    simpleCell = (column, node) => (
+        <div className={styles.cellContainer}>
             {this.isColumnFirst(column) && this.transitCells(node.parents)}
             {this.isColumnFirst(column) && <div className={classnames({
                 [styles.lastCell]: node.isLast,
@@ -111,15 +111,15 @@ class TreeView extends React.Component {
             />}
             {this.props.bodyRowRender(column, node)}
         </div>
-    };
+    );
 
-    transitCells = (parents) => {
-        return parents.map((parent, index) => <div className={classnames({
+    transitCells = (parents) =>
+        parents.map((parent, index) => (
+            <div className={classnames({
                 [styles.transitCell]: !parent.isLast,
                 [styles.emptyCell]: parent.isLast
             })} key={index}/>
-        );
-    };
+        ));
 
     isColumnFirst = column => column.name === this.props.columns[0].name;
     isExpanded = id => this.state.expanded.findIndex(uid => uid === id) !== -1;
