@@ -5,6 +5,7 @@ import memoize from 'memoizejs';
 import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
+import search from '../../../../../util/search';
 
 const bodyStyle = { padding: 0 };
 
@@ -27,6 +28,7 @@ class Divisions extends React.Component {
 
         this.state = {
             division: props.division,
+            searchText: '',
         };
     }
 
@@ -67,10 +69,17 @@ class Divisions extends React.Component {
         );
     };
 
+    onSearchTextChange = (searchText) => {
+        this.setState({ searchText });
+    };
+
+    filter = (data, searchText) => data.filter(node => search(node.name, searchText) || (node.children && this.filter(node.children, searchText).length > 0));
+
     render() {
-        const {
-            data,
-        } = this.props;
+        const { data } = this.props;
+        const { searchText } = this.state;
+
+        const filteredData = searchText ? this.filter(data, searchText) : data;
 
         return (
             <Panel
@@ -79,12 +88,17 @@ class Divisions extends React.Component {
             >
                 <Grid
                     id="user-editor-divisions-grid"
-                    data={data}
-                    columns={Divisions.getColumns()}
+                    data={filteredData}
+                    columns={[
+                        {
+                            name: 'name',
+                        }
+                    ]}
                     noCheckAll
                     bodyRowRender={this.bodyRowRender}
                     checkedPartially={false}
                     isAllChecked={false}
+                    onSearchTextChange={this.onSearchTextChange}
                     tree
                 />
             </Panel>
