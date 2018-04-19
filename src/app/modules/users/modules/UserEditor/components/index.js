@@ -13,6 +13,8 @@ import ls from 'i18n';
 import Divisions from "./Divisions";
 import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 
+const bodyStyle = { padding: 0 };
+
 class UserEditor extends React.Component {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -283,7 +285,7 @@ class UserEditor extends React.Component {
                     <div className={styles.userEditorColumn}>
                         <Panel
                             title={ls('USER_ROLE_PANEL_TITLE', 'Роль')}
-                            bodyStyle={{ padding: 0 }}
+                            bodyStyle={bodyStyle}
                         >
                             <RolesGrid
                                 id="user-editor-roles-grid"
@@ -303,7 +305,7 @@ class UserEditor extends React.Component {
                     <div className={styles.userEditorColumn}>
                         <Panel
                             title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Группы уведомлений')}
-                            bodyStyle={{ padding: 0 }}
+                            bodyStyle={bodyStyle}
                         >
                             <RolesGrid
                                 data={groupsList}

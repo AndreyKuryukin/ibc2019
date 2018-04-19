@@ -9,12 +9,12 @@ class ColumnFilterForm extends React.PureComponent {
     static propTypes = {
         active: PropTypes.bool,
         onColumnFilterChange: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
         active: false,
         onColumnFilterChange: () => null,
-    }
+    };
 
     constructor(props) {
         super(props);

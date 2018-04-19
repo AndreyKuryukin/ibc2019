@@ -9,27 +9,26 @@ import Field from '../../../../../components/Field';
 
 class BasicParams extends React.PureComponent {
     static propTypes = {
-        name: PropTypes.string,
-        serviceTypesOptions: PropTypes.array,
+        onChange: PropTypes.func,
+        config: PropTypes.object,
         kqiOptions: PropTypes.array,
-        onNameChange: PropTypes.func,
-        onServiceTypeChange: PropTypes.func,
-        onKQIChange: PropTypes.func,
+        serviceTypesOptions: PropTypes.array,
         errors: PropTypes.object,
+        disabled: PropTypes.bool,
     };
 
     static defaultProps = {
-        name: '',
-        serviceTypesOptions: [],
+        onChange: () => null,
         kqiOptions: [],
-        onNameChange: () => null,
-        onServiceTypeChange: () => null,
-        onKQIChange: () => null,
+        serviceTypesOptions: [],
+        config: null,
         errors: null,
+        disabled: false,
     };
 
+
     render() {
-        const { errors } = this.props;
+        const { errors, disabled, config, kqiOptions } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_BASIC_PARAMETERS_TITLE', 'Основные параметры')}
@@ -43,9 +42,10 @@ class BasicParams extends React.PureComponent {
                 >
                     <Input
                         id="name"
-                        value={this.props.name}
-                        onChange={event => this.props.onNameChange(event.currentTarget.value)}
+                        value={_.get(config, 'name')}
+                        onChange={event => this.props.onChange('name', event.currentTarget.value)}
                         valid={errors && _.isEmpty(errors.name)}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -56,8 +56,11 @@ class BasicParams extends React.PureComponent {
                 >
                     <Select
                         id="service-type"
+                        placeholder={ls('KQI_CALCULATOR_SERVICE_FIELD_PLACEHOLDER', 'Выберите услугу')}
+                        value={_.get(config, 'service_type')}
                         options={this.props.serviceTypesOptions}
-                        onChange={this.props.onServiceTypeChange}
+                        onChange={value => this.props.onChange('service_type', value)}
+                        disabled={disabled}
                     />
                 </Field>
                 <Field
@@ -69,9 +72,12 @@ class BasicParams extends React.PureComponent {
                 >
                     <Select
                         id="kqi"
+                        placeholder={ls('KQI_CALCULATOR_KQI_FIELD_PLACEHOLDER', 'Выберите KQI')}
                         options={this.props.kqiOptions}
-                        onChange={this.props.onKQIChange}
+                        value={_.get(config, 'kqi_id')}
+                        onChange={value => this.props.onChange('kqi_id', value)}
                         valid={errors && _.isEmpty(errors.kqi_id)}
+                        disabled={disabled}
                     />
                 </Field>
             </Panel>

@@ -32,6 +32,12 @@ class Manufacture extends React.PureComponent {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.checked !== this.state.checked) {
+            this.setState({ checked: nextProps.checked })
+        }
+    }
+
     bodyRowRender = (column, node) => {
         const checked = this.state.checked.includes(node.id);
         return (
@@ -66,7 +72,7 @@ class Manufacture extends React.PureComponent {
             && this.state.checked.length < this.props.manufactureList.length;
         const isAllChecked = !checkedPartially && this.props.manufactureList.length !== 0
             && this.state.checked.length === this.props.manufactureList.length;
-
+        const { disabled, groupingValue } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_MANUFACTURE_TITLE', 'Производитель')}
@@ -88,6 +94,7 @@ class Manufacture extends React.PureComponent {
                                 checked={isAllChecked}
                                 checkedPartially={checkedPartially}
                                 onChange={this.onCheck}
+                                disabled={disabled}
                             />
                         </Field>
                     </div>
@@ -99,6 +106,7 @@ class Manufacture extends React.PureComponent {
                         bodyRowRender={this.bodyRowRender}
                         noCheckAll
                         noSearch
+                        disabled={disabled}
                     />
                 </div>
                 <Field
@@ -110,8 +118,9 @@ class Manufacture extends React.PureComponent {
                 >
                     <Checkbox
                         id="manufacture-grouping"
-                        checked={this.props.isGroupingChecked}
+                        checked={this.props.isGroupingChecked || groupingValue}
                         onChange={this.props.onGroupingChange}
+                        disabled={disabled}
                     />
                 </Field>
             </Panel>

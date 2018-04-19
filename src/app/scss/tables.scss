@@ -18,19 +18,21 @@ thead {
   }
 }
 
+.table-cell-content {
+  display: flex;
+  overflow: hidden;
+  align-items: center;
+  .truncated {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+}
+
 .table-bordered {
   th, td {
     padding: $table-cell-padding;
-    .table-cell-content {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      .truncated {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-    }
+
   }
   tr {
     height: $table-cell-height;

@@ -28,6 +28,7 @@ class KQI extends React.PureComponent {
         isProjectionsLoading: PropTypes.bool,
         onMount: PropTypes.func,
         onSelectConfig: PropTypes.func,
+        onEditConfig: PropTypes.func,
     };
 
     static defaultProps = {
@@ -36,6 +37,7 @@ class KQI extends React.PureComponent {
         isConfigsLoading: false,
         isProjectionsLoading: false,
         onMount: () => null,
+        onEditConfig: () => null,
         onSelectConfig: null,
     };
 
@@ -80,6 +82,10 @@ class KQI extends React.PureComponent {
         this.props.history.push(`/kqi/view/${configId}`);
     };
 
+    onEditConfig = (id) => {
+        this.props.history.push(`/kqi/configure/${id}`);
+    };
+
     render() {
         const { params = {} } = this.props.match;
         const { action, resultId, projectionId, configId } = params;
@@ -101,6 +107,7 @@ class KQI extends React.PureComponent {
                             searchText={this.state.configsSearchText}
                             preloader={this.props.isConfigsLoading}
                             onSelectConfig={this.props.onSelectConfig}
+                            onEditConfig={this.onEditConfig}
                         />
                     </Panel>
                 </div>
@@ -118,8 +125,8 @@ class KQI extends React.PureComponent {
                         />
                     </Panel>
                 </div>
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive}/>}
-                {isCalculatorActive && <Calculator active={isCalculatorActive}/>}
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={configId}/>}
+                {isCalculatorActive && <Calculator active={isCalculatorActive} projectionId={projectionId}/>}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}
                                                          resultId={resultId}

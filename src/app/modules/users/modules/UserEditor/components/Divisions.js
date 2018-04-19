@@ -1,10 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from "i18n";
+import memoize from 'memoizejs';
 import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
 import search from '../../../../../util/search';
+
+const bodyStyle = { padding: 0 };
 
 class Divisions extends React.Component {
 
@@ -28,6 +31,11 @@ class Divisions extends React.Component {
             searchText: '',
         };
     }
+
+    static getColumns = memoize(() => [{
+        name: 'name',
+        searchable: true,
+    }]);
 
     componentWillReceiveProps(nextProps) {
         if (this.props.division !== nextProps.division) {
@@ -76,7 +84,7 @@ class Divisions extends React.Component {
         return (
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Подразделения')}
-                bodyStyle={{ padding: 0 }}
+                bodyStyle={bodyStyle}
             >
                 <Grid
                     id="user-editor-divisions-grid"

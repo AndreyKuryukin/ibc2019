@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
-
+import memoize from 'memoizejs';
 import Table from '../../../components/Table';
 import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import PolicyCell from './PolicyCell';
@@ -14,22 +14,19 @@ class PoliciesTable extends React.PureComponent {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
-    }
+    };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
-    }
+    };
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         title: ls('POLICIES_NAME_COLUMN_TITLE', 'Название'),
         name: 'name',
         sortable: true,
         searchable: true,
-        filter: {
-            type: 'text',
-        },
     },
     // {
     //     title: ls('POLICIES_CONDITION_COLUMN_TITLE', 'Условие'),
@@ -76,7 +73,21 @@ class PoliciesTable extends React.PureComponent {
     //     sortable: true,
     //     searchable: true,
     // }
-    ];
+    ]);
+
+    static mapPolicies = memoize(policies => {
+        console.log('map');
+        return policies.map(policy => ({
+            name: policy.name,
+            threshold: {
+                id: _.get(policy, 'threshold.id', ''),
+                cease_duration: _.get(policy, 'threshold.cease_duration', '').toString(),
+                cease_value: _.get(policy, 'threshold.cease_value', '').toString(),
+                rise_duration: _.get(policy, 'threshold.rise_duration', '').toString(),
+                rise_value: _.get(policy, 'threshold.rise_value', '').toString(),
+            },
+        }));
+    });
 
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
@@ -90,6 +101,7 @@ class PoliciesTable extends React.PureComponent {
                         name="threshold"
                         columns={column.columns}
                         sort={sort}
+                        isInHeader
                     />
                 );
             default:
@@ -144,8 +156,9 @@ class PoliciesTable extends React.PureComponent {
     }
 
     render() {
-        const columns = this.getColumns();
-        const { data, searchText } = this.props;
+        const columns = PoliciesTable.getColumns();
+        const { data: policies, searchText } = this.props;
+        const data = PoliciesTable.mapPolicies(policies);
         const filteredData = searchText ? this.filterBySearchText(data, columns, searchText) : data;
         return (
             <Table

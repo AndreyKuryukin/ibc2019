@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-
+import memoize from 'memoizejs';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
@@ -13,25 +13,31 @@ class ConfigsTable extends React.PureComponent {
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         onSelectConfig: PropTypes.func,
+        onEditConfig: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
-        onSelectConfig: null,
+        onSelectConfig: () => null,
+        onEditConfig: () => null,
     };
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
         sortable: true,
+        filter: {
+            type: 'text',
+        },
     }, {
         title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество проекций'),
         name: 'projection_count',
         searchable: true,
         sortable: true,
+        width: 150,
     }, {
         title: '',
         name: 'edit',
@@ -40,7 +46,7 @@ class ConfigsTable extends React.PureComponent {
         title: '',
         name: 'delete',
         width: 25,
-    }];
+    }]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell
@@ -60,9 +66,12 @@ class ConfigsTable extends React.PureComponent {
                 );
             case 'edit': 
                 return (
-                    <IconCell
-                        icon="edit-icon"
-                        onIconClick={() => null}
+                    <div
+                        className="edit-icon"
+                        onClick={(event) => {
+                            event.stopPropagation();
+                            this.props.onEditConfig(node.id)
+                        }}
                     />
                 );
             case 'delete':
@@ -91,7 +100,7 @@ class ConfigsTable extends React.PureComponent {
 
     render() {
         const { data, searchText } = this.props;
-        const columns = this.getColumns();
+        const columns = ConfigsTable.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
 
         return (

@@ -25,6 +25,7 @@ class Period extends React.PureComponent {
         onGroupingTypeChange: PropTypes.func,
         onAutoGenChange: PropTypes.func,
         errors: PropTypes.object,
+        config: PropTypes.object,
         isAutoGen: PropTypes.bool,
     };
 
@@ -34,6 +35,7 @@ class Period extends React.PureComponent {
         onGroupingTypeChange: () => null,
         onAutoGenChange: () => null,
         errors: null,
+        config: null,
         isAutoGen: false,
     };
 
@@ -52,6 +54,25 @@ class Period extends React.PureComponent {
             groupingOptions: [],
             groupingType: null,
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.config) {
+            const {
+                start_date_time: start,
+                end_date_time: end,
+                period,
+                date_time_grouping: groupingType,
+            } = nextProps.config;
+            this.setState({
+                start: new Date(start),
+                end: new Date(end),
+                interval: period ? period.toLowerCase() : '',
+                groupingType: groupingType ? groupingType.toLowerCase() : groupingType,
+                isGroupingChecked: !!groupingType
+            })
+        }
+
     }
 
     getFilteredGroupingOptions = (start, end, groupingOptions) => {
@@ -114,14 +135,14 @@ class Period extends React.PureComponent {
 
     onIntervalChange = (interval, value) => {
         if (value) {
-            const start = interval !== INTERVALS.OTHER ?  moment().subtract(1, interval).startOf(interval).toDate() : this.state.start;
-            const end = interval !== INTERVALS.OTHER ?  moment(start).endOf(interval).toDate() : this.state.end;
+            const start = interval !== INTERVALS.OTHER ? moment().subtract(1, interval).startOf(interval).toDate() : this.state.start;
+            const end = interval !== INTERVALS.OTHER ? moment(start).endOf(interval).toDate() : this.state.end;
             this.configureAndSetState(start, end, interval);
         }
     };
 
     render() {
-        const { errors } = this.props;
+        const { errors, disabled } = this.props;
 
         return (
             <Panel
@@ -139,6 +160,7 @@ class Period extends React.PureComponent {
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.DAY}
                             onChange={v => this.onIntervalChange(INTERVALS.DAY, v)}
+                            disabled={disabled}
                         />
                     </Field>
                     <Field
@@ -156,6 +178,7 @@ class Period extends React.PureComponent {
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.WEEK}
                             onChange={v => this.onIntervalChange(INTERVALS.WEEK, v)}
+                            disabled={disabled}
                         />
                     </Field>
                     <Field
@@ -173,6 +196,7 @@ class Period extends React.PureComponent {
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.MONTH}
                             onChange={v => this.onIntervalChange(INTERVALS.MONTH, v)}
+                            disabled={disabled}
                         />
                     </Field>
                     <Field
@@ -190,6 +214,7 @@ class Period extends React.PureComponent {
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.OTHER}
                             onChange={v => this.onIntervalChange(INTERVALS.OTHER, v)}
+                            disabled={disabled}
                         />
                     </Field>
                     <DateTimePicker
@@ -200,6 +225,7 @@ class Period extends React.PureComponent {
                         format={'DD.MM.YYYY HH:mm'}
                         time
                         valid={errors && _.isEmpty(errors.start_date_time)}
+                        disabled={disabled}
                     />
                     <DateTimePicker
                         value={this.state.end}
@@ -210,6 +236,7 @@ class Period extends React.PureComponent {
                         style={{ marginLeft: 15 }}
                         time
                         valid={errors && _.isEmpty(errors.end_date_time)}
+                        disabled={disabled}
                     />
                     <div className={styles.groupingBlock}>
                         <Checkbox
@@ -217,6 +244,7 @@ class Period extends React.PureComponent {
                             checked={this.state.isGroupingChecked}
                             onChange={this.onGroupingCheck}
                             style={{ marginLeft: 30 }}
+                            disabled={disabled}
                         />
                         <Field
                             id="date-time-grouping"
@@ -232,7 +260,7 @@ class Period extends React.PureComponent {
                                 value={this.state.groupingType}
                                 options={this.state.groupingOptions}
                                 onChange={this.onGroupingTypeChange}
-                                disabled={!this.state.isGroupingChecked}
+                                disabled={!this.state.isGroupingChecked || disabled}
                                 noEmptyOption
                             />
                         </Field>
@@ -249,6 +277,7 @@ class Period extends React.PureComponent {
                         id="auto-checkbox"
                         checked={this.props.isAutoGen}
                         onChange={this.props.onAutoGenChange}
+                        disabled={disabled}
                     />
                 </Field>
             </Panel>

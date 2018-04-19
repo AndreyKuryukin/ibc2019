@@ -1,14 +1,51 @@
 @import '../../scss/vars';
 
 .tableContainer {
+  display: flex;
   flex-grow: 1;
   overflow: hidden;
-  background: repeating-linear-gradient(180deg, $smooth-grey, $smooth-grey $table-cell-height, $white $table-cell-height, $white $table-cell-height*2);
-}
-
-.selected {
-  background-color: $orange !important;
-  * {
-    color: $white !important;
+  flex-direction: column;
+  .tableHeader {
+    display: flex;
+    font-weight: $table-thead-font-weight;
+    height: $table-cell-height;
+    color: $white;
+    background: #232323; /* Old browsers */
+    background: -moz-linear-gradient(top, #232323 0%, #404040 33%); /* FF3.6-15 */
+    background: -webkit-linear-gradient(top, #232323 0%, #404040 33%); /* Chrome10-25,Safari5.1-6 */
+    background: linear-gradient(to bottom, #232323 0%, #404040 33%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  }
+  .tableBody {
+    display: flex;
+    flex: 1 1 0;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    flex-direction: column;
+    background: repeating-linear-gradient(180deg, $smooth-grey, $smooth-grey $table-cell-height, $white $table-cell-height, $white $table-cell-height*2);
+    .bodyRow {
+      display: flex;
+      height: $table-cell-height;
+      min-height: $table-cell-height;
+      max-height: $table-cell-height;
+      background-color: $white;
+      &:nth-of-type(odd) {
+        background-color: $table-accent-bg;
+      }
+      &:hover {
+        background-color: $table-hover-bg;
+      }
+      &.selected {
+        background-color: $orange !important;
+        * {
+          color: $white !important;
+        }
+      }
+      .bodyCell {
+        display: flex;
+        cursor: default;
+        padding: $table-cell-padding;
+        align-items: center;
+      }
+    }
   }
 }

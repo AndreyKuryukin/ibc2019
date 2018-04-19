@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
 import moment from 'moment';
+import { createSelector } from 'reselect';
+import memoize from 'memoizejs';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
@@ -34,7 +36,25 @@ class UsersTable extends React.PureComponent {
         };
     }
 
-    getColumns = () => [{
+    static mapUsersFromProps = createSelector(
+        props => props.data,
+        props => props.divisionsById,
+        (users, divisionsById) => users.map(user => ({
+            id: user.id,
+            login: user.login,
+            name: `${user.first_name} ${user.last_name}`,
+            email: user.email,
+            phone: user.phone,
+            roles: user.roles.map(role => role.name).join(', '),
+            division: _.get(divisionsById, `${user.division_id}.name`, ''),
+            groups: user.groups.map(group => group.name).join(', '),
+            created: moment(user.created).format('YYYY-MM-DD HH:mm:ss'),
+            last_connection: user.last_connection ? moment(user.last_connection).format('YYYY-MM-DD HH:mm:ss') : '',
+            disabled: user.disabled ? ls('NO', 'Нет') : ls('YES', 'Да'),
+        }))
+    );
+
+    static getColumns = memoize(() => [{
         name: 'checked',
         width: 28,
     }, {
@@ -65,7 +85,7 @@ class UsersTable extends React.PureComponent {
         width: 110,
     }, {
         title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
-        name: 'division_id',
+        name: 'division',
         searchable: true,
         sortable: true,
     }, {
@@ -87,7 +107,7 @@ class UsersTable extends React.PureComponent {
     }, {
         title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
         name: 'disabled',
-    }];
+    }]);
 
     onCheck = (value, node) => {
         let checked = [];
@@ -104,7 +124,7 @@ class UsersTable extends React.PureComponent {
         this.props.onCheck(checked);
     };
 
-    headerRowRender = (column) => {
+    headerRowRender = (column, sort) => {
         switch (column.name) {
             case 'checked': {
                 const checkedPartially = this.props.data.length !== 0 && this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
@@ -123,6 +143,7 @@ class UsersTable extends React.PureComponent {
                 return (
                     <DefaultCell
                         content={column.title}
+                        sortDirection={sort.by === column.name ? sort.direction : null}
                     />
                 );
         }
@@ -143,7 +164,13 @@ class UsersTable extends React.PureComponent {
                 );
             }
             case 'email' : {
-                return <MailLink href={node.email}>{node.email}</MailLink>
+                return (
+                    <DefaultCell
+                        content={
+                            <MailLink href={value}>{value}</MailLink>
+                        }
+                    />
+                );
             }
             case 'login':
                 return (
@@ -153,27 +180,6 @@ class UsersTable extends React.PureComponent {
                         text={value}
                     />
                 );
-            case 'division_id':
-                return (
-                    <DefaultCell
-                        content={_.get(this.props.divisionsById, `${value}.name`, '')}
-                    />
-                );
-            case 'roles':
-            case 'groups':
-                return (
-                    <DefaultCell
-                        content={value ? value.map(item => item.name).join(', ') : ''}
-                    />
-                );
-            case 'name':
-                return `${node['first_name']} ${node['last_name']}`;
-            case 'last_connection':
-                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
-            case 'created':
-                return node[column.name] ? moment(node[column.name]).format('YYYY-MM-DD HH:mm:ss') : '';
-            case 'disabled':
-                return node[column.name] ? ls('NO', 'Нет') : ls('YES', 'Да');
             default:
                 return (
                     <DefaultCell
@@ -190,8 +196,9 @@ class UsersTable extends React.PureComponent {
     };
 
     render() {
-        const { data, searchText } = this.props;
-        const columns = this.getColumns();
+        const { searchText } = this.props;
+        const data = UsersTable.mapUsersFromProps(this.props);
+        const columns = UsersTable.getColumns();
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table data={filteredData}
