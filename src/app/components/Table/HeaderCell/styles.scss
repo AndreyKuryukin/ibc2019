@@ -1,18 +1,19 @@
 @import '../../../scss/vars';
 
 .headerCell {
+  display: flex;
   position: relative;
   cursor: pointer;
-}
-.headerCell + .headerCell:before {
-  content: '';
-  display: block;
-  position: absolute;
-  border-left: $table-left-border;
-  top: 0;
-  left: -1px;
-  height: 99999px;
-}
-.thFix {
-  vertical-align: middle !important;
+  padding: $table-cell-padding;
+  align-items: center;
+  & + &:before {
+    content: '';
+    display: block;
+    cursor: default;
+    position: absolute;
+    border-left: $table-left-border;
+    top: 0;
+    left: -1px;
+    height: 99999px;
+  }
 }

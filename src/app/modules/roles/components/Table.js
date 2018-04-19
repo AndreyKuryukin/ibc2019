@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-
+import memoize from 'memoizejs';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Cells';
@@ -13,7 +13,7 @@ class RolesTable extends React.PureComponent {
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         onCheck: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
         data: [],
@@ -45,7 +45,7 @@ class RolesTable extends React.PureComponent {
         });
     };
 
-    getColumns = () => ([{
+    static getColumns = memoize(() => ([{
         name: 'checked',
         width: 28,
     }, {
@@ -56,18 +56,20 @@ class RolesTable extends React.PureComponent {
         filter: {
             type: 'text',
         },
-    }, {
-        title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
-        name: 'number',
-        searchable: true,
-        width: 200,
-        sortable: true,
-    }, {
+    },
+    // {
+    //     title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
+    //     name: 'number',
+    //     searchable: true,
+    //     width: 200,
+    //     sortable: true,
+    // },
+    {
         title: ls('ROLES_DESCRIPTION', 'Описание'),
         name: 'description',
         searchable: true,
         sortable: true,
-    }]);
+    }]));
 
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
@@ -133,7 +135,7 @@ class RolesTable extends React.PureComponent {
 
     render() {
         const { data, searchText, preloader } = this.props;
-        const columns = this.getColumns();
+        const columns = RolesTable.getColumns();
         const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table headerRowRender={this.headerRowRender}

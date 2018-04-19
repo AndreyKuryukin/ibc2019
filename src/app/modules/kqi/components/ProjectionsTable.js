@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ls from 'i18n';
 import moment from 'moment';
 import { createSelector } from 'reselect';
+import memoize from 'memoizejs';
 import search from '../../../util/search';
 import TreeView from '../../../components/TreeView';
 import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells';
@@ -30,7 +31,7 @@ export class ProjectionsTable extends React.PureComponent {
         configId: null,
     };
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         title: ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции Krc'),
         name: 'projection',
         searchable: true,
@@ -61,9 +62,11 @@ export class ProjectionsTable extends React.PureComponent {
     }, {
         title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
         name: 'auto_gen',
+        width: 110,
     }, {
         title: ls('KQI_GRAPH_COLUMN_TITLE', 'График'),
         name: 'graph',
+        width: 60,
     }, {
         title: '',
         name: 'edit',
@@ -72,7 +75,7 @@ export class ProjectionsTable extends React.PureComponent {
         title: '',
         name: 'delete',
         width: 25,
-    }];
+    }]);
 
     mapResult = result => ({
         id: result.id,
@@ -185,7 +188,7 @@ export class ProjectionsTable extends React.PureComponent {
     render() {
         const { searchText } = this.props;
         const mappedData = this.getMappedDataFromProps(this.props);
-        const columns = this.getColumns();
+        const columns = ProjectionsTable.getColumns();
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
 
         return (
