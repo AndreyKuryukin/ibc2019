@@ -57,7 +57,10 @@ class Roles extends React.Component {
     };
 
     onRemove = () => {
-        this.props.onRemove(this.state.checkedIds);
+        const onSuccess = () => {
+            this.setState({ checkedIds: [] });
+        };
+        this.props.onRemove(this.state.checkedIds, onSuccess);
     };
 
     onSearchTextChange = (searchText) => {
@@ -69,7 +72,7 @@ class Roles extends React.Component {
     render() {
         const {
             searchText,
-            checkedIds
+            checkedIds,
         } = this.state;
 
         const { match, rolesData, history, isLoading } = this.props;
@@ -98,6 +101,7 @@ class Roles extends React.Component {
                         preloader={isLoading}
                         data={rolesData}
                         onCheck={this.onCheck}
+                        checked={checkedIds}
                     />
                     {isEditorActive && <RoleEditor
                         active={isEditorActive}

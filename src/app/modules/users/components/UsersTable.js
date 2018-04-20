@@ -13,6 +13,7 @@ import search from '../../../util/search';
 class UsersTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        checked: PropTypes.array,
         divisionsById: PropTypes.object,
         searchText: PropTypes.string,
         onCheck: PropTypes.func,
@@ -21,6 +22,7 @@ class UsersTable extends React.PureComponent {
 
     static defaultProps = {
         data: [],
+        checked: [],
         divisionsById: {},
         searchText: '',
         onCheck: () => null,
@@ -31,7 +33,6 @@ class UsersTable extends React.PureComponent {
         super(props);
 
         this.state = {
-            checked: [],
             searchText: '',
         };
     }
@@ -112,7 +113,7 @@ class UsersTable extends React.PureComponent {
     onCheck = (value, node) => {
         let checked = [];
         if (node) {
-            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
+            checked = value ? [...this.props.checked, node.id] : _.without(this.props.checked, node.id)
         } else {
             checked = value ? this.props.data.map(node => node.id) : [];
         }
@@ -127,8 +128,8 @@ class UsersTable extends React.PureComponent {
     headerRowRender = (column, sort) => {
         switch (column.name) {
             case 'checked': {
-                const checkedPartially = this.props.data.length !== 0 && this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
-                const isAllChecked = !checkedPartially && this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
+                const checkedPartially = this.props.data.length !== 0 && this.props.checked.length > 0 && this.props.checked.length < this.props.data.length;
+                const isAllChecked = !checkedPartially && this.props.data.length !== 0 && this.props.checked.length === this.props.data.length;
                 return (
                     <CheckedCell
                         id="users-all"
@@ -153,7 +154,7 @@ class UsersTable extends React.PureComponent {
         const value =  node[column.name] || '';
         switch (column.name) {
             case 'checked': {
-                const isRowChecked = this.state.checked.includes(node.id);
+                const isRowChecked = this.props.checked.includes(node.id);
                 return (
                     <CheckedCell
                         id={`users-user-${node.id}`}

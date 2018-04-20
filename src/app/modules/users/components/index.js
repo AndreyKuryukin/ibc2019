@@ -57,15 +57,9 @@ class Users extends React.Component {
         }
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        const isCheckedIdsChanged = this.state.checkedIds !== nextState.checkedIds;
-
-        return !isCheckedIdsChanged;
-    }
-
     onCheck = (checkedIds) => {
         this.setState({ checkedIds });
-    }
+    };
 
     onSearchTextChange = (searchText) => {
         this.setState({
@@ -79,8 +73,11 @@ class Users extends React.Component {
 
     onDelete = () => {
         const ids = this.state.checkedIds;
+        const onSuccess = () => {
+            this.setState({ checkedIds: [], });
+        };
         if (ids.length > 0) {
-            this.props.onDelete(ids);
+            this.props.onDelete(ids, onSuccess);
         }
     };
 
@@ -130,6 +127,7 @@ class Users extends React.Component {
                         data={this.props.usersData}
                         divisionsById={this.props.divisionsById}
                         searchText={searchText}
+                        checked={this.state.checkedIds}
                         onCheck={this.onCheck}
                         preloader={this.props.isLoading}
                     />
