@@ -35,15 +35,14 @@
       }
     }
     .pageTitle {
-      width: 100%;
       display: inline;
       text-align: center;
       padding: 10px;
       flex: 1;
     }
     .rightPanel {
-      text-align: right;
-      flex: 0;
+      display: flex;
+      align-items: center;
       padding: 10px;
     }
   }

@@ -23,9 +23,13 @@ class PageWrapper extends React.Component {
         pageBlur: this.pageBlur
     });
 
-    static propTypes = {};
+    static propTypes = {
+        user: PropTypes.object,
+    };
 
-    static defaultProps = {};
+    static defaultProps = {
+        user: null,
+    };
 
     constructor(props) {
         super(props);
@@ -64,6 +68,8 @@ class PageWrapper extends React.Component {
         this.setState({blur})
     };
 
+    getUserName = user => `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`;
+
     render() {
         return <div className={classNames(styles.pageWrapper, {[styles.blur]: this.state.blur})}>
             <Navbar color="faded"
@@ -81,14 +87,13 @@ class PageWrapper extends React.Component {
                             <div onClick={this.toggle} className={styles.qLogo}/>
                         </DropdownToggle>
                         <DropdownMenu className={styles.menuFix}>
-                            {this.renderMenuItems(this.props.menu)}
+                            {this.renderMenuItems(this.props.user.menu)}
                         </DropdownMenu>
                     </Dropdown>
-
                 </div>
                 <div className={styles.pageTitle}><h5>{this.state.pageTitle}</h5></div>
                 <div className={styles.rightPanel}>
-                    <a href="/">Username</a>
+                    <a href="/">{this.getUserName(this.props.user)}</a>
                 </div>
             </Navbar>
             <div className={styles.pageContent}>
@@ -99,7 +104,7 @@ class PageWrapper extends React.Component {
 }
 
 const mapStateToProps = state => ({
-    menu: state.user.menu,
+    user: state.user,
 });
 
 

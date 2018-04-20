@@ -11,7 +11,7 @@ import { ERRORS } from "../../../costants/errors";
 import ls from "i18n";
 import { LOGIN_REQUEST, SIGN_IN_URL } from "../../../costants/login";
 import { validateForm } from "../../../util/validation";
-
+import { fetchActiveUserSuccess } from "../../../actions/index";
 
 class Login extends React.PureComponent {
 
@@ -49,10 +49,15 @@ class Login extends React.PureComponent {
                 [LOGIN_REQUEST.LOGIN]: login,
                 [LOGIN_REQUEST.PASSWORD]: password
             })
-                .then((userName) => {
-                    this.setState({ loading: false });
-                    this.props.onLoginSuccess(userName);
+                .then(() => {
                     this.context.notifications.close('login-failed');
+
+                    return rest.get('api/v1/user/current');
+                })
+                .then((userResp) => {
+                    this.setState({ loading: false });
+                    const user = userResp.data;
+                    this.props.onFetchUserSuccess(user);
                     this.props.history.push('/roles');
                 })
                 .catch((error) => {
@@ -80,6 +85,7 @@ const mapStateToProps = state => ({});
 
 const mapDispatchToProps = dispatch => ({
     onLoginSuccess: (...success) => dispatch(signInSuccess(...success)),
+    onFetchUserSuccess: user => dispatch(fetchActiveUserSuccess(user)),
 });
 
 export default connect(
