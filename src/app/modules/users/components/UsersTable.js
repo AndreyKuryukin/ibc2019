@@ -107,6 +107,8 @@ class UsersTable extends React.PureComponent {
     }, {
         title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
         name: 'disabled',
+        searchable: true,
+        sortable: true,
     }]);
 
     onCheck = (value, node) => {
