@@ -51,6 +51,7 @@ $tree-space-width: 28px;
 .cellContainer {
   display: flex;
   flex-direction: row;
+  width: 100%;
   align-items: center;
   overflow: hidden;
 }
