@@ -119,6 +119,16 @@ class UserEditor extends React.Component {
         }
     };
 
+    validatePhone = (e) => {
+        const value = `${e.target.value}${String.fromCharCode(e.charCode)}`;
+        const reg = new RegExp(/^([0-9]){1,11}$/);
+
+        if (!reg.test(value)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    };
+
     render() {
         const {
             active,
@@ -283,6 +293,7 @@ class UserEditor extends React.Component {
                                         id="phone"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
+                                        onKeyPress={this.validatePhone}
                                         onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
                                     />
                                 </Field>

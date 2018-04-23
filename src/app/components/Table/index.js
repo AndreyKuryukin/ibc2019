@@ -92,7 +92,7 @@ class Table extends React.Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
             this.setState({
-                data: nextProps.data,
+                data: Array.isArray(nextProps.data) ? nextProps.data : [],
             });
         }
     }
