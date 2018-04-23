@@ -120,6 +120,7 @@ class UserEditor extends React.Component {
         }
     };
 
+
     onPasswordClick = (e) => {
         const isCapsLockOn = e.getModifierState('CapsLock');
 
@@ -140,6 +141,18 @@ class UserEditor extends React.Component {
     onPasswordBlur = () => {
         this.setState({ showTooltipFor: null });
     };
+
+
+    validatePhone = (e) => {
+        const value = `${e.target.value}${String.fromCharCode(e.charCode)}`;
+        const reg = new RegExp(/^([0-9]){1,11}$/);
+
+        if (!reg.test(value)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    };
+
 
     render() {
         const {
@@ -320,6 +333,7 @@ class UserEditor extends React.Component {
                                         id="phone"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
+                                        onKeyPress={this.validatePhone}
                                         onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
                                     />
                                 </Field>
