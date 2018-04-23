@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Form } from 'reactstrap';
+import { Form, Tooltip } from 'reactstrap';
 import Modal from '../../../../../components/Modal';
 import Input from '../../../../../components/Input';
 import styles from './styles.scss';
@@ -48,6 +48,7 @@ class UserEditor extends React.Component {
         this.state = {
             user: props.user,
             errors: null,
+            showTooltipFor: null,
         };
     }
 
@@ -119,6 +120,40 @@ class UserEditor extends React.Component {
         }
     };
 
+
+    onPasswordClick = (e) => {
+        const isCapsLockOn = e.getModifierState('CapsLock');
+
+        this.setState({
+            showTooltipFor: isCapsLockOn ? e.target.id : null,
+        });
+    };
+
+    onPasswordKeyDown = (e) => {
+        if (e.keyCode === 20) {
+            const isCapsLockOn = e.getModifierState('CapsLock');
+            this.setState({
+                showTooltipFor: isCapsLockOn ? e.target.id : null,
+            });
+        }
+    };
+
+    onPasswordBlur = () => {
+        this.setState({ showTooltipFor: null });
+    };
+
+
+    validatePhone = (e) => {
+        const value = `${e.target.value}${String.fromCharCode(e.charCode)}`;
+        const reg = new RegExp(/^([0-9]){1,11}$/);
+
+        if (!reg.test(value)) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+    };
+
+
     render() {
         const {
             active,
@@ -127,7 +162,8 @@ class UserEditor extends React.Component {
             groupsList,
             divisions,
         } = this.props;
-        const { errors } = this.state;
+        const { errors, showTooltipFor } = this.state;
+
         return (
             <DraggableWrapper>
             <Modal
@@ -213,9 +249,16 @@ class UserEditor extends React.Component {
                                         type="password"
                                         value={this.getUserProperty('password', '')}
                                         onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
+                                        onClick={this.onPasswordClick}
+                                        onKeyDown={this.onPasswordKeyDown}
+                                        onFocus={this.onPasswordFocus}
+                                        onBlur={this.onPasswordBlur}
                                         valid={errors && _.isEmpty(errors.password)}
                                         errorMessage={_.get(errors, 'password.title')}
                                     />
+                                    <Tooltip placement="right" isOpen={showTooltipFor === 'password'} target="password">
+                                        {ls('CAPS_LOCK_IS_ON_TEXT', 'Включен Caps Lock!')}
+                                    </Tooltip>
                                 </Field>
                                 <Field
                                     id="confirm"
@@ -230,9 +273,16 @@ class UserEditor extends React.Component {
                                         type="password"
                                         value={this.getUserProperty('confirm', '')}
                                         onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
+                                        onClick={this.onPasswordClick}
+                                        onKeyDown={this.onPasswordKeyDown}
+                                        onFocus={this.onPasswordFocus}
+                                        onBlur={this.onPasswordBlur}
                                         valid={errors && _.isEmpty(errors.confirm)}
                                         errorMessage={_.get(errors, 'confirm.title')}
                                     />
+                                    <Tooltip placement="right" isOpen={showTooltipFor === 'confirm'} target="confirm">
+                                        {ls('CAPS_LOCK_IS_ON_TEXT', 'Включен Caps Lock!')}
+                                    </Tooltip>
                                 </Field>
                                 <Field
                                     id="name"
@@ -283,6 +333,7 @@ class UserEditor extends React.Component {
                                         id="phone"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
+                                        onKeyPress={this.validatePhone}
                                         onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
                                     />
                                 </Field>
