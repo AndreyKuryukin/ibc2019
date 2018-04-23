@@ -70,9 +70,10 @@ class Table extends React.Component {
 
         const defaultSortDirection = 'asc';
         const sortBy = Table.getDefaultSortBy(props.columns);
+        const data = Array.isArray(props.data) ? props.data : [];
 
         this.state = {
-            data: sortBy ? naturalSort(props.data, [defaultSortDirection], node => [_.get(node, `${sortBy}`, '')]) : props.data,
+            data: sortBy ? naturalSort(data, [defaultSortDirection], node => [_.get(node, `${sortBy}`, '')]) : data,
             cntrlIsPressed: false,
             selected: [],
             sort: {

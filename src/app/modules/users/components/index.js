@@ -9,6 +9,9 @@ import UsersTable from './UsersTable';
 import Icon from '../../../components/Icon/Icon';
 import Input from '../../../components/Input/index';
 
+const iconStyle = { marginLeft: 10 };
+const groupIconStyle = { marginLeft: 20 };
+
 class Users extends React.Component {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
@@ -65,7 +68,7 @@ class Users extends React.Component {
 
     onCheck = (checkedIds) => {
         this.setState({ checkedIds });
-    }
+    };
 
     onSearchTextChange = (searchText) => {
         this.setState({
@@ -115,14 +118,37 @@ class Users extends React.Component {
                      tabTitle={ls('USERS_TAB_TITLE', 'Пользователи')}>
 
                     <div className={styles.controlsWrapper}>
-                        <Icon icon="addIcon" onClick={this.onAdd} />
-                        <Icon icon="deleteIcon" onClick={this.onDelete} style={{ marginLeft: 10 }} />
-                        <Icon icon="lockIcon" onClick={this.onLock} style={{ marginLeft: 10 }} />
-                        <Icon icon="unlockIcon" onClick={this.onUnlock}/>
-                        <Icon icon="groupIcon"  style={{ marginLeft: 20 }} />
-                        <Input placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
-                               className={styles.search}
-                               onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
+                        <Icon
+                            icon="addIcon"
+                            onClick={this.onAdd}
+                            title={ls('ADD_USER_TITLE', 'Добавить пользователя')}
+                        />
+                        <Icon
+                            icon="deleteIcon"
+                            onClick={this.onDelete}
+                            style={iconStyle}
+                            title={ls('DELETE_USER_TITLE', 'Удалить пользователя')}
+                        />
+                        <Icon
+                            icon="lockIcon"
+                            onClick={this.onLock}
+                            style={iconStyle}
+                            title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
+                        />
+                        <Icon
+                            icon="unlockIcon"
+                            onClick={this.onUnlock}
+                            title={ls('UNLOCK_USER_TITLE', 'Разблокировать пользователя')}
+                        />
+                        <Icon
+                            icon="groupIcon"
+                            style={groupIconStyle}
+                            title={ls('CREATE_USER_GROUP_TITLE', 'Создать группу пользователей')}
+                        />
+                        <Input
+                            placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
+                            className={styles.search}
+                            onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
                         />
                     </div>
 
