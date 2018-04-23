@@ -142,17 +142,14 @@ class UserEditor extends React.Component {
         this.setState({ showTooltipFor: null });
     };
 
+    onChangePhone = (e) => {
+        const value = e.target.value;
+        const reg = new RegExp(/^([0-9]){0,11}$/);
 
-    validatePhone = (e) => {
-        const value = `${e.target.value}${String.fromCharCode(e.charCode)}`;
-        const reg = new RegExp(/^([0-9]){1,11}$/);
-
-        if (!reg.test(value)) {
-            e.preventDefault();
-            e.stopPropagation();
+        if (reg.test(value)) {
+            this.setUserProperty('phone', value);
         }
     };
-
 
     render() {
         const {
@@ -333,8 +330,7 @@ class UserEditor extends React.Component {
                                         id="phone"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
-                                        onKeyPress={this.validatePhone}
-                                        onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
+                                        onChange={this.onChangePhone}
                                     />
                                 </Field>
                             </Form>
