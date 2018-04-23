@@ -87,6 +87,7 @@ class App extends React.Component {
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data;
+                this.props.onFetchUserSuccess(user);
                 const subjectMap = this.getMapedSubjects() || {};
                 const commonSubjects = this.getCommonRoutes();
                 const totalSubjects = commonSubjects.concat(user.subjects);
@@ -166,7 +167,7 @@ class App extends React.Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
-    }
+    };
 };
 
 const mapDispatchToProps = dispatch => ({
