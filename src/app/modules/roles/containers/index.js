@@ -53,22 +53,23 @@ class Roles extends React.PureComponent {
             });
     };
 
-    onRemoveConfirmed = (ids) => {
+    onRemoveConfirmed = (ids, onSuccess) => {
         this.setState({ isLoading: true });
         Promise.all(
             ids.map(id => rest.delete('/api/v1/role/:roleId', {}, { urlParams: { roleId: id } }))
         ).then(([...deletedIds]) => {
             this.props.onDeleteRolesSuccess(ids);
+            onSuccess();
             this.setState({ isLoading: false });
         })
-            .catch((e) => {
-                console.error(e);
-                this.setState({ isLoading: false });
-            });
+        .catch((e) => {
+            console.error(e);
+            this.setState({ isLoading: false });
+        });
     };
 
-    onRemove = (ids) => {
-        this.onRemoveConfirmed(ids)
+    onRemove = (ids, onSuccess) => {
+        this.onRemoveConfirmed(ids, onSuccess);
     };
 
     render() {

@@ -16,14 +16,12 @@ class RolesControls extends React.PureComponent {
         onSearchTextChange: PropTypes.func,
         onCheckAll: PropTypes.func,
         onRemove: PropTypes.func,
-        checkedIds: PropTypes.array,
     };
 
     static defaultProps = {
         onSearchTextChange: () => null,
         onCheckAll: () => null,
         onRemove: () => null,
-        checkedIds: []
     };
 
     constructor(props) {
@@ -41,6 +39,11 @@ class RolesControls extends React.PureComponent {
 
     triggerDelete = () => {
         this.setState({ removeConfirmOpen: !this.state.removeConfirmOpen })
+    };
+
+    onRemove = () => {
+        this.props.onRemove();
+        this.triggerDelete();
     };
 
     render() {
@@ -65,10 +68,7 @@ class RolesControls extends React.PureComponent {
                             <Button outline color="action" onClick={this.triggerDelete}>
                                 {ls('CANCEL', 'Отмена')}
                             </Button>
-                            <Button color="action" onClick={() => {
-                                this.props.onRemove();
-                                this.triggerDelete()
-                            }}>
+                            <Button color="action" onClick={this.onRemove}>
                                 {ls('REMOVE', 'Удалить')}
                             </Button>
                         </div>

@@ -60,7 +60,7 @@ class Users extends React.PureComponent {
             });
     };
 
-    onDelete = (ids) => {
+    onDelete = (ids, onSuccess) => {
         this.setState({
             isLoading: true,
         });
@@ -69,6 +69,7 @@ class Users extends React.PureComponent {
             ids.map(id => rest.delete('/api/v1/user/:userId', {}, { urlParams: { userId: id } }))
         ).then(() => {
             this.props.onDeleteUsersSuccess(ids);
+            onSuccess();
             this.setState({ isLoading: false });
         }).catch((e) => {
             console.error(e);

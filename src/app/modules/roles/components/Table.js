@@ -10,6 +10,7 @@ import ls from "i18n";
 class RolesTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        checked: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         onCheck: PropTypes.func,
@@ -17,6 +18,7 @@ class RolesTable extends React.PureComponent {
 
     static defaultProps = {
         data: [],
+        checked: [],
         searchText: '',
         preloader: false,
         onCheck: () => null,
@@ -24,25 +26,17 @@ class RolesTable extends React.PureComponent {
 
     constructor(props) {
         super(props);
-
-        this.state = {
-            checked: [],
-        };
     }
 
     onCheck = (value, node) => {
         let checked = [];
         if (node) {
-            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
+            checked = value ? [...this.props.checked, node.id] : _.without(this.props.checked, node.id)
         } else {
             checked = value ? this.props.data.map(node => node.id) : [];
         }
 
         this.props.onCheck(checked);
-
-        this.setState({
-            checked,
-        });
     };
 
     static getColumns = memoize(() => ([{
@@ -75,8 +69,8 @@ class RolesTable extends React.PureComponent {
         const sortDirection = sort.by === column.name ? sort.direction : null;
         switch (column.name) {
             case 'checked': {
-                const checkedPartially = this.props.data.length !== 0 && this.state.checked.length > 0 && this.state.checked.length < this.props.data.length;
-                const isAllChecked = !checkedPartially && this.props.data.length !== 0 && this.state.checked.length === this.props.data.length;
+                const checkedPartially = this.props.data.length !== 0 && this.props.checked.length > 0 && this.props.checked.length < this.props.data.length;
+                const isAllChecked = !checkedPartially && this.props.data.length !== 0 && this.props.checked.length === this.props.data.length;
                 return (
                     <CheckedCell
                         id="roles-all"
@@ -101,7 +95,7 @@ class RolesTable extends React.PureComponent {
         const text = node[column.name];
         switch (column.name) {
             case 'checked': {
-                const isRowChecked = this.state.checked.includes(node.id);
+                const isRowChecked = this.props.checked.includes(node.id);
                 return (
                     <CheckedCell
                         id={`roles-role-${node.id}`}
