@@ -9,7 +9,7 @@ export default (state = initialState, action) => {
     switch (action.type) {
         case FETCH_POLICIES_SUCCESS:
             return {
-                list: [...action.payload.policies],
+                list: Array.isArray(action.payload.policies) ? action.payload.policies : [],
             };
         case CREATE_POLICY: {
             const { policy } = action.payload;

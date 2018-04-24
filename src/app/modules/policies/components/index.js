@@ -72,6 +72,7 @@ class Policies extends React.Component {
                 {isEditorActive && <PolicyEditor
                     active={true}
                     policyId={policyId}
+                    policies={data}
                 />}
             </div>
         );
