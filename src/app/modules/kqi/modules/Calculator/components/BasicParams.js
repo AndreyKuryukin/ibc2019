@@ -7,6 +7,8 @@ import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 
+import styles from './styles.scss';
+
 class BasicParams extends React.PureComponent {
     static propTypes = {
         onChange: PropTypes.func,
@@ -40,13 +42,14 @@ class BasicParams extends React.PureComponent {
                     inputWidth="80%"
                     required
                 >
-                    <Input
-                        id="name"
-                        value={_.get(config, 'name')}
-                        onChange={event => this.props.onChange('name', event.currentTarget.value)}
-                        valid={errors && _.isEmpty(errors.name)}
-                        disabled={disabled}
-                    />
+                    {_.get(config, 'auto_gen') ?
+                        <div className={styles.displayField}>{_.get(config, 'name')}</div> : <Input
+                            id="name"
+                            value={_.get(config, 'name')}
+                            onChange={event => this.props.onChange('name', event.currentTarget.value)}
+                            valid={errors && _.isEmpty(errors.name)}
+                            disabled={disabled}
+                        />}
                 </Field>
                 <Field
                     id="service-type"
