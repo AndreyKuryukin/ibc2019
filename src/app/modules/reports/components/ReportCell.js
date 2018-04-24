@@ -48,6 +48,7 @@ class ReportCell extends React.PureComponent {
                 this.getReportFile(href);
             };
             linkProps.style.textDecoration = 'underline';
+            linkProps.style.cursor = 'pointer';
         }
 
         return (
@@ -55,6 +56,7 @@ class ReportCell extends React.PureComponent {
                 {formatIcon && <Icon
                     title={iconTitle}
                     icon={formatIcon}
+                    style={{cursor: 'default'}}
                 />}
                 <span className={`truncated ${styles.reportText}`}
                       {...linkProps}

@@ -163,13 +163,14 @@ class ReportsTable extends React.PureComponent {
         switch (column.name) {
             case 'name':
                 const type = _.get(node, 'type', '').toLowerCase();
+                const state = _.get(node, 'state', '').toLowerCase();
                 return (
                     <ReportCell
                         formatIcon={type && `icon-${type}`}
                         iconTitle={type && type.toUpperCase()}
                         text={node[column.name]}
                         disabled={node.state === 'FAILED'}
-                        href={node.path}
+                        href={state !== 'failed' && state !== 'running' && node.path}
                     />
                 );
             case 'notify': {
