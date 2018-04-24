@@ -4,9 +4,13 @@ import { Input } from 'reactstrap';
 import classnames from 'classnames';
 import { connect } from "react-redux";
 
+import CrashesCmp from "../components/index";
+
 class Crashes extends React.PureComponent {
     render () {
-        return 'crashes/groupPolicies/current/:id'
+        return <CrashesCmp history={this.props.history}
+                           match={this.props.match}
+        />
     }
 }
 
