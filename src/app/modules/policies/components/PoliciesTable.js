@@ -75,19 +75,17 @@ class PoliciesTable extends React.PureComponent {
     // }
     ]);
 
-    static mapPolicies = memoize(policies => {
-        console.log('map');
-        return policies.map(policy => ({
-            name: policy.name,
-            threshold: {
-                id: _.get(policy, 'threshold.id', ''),
-                cease_duration: _.get(policy, 'threshold.cease_duration', '').toString(),
-                cease_value: _.get(policy, 'threshold.cease_value', '').toString(),
-                rise_duration: _.get(policy, 'threshold.rise_duration', '').toString(),
-                rise_value: _.get(policy, 'threshold.rise_value', '').toString(),
-            },
-        }));
-    });
+    static mapPolicies = memoize(policies => policies.map(policy => ({
+        id: policy.id,
+        name: policy.name,
+        threshold: {
+            id: _.get(policy, 'threshold.id', ''),
+            cease_duration: _.get(policy, 'threshold.cease_duration', '').toString(),
+            cease_value: _.get(policy, 'threshold.cease_value', '').toString(),
+            rise_duration: _.get(policy, 'threshold.rise_duration', '').toString(),
+            rise_value: _.get(policy, 'threshold.rise_value', '').toString(),
+        },
+    })));
 
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;

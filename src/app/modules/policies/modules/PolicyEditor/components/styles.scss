@@ -4,18 +4,29 @@
   max-width: 800px !important;
   .policyEditorContent {
     display: flex;
-    flex-direction: row;
+    flex-wrap: wrap;
     .policyEditorColumn {
       display: flex;
       flex-direction: column;
       width: 50%;
+      .panel + .panel {
+        margin-top: 1px;
+      }
     }
-    .policyEditorColumn:first-child {
-      margin-right: 1px;
+    .policyEditorColumn + .policyEditorColumn {
+      padding-left: 1px;
     }
   }
   .modal-footer {
     justify-content: flex-end;
+  }
+}
+.accidentsPanel {
+  margin-top: 1px;
+  .accidentsBlock {
+    display: flex;
+    flex-grow: 1;
+    flex-direction: column;
   }
 }
 

@@ -2,16 +2,20 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
+import memoize from 'memoizejs';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 import Panel from '../../../../../components/Panel';
+import Checkbox from '../../../../../components/Checkbox';
 import ls from 'i18n';
 import Configuration from './Configuration';
 import Condition from './Condition';
 import styles from './styles.scss';
 import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
+
+const notAllowedAccidentStyle = { width: '45%' };
 
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
@@ -24,6 +28,7 @@ class PolicyEditor extends React.PureComponent {
         errors: PropTypes.object,
         scopes: PropTypes.array,
         types: PropTypes.array,
+        policies: PropTypes.array,
         active: PropTypes.bool,
         onSubmit: PropTypes.func,
         onClose: PropTypes.func,
@@ -36,6 +41,7 @@ class PolicyEditor extends React.PureComponent {
         errors: null,
         scopes: [],
         types: [],
+        policies: [],
         active: false,
         onSubmit: () => null,
         onClose: () => null,
@@ -100,6 +106,11 @@ class PolicyEditor extends React.PureComponent {
         return scopes.map(scope => ({ value: scope, title: scope }))
     };
 
+    mapPolicies = memoize((policies, policyId) =>
+        policies
+            .filter(policy => policy.id !== policyId )
+            .map(policy => ({ value: policy.id, title: policy.name })));
+
     getSeconds = (mills) => {
         return moment.duration(mills, 'milliseconds').asSeconds();
     };
@@ -109,7 +120,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     render() {
-        const { active, policyId, scopes, types } = this.props;
+        const { active, policyId, scopes, types, policies } = this.props;
         const { policy, errors } = this.state;
 
         const modalTitle = policyId
@@ -217,6 +228,69 @@ class PolicyEditor extends React.PureComponent {
                                     errors={errors && _.get(errors, 'condition.condition')}
                                 />
                             </div>
+                            <Panel
+                                title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
+                                className={styles.accidentsPanel}
+                            >
+                                <div className={styles.accidentsBlock}>
+                                    <Field
+                                        id="exclude-tv"
+                                        labelText={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
+                                        labelWidth="97%"
+                                        inputWidth="3%"
+                                        labelAlign="right"
+                                        title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
+                                    >
+                                        <Checkbox
+                                            id="exclude-tv"
+                                            checked={this.getPolicyProperty('exclude_tv')}
+                                            onChange={value => this.setPolicyProperty('exclude_tv', value)}
+                                        />
+                                    </Field>
+                                    <Field
+                                        id="allow-accident"
+                                        labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}:`}
+                                        labelWidth="97%"
+                                        inputWidth="3%"
+                                        labelAlign="right"
+                                        title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
+                                    >
+                                        <Checkbox
+                                            id="allow-accident"
+                                            checked={this.getPolicyProperty('allow_accident')}
+                                            onChange={value => this.setPolicyProperty('allow_accident', value)}
+                                        />
+                                    </Field>
+                                    <Field
+                                        id="not-allowed-accident"
+                                        inputWidth="100%"
+                                        style={notAllowedAccidentStyle}
+                                    >
+                                        <Select
+                                            id="not-allowed-accident"
+                                            type="select"
+                                            options={this.mapPolicies(policies, policyId)}
+                                            value={this.getPolicyProperty('accident')}
+                                            onChange={value => this.setPolicyProperty('accident', value)}
+                                        />
+                                    </Field>
+                                    <Field
+                                        id="waiting-time"
+                                        labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
+                                        labelWidth="66%"
+                                        inputWidth="34%"
+                                        style={notAllowedAccidentStyle}
+                                    >
+                                        <Input
+                                            id="waiting-time"
+                                            name="waiting-time"
+                                            type="number"
+                                            value={this.getPolicyProperty('waiting_time')}
+                                            onChange={event => this.setPolicyProperty('waiting_time', _.get(event, 'target.value'))}
+                                        />
+                                    </Field>
+                                </div>
+                            </Panel>
                         </div>
                     </ModalBody>
                     <ModalFooter>
