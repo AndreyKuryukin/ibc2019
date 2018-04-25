@@ -7,6 +7,14 @@ const cmpMap = {
     'kqi': 'kqi'
 };
 
+const style = {
+    display: 'flex',
+    flexGrow: 1,
+    height: '100%',
+    width: '100%',
+    padding: '1em',
+};
+
 class CrashesCmp extends React.PureComponent {
 
     render () {
@@ -14,7 +22,7 @@ class CrashesCmp extends React.PureComponent {
         const { subject = 'group-policies', state } = params;
         const Component = cmpMap[subject];
         return (
-            <div>
+            <div style={style}>
                 <Component
                     state={state}
                     params={params}

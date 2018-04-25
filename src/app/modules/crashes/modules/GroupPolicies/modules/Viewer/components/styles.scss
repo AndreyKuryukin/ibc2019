@@ -11,12 +11,16 @@
     .crashesViewerRow {
       display: flex;
       flex-grow: 1;
-      div {
+      > div {
         width: 50%;
         padding: 6px;
       }
-      div:first-child {
+      > div:first-child {
         text-align: right;
+      }
+      .alarmContent {
+        display: flex;
+        align-items: center;
       }
     }
   }

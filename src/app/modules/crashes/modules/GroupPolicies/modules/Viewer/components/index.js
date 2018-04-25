@@ -2,17 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
-import memoize from 'memoizejs';
+import moment from 'moment';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from './styles.scss';
-import DraggableWrapper from "../../../../../../../components/DraggableWrapper";
+import DraggableWrapper from '../../../../../../../components/DraggableWrapper';
+import Icon from '../../../../../../../components/Icon/Icon';
 
 const infoScheme = [
-    'appearing_time',
+    'raise_time',
     'policy_name',
     'duration',
-    'message',
-    'finished_notifications',
+    'notification_text',
+    'notified',
     'attributes',
 ];
 
@@ -22,21 +23,59 @@ class CrashViewer extends React.PureComponent {
     };
 
     static propTypes = {
-        crash: PropTypes.object,
+        alarm: PropTypes.object,
         active: PropTypes.bool,
     };
 
     static defaultProps = {
-        crash: null,
+        alarm: null,
         active: false,
     };
+
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
+    }
 
     onClose = () => {
         this.context.history.push('/crashes/group-policies/current');
     };
 
+    getReadableDuration = (seconds = 0) =>
+        ['days', 'hours', 'minutes'].reduce((result, key) => {
+            const duration = moment.duration(seconds, 'seconds');
+            const method = duration[key];
+            const units = method.call(duration).toString();
+            const readableUnits = (key === 'hours' || key === 'minutes') && units.length === 1 ? '0' + units : units;
+            const nextPart = readableUnits + ls(`CRASHES_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
+
+            return `${result}${nextPart}`;
+        }, '');
+
+    getAlarmContent = (key) => {
+        switch(key) {
+            case 'duration':
+                return this.getReadableDuration(_.get(this.props.alarm, key, 0));
+            case 'notified': {
+                const notifications = _.get(this.props.alarm, key, []);
+                return (
+                    notifications.map(notif => (
+                        <div className={styles.alarmContent}>
+                            <Icon icon={`icon-state-${notif.status.toLowerCase()}`} />
+                            {notif.type}
+                        </div>
+                    ))
+                );
+            }
+            case 'attributes':
+                return _.get(this.props.alarm, key, []).join(', ');
+            default:
+                return _.get(this.props.alarm, key, '');
+        }
+    };
+
     render() {
-        const { crash } = this.props;
         return (
             <DraggableWrapper>
                 <Modal
@@ -47,14 +86,14 @@ class CrashViewer extends React.PureComponent {
                         toggle={this.onClose}
                         className="handle"
                     >
-                        {`${ls('CRASHES_GROUP_POLICIES_CRASHES_VIEWER_TITLE', 'Детальная информация по ГП аварии №')}${_.get(crash, 'id', '')} (${_.get(crash, 'priority', '')})`}
+                        {`${ls('CRASHES_GROUP_POLICIES_CRASHES_VIEWER_TITLE', 'Детальная информация по ГП аварии №')}${this.getAlarmContent('id')} (${this.getAlarmContent('priority')})`}
                     </ModalHeader>
                     <ModalBody>
                         <div className={styles.crashesViewerContent}>
                             {infoScheme.map(key => (
                                 <div key={key} className={styles.crashesViewerRow}>
                                     <div>{ls(`CRASHES_GROUP_POLICIES_CRASHES_VIEWER_${key.toUpperCase()}`)}</div>
-                                    <div>{_.get(crash, key, '')}</div>
+                                    <div>{this.getAlarmContent(key)}</div>
                                 </div>
                             ))}
                         </div>

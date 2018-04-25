@@ -38,6 +38,7 @@ const plugins = [
      './kqi',
     // './reports',
     './sources',
+    './alarms',
 ];
 
 app.use((req, res, next) => {

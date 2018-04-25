@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import GroupPoliciesControls from './GroupPoliciesControls';
 import GroupPoliciesTable from './GroupPoliciesTable';
-import CrashesViewer from '../modules/Viewer/components';
+import CrashesViewer from '../modules/Viewer/containers';
 import styles from './styles.scss';
-
-const testData = [{ id: '1', priority: 'Critical', appearing_time: (new Date()).toString(), duration: '2d 05:16', policy_name: 'Alarm_VLG_STB_LOSS_PERFOMANCE' }];
 
 class GroupPolicies extends React.PureComponent {
     static contextTypes = {
@@ -15,10 +13,16 @@ class GroupPolicies extends React.PureComponent {
     static propTypes = {
         state: PropTypes.oneOf(['current', 'history']).isRequired,
         params: PropTypes.object,
+        alarmsList: PropTypes.array,
+        onMount: PropTypes.func,
+        isLoading: PropTypes.bool,
     };
 
     static defaultProps = {
         params: null,
+        alarmsList: [],
+        onMount: () => null,
+        isLoading: false,
     };
 
     constructor() {
@@ -27,6 +31,12 @@ class GroupPolicies extends React.PureComponent {
         this.state = {
             searchText: '',
         };
+    }
+
+    componentDidMount() {
+        if (typeof this.props.onMount === 'function') {
+            this.props.onMount();
+        }
     }
 
     onSearchTextChange = (searchText) => {
@@ -38,9 +48,9 @@ class GroupPolicies extends React.PureComponent {
     };
 
     render() {
-        const { params = {} } = this.props;
-        const { id } = params;
-        const isCrashesViewerActive = !!id;
+        const { params = {}, isLoading, alarmsList } = this.props;
+        const { id: crashId } = params;
+        const isCrashesViewerActive = !!crashId;
 
         return (
             <div className={styles.groupPoliciesWrapper}>
@@ -49,11 +59,11 @@ class GroupPolicies extends React.PureComponent {
                     onApplyFilter={this.onApplyFilter}
                 />
                 <GroupPoliciesTable
-                    data={testData}
-                    preloader={false}
+                    data={alarmsList}
+                    preloader={isLoading}
                     searchText={this.state.searchText}
                 />
-                {isCrashesViewerActive && <CrashesViewer crash={testData[0]} active={isCrashesViewerActive} />}
+                {isCrashesViewerActive && <CrashesViewer crashId={crashId} active={isCrashesViewerActive} />}
             </div>
         );
     }
