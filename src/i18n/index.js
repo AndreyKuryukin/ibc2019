@@ -11,6 +11,13 @@ const languageMap = {
 
     REPORT_TYPE_PDF: 'PDF',
     REPORT_TYPE_XLS: 'XLS',
+
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_APPEARING_TIME: 'Время возникновения',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_POLICY_NAME: 'Название политики по каталогу',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_DURATION: 'Длительность',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_MESSAGE: 'Текст сообщения',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_FINISHED_NOTIFICATIONS: 'Выполненные нотификации по открытию',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_ATTRIBUTES: 'Все сохраняемые атрибуты аварии: (Значения макроподстановок)',
 };
 
 const ls = (key, defaultValue) => _.get(languageMap, key, defaultValue);

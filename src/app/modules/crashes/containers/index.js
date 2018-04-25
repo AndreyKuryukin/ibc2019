@@ -7,10 +7,25 @@ import { connect } from "react-redux";
 import CrashesCmp from "../components/index";
 
 class Crashes extends React.PureComponent {
+    static childContextTypes = {
+        history: PropTypes.object.isRequired,
+        match: PropTypes.object.isRequired,
+    };
+
+    getChildContext() {
+        return {
+            history: this.props.history,
+            match: this.props.match,
+        };
+    }
+
     render () {
-        return <CrashesCmp history={this.props.history}
-                           match={this.props.match}
-        />
+        return (
+            <CrashesCmp
+                history={this.props.history}
+                match={this.props.match}
+            />
+        );
     }
 }
 

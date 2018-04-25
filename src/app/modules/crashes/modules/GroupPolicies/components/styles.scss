@@ -1,0 +1,30 @@
+@import '../../../../../scss/vars';
+
+.groupPoliciesWrapper {
+  display: flex;
+  flex-grow: 1;
+  flex-direction: column;
+  .groupPoliciesControls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: $white;
+    padding: .5rem;
+    .filterGroup {
+      display: flex;
+      width: 620px;
+      .filterControl {
+        width: 50%;
+      }
+      .applyButton {
+        font-size: 12px;
+        margin-left: 10px;
+        line-height: 0;
+        height: $input-height;
+      }
+    }
+    .search {
+      width: 20em;
+    }
+  }
+}
