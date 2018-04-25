@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import KQI from "../modules/KQI/containers/index";
+import styles from './styles.scss';
 
 const cmpMap = {
     'group-policies': 'GroupPolicies',
-    'kqi': 'GroupPolicies'
+    'kqi': KQI
 };
 
 class CrashesCmp extends React.PureComponent {
@@ -12,8 +14,10 @@ class CrashesCmp extends React.PureComponent {
         const { params = {} } = this.props.match;
         const {subject = 'group-policies'} = params;
         const Component = cmpMap[subject];
-        return <div>
-            {Component}
+        return <div className={styles.crashesWrapper}>
+            <Component history={this.props.history}
+                       match={this.props.match}
+            />
         </div>
     }
 }

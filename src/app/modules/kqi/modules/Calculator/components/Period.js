@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import ls from 'i18n';
 import moment from 'moment';
 import _ from 'lodash';
+import { INTERVALS as CONST_INTERVALS } from '../../../../../costants/date';
 import Panel from '../../../../../components/Panel';
 import Radio from '../../../../../components/Radio';
 import Checkbox from '../../../../../components/Checkbox';
@@ -11,12 +12,7 @@ import DateTimePicker from '../../../../../components/DateTimePicker';
 import Select from '../../../../../components/Select';
 import styles from './styles.scss';
 
-const INTERVALS = {
-    DAY: 'day',
-    WEEK: 'week',
-    MONTH: 'month',
-    OTHER: 'other',
-};
+const INTERVALS = { ...CONST_INTERVALS, OTHER: 'OTHER' };
 
 class Period extends React.PureComponent {
     static propTypes = {
