@@ -43,21 +43,20 @@ class UserEditor extends React.PureComponent {
         errors: null,
     };
 
-    validationConfig = {
-        login: {
-            required: true
-        },
-        password: {
-            required: true,
-            passwordEqual: true
-        },
-        confirm: {
-            required: true,
-            passwordEqual: true
-        },
-    };
-
     componentDidMount() {
+        this.validationConfig = {
+            login: {
+                required: !this.props.userId,
+            },
+            password: {
+                required: !this.props.userId,
+                passwordEqual: true
+            },
+            confirm: {
+                required: !this.props.userId,
+                passwordEqual: true
+            },
+        };
         this.context.pageBlur && this.context.pageBlur(true);
     }
 
