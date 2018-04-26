@@ -15,6 +15,8 @@ class GroupPolicies extends React.PureComponent {
         state: PropTypes.oneOf(['current', 'history']).isRequired,
         params: PropTypes.object,
         alarmsList: PropTypes.array,
+        rfOptions: PropTypes.array,
+        mrfOptions: PropTypes.array,
         filter: PropTypes.object,
         onMount: PropTypes.func,
         onApplyFilter: PropTypes.func,
@@ -24,6 +26,8 @@ class GroupPolicies extends React.PureComponent {
     static defaultProps = {
         params: null,
         alarmsList: [],
+        rfOptions: [],
+        mrfOptions: [],
         onMount: () => null,
         onApplyFilter: () => null,
         isLoading: false,
@@ -74,6 +78,8 @@ class GroupPolicies extends React.PureComponent {
                 <GroupPoliciesControls
                     onSearchTextChange={this.onSearchTextChange}
                     onApplyFilter={this.onApplyFilter}
+                    rfOptions={this.props.rfOptions}
+                    mrfOptions={this.props.mrfOptions}
                     mrf={_.get(this.state.filter, 'mrf', '')}
                     rf={_.get(this.state.filter, 'rf', '')}
                 />

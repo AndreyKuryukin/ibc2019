@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Input, Button } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
+import memoize from 'memoizejs';
 import Field from '../../../../../components/Field';
 import Select from '../../../../../components/Select';
 import styles from './styles.scss';
@@ -18,6 +19,8 @@ class GroupPoliciesControls extends React.PureComponent {
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onApplyFilter: PropTypes.func,
+        rfOptions: PropTypes.array,
+        mrfOptions: PropTypes.array,
         mrf: PropTypes.string,
         rf: PropTypes.string,
     };
@@ -25,9 +28,13 @@ class GroupPoliciesControls extends React.PureComponent {
     static defaultProps = {
         onSearchTextChange: () => null,
         onApplyFilter: () => null,
+        rfOptions: [],
+        mrfOptions: [],
         mrf: '',
         rf: '',
     };
+
+    static mapOptions = memoize((opts) => opts.map((opt) => ({ value: opt.id, title: opt.name })));
 
     constructor(props) {
         super(props);
@@ -84,7 +91,7 @@ class GroupPoliciesControls extends React.PureComponent {
                         >
                             <Select
                                 id="mrf-filter"
-                                options={mrfOptions}
+                                options={GroupPoliciesControls.mapOptions(this.props.mrfOptions)}
                                 value={mrf}
                                 onChange={this.onMrfChange}
                             />
@@ -99,7 +106,7 @@ class GroupPoliciesControls extends React.PureComponent {
                         >
                             <Select
                                 id="region-filter"
-                                options={regionOptions}
+                                options={GroupPoliciesControls.mapOptions(this.props.rfOptions)}
                                 value={rf}
                                 onChange={this.onRegionChange}
                             />

@@ -39,6 +39,7 @@ const plugins = [
     // './reports',
     './sources',
     './alarms',
+    './common',
 ];
 
 app.use((req, res, next) => {

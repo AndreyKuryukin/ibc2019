@@ -67,9 +67,9 @@ class GroupPoliciesTable extends React.PureComponent {
         }, '');
 
     mapData = memoize((data) => data.map((node) => ({
-        id: node.id,
+        id: node.id.toString(),
         priority: node.priority,
-        raise_time: node.raise_time,
+        raise_time: moment(node.raise_time).format('HH:mm DD:MM:YYYY'),
         duration: this.getReadableDuration(node.duration),
         policy_name: node.policy_name,
     })));
