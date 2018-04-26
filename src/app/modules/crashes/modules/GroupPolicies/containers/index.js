@@ -24,17 +24,21 @@ class GroupPolicies extends React.PureComponent {
 
         this.state = {
             isLoading: false,
+            appliedFilter: {
+                mrf: '',
+                rf: '',
+            },
         };
     }
 
-    onMount = () => {
+    onFetchAlarms = (filter) => {
         this.setState({ isLoading: true });
 
-        rest.get('/api/v1/alarms/gp')
+        rest.get('/api/v1/alarms/gp', {}, { queryParams: filter })
             .then((response) => {
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);
-                this.setState({ isLoading: false });
+                this.setState({ isLoading: false, appliedFilter: filter });
             })
             .catch((e) => {
                 console.error(e);
@@ -48,8 +52,10 @@ class GroupPolicies extends React.PureComponent {
                 state={this.props.state}
                 params={this.props.params}
                 alarmsList={this.props.alarmsList}
-                onMount={this.onMount}
+                filter={this.state.appliedFilter}
+                onMount={this.onFetchAlarms}
                 isLoading={this.state.isLoading}
+                onApplyFilter={this.onFetchAlarms}
             />
         );
     }

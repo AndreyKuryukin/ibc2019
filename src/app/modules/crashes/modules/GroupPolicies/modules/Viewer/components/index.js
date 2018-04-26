@@ -20,6 +20,7 @@ const infoScheme = [
 class CrashViewer extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
     };
 
     static propTypes = {
@@ -39,7 +40,7 @@ class CrashViewer extends React.PureComponent {
     }
 
     onClose = () => {
-        this.context.history.push('/crashes/group-policies/current');
+        this.context.history.push(`/crashes/group-policies/current${this.context.location.search}`);
     };
 
     getReadableDuration = (seconds = 0) =>
@@ -100,7 +101,7 @@ class CrashViewer extends React.PureComponent {
                     </ModalBody>
                     <ModalFooter>
                         <Button outline color="action" onClick={this.onClose}>{ls('CRASHES_GROUP_POLICIES_CRASHES_VIEWER_CANCEL', 'Отмена')}</Button>
-                        <Button color="action" onClick={this.onSubmit}>{ls('CRASHES_GROUP_POLICIES_CRASHES_VIEWER_OK', 'Ок')}</Button>
+                        <Button color="action" onClick={this.onClose}>{ls('CRASHES_GROUP_POLICIES_CRASHES_VIEWER_OK', 'Ок')}</Button>
                     </ModalFooter>
                 </Modal>
             </DraggableWrapper>

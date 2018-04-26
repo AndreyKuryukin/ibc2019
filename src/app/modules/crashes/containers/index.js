@@ -10,12 +10,14 @@ class Crashes extends React.PureComponent {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
         match: PropTypes.object.isRequired,
+        location: PropTypes.object.isRequired,
     };
 
     getChildContext() {
         return {
             history: this.props.history,
             match: this.props.match,
+            location: this.props.location,
         };
     }
 

@@ -11,23 +11,41 @@ const mrfOptions = [{ value: 'all', title: 'Все МРФ' }];
 const regionOptions = [{ value: 'all', title: 'Все регионы' }];
 
 class GroupPoliciesControls extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         onSearchTextChange: PropTypes.func,
         onApplyFilter: PropTypes.func,
+        mrf: PropTypes.string,
+        rf: PropTypes.string,
     };
 
     static defaultProps = {
         onSearchTextChange: () => null,
         onApplyFilter: () => null,
+        mrf: '',
+        rf: '',
     };
 
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
 
         this.state = {
-            mrf: '',
-            region: '',
+            mrf: props.mrf,
+            rf: props.rf,
         };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.mrf !== nextProps.mrf) {
+            this.setState({ mrf: nextProps.mrf });
+        }
+
+        if (this.props.rf !== nextProps.rf) {
+            this.setState({ rf: nextProps.rf });
+        }
     }
 
     onSearchTextChange = (event) => {
@@ -38,16 +56,21 @@ class GroupPoliciesControls extends React.PureComponent {
         this.setState({ mrf });
     };
 
-    onRegionChange = region => {
-        this.setState({ region });
+    onRegionChange = rf => {
+        this.setState({ rf });
     };
 
     onApplyFilter = () => {
         this.props.onApplyFilter(this.state);
+
+        this.context.history.push({
+            pathname: '/crashes/group-policies/current',
+            search: `?${['mrf', 'rf'].reduce((res, key) => this.state[key] ? [...res, `${key}=${this.state[key]}`] : res, []).join('&')}`,
+        });
     };
 
     render() {
-        const { mrf, region } = this.state;
+        const { mrf, rf } = this.state;
 
         return (
             <div className={styles.groupPoliciesControls}>
@@ -77,7 +100,7 @@ class GroupPoliciesControls extends React.PureComponent {
                             <Select
                                 id="region-filter"
                                 options={regionOptions}
-                                value={region}
+                                value={rf}
                                 onChange={this.onRegionChange}
                             />
                         </Field>

@@ -8,6 +8,10 @@ import Table from '../../../../../components/Table';
 import { DefaultCell, LinkCell } from '../../../../../components/Table/Cells';
 
 class GroupPoliciesTable extends React.PureComponent {
+    static contextTypes = {
+        location: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -82,7 +86,7 @@ class GroupPoliciesTable extends React.PureComponent {
             case 'id':
                 return (
                     <LinkCell
-                        href={`/crashes/group-policies/current/${node.id}`}
+                        href={`/crashes/group-policies/current/${node.id}${this.context.location.search}`}
                         content={node[column.name].toString()}
                     />
                 );
