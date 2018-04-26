@@ -56,6 +56,7 @@ class RoleEditor extends React.PureComponent {
             role.subjects = this.subjectsToPermissions(role.subjects);
             this.setState({
                 role,
+                selectedRoleId: '',
             });
         }
 
@@ -81,7 +82,9 @@ class RoleEditor extends React.PureComponent {
             if (!_.isArray(subjects)) {
                 subjects = [];
             }
-            this.setRoleProperty('subjects', this.subjectsToPermissions(subjects))
+            this.setState({ selectedRoleId: roleId }, () => {
+                this.setRoleProperty('subjects', this.subjectsToPermissions(subjects))
+            });
         } else {
             this.setRoleProperty('subjects', [])
         }
@@ -124,7 +127,11 @@ class RoleEditor extends React.PureComponent {
     };
 
     onCheck = (checkedIds) => {
-        this.setRoleProperty('subjects', checkedIds);
+        this.setState({
+            selectedRoleId: '',
+        }, () => {
+            this.setRoleProperty('subjects', checkedIds);
+        });
     };
 
     getSourceOptions = sourceOptions => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
@@ -162,13 +169,17 @@ class RoleEditor extends React.PureComponent {
                             </Field>
 
                             <Field
+                                id="permissions-source"
                                 labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из:')}
                                 labelWidth="50%"
                                 inputWidth="50%"
                             >
-                                <Select type="select"
-                                        options={this.getSourceOptions(filteredSourceOptions)}
-                                        onChange={this.copySubjectsFromRole}
+                                <Select
+                                    id="permissions-source"
+                                    type="select"
+                                    value={this.state.selectedRoleId}
+                                    options={this.getSourceOptions(filteredSourceOptions)}
+                                    onChange={this.copySubjectsFromRole}
                                 />
                             </Field>
                         </Panel>
