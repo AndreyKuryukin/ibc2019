@@ -10,6 +10,7 @@ import { DefaultCell, IconCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 import ReportCell from './ReportCell';
 import { DATE_TIME } from '../../../costants/date';
+import search from '../../../util/search';
 
 class ReportsTable extends React.PureComponent {
     static propTypes = {
@@ -42,14 +43,10 @@ class ReportsTable extends React.PureComponent {
     }, {
         title: '',
         name: 'retry',
-        sortable: false,
-        searchable: false,
         width: 40
     }, {
         title: ls('REPORTS_STATE_COLUMN_TITLE', 'Состояние'),
         name: 'state',
-        sortable: true,
-        searchable: true,
         width: 75
     }, {
         title: ls('REPORTS_FORMAT_COLUMN_TITLE', 'Формат'),
@@ -233,13 +230,22 @@ class ReportsTable extends React.PureComponent {
         }
     };
 
+    filter = (data, searchableColumns, searchText) =>
+        data.filter(
+            node => searchableColumns.find(column => search(node[column.name], searchText))
+            || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
+        );
+
     render() {
         const mappedData = this.mapData(this.props);
+        const { searchText } = this.props;
+        const columns = ReportsTable.getColumns();
+        const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
 
         return (
             <TreeView
-                data={mappedData}
-                columns={ReportsTable.getColumns()}
+                data={filteredData}
+                columns={columns}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Input } from 'reactstrap'
 import ls from 'i18n';
+import _ from 'lodash';
 import Icon from "../../../components/Icon/Icon";
 
 import styles from './styles.scss';

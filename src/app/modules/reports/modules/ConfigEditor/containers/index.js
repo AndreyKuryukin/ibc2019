@@ -32,7 +32,7 @@ class ConfigEditor extends React.PureComponent {
     };
 
     validationConfig = {
-        config_name: {
+        name: {
             required: true,
         },
         template_id: {
