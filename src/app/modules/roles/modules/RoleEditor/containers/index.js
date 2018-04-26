@@ -5,7 +5,7 @@ import _ from 'lodash';
 import RoleEditorComponent from '../components';
 import { selectSelectedRole, selectSourceOptions, selectSubjects, selectSubjectsByRole } from '../selectors';
 import { createRole, updateRole } from '../../../actions';
-import { fetchRoleSuccess, fetchSubjectsSuccess } from '../actions';
+import { fetchRoleSuccess, fetchSubjectsSuccess, resetRolesEditor } from '../actions';
 import rest from '../../../../../rest';
 import { validateForm } from "../../../../../util/validation";
 
@@ -20,6 +20,7 @@ class RoleEditor extends React.PureComponent {
         onUpdateRoleSuccess: PropTypes.func,
         onCreateRoleSuccess: PropTypes.func,
         onFetchRoleSuccess: PropTypes.func,
+        resetRolesEditor: PropTypes.func,
     };
 
     static defaultProps = {
@@ -27,6 +28,7 @@ class RoleEditor extends React.PureComponent {
         onUpdateRoleSuccess: () => null,
         onCreateRoleSuccess: () => null,
         onFetchRoleSuccess: () => null,
+        resetRolesEditor: () => null,
     };
 
     state = {
@@ -93,6 +95,7 @@ class RoleEditor extends React.PureComponent {
             <RoleEditorComponent
                 onSubmit={this.onSubmit}
                 errors={this.state.errors}
+                onClose={this.props.resetRolesEditor}
                 {...this.props}
             />
         );
@@ -111,6 +114,7 @@ const mapDispatchToProps = dispatch => ({
     onCreateRoleSuccess: role => dispatch(createRole(role)),
     onUpdateRoleSuccess: role => dispatch(updateRole(role)),
     onFetchSubjectsSuccess: subjects => dispatch(fetchSubjectsSuccess(subjects)),
+    resetRolesEditor: () => dispatch(resetRolesEditor()),
 });
 
 export default connect(

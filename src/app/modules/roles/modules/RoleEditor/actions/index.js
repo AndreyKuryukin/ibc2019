@@ -9,3 +9,6 @@ export const fetchSubjectsSuccess = subjects => ({
     type: FETCH_SUBJECTS_SUCCESS,
     payload: { subjects },
 });
+
+export const RESET_ROLES_EDITOR = 'roles/RESET_ROLES_EDITOR';
+export const resetRolesEditor = () => ({ type: RESET_ROLES_EDITOR });

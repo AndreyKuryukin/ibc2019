@@ -23,6 +23,7 @@ class RoleEditor extends React.PureComponent {
         role: PropTypes.object.isRequired,
         active: PropTypes.bool,
         onSubmit: PropTypes.func.isRequired,
+        onClose: PropTypes.func,
         sourceOptions: PropTypes.array,
         subjectsData: PropTypes.array,
         subjectsByRole: PropTypes.object,
@@ -33,8 +34,8 @@ class RoleEditor extends React.PureComponent {
         roleId: null,
         role: {},
         active: false,
-        onSubmit: () => {
-        },
+        onSubmit: () => null,
+        onClose: () => null,
         sourceOptions: [],
         subjectsData: [],
         subjectsByRole: {},
@@ -119,8 +120,8 @@ class RoleEditor extends React.PureComponent {
     };
 
     onClose = () => {
-        this.setState({ role: {} });
         this.context.history.push('/roles');
+        this.props.onClose();
     };
 
     onCheck = (checkedIds) => {
