@@ -22,6 +22,12 @@
       flex: 0;
       .menuFix {
         top: 10px !important;
+        * {
+          color: white;
+          &:hover {
+            color: black
+          }
+        }
       }
       .qLogo {
         background: url(../../../resources/img/logo_white.png) no-repeat;

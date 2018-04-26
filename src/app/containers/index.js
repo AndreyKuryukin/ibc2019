@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Login from '../modules/login/containers';
 import Roles from '../modules/roles/containers';
@@ -85,6 +86,14 @@ class App extends React.Component {
         }
     };
 
+    static childContextTypes = {
+        fetchUserSuccess: PropTypes.func.isRequired,
+    };
+
+    getChildContext = () => ({
+        fetchUserSuccess: this.onFetchUserSuccess,
+    });
+
     constructor(props) {
         super(props);
         rest.onResponseCode('401', this.navigateLogin);
@@ -94,16 +103,9 @@ class App extends React.Component {
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data;
-                const subjectMap = this.getMapedSubjects() || {};
-                const commonSubjects = this.getCommonRoutes();
-                const totalSubjects = commonSubjects.concat(user.subjects);
-                const subj = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
-                user.subjects = subj;
-                user.menu = user.subjects.map(subject => ({
-                    title: subjectMap[subject.name.toUpperCase()].title,
-                    link: subjectMap[subject.name.toUpperCase()].link,
-                }));
-                this.props.onFetchUserSuccess(user);
+                if (user) {
+                    this.onFetchUserSuccess(user)
+                }
             })
             .catch(() => {
                 this.props.onFetchUserSuccess({
@@ -112,6 +114,18 @@ class App extends React.Component {
             });
         this.state = { token };
     }
+
+    onFetchUserSuccess = (user) => {
+        const subjectMap = this.getMapedSubjects() || {};
+        const commonSubjects = this.getCommonRoutes();
+        const totalSubjects = commonSubjects.concat(user.subjects);
+        user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
+        user.menu = user.subjects.map(subject => ({
+            title: subjectMap[subject.name.toUpperCase()].title,
+            link: subjectMap[subject.name.toUpperCase()].link,
+        }));
+        this.props.onFetchUserSuccess(user);
+    };
 
     refreshToken = (response) => {
         const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];

@@ -12,7 +12,7 @@ class Alarms extends React.PureComponent {
 
     render () {
         const { params = {} } = this.props.match;
-        const { subject = 'group-policies', state } = params;
+        const { subject = 'group-policies', state = 'current' } = params;
         const Component = cmpMap[subject];
         return <div className={styles.crashesWrapper}>
             <Component history={this.props.history}

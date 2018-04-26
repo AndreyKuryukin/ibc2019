@@ -18,6 +18,7 @@ class Login extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
         notifications: PropTypes.object.isRequired,
+        fetchUserSuccess: PropTypes.func.isRequired,
     };
 
     validationConfig = {
@@ -51,13 +52,12 @@ class Login extends React.PureComponent {
             })
                 .then(() => {
                     this.context.notifications.close('login-failed');
-
                     return rest.get('api/v1/user/current');
                 })
                 .then((userResp) => {
                     this.setState({ loading: false });
                     const user = userResp.data;
-                    this.props.onFetchUserSuccess(user);
+                    this.context.fetchUserSuccess(user);
                     this.props.history.push('/roles');
                 })
                 .catch((error) => {

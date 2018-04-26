@@ -41,7 +41,7 @@ class PageWrapper extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (_.get(nextProps, 'location.pathname', 'a') !== _.get(this.props, 'location.pathname', 'b')) {
-            this.setState({blur: false})
+            this.setState({ blur: false })
         }
     }
 
@@ -65,13 +65,13 @@ class PageWrapper extends React.Component {
         onClick={() => this.onMenuClick(item)}>{item.title}</DropdownItem>);
 
     pageBlur = (blur) => {
-        this.setState({blur})
+        this.setState({ blur })
     };
 
     getUserName = user => `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`;
 
     render() {
-        return <div className={classNames(styles.pageWrapper, {[styles.blur]: this.state.blur})}>
+        return <div className={classNames(styles.pageWrapper, { [styles.blur]: this.state.blur })}>
             <Navbar color="faded"
                     light
                     className={classNames({
