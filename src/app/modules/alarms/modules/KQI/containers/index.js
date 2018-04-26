@@ -75,7 +75,7 @@ class KQI extends React.PureComponent {
 
 const mapStateToProps = state => {
     return {
-        historyList: _.get(state, 'crashes.kqi.history')
+        historyList: _.get(state, 'alarms.kqi.history')
     };
 };
 

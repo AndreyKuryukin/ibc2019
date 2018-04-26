@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 import AlarmsCmp from "../components/index";
 
-class Crashes extends React.PureComponent {
+class Alarms extends React.PureComponent {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
         match: PropTypes.object.isRequired,
@@ -35,4 +35,4 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({});
 
-export default connect(mapStateToProps, mapDispatchToProps)(Crashes);
+export default connect(mapStateToProps, mapDispatchToProps)(Alarms);

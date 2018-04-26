@@ -14,7 +14,7 @@ class Alarms extends React.PureComponent {
         const { params = {} } = this.props.match;
         const { subject = 'group-policies', state = 'current' } = params;
         const Component = cmpMap[subject];
-        return <div className={styles.crashesWrapper}>
+        return <div className={styles.alarmsWrapper}>
             <Component history={this.props.history}
                        match={this.props.match}
                        state={state}

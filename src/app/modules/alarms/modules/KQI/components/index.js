@@ -18,7 +18,7 @@ class KqiCmp extends React.PureComponent {
                    searchText={_.get(this.state, 'searchText')}
             />
             <Details active={!_.isUndefined(id)}
-                     onSubmit={() => history.push('/crashes/kqi/history')}
+                     onSubmit={() => history.push('/alarms/kqi/history')}
                      preloader={this.props.detailLoading}
                      detail={detail}
             />

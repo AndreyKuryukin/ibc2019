@@ -137,7 +137,7 @@ class KqiTable extends React.PureComponent {
             case 'id':
                 return (
                     <LinkCell
-                        href={`/crashes/kqi/history/${node.id}`}
+                        href={`/alarms/kqi/history/${node.id}`}
                         content={text}
                     />
                 );
