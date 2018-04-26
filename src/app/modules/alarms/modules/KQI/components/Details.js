@@ -19,7 +19,7 @@ const priorityMap = {
 };
 
 const periodMap = _.reduce(INTERVALS, (result, interval) => {
-        result[String(interval).toUpperCase()] = ls(`CRASHES_KQI_HISTORY_DETAIL_PERIOD_${String(interval).toUpperCase()}`);
+        result[String(interval).toUpperCase()] = ls(`ALARMS_KQI_HISTORY_DETAIL_PERIOD_${String(interval).toUpperCase()}`);
         return result;
     }, { DEFAULT: '' }
 );
@@ -39,22 +39,22 @@ class Details extends React.PureComponent {
     };
 
     getColumns = memoize(() => [{
-        title: ls('CRASHES_KQI_HISTORY_DETAIL_LOCATION_TITLE', 'Филиал'),
+        title: ls('ALARMS_KQI_HISTORY_DETAIL_LOCATION_TITLE', 'Филиал'),
         name: 'location',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('CRASHES_KQI_HISTORY_DETAIL_LM_TITLE', 'Технология ПМ'),
+        title: ls('ALARMS_KQI_HISTORY_DETAIL_LM_TITLE', 'Технология ПМ'),
         name: 'last_mile_technology',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('CRASHES_KQI_HISTORY_DETAIL_RESULT_TITLE', 'Результат'),
+        title: ls('ALARMS_KQI_HISTORY_DETAIL_RESULT_TITLE', 'Результат'),
         name: 'value',
         searchable: true,
         sortable: true,
     }, {
-        title: ls('CRASHES_KQI_HISTORY_DETAIL_WEIGHT_TITLE', 'Вносимый вес'),
+        title: ls('ALARMS_KQI_HISTORY_DETAIL_WEIGHT_TITLE', 'Вносимый вес'),
         name: 'weight',
         searchable: true,
         sortable: true,
@@ -84,7 +84,7 @@ class Details extends React.PureComponent {
         return details;
     };
 
-    composeDetailName = detail => `${ls('CRASHES_KQI_HISTORY_DETAIL_TITLE', 'Детальная информация по KQI аварии №')}${detail.id || ''}(${priorityMap[String(detail.priority).toUpperCase()]})`;
+    composeDetailName = detail => `${ls('ALARMS_KQI_HISTORY_DETAIL_TITLE', 'Детальная информация по KQI аварии №')}${detail.id || ''}(${priorityMap[String(detail.priority).toUpperCase()]})`;
 
     render() {
         const { detail, active } = this.props;
@@ -97,10 +97,10 @@ class Details extends React.PureComponent {
             cancelTitle={ls('CANCEL', 'Cancel')}
         >
 
-            <Panel title={ls('CRASHES_KQI_HISTORY_DETAIL_INFO_TITLE', 'Информация')}>
+            <Panel title={ls('ALARMS_KQI_HISTORY_DETAIL_INFO_TITLE', 'Информация')}>
                 <Field
                     id="raise_time"
-                    labelText={ls('CRASHES_KQI_HISTORY_DETAIL_RAISE_TIME', 'Время возникновения')}
+                    labelText={ls('ALARMS_KQI_HISTORY_DETAIL_RAISE_TIME', 'Время возникновения')}
                     labelWidth="50%"
                     inputWidth="50%"
                 >
@@ -123,7 +123,7 @@ class Details extends React.PureComponent {
                     {periodMap[_.get(detail, 'period', 'DEFAULT').toUpperCase()]}
                 </Field>
             </Panel>
-            <Panel title={ls('CRASHES_KQI_HISTORY_DETAIL_TABLE_TITLE', 'Записи с нарушением условия политики по KQI')}
+            <Panel title={ls('ALARMS_KQI_HISTORY_DETAIL_TABLE_TITLE', 'Записи с нарушением условия политики по KQI')}
                    style={{ height: 300, marginTop: 1 }}
                    bodyStyle={{ padding: 0 }}
             >

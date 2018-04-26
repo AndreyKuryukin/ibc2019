@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import GroupPolicies from '../modules/GroupPolicies/containers';
 import KQI from "../modules/KQI/containers/index";
 import styles from './styles.scss';
@@ -9,7 +8,7 @@ const cmpMap = {
     'kqi': KQI
 };
 
-class CrashesCmp extends React.PureComponent {
+class Alarms extends React.PureComponent {
 
     render () {
         const { params = {} } = this.props.match;
@@ -25,4 +24,4 @@ class CrashesCmp extends React.PureComponent {
     }
 }
 
-export default CrashesCmp;
+export default Alarms;

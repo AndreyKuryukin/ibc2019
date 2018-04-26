@@ -11,7 +11,7 @@ import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
-import Crashes from '../modules/crashes/containers';
+import Crashes from '../modules/alarms/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";

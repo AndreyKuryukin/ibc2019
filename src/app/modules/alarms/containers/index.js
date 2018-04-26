@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'reactstrap';
-import classnames from 'classnames';
 import { connect } from "react-redux";
 
-import CrashesCmp from "../components/index";
+import AlarmsCmp from "../components/index";
 
 class Crashes extends React.PureComponent {
     static childContextTypes = {
@@ -23,7 +21,7 @@ class Crashes extends React.PureComponent {
 
     render () {
         return (
-            <CrashesCmp
+            <AlarmsCmp
                 history={this.props.history}
                 match={this.props.match}
             />

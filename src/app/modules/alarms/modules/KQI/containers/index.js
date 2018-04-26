@@ -35,7 +35,7 @@ class KQI extends React.PureComponent {
 
     fetchHistory = () => {
         this.setState({ dataLoading: true });
-        rest.get('/api/v1/crashes/kqi/history')
+        rest.get('/api/v1/alarms/kqi/history')
             .then((response) => {
                 const history = response.data;
                 if (history) {
@@ -50,7 +50,7 @@ class KQI extends React.PureComponent {
 
     fetchDetail = (id) => {
         this.setState({ detailLoading: true });
-        rest.get('/api/v1/crashes/kqi/history/:id', { urlParams: { id } })
+        rest.get('/api/v1/alarms/kqi/history/:id', { urlParams: { id } })
             .then((response) => {
                 const detail = response.data;
                 if (detail) {
