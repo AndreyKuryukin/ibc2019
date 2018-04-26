@@ -64,11 +64,11 @@ const enrichDetail = (detail) => {
 };
 
 module.exports = (app) => {
-    app.get('/api/v1/crashes/kqi/history', (req, res) => {
+    app.get('/api/v1/alarms/kqi/history', (req, res) => {
         res.status(200);
         res.send(history)
     });
-    app.get('/api/v1/crashes/kqi/history/:id', (req, res) => {
+    app.get('/api/v1/alarms/kqi/history/:id', (req, res) => {
         const id = req.params.id;
         const detail = _.find(history, detail => String(id) === String(detail.id));
         res.send(enrichDetail(detail))

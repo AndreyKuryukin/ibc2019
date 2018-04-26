@@ -12,9 +12,18 @@ const languageMap = {
     REPORT_TYPE_PDF: 'PDF',
     REPORT_TYPE_XLS: 'XLS',
 
-    CRASHES_KQI_HISTORY_DETAIL_PERIOD_DAY: 'ежесуточный',
-    CRASHES_KQI_HISTORY_DETAIL_PERIOD_WEEK: 'еженедельный',
-    CRASHES_KQI_HISTORY_DETAIL_PERIOD_MONTH: 'ежемесячный',
+    CRASHES_GROUP_POLICIES_DURATION_DAYS_UNIT: 'д ',
+    CRASHES_GROUP_POLICIES_DURATION_HOURS_UNIT: ':',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_RAISE_TIME: 'Время возникновения',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_POLICY_NAME: 'Название политики по каталогу',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_DURATION: 'Длительность',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_NOTIFICATION_TEXT: 'Текст сообщения',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_NOTIFIED: 'Выполненные нотификации по открытию',
+    CRASHES_GROUP_POLICIES_CRASHES_VIEWER_ATTRIBUTES: 'Все сохраняемые атрибуты аварии: (Значения макроподстановок)',
+
+    ALARMS_KQI_HISTORY_DETAIL_PERIOD_DAY: 'ежесуточный',
+    ALARMS_KQI_HISTORY_DETAIL_PERIOD_WEEK: 'еженедельный',
+    ALARMS_KQI_HISTORY_DETAIL_PERIOD_MONTH: 'ежемесячный',
 };
 
 const ls = (key, defaultValue) => _.get(languageMap, key, defaultValue);

@@ -38,7 +38,8 @@ const plugins = [
      './kqi',
     // './reports',
     './sources',
-    './crashes',
+    './alarms',
+    './common',
 ];
 
 app.use((req, res, next) => {
