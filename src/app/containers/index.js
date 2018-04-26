@@ -76,10 +76,10 @@ class App extends React.Component {
                 path: "/sources",
                 component: Sources
             },
-            'CRASHES': {
+            'ALARMS': {
                 title: 'Отчёт по авариям',
-                link: '/crashes',
-                path: "/crashes/:subject/:state/:id?",
+                link: '/alarms',
+                path: "/alarms/:subject/:state/:id?",
                 component: Crashes
             }
         }
@@ -149,9 +149,9 @@ class App extends React.Component {
             link: '/reports'
         },
         {
-            id: 'crashes',
-            name: 'CRASHES',
-            link: '/crashes'
+            id: 'alarms',
+            name: 'ALARMS',
+            link: '/alarms'
         },
     ];
 

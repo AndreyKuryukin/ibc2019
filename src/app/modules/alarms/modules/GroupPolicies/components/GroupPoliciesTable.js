@@ -26,28 +26,28 @@ class GroupPoliciesTable extends React.PureComponent {
 
     static getColumns = memoize(() => ([
         {
-            title: ls('CRASHES_GROUP_POLICIES_ID_COLUMN', 'ID'),
+            title: ls('ALARMS_GROUP_POLICIES_ID_COLUMN', 'ID'),
             name: 'id',
             searchable: true,
             sortable: true,
         }, {
-            title: ls('CRASHES_GROUP_POLICIES_PRIORITY_COLUMN', 'Приоритет'),
+            title: ls('ALARMS_GROUP_POLICIES_PRIORITY_COLUMN', 'Приоритет'),
             name: 'priority',
             searchable: true,
             sortable: true,
         }, {
-            title: ls('CRASHES_GROUP_POLICIES_RAISE_TIME_COLUMN', 'Время возникновения'),
+            title: ls('ALARMS_GROUP_POLICIES_RAISE_TIME_COLUMN', 'Время возникновения'),
             name: 'raise_time',
             searchable: true,
             sortable: true,
         }, {
-            title: ls('CRASHES_GROUP_POLICIES_DURATION_COLUMN', 'Длительность'),
+            title: ls('ALARMS_GROUP_POLICIES_DURATION_COLUMN', 'Длительность'),
             name: 'duration',
             searchable: true,
             sortable: true,
             width: 150,
         }, {
-            title: ls('CRASHES_GROUP_POLICIES_POLICY_NAME_COLUMN', 'Название политики по каталогу'),
+            title: ls('ALARMS_GROUP_POLICIES_POLICY_NAME_COLUMN', 'Название политики по каталогу'),
             name: 'policy_name',
             searchable: true,
             sortable: true,
@@ -61,7 +61,7 @@ class GroupPoliciesTable extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + ls(`CRASHES_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
+            const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
 
             return `${result}${nextPart}`;
         }, '');
@@ -86,7 +86,7 @@ class GroupPoliciesTable extends React.PureComponent {
             case 'id':
                 return (
                     <LinkCell
-                        href={`/crashes/group-policies/current/${node.id}${this.context.location.search}`}
+                        href={`/alarms/group-policies/current/${node.id}${this.context.location.search}`}
                         content={node[column.name].toString()}
                     />
                 );
