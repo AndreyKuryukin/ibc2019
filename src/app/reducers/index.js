@@ -8,7 +8,7 @@ import policies from '../modules/policies/reducers';
 import kqi from '../modules/kqi/reducers';
 import reports from '../modules/reports/reducers';
 import sources from '../modules/sources/reducers';
-import crashes from '../modules/alarms/reducers';
+import alarms from '../modules/alarms/reducers';
 
 export default combineReducers({
     login,
@@ -19,5 +19,5 @@ export default combineReducers({
     kqi,
     reports,
     sources,
-    crashes,
+    alarms,
 });

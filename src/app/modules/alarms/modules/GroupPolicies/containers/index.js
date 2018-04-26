@@ -94,9 +94,9 @@ class GroupPolicies extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    alarmsList: state.crashes.groupPolicies.alarms.alarms,
-    rfOptions: state.crashes.groupPolicies.alarms.regions,
-    mrfOptions: state.crashes.groupPolicies.alarms.locations,
+    alarmsList: state.alarms.groupPolicies.alarms.alarms,
+    rfOptions: state.alarms.groupPolicies.alarms.regions,
+    mrfOptions: state.alarms.groupPolicies.alarms.locations,
 });
 
 const mapDispatchToProps = dispatch => ({
