@@ -1,14 +1,14 @@
 @import '../../../../../../../scss/vars';
 
-.crashesViewer {
+.alarmsViewer {
   width: 550px !important;
   max-width: 550px !important;
-  .crashesViewerContent {
+  .alarmsViewerContent {
     display: flex;
     flex-grow: 1;
     background: $white;
     flex-direction: column;
-    .crashesViewerRow {
+    .alarmsViewerRow {
       display: flex;
       flex-grow: 1;
       > div {

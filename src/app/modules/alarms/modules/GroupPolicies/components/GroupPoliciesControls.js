@@ -71,7 +71,7 @@ class GroupPoliciesControls extends React.PureComponent {
         this.props.onApplyFilter(this.state);
 
         this.context.history.push({
-            pathname: '/crashes/group-policies/current',
+            pathname: '/alarms/group-policies/current',
             search: `?${['mrf', 'rf'].reduce((res, key) => this.state[key] ? [...res, `${key}=${this.state[key]}`] : res, []).join('&')}`,
         });
     };
@@ -85,7 +85,7 @@ class GroupPoliciesControls extends React.PureComponent {
                     <div className={styles.filterControl}>
                         <Field
                             id="mrf-filter"
-                            labelText={ls('CRASHES_GROUP_POLICIES_MRF_FILTER', 'Фильтр по МРФ')}
+                            labelText={ls('ALARMS_GROUP_POLICIES_MRF_FILTER', 'Фильтр по МРФ')}
                             labelWidth="35%"
                             inputWidth="65%"
                         >
@@ -100,7 +100,7 @@ class GroupPoliciesControls extends React.PureComponent {
                     <div className={styles.filterControl}>
                         <Field
                             id="region-filter"
-                            labelText={ls('CRASHES_GROUP_POLICIES_REGION_FILTER', 'Фильтр по региону')}
+                            labelText={ls('ALARMS_GROUP_POLICIES_REGION_FILTER', 'Фильтр по региону')}
                             labelWidth="45%"
                             inputWidth="55%"
                         >
@@ -113,7 +113,7 @@ class GroupPoliciesControls extends React.PureComponent {
                         </Field>
                     </div>
                     <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                        {ls('CRASHES_GROUP_POLICIES_APPLY_FILTER', 'Применить')}
+                        {ls('ALARMS_GROUP_POLICIES_APPLY_FILTER', 'Применить')}
                     </Button>
                 </div>
                 <Input

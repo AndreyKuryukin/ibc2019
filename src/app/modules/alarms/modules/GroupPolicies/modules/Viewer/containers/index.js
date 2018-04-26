@@ -1,32 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import CrashesViewerComponent from '../components';
+import AlarmsViewerComponent from '../components';
 import rest from '../../../../../../../rest';
 import { fetchAlarmSuccess } from '../actions';
 
-class CrashesViewer extends React.PureComponent {
+class AlarmsViewer extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
         pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
-        crashId: PropTypes.string,
+        alarmId: PropTypes.string,
         alarm: PropTypes.object,
         onFetchAlarmSuccess: PropTypes.func,
     };
 
     static defaultProps = {
-        crashId: '',
+        alarmId: '',
         alarm: null,
         onFetchAlarmSuccess: () => null,
     };
 
     onMount = () => {
-        if (this.props.crashId) {
+        if (this.props.alarmId) {
             const urlParams = {
-                id: this.props.crashId,
+                id: this.props.alarmId,
             };
             rest.get('/api/v1/alarms/gp/:id', { urlParams })
                 .then((response) => {
@@ -41,7 +41,7 @@ class CrashesViewer extends React.PureComponent {
 
     render() {
         return (
-            <CrashesViewerComponent
+            <AlarmsViewerComponent
                 onMount={this.onMount}
                 alarm={this.props.alarm}
                 active={this.props.active}
@@ -51,7 +51,7 @@ class CrashesViewer extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    alarm: state.crashes.groupPolicies.viewer,
+    alarm: state.alarms.groupPolicies.viewer,
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -61,4 +61,4 @@ const mapDispatchToProps = dispatch => ({
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(CrashesViewer);
+)(AlarmsViewer);

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import GroupPoliciesControls from './GroupPoliciesControls';
 import GroupPoliciesTable from './GroupPoliciesTable';
-import CrashesViewer from '../modules/Viewer/containers';
+import AlarmsViewer from '../modules/Viewer/containers';
 import styles from './styles.scss';
 
 class GroupPolicies extends React.PureComponent {
@@ -70,8 +70,8 @@ class GroupPolicies extends React.PureComponent {
 
     render() {
         const { params = {}, isLoading, alarmsList } = this.props;
-        const { id: crashId } = params;
-        const isCrashesViewerActive = !!crashId;
+        const { id: alarmId } = params;
+        const isAlarmsViewerActive = !!alarmId;
 
         return (
             <div className={styles.groupPoliciesWrapper}>
@@ -88,7 +88,7 @@ class GroupPolicies extends React.PureComponent {
                     preloader={isLoading}
                     searchText={this.state.searchText}
                 />
-                {isCrashesViewerActive && <CrashesViewer crashId={crashId} active={isCrashesViewerActive} />}
+                {isAlarmsViewerActive && <AlarmsViewer alarmId={alarmId} active={isAlarmsViewerActive} />}
             </div>
         );
     }
