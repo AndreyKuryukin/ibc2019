@@ -1,0 +1,22 @@
+@import "../../../../../scss/vars";
+
+.kqiHistoryWrapper {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  .kqiHistoryControls {
+    padding: 5px;
+    height: 32px;
+    display: flex;
+    flex-grow: 0;
+    flex-shrink: 0;
+    background: $white;
+    .kqiHistorySearch {
+      width: 20em;
+      margin-left: auto;
+    }
+  }
+}
+
