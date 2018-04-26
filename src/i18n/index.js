@@ -20,6 +20,10 @@ const languageMap = {
     CRASHES_GROUP_POLICIES_CRASHES_VIEWER_NOTIFICATION_TEXT: 'Текст сообщения',
     CRASHES_GROUP_POLICIES_CRASHES_VIEWER_NOTIFIED: 'Выполненные нотификации по открытию',
     CRASHES_GROUP_POLICIES_CRASHES_VIEWER_ATTRIBUTES: 'Все сохраняемые атрибуты аварии: (Значения макроподстановок)',
+
+    CRASHES_KQI_HISTORY_DETAIL_PERIOD_DAY: 'ежесуточный',
+    CRASHES_KQI_HISTORY_DETAIL_PERIOD_WEEK: 'еженедельный',
+    CRASHES_KQI_HISTORY_DETAIL_PERIOD_MONTH: 'ежемесячный',
 };
 
 const ls = (key, defaultValue) => _.get(languageMap, key, defaultValue);

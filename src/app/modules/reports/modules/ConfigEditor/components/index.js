@@ -65,7 +65,7 @@ class ConfigEditor extends React.PureComponent {
 
         this.state = {
             config: {
-                config_name: '<Имя_шаблона>_Еженедельный_PDF',
+                name: '<Имя_шаблона>_Еженедельный_PDF',
                 template_id: null,
                 type: 'PDF',
                 period: {
@@ -98,7 +98,7 @@ class ConfigEditor extends React.PureComponent {
     }
 
     getConfigProperty = (key, defaultValue) => {
-        if (key === 'config_name' && _.get(this.state.config, 'period.auto')) {
+        if (key === 'name' && _.get(this.state.config, 'period.auto')) {
             return this.composeConfigName();
         }
         return _.get(this.state.config, key, defaultValue);
@@ -133,8 +133,8 @@ class ConfigEditor extends React.PureComponent {
         }
 
         if (_.get(config, 'period.auto')) {
-            _.set(config, 'config_name', this.composeConfigName());
-            errors = _.get(errors, 'config_name') ? _.omit(errors, 'config_name') : errors;
+            _.set(config, 'name', this.composeConfigName());
+            errors = _.get(errors, 'name') ? _.omit(errors, 'name') : errors;
         }
 
         this.setState({
@@ -202,16 +202,16 @@ class ConfigEditor extends React.PureComponent {
                                             <Input
                                                 id="config-name"
                                                 name="config-name"
-                                                value={this.getConfigProperty('config_name')}
-                                                onChange={event => this.setConfigProperty('config_name', _.get(event, 'target.value'))}
-                                                valid={!_.get(errors, 'config_name.title', false)}
-                                                errorMessage={_.get(errors, 'config_name.title')}
+                                                value={this.getConfigProperty('name')}
+                                                onChange={event => this.setConfigProperty('name', _.get(event, 'target.value'))}
+                                                valid={!_.get(errors, 'name.title', false)}
+                                                errorMessage={_.get(errors, 'name.title')}
                                             />
                                         ) : (
                                             <div className={styles.truncated_field}
-                                                  title={this.getConfigProperty('config_name')}
+                                                  title={this.getConfigProperty('name')}
                                             >
-                                                {this.getConfigProperty('config_name')}
+                                                {this.getConfigProperty('name')}
                                             </div>
                                         )}
                                     </Field>

@@ -1,18 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import GroupPolicies from '../modules/GroupPolicies/containers';
+import KQI from "../modules/KQI/containers/index";
+import styles from './styles.scss';
 
 const cmpMap = {
     'group-policies': GroupPolicies,
-    'kqi': 'kqi'
-};
-
-const style = {
-    display: 'flex',
-    flexGrow: 1,
-    height: '100%',
-    width: '100%',
-    padding: '1em',
+    'kqi': KQI
 };
 
 class CrashesCmp extends React.PureComponent {
@@ -21,14 +15,13 @@ class CrashesCmp extends React.PureComponent {
         const { params = {} } = this.props.match;
         const { subject = 'group-policies', state } = params;
         const Component = cmpMap[subject];
-        return (
-            <div style={style}>
-                <Component
-                    state={state}
-                    params={params}
-                />
-            </div>
-        );
+        return <div className={styles.crashesWrapper}>
+            <Component history={this.props.history}
+                       match={this.props.match}
+                       state={state}
+                       params={params}
+            />
+        </div>
     }
 }
 

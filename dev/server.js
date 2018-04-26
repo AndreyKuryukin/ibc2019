@@ -40,6 +40,7 @@ const plugins = [
     './sources',
     './alarms',
     './common',
+    './crashes',
 ];
 
 app.use((req, res, next) => {
@@ -86,7 +87,7 @@ if (PROXY_HOST) {
     const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
     const config = {
         proxyReqPathResolver: (req) => {
-            console.log(target + require('url').parse(req.originalUrl).path + ` ${req.headers['method']}`);
+            console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
             return target + require('url').parse(req.originalUrl).path;
         },
     };
