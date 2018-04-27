@@ -1,3 +1,5 @@
+import ls from "i18n";
+
 export const GROUPING_TYPES = {
     NONE: 'NONE',
     SELF: 'SELF',
@@ -21,9 +23,9 @@ export const SERVICE_TYPES = {
 };
 
 export const DATE_TIME_GROUPING = {
-    DAY: 'Дням',
-    WEEK: 'Неделям',
-    MONTH: 'Месяцам'
+    DAY: ls('DAY_GROUPING', 'Дням'),
+    HOUR: ls('HOUR_GROUPING', 'Часам'),
+    QUARTER: ls('QUARTER_GROUPING', '15 минутам')
 };
 
 export const LOCATION_GROUPING = {

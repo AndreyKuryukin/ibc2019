@@ -5,8 +5,8 @@ import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
-import Radio from '../../../../../components/Radio';
 import { ABONENT_GROUP_GROUPING } from '../constants';
+import _ from "lodash";
 
 class UserGroups extends React.PureComponent {
     static propTypes = {
@@ -23,19 +23,27 @@ class UserGroups extends React.PureComponent {
 
     constructor(props) {
         super(props);
-
         this.state = {
             grouping: null,
         };
     }
 
-    onGroupingChange = (grouping, value) => {
-        if (value) {
-            this.setState({ grouping });
-
-            this.props.onGroupingChange(grouping);
-        }
+    onGroupingChange = (value) => {
+        this.setState({ grouping: value });
+        this.props.onGroupingChange(value);
     };
+
+    getGropingOptions = () => ([
+            {
+                title: ls('KQI_CONFIGURATOR_ABONENT_GROUPING_FIELD_LABEL', 'С группировкой по группам абонентов'),
+                value: ABONENT_GROUP_GROUPING.SELF
+            },
+            {
+                title: ls('KQI_CONFIGURATOR_ABONENT_LIST_FIELD_LABEL', 'Формировать список абонентов'),
+                value: ABONENT_GROUP_GROUPING.ABONENT
+            }
+        ]
+    );
 
     render() {
         const { value, groupingValue, disabled } = this.props;
@@ -59,35 +67,21 @@ class UserGroups extends React.PureComponent {
                     />
                 </Field>
                 <Field
-                    id="self-type-abonent-grouping"
-                    labelText={ls('KQI_CONFIGURATOR_ABONENT_GROUPING_FIELD_LABEL', 'С группировкой по группам абонентов')}
-                    labelWidth="67%"
-                    inputWidth="5%"
-                    labelAlign="right"
+                    id="self-equipment-type"
+                    labelText={ls('KQI_CONFIGURATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}
+                    labelWidth="32%"
+                    inputWidth="68%"
                 >
-                    <Radio
-                        id="self-type-abonent-grouping"
-                        name="abonent-grouping"
-                        checked={this.state.grouping === ABONENT_GROUP_GROUPING.SELF || groupingValue === ABONENT_GROUP_GROUPING.SELF}
-                        onChange={v => this.onGroupingChange(ABONENT_GROUP_GROUPING.SELF, v)}
-                        disabled={disabled}
+                    <Select
+                        id="self-equipment-type"
+                        options={this.getGropingOptions()}
+                        value={_.get(this.props, 'groupingValue', this.state.grouping)}
+                        placeholder={ls('KQI_CONFIGURATOR_GROUPING_FIELD_PLACEHOLDER', 'Выберите группировку')}
+                        onChange={v => this.onGroupingChange(v)}
+                        disabled={disabled || !!value}
                     />
                 </Field>
-                <Field
-                    id="abonent-type-abonent-grouping"
-                    labelText={ls('KQI_CONFIGURATOR_ABONENT_LIST_FIELD_LABEL', 'Формировать список абонентов')}
-                    labelWidth="67%"
-                    inputWidth="5%"
-                    labelAlign="right"
-                >
-                    <Radio
-                        id="abonent-type-abonent-grouping"
-                        name="abonent-grouping"
-                        checked={this.state.grouping === ABONENT_GROUP_GROUPING.ABONENT || groupingValue === ABONENT_GROUP_GROUPING.ABONENT}
-                        onChange={v => this.onGroupingChange(ABONENT_GROUP_GROUPING.ABONENT, v)}
-                        disabled={disabled}
-                    />
-                </Field>
+
             </Panel>
         );
     }

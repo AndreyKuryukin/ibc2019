@@ -111,5 +111,42 @@
       "NONE"
     ],
     "id": 1524051093826
+  },
+  {
+    "name": "Еженедельный_С группировкой по sw версии_Формировать список абонентов",
+    "service_type": "IPTV",
+    "period": "WEEK",
+    "start_date_time": "2018-04-15T21:00:00.000Z",
+    "end_date_time": "2018-04-22T20:59:59.999Z",
+    "location": "",
+    "last_mile_technology": "",
+    "last_inch_technology": "",
+    "manufacturer": "",
+    "equipment_type": "",
+    "abonent_group": null,
+    "kqi_id": "2",
+    "auto_gen": true,
+    "abonent_group_grouping": [
+      "ABONENT"
+    ],
+    "equipment_type_grouping": [
+      "SW"
+    ],
+    "date_time_grouping": [
+      "NONE"
+    ],
+    "location_grouping": [
+      "NONE"
+    ],
+    "last_mile_technology_grouping": [
+      "NONE"
+    ],
+    "last_inch_technology_grouping": [
+      "NONE"
+    ],
+    "manufacturer_grouping": [
+      "NONE"
+    ],
+    "id": 1524842299910
   }
 ]

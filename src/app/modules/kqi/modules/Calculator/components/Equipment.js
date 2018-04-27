@@ -5,8 +5,8 @@ import { createSelector } from 'reselect';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
-import Radio from '../../../../../components/Radio';
 import { EQUIPMENT_TYPE_GROUPING } from '../constants';
+import _ from "lodash";
 
 class Equipment extends React.PureComponent {
     static propTypes = {
@@ -33,16 +33,36 @@ class Equipment extends React.PureComponent {
         };
     }
 
-    onGroupingChange = (grouping, value) => {
-        if (value) {
-            this.setState({ grouping });
+    onGroupingChange = (value) => {
+        this.setState({ grouping: value });
+        this.props.onGroupingChange(value);
+    };
 
-            this.props.onGroupingChange(grouping);
+    getGropingOptions = () => ([
+            {
+                title: ls('KQI_CONFIGURATOR_HW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по hw версии'),
+                value: EQUIPMENT_TYPE_GROUPING.HW
+            },
+            {
+                title: ls('KQI_CONFIGURATOR_SW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по sw версии'),
+                value: EQUIPMENT_TYPE_GROUPING.SW
+            },
+            {
+                title: ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_GROUPING_FIELD_LABEL', 'С группировкой по типу оборудования'),
+                value: EQUIPMENT_TYPE_GROUPING.SELF
+            }
+        ]
+    );
+
+    onEquipmentTypeChange = (value) => {
+        if (value) {
+            this.onGroupingChange(null);
         }
+        this.props.onEquipmentTypeChange(value);
     };
 
     render() {
-        const { value, groupingValue, disabled } = this.props;
+        const { value, disabled } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_EQUIPMENT_TITLE', 'Оборудование')}
@@ -56,54 +76,24 @@ class Equipment extends React.PureComponent {
                     <Select
                         id="equipment-type"
                         options={this.props.equipmentsList}
-                        onChange={this.props.onEquipmentTypeChange}
+                        onChange={this.onEquipmentTypeChange}
                         value={value}
                         disabled={disabled}
                     />
                 </Field>
                 <Field
                     id="self-equipment-type"
-                    labelText={ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_GROUPING_FIELD_LABEL', 'С группировкой по типу оборудования')}
-                    labelWidth="67%"
-                    inputWidth="5%"
-                    labelAlign="right"
+                    labelText={ls('KQI_CONFIGURATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}
+                    labelWidth="32%"
+                    inputWidth="68%"
                 >
-                    <Radio
+                    <Select
                         id="self-equipment-type"
-                        name="equipment-type-grouping"
-                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.SELF || groupingValue === EQUIPMENT_TYPE_GROUPING.SELF}
-                        onChange={v => this.onGroupingChange(EQUIPMENT_TYPE_GROUPING.SELF, v)}
-                        disabled={disabled}
-                    />
-                </Field>
-                <Field
-                    id="hw-equipment-type"
-                    labelText={ls('KQI_CONFIGURATOR_HW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по hw версии')}
-                    labelWidth="67%"
-                    inputWidth="5%"
-                    labelAlign="right"
-                >
-                    <Radio
-                        id="hw-equipment-type"
-                        name="equipment-type-grouping"
-                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.HW || groupingValue === EQUIPMENT_TYPE_GROUPING.HW}
-                        onChange={v => this.onGroupingChange(EQUIPMENT_TYPE_GROUPING.HW, v)}
-                        disabled={disabled}
-                    />
-                </Field>
-                <Field
-                    id="sw-equipment-type"
-                    labelText={ls('KQI_CONFIGURATOR_SW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по sw версии')}
-                    labelWidth="67%"
-                    inputWidth="5%"
-                    labelAlign="right"
-                >
-                    <Radio
-                        id="sw-equipment-type"
-                        name="equipment-type-grouping"
-                        checked={this.state.grouping === EQUIPMENT_TYPE_GROUPING.SW || groupingValue === EQUIPMENT_TYPE_GROUPING.SW}
-                        onChange={v => this.onGroupingChange(EQUIPMENT_TYPE_GROUPING.SW, v)}
-                        disabled={disabled}
+                        options={this.getGropingOptions()}
+                        value={_.get(this.props, 'groupingValue', this.state.grouping)}
+                        placeholder={ls('KQI_CONFIGURATOR_GROUPING_FIELD_PLACEHOLDER', 'Выберите группировку')}
+                        onChange={v => this.onGroupingChange(v)}
+                        disabled={disabled || !!value}
                     />
                 </Field>
             </Panel>

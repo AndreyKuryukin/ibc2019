@@ -39,9 +39,9 @@ const NAME_PATTERN_SEQUENCE = [
 ];
 
 const period = {
-    WEEK: ls('WEEKLY', 'Еженедельный'),
+    HOUR: ls('WEEKLY', 'Ежечасный'),
     DAY: ls('WEEKLY', 'Ежедневный'),
-    MONTH: ls('WEEKLY', 'Ежемесячный'),
+    QUARTER: ls('WEEKLY', '15 минутный'),
 };
 
 const last_mile_technology_grouping = {
