@@ -1,14 +1,32 @@
 import React from 'react';
 import { connect } from "react-redux";
+import PropTypes from 'prop-types';
 
 import KqiCmp from "../components/index";
 import rest from "../../../../../rest/index";
 import _ from "lodash";
 import { fetchHistorySuccess } from "../actions/index";
+import ls from "i18n";
 
 class KQI extends React.PureComponent {
 
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+    static propTypes = {
+        history: PropTypes.object,
+        match: PropTypes.object,
+        historyList: PropTypes.array,
+    };
+
+    static defaultProps = {
+        history: {},
+        match: {},
+        historyList: [],
+    };
+
     componentDidMount() {
+        this.context.navBar.setPageTitle(ls('ALARMS_KQI_PAGE_TITLE', 'Сообщения по KQI'));
         const state = _.get(this.props, 'match.params.state', 'history');
         const id = _.get(this.props, 'match.params.id');
         if (state === 'history') {

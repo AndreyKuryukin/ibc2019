@@ -1,4 +1,7 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+
 import Table from "./Table";
 import Controls from "./Controls";
 import Details from "./Details";
@@ -6,6 +9,18 @@ import styles from './styles.scss';
 import _ from "lodash";
 
 class KqiCmp extends React.PureComponent {
+    static propTypes = {
+        history: PropTypes.object,
+        match: PropTypes.object,
+        detail: PropTypes.object,
+        data: PropTypes.array,
+    };
+
+    static defaultProps = {
+        history: {},
+        match: {},
+        historyList: [],
+    };
 
     render() {
         const { match, data, history, detail } = this.props;

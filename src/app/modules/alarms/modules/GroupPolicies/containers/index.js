@@ -4,8 +4,13 @@ import { connect } from 'react-redux';
 import rest from '../../../../../rest';
 import GroupPoliciesComponent from '../components/index';
 import { fetchAlarmsSuccess, fetchRegionsSuccess, fetchLocationsSuccess } from '../actions';
+import ls from "i18n";
 
 class GroupPolicies extends React.PureComponent {
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         state: PropTypes.oneOf(['current', 'history']).isRequired,
         params: PropTypes.object,
@@ -37,6 +42,10 @@ class GroupPolicies extends React.PureComponent {
                 rf: '',
             },
         };
+    }
+
+    componentDidMount() {
+        this.context.navBar.setPageTitle(ls('ALARMS_GROUP_POLICIES_PAGE_TITLE', 'Сообщения по групповым политикам'));
     }
 
     onFetchAlarms = (filter, isLoaderHidden) => {
