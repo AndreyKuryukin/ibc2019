@@ -133,13 +133,14 @@ class Period extends React.PureComponent {
     onIntervalChange = (interval, value) => {
         if (value) {
             let intervalCount = 1;
+            let finalInterval = interval;
             if (interval === INTERVALS.QUARTER) {
                 intervalCount = 15;
                 interval = 'minute';
             }
             const start = interval !== INTERVALS.OTHER ? moment().subtract(intervalCount, interval).startOf(interval).toDate() : this.state.start;
             const end = interval !== INTERVALS.OTHER ? moment(start).endOf(interval).toDate() : this.state.end;
-            this.configureAndSetState(start, end, interval);
+            this.configureAndSetState(start, end, finalInterval);
         }
     };
 
