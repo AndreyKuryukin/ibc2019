@@ -12,7 +12,7 @@ import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
-import Crashes from '../modules/alarms/containers';
+import Alarms from '../modules/alarms/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
@@ -79,9 +79,9 @@ class App extends React.Component {
             },
             'ALARMS': {
                 title: 'Отчёт по авариям',
-                link: '/alarms',
+                link: '/alarms/group-policies/current',
                 path: "/alarms/:subject/:state/:id?",
-                component: Crashes
+                component: Alarms
             }
         }
     };
@@ -165,8 +165,8 @@ class App extends React.Component {
         {
             id: 'alarms',
             name: 'ALARMS',
-            link: '/alarms'
-        },
+            link: '/alarms/group-policies/current'
+        }
     ];
 
     renderRoutes = (subjects = []) => {
