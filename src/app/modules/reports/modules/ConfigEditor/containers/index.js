@@ -16,6 +16,7 @@ class ConfigEditor extends React.PureComponent {
     static propTypes = {
         active: PropTypes.bool,
         users: PropTypes.array,
+        onSubmitConfig: PropTypes.func,
         onFetchUsersSuccess: PropTypes.func,
         onFetchTemplatesSuccess: PropTypes.func,
     };
@@ -23,6 +24,7 @@ class ConfigEditor extends React.PureComponent {
     static defaultProps = {
         active: false,
         users: [],
+        onSubmitConfig: () => null,
         onFetchUsersSuccess: () => null,
         onFetchTemplatesSuccess: () => null,
     };
@@ -69,7 +71,7 @@ class ConfigEditor extends React.PureComponent {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
     onSubmit = (config) => {
         const errors = validateForm(config, this.validationConfig);
@@ -81,6 +83,7 @@ class ConfigEditor extends React.PureComponent {
                 .then(() => {
                     this.setState({ isLoading: false });
                     this.context.history.push('/reports');
+                    this.props.onSubmitConfig();
                 })
                 .catch((e) => {
                     console.error(e);
@@ -113,7 +116,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onFetchUsersSuccess: users => dispatch(fetchUsersSuccess(users)),
     onFetchTemplatesSuccess: users => dispatch(fetchTemplatesSuccess(users)),
-    onSubmitConfigSuccess: config => null,
 });
 
 export default connect(
