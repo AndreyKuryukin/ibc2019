@@ -1,4 +1,4 @@
-import { FETCH_ROLE_SUCCESS, FETCH_SUBJECTS_SUCCESS } from '../actions';
+import { FETCH_ROLE_SUCCESS, FETCH_SUBJECTS_SUCCESS, RESET_ROLES_EDITOR } from '../actions';
 
 const initialState = {
     role: {
@@ -23,6 +23,11 @@ export default (state = initialState, action) => {
             return {
                 ...state,
                 subjects: action.payload.subjects,
+            };
+        case RESET_ROLES_EDITOR:
+            return {
+                ...state,
+                role: initialState.role,
             };
         default:
             return state;
