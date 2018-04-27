@@ -222,7 +222,7 @@ class UserEditor extends React.Component {
                                     labelText={ls('USER_LOGIN_FIELD_TITLE', 'Логин')}
                                     labelWidth="50%"
                                     inputWidth="50%"
-                                    required={!userId}
+                                    required
                                 >
                                     <Input
                                         id="login"
