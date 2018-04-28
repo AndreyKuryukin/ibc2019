@@ -12,6 +12,7 @@ class KQI extends React.PureComponent {
 
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
     static propTypes = {
         history: PropTypes.object,
@@ -33,6 +34,7 @@ class KQI extends React.PureComponent {
             this.fetchHistory();
         }
         if (!_.isUndefined(id)) {
+            this.context.pageBlur(true);
             this.fetchDetail(id);
         }
     }
@@ -47,6 +49,7 @@ class KQI extends React.PureComponent {
             this.fetchHistory();
         }
         if (!_.isEqual(id, newId) && !_.isUndefined(newId)) {
+            this.context.pageBlur(true);
             this.fetchDetail(newId);
         }
     }

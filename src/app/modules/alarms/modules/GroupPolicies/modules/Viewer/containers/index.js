@@ -24,6 +24,7 @@ class AlarmsViewer extends React.PureComponent {
     };
 
     onMount = () => {
+        this.context.pageBlur(true);
         if (this.props.alarmId) {
             const urlParams = {
                 id: this.props.alarmId,
