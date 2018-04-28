@@ -97,16 +97,10 @@ class ConfigEditor extends React.PureComponent {
         }
     }
 
-    getConfigProperty = (key, defaultValue) => {
-        if (key === 'name' && _.get(this.state.config, 'period.auto')) {
-            return this.composeConfigName();
-        }
-        return _.get(this.state.config, key, defaultValue);
-    };
+    getConfigProperty = (key, defaultValue) => _.get(this.state.config, key, defaultValue);
 
-    composeConfigName = () => {
+    composeConfigName = (templateId, regularity, type) => {
         const name = [];
-        const templateId = this.getConfigProperty('template_id');
         const template = _.find(this.state.templates, tpl => tpl.id === templateId);
         if (template) {
             name.push(template.name);
@@ -114,13 +108,12 @@ class ConfigEditor extends React.PureComponent {
             name.push(NAME_PATTERNS['template_id'.toUpperCase()]);
         }
 
-        const regularity = this.getConfigProperty('period.regularity');
         if (regularity) {
             name.push(REGULARITY_MAP[regularity]);
         } else {
             name.push(NAME_PATTERNS['period.regularity'.toUpperCase()]);
         }
-        name.push(`${this.getConfigProperty('type') || NAME_PATTERNS['type'.toUpperCase()]}`);
+        name.push(`${type|| NAME_PATTERNS['type'.toUpperCase()]}`);
         return name.join('_');
     };
 
@@ -133,7 +126,11 @@ class ConfigEditor extends React.PureComponent {
         }
 
         if (_.get(config, 'period.auto')) {
-            _.set(config, 'name', this.composeConfigName());
+            _.set(config, 'name', this.composeConfigName(
+                _.get(config, 'template_id', null),
+                _.get(config, 'period.regularity', null),
+                _.get(config, 'type', null),
+            ));
             errors = _.get(errors, 'name') ? _.omit(errors, 'name') : errors;
         }
 
@@ -158,13 +155,18 @@ class ConfigEditor extends React.PureComponent {
             ...(start ? ['period.start_date'] : []),
             ...(end ? ['period.end_date'] : []),
         ];
-
+        const updatedRegularity = regularity.toUpperCase();
         this.setState({
             config: {
                 ...this.state.config,
+                name: this.composeConfigName(
+                    _.get(this.state.config, 'template_id', null),
+                    updatedRegularity,
+                    _.get(this.state.config, 'type', null),
+                ),
                 notify_users: auto ? _.get('notify_users', []) : [],
                 period: {
-                    regularity: regularity.toUpperCase(),
+                    regularity: updatedRegularity,
                     start_date: start,
                     end_date: end,
                     auto,

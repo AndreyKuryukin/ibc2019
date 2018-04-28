@@ -75,7 +75,7 @@ class Reports extends React.PureComponent {
                 match={this.props.match}
                 history={this.props.history}
                 reportsData={this.props.reportsData}
-                onMount={this.fetchReports}
+                fetchReports={this.fetchReports}
                 isLoading={this.state.isLoading}
                 onRemoveResult={this.removeResult}
                 onResultRetry={this.retryResult}
