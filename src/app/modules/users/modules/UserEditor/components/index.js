@@ -318,6 +318,8 @@ class UserEditor extends React.Component {
                                         name="email"
                                         value={this.getUserProperty('email', '')}
                                         onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
+                                        valid={errors && _.isEmpty(errors.email)}
+                                        errorMessage={_.get(errors, 'email.title')}
                                     />
                                 </Field>
                                 <Field

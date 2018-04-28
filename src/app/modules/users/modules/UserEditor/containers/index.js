@@ -56,6 +56,9 @@ class UserEditor extends React.PureComponent {
                 required: !this.props.userId,
                 passwordEqual: true
             },
+            email: {
+                match: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            },
         };
         this.context.pageBlur && this.context.pageBlur(true);
     }

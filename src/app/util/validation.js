@@ -6,6 +6,7 @@ const validators = {
     min: (value, testValue) => value >= testValue,
     max: (value, testValue) => value <= testValue,
     notEmpty: (value, testValue) => !_.isEmpty(value) === testValue,
+    match: (value, pattern) => _.isRegExp(pattern) && (new RegExp(pattern)).test(value),
 };
 
 const defaultMessages = {
@@ -13,6 +14,7 @@ const defaultMessages = {
     min: ls('MIN_ERROR_MESSAGE', 'Значение меньше минимального'),
     max: ls('MAX_ERROR_MESSAGE', 'Значение больше максимального'),
     notEmpty: ls('NOT_EMPTY_ERROR_MESSAGE', 'Значение не должно быть пустым'),
+    match: ls('MATCH_ERROR_MESSAGE', 'Проверьте правильность введённого значения'),
 };
 
 const validateValue = (value, config, customValidators) =>
