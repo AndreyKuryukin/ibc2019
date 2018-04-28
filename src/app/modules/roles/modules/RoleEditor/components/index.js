@@ -196,7 +196,7 @@ class RoleEditor extends React.PureComponent {
                             />
                         </Panel>
                         <Panel
-                            title={ls('ROLE_COMMENT_PANEL_TITLE', 'Комментарий')}
+                            title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
                         >
                             <Input type="textarea"
                                    value={role.description}
