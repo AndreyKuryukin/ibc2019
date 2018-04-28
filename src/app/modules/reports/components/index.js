@@ -14,7 +14,7 @@ class Reports extends React.PureComponent {
     static propTypes = {
         reportsData: PropTypes.array,
         isLoading: PropTypes.bool,
-        onMount: PropTypes.func,
+        fetchReports: PropTypes.func,
         onRemoveResult: PropTypes.func,
         onResultRetry: PropTypes.func,
     };
@@ -22,7 +22,7 @@ class Reports extends React.PureComponent {
     static defaultProps = {
         reportsData: [],
         isLoading: false,
-        onMount: () => null,
+        fetchReports: () => null,
         onRemoveResult: () => null,
         onResultRetry: () => null,
     };
@@ -42,8 +42,8 @@ class Reports extends React.PureComponent {
     }
 
     componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
+        if (typeof this.props.fetchReports === 'function') {
+            this.props.fetchReports();
         }
     }
 
@@ -51,6 +51,12 @@ class Reports extends React.PureComponent {
         this.setState({
             searchText,
         });
+    };
+
+    onSubmitConfig = () => {
+        if (typeof this.props.fetchReports === 'function') {
+            this.props.fetchReports();
+        }
     };
 
     render() {
@@ -72,6 +78,7 @@ class Reports extends React.PureComponent {
                 />
                 {isEditorActive && <ConfigEditor
                     active={isEditorActive}
+                    onSubmitConfig={this.onSubmitConfig}
                 />}
             </div>
         );

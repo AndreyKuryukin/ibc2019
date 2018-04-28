@@ -92,23 +92,25 @@ class ReportsTable extends React.PureComponent {
         id: report.id,
         name: report.name,
         path: report.file_path,
-        start: report.create_start_time,
-        end: report.create_end_time,
+        start: report.create_start_time ? moment(report.create_start_time).format(DATE_TIME) : '',
+        end: report.create_end_time ? moment(report.create_end_time).format(DATE_TIME) : '',
         state: report.state,
-        type: config.type,
+        type: ls(`REPORT_TYPE_${config.type}`, ''),
+        nodeType: config.type,
         author: config.author,
         comment: config.comment,
-        notify: config.notify_users_name,
+        notify: config.notify_users && Array.isArray(config.notify_users) ? config.notify_users.join(', ') : '',
         isLastSuccess
     });
 
 
     mapConfig = config => ({
         id: config.id,
-        type: config.type,
+        type: ls(`REPORT_TYPE_${config.type}`, ''),
+        nodeType: config.type,
         author: config.author,
         comment: config.comment,
-        notify: config.notify_users_name,
+        notify: config.notify_users && Array.isArray(config.notify_users) ? config.notify_users.join(', ') : '',
         name: config.name,
         children: (config.reports || []).map((() => {
             let lastSuccessEnd = 0;
@@ -125,7 +127,7 @@ class ReportsTable extends React.PureComponent {
 
     mapTemplate = template => ({
         id: template.id,
-        type: 'template',
+        nodeType: 'template',
         name: template.name,
         children: _.get(template, 'report_config', []).map(this.mapConfig),
     });
@@ -159,7 +161,7 @@ class ReportsTable extends React.PureComponent {
     bodyRowRender = (column, node) => {
         switch (column.name) {
             case 'name':
-                const type = _.get(node, 'type', '').toLowerCase();
+                const type = _.get(node, 'nodeType', '').toLowerCase();
                 const state = _.get(node, 'state', '').toLowerCase();
                 return (
                     <ReportCell
@@ -170,13 +172,6 @@ class ReportsTable extends React.PureComponent {
                         href={state !== 'failed' && state !== 'running' && node.path}
                     />
                 );
-            case 'notify': {
-                return (
-                    <DefaultCell
-                        content={node[column.name] ? node[column.name].join(', ') : ''}
-                    />
-                );
-            }
             case 'retry': {
                 const state = _.get(node, 'state', '').toLowerCase();
                 return state === 'failed' || (node.isLastSuccess && node.isLastSuccess() && state !== 'running') ?
@@ -192,12 +187,6 @@ class ReportsTable extends React.PureComponent {
                             justifyContent: 'center'
                         }}
                     /> : ''
-            }
-            case 'start':
-            case 'end': {
-                return <DefaultCell
-                    content={node[column.name] ? moment(node[column.name]).format(DATE_TIME) : ''}
-                />;
             }
             case 'state': {
                 const state = _.get(node, 'state', '').toLowerCase();
@@ -217,16 +206,12 @@ class ReportsTable extends React.PureComponent {
                 return (node.type === 'PDF' || node.type === 'XLS') &&
                     <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
             }
-            case 'type': {
-                return <DefaultCell
-                    content={ls(`REPORT_TYPE_${node[column.name]}`, '')}
-                />
-            }
-            default: {
-                return <DefaultCell
-                    content={node[column.name]}
-                />;
-            }
+            default:
+                return (
+                    <DefaultCell
+                        content={node[column.name]}
+                    />
+                );
         }
     };
 
