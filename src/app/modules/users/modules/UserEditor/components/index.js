@@ -191,13 +191,13 @@ class UserEditor extends React.Component {
                                     id="ldap"
                                     type="radio"
                                     name="authentication-mode"
-                                    checked={this.getUserProperty('authenticationMode', '') === 'ldap'}
-                                    onChange={value => this.setUserProperty('authenticationMode', value)}
+                                    checked={this.getUserProperty('ldap_auth')}
+                                    onChange={value => this.setUserProperty('ldap_auth', true)}
                                 />
                             </Field>
                             <Field
                                 id="custom"
-                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Другой')}
+                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Внутренний')}
                                 labelAlign="right"
                                 labelWidth="95%"
                                 inputWidth="5%"
@@ -206,8 +206,8 @@ class UserEditor extends React.Component {
                                     id="custom"
                                     type="radio"
                                     name="authentication-mode"
-                                    checked={this.getUserProperty('authenticationMode', '') === 'custom'}
-                                    onChange={value => this.setUserProperty('authenticationMode', value)}
+                                    checked={!this.getUserProperty('ldap_auth')}
+                                    onChange={value => this.setUserProperty('ldap_auth', false)}
                                 />
                             </Field>
                         </Panel>
