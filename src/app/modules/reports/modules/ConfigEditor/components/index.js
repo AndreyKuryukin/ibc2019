@@ -195,7 +195,7 @@ class ConfigEditor extends React.PureComponent {
                                 >
                                     <Field
                                         id="config-name"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_NAME_FIELD', 'Название')}:`}
+                                        labelText={ls('REPORTS_CONFIG_EDITOR_NAME_FIELD', 'Название')}
                                         labelWidth="30%"
                                         inputWidth="70%"
                                         required
@@ -219,7 +219,7 @@ class ConfigEditor extends React.PureComponent {
                                     </Field>
                                     <Field
                                         id="template-id"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}:`}
+                                        labelText={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}
                                         labelWidth="30%"
                                         inputWidth="70%"
                                         required>
@@ -235,7 +235,7 @@ class ConfigEditor extends React.PureComponent {
                                     </Field>
                                     <Field
                                         id="type"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}:`}
+                                        labelText={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}
                                         labelWidth="30%"
                                         inputWidth="70%"
                                         required
@@ -248,6 +248,7 @@ class ConfigEditor extends React.PureComponent {
                                             onChange={value => this.setConfigProperty('type', value)}
                                             valid={!_.get(errors, 'type', false)}
                                             errorMessage={_.get(errors, 'type.title')}
+                                            noEmptyOption
                                         />
                                     </Field>
 
@@ -257,7 +258,7 @@ class ConfigEditor extends React.PureComponent {
                                 >
                                     <Field
                                         id="mrf"
-                                        labelText={`${ls('REPORTS_CONFIG_EDITOR_MRF_FIELD', 'МРФ')}:`}
+                                        labelText={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD', 'МРФ')}
                                         labelWidth="30%"
                                         inputWidth="70%"
                                         required

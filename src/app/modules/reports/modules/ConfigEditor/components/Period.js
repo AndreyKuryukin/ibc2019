@@ -18,6 +18,19 @@ const INTERVALS = {
     OTHER: 'other',
 };
 
+const panelStyle = {
+    display: 'flex',
+};
+
+const intervalFieldStyle = {
+    marginTop: 0,
+    marginLeft: 10,
+};
+
+const startDateFieldStyle = {
+    marginTop: 5,
+};
+
 class Period extends React.PureComponent {
     static contextTypes = {
         notifications: PropTypes.object.isRequired,
@@ -118,7 +131,7 @@ class Period extends React.PureComponent {
         return (
             <Panel
                 title={<div
-                    style={{ display: 'flex' }}>{ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
+                    style={panelStyle}>{ls('REPORTS_CONFIG_EDITOR_PERIOD_TITLE', 'Временной период отчёта')}
                     <Icon
                         icon={'help-icon'}
                         title={
@@ -148,10 +161,7 @@ class Period extends React.PureComponent {
                         labelText={ls('TIME_INTERVAL_WEEK', 'Неделя')}
                         inputWidth={15}
                         labelAlign="right"
-                        style={{
-                            marginTop: 0,
-                            marginLeft: 10,
-                        }}
+                        style={intervalFieldStyle}
                         title={ls('TIME_INTERVAL_WEEK_TITLE', 'Предыдущая неделя с 00:00 часов понедельника до 24:00 часов воскресения')}
                     >
                         <Radio
@@ -166,10 +176,7 @@ class Period extends React.PureComponent {
                         labelText={ls('TIME_INTERVAL_MONTH', 'Месяц')}
                         inputWidth={15}
                         labelAlign="right"
-                        style={{
-                            marginTop: 0,
-                            marginLeft: 10,
-                        }}
+                        style={intervalFieldStyle}
                         title={ls('TIME_INTERVAL_MONTH_TITLE', 'Предыдущий месяц 00:00 часов 1-го числа до 24:00 часов последнего числа')}
                     >
                         <Radio
@@ -181,12 +188,10 @@ class Period extends React.PureComponent {
                     </Field>
                     <Field
                         id="other-interval"
-                        labelText={`${ls('TIME_INTERVAL_OTHER', 'Другое')}:`}
+                        labelText={ls('TIME_INTERVAL_OTHER', 'Другое')}
                         inputWidth={15}
                         labelAlign="right"
-                        style={{
-                            marginTop: 0,
-                        }}
+                        style={intervalFieldStyle}
                         title={ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета')}
                     >
                         <Radio
@@ -199,12 +204,10 @@ class Period extends React.PureComponent {
                 </div>
                 <Field
                     id="start-date"
-                    labelText={`${ls('REPORTS_CONFIG_EDITOR_START_DATE_FIELD', 'Начало')}:`}
+                    labelText={ls('REPORTS_CONFIG_EDITOR_START_DATE_FIELD', 'Начало')}
                     labelWidth="35%"
                     inputWidth="65%"
-                    style={{
-                        marginTop: 5,
-                    }}
+                    style={startDateFieldStyle}
                     required
                 >
                     <DateTimePicker
@@ -220,7 +223,7 @@ class Period extends React.PureComponent {
                 </Field>
                 <Field
                     id="end-date"
-                    labelText={`${ls('REPORTS_CONFIG_EDITOR_START_DATE_FIELD', 'Окончание')}:`}
+                    labelText={ls('REPORTS_CONFIG_EDITOR_START_DATE_FIELD', 'Окончание')}
                     labelWidth="35%"
                     inputWidth="65%"
                     required
