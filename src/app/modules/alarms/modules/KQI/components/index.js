@@ -19,13 +19,12 @@ class KqiCmp extends React.PureComponent {
     static defaultProps = {
         history: {},
         match: {},
-        historyList: [],
     };
 
     render() {
         const { match, data, history, detail } = this.props;
         const { params = {} } = match;
-        const { state, id } = params;
+        const { id } = params;
         return <div className={styles.kqiHistoryWrapper}>
             <Controls onSearchTextChange={(searchText) => this.setState({ searchText })}/>
             <Table data={data}

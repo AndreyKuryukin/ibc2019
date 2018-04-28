@@ -159,8 +159,6 @@ class KqiTable extends React.PureComponent {
     render() {
         const { searchText, preloader } = this.props;
         const { data } = this.state;
-        console.log(data, searchText);
-
         const columns = KqiTable.getColumns();
         const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
