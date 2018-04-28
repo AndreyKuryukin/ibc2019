@@ -238,7 +238,7 @@ class UserEditor extends React.Component {
                                     labelText={ls('USER_PASSWORD_FIELD_TITLE', 'Пароль')}
                                     labelWidth="50%"
                                     inputWidth="50%"
-                                    required
+                                    required={!userId}
                                 >
                                     <Input
                                         id="password"
@@ -262,7 +262,7 @@ class UserEditor extends React.Component {
                                     labelText={ls('USER_CONFIRM_FIELD_TITLE', 'Подтвердите пароль')}
                                     labelWidth="50%"
                                     inputWidth="50%"
-                                    required
+                                    required={!userId}
                                 >
                                     <Input
                                         id="confirm"
