@@ -156,7 +156,7 @@ class RoleEditor extends React.PureComponent {
                         >
                             <Field
                                 id="name"
-                                labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли:')}
+                                labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
                                 labelWidth="50%"
                                 inputWidth="50%"
                                 required
@@ -166,12 +166,13 @@ class RoleEditor extends React.PureComponent {
                                     value={role.name}
                                     onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
                                     valid={errors && _.isEmpty(errors.name)}
+                                    errorMessage={_.get(errors, 'name.title')}
                                 />
                             </Field>
 
                             <Field
                                 id="permissions-source"
-                                labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из:')}
+                                labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
                                 labelWidth="50%"
                                 inputWidth="50%"
                             >

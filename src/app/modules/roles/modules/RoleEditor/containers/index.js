@@ -70,7 +70,10 @@ class RoleEditor extends React.PureComponent {
     }
 
     onSubmit = (roleId, roleData) => {
-        const errors = validateForm(roleData, this.validationConfig);
+        const errors = validateForm({
+            ...roleData,
+            name: roleData.name.trim(),
+        }, this.validationConfig);
         if (_.isEmpty(errors)) {
             const submit = roleId ? rest.put : rest.post;
             const success = (response) => {
