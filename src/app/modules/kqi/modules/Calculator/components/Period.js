@@ -13,8 +13,8 @@ import styles from './styles.scss';
 
 const INTERVALS = {
     DAY: 'day',
-    WEEK: 'week',
-    MONTH: 'month',
+    HOUR : 'hour',
+    QUARTER : 'quarter',
     OTHER: 'other',
 };
 
@@ -75,12 +75,12 @@ class Period extends React.PureComponent {
 
     getFilteredGroupingOptions = (start, end, groupingOptions) => {
         if (!start || !end) return [];
-        if (moment(end).diff(moment(start), 'month') >= 1) {
+        if (moment(end).diff(moment(start), 'days') > 1) {
             return groupingOptions;
-        } else if (moment(end).diff(moment(start), 'weeks') >= 1) {
-            return groupingOptions.filter(opt => opt.value !== 'MONTH');
-        } else if (moment(end).diff(moment(start), 'days') >= 1) {
-            return groupingOptions.filter(opt => opt.value === 'DAY');
+        } else if (moment(end).diff(moment(start), 'hours') > 1) {
+            return groupingOptions.filter(opt => opt.value !== 'DAY');
+        } else if (moment(end).diff(moment(start), 'minutes') > 15) {
+            return groupingOptions.filter(opt => opt.value === 'QUARTER');
         } else {
             return [];
         }
@@ -132,9 +132,15 @@ class Period extends React.PureComponent {
 
     onIntervalChange = (interval, value) => {
         if (value) {
-            const start = interval !== INTERVALS.OTHER ? moment().subtract(1, interval).startOf(interval).toDate() : this.state.start;
+            let intervalCount = 1;
+            let finalInterval = interval;
+            if (interval === INTERVALS.QUARTER) {
+                intervalCount = 15;
+                interval = 'minute';
+            }
+            const start = interval !== INTERVALS.OTHER ? moment().subtract(intervalCount, interval).startOf(interval).toDate() : this.state.start;
             const end = interval !== INTERVALS.OTHER ? moment(start).endOf(interval).toDate() : this.state.end;
-            this.configureAndSetState(start, end, interval);
+            this.configureAndSetState(start, end, finalInterval);
         }
     };
 
@@ -162,7 +168,7 @@ class Period extends React.PureComponent {
                     </Field>
                     <Field
                         id="week-interval"
-                        labelText={ls('TIME_INTERVAL_WEEK', 'Неделя')}
+                        labelText={ls('TIME_INTERVAL_HOUR', 'Час')}
                         inputWidth={15}
                         labelAlign="right"
                         style={{
@@ -173,14 +179,14 @@ class Period extends React.PureComponent {
                         <Radio
                             id="week-interval"
                             name="time-interval"
-                            checked={this.state.interval === INTERVALS.WEEK}
-                            onChange={v => this.onIntervalChange(INTERVALS.WEEK, v)}
+                            checked={this.state.interval === INTERVALS.HOUR}
+                            onChange={v => this.onIntervalChange(INTERVALS.HOUR, v)}
                             disabled={disabled}
                         />
                     </Field>
                     <Field
                         id="month-interval"
-                        labelText={ls('TIME_INTERVAL_MONTH', 'Месяц')}
+                        labelText={ls('TIME_INTERVAL_QUARTER', '15 минут')}
                         inputWidth={15}
                         labelAlign="right"
                         style={{
@@ -191,8 +197,8 @@ class Period extends React.PureComponent {
                         <Radio
                             id="month-interval"
                             name="time-interval"
-                            checked={this.state.interval === INTERVALS.MONTH}
-                            onChange={v => this.onIntervalChange(INTERVALS.MONTH, v)}
+                            checked={this.state.interval === INTERVALS.QUARTER}
+                            onChange={v => this.onIntervalChange(INTERVALS.QUARTER, v)}
                             disabled={disabled}
                         />
                     </Field>
