@@ -2,6 +2,7 @@ import React from 'react';
 import { Route } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Login from '../modules/login/containers';
 import Roles from '../modules/roles/containers';
@@ -11,6 +12,7 @@ import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
+import Alarms from '../modules/alarms/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
@@ -74,9 +76,23 @@ class App extends React.Component {
                 link: '/sources',
                 path: "/sources",
                 component: Sources
+            },
+            'ALARMS': {
+                title: 'Отчёт по авариям',
+                link: '/alarms/group-policies/current',
+                path: "/alarms/:subject/:state/:id?",
+                component: Alarms
             }
         }
     };
+
+    static childContextTypes = {
+        fetchUserSuccess: PropTypes.func.isRequired,
+    };
+
+    getChildContext = () => ({
+        fetchUserSuccess: this.onFetchUserSuccess,
+    });
 
     constructor(props) {
         super(props);
@@ -87,16 +103,9 @@ class App extends React.Component {
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data;
-                const subjectMap = this.getMapedSubjects() || {};
-                const commonSubjects = this.getCommonRoutes();
-                const totalSubjects = commonSubjects.concat(user.subjects);
-                const subj = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
-                user.subjects = subj;
-                user.menu = user.subjects.map(subject => ({
-                    title: subjectMap[subject.name.toUpperCase()].title,
-                    link: subjectMap[subject.name.toUpperCase()].link,
-                }));
-                this.props.onFetchUserSuccess(user);
+                if (user) {
+                    this.onFetchUserSuccess(user)
+                }
             })
             .catch(() => {
                 this.props.onFetchUserSuccess({
@@ -105,6 +114,18 @@ class App extends React.Component {
             });
         this.state = { token };
     }
+
+    onFetchUserSuccess = (user) => {
+        const subjectMap = this.getMapedSubjects() || {};
+        const commonSubjects = this.getCommonRoutes();
+        const totalSubjects = commonSubjects.concat(user.subjects);
+        user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
+        user.menu = user.subjects.map(subject => ({
+            title: subjectMap[subject.name.toUpperCase()].title,
+            link: subjectMap[subject.name.toUpperCase()].link,
+        }));
+        this.props.onFetchUserSuccess(user);
+    };
 
     refreshToken = (response) => {
         const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];
@@ -141,6 +162,11 @@ class App extends React.Component {
             name: 'REPORTS',
             link: '/reports'
         },
+        {
+            id: 'alarms',
+            name: 'ALARMS',
+            link: '/alarms/group-policies/current'
+        }
     ];
 
     renderRoutes = (subjects = []) => {

@@ -1,0 +1,27 @@
+@import '../../../../../../../scss/vars';
+
+.alarmsViewer {
+  width: 550px !important;
+  max-width: 550px !important;
+  .alarmsViewerContent {
+    display: flex;
+    flex-grow: 1;
+    background: $white;
+    flex-direction: column;
+    .alarmsViewerRow {
+      display: flex;
+      flex-grow: 1;
+      > div {
+        width: 50%;
+        padding: 6px;
+      }
+      > div:first-child {
+        text-align: right;
+      }
+      .alarmContent {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+}

@@ -21,6 +21,7 @@ class Field extends React.PureComponent {
         children: PropTypes.node,
         style: PropTypes.object,
         title: PropTypes.string,
+        splitter: PropTypes.string
     }
 
     static defaultProps = {
@@ -33,10 +34,11 @@ class Field extends React.PureComponent {
         children: null,
         style: {},
         title: '',
-    }
+        splitter: ':'
+    };
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, disabled, inputWidth, required, children, style, title } = this.props;
+        const { id, labelText, labelWidth, labelAlign, splitter, disabled, inputWidth, required, children, style, title } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
             {
@@ -56,7 +58,7 @@ class Field extends React.PureComponent {
                     htmlFor={id}
                     className={styles.fieldLabel}
                     style={{ width: labelWidth }}
-                >{labelText}</label>
+                >{`${labelText}${splitter}`}</label>
                 <div
                     className={styles.fieldInput}
                     style={{ width: inputWidth }}
