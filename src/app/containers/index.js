@@ -118,7 +118,7 @@ class App extends React.Component {
     onFetchUserSuccess = (user) => {
         const subjectMap = this.getMapedSubjects() || {};
         const commonSubjects = this.getCommonRoutes();
-        const totalSubjects = commonSubjects.concat(user.subjects);
+        const totalSubjects = user.subjects.concat(commonSubjects);
         user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
         user.menu = user.subjects.map(subject => ({
             title: subjectMap[subject.name.toUpperCase()].title,
@@ -143,11 +143,6 @@ class App extends React.Component {
 
     getCommonRoutes = () => [
         {
-            id: 'login-page',
-            name: 'LOGIN',
-            link: '/login'
-        },
-        {
             id: 'users-page',
             name: 'USERS',
             link: '/users'
@@ -166,7 +161,12 @@ class App extends React.Component {
             id: 'alarms',
             name: 'ALARMS',
             link: '/alarms/group-policies/current'
-        }
+        },
+        {
+            id: 'login-page',
+            name: 'LOGIN',
+            link: '/login'
+        },
     ];
 
     renderRoutes = (subjects = []) => {
