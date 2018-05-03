@@ -48,7 +48,7 @@ class KqiTable extends React.PureComponent {
     mapDataFromProps = createSelector(
         props => props.data,
         data => data.map((element) => ({
-            id: element.id,
+            id: String(element.id),
             priority: priorityMap[String(element.priority).toUpperCase()],
             raise_time: moment(element.raise_time).format(DATE_TIME),
             policy_name: element.policy_name,
