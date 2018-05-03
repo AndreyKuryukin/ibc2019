@@ -63,7 +63,9 @@ class AlarmsViewer extends React.PureComponent {
                 return (
                     notifications.map(notif => (
                         <div className={styles.alarmContent}>
-                            <Icon icon={`icon-state-${notif.status.toLowerCase()}`} />
+                            <Icon icon={`icon-state-${notif.status.toLowerCase()}`}
+                                  title={ls(`ALARMS_GROUP_POLICIES_NOTIFICATION_STATUS_${notif.status.toUpperCase()}`, '')}
+                            />
                             {notif.type}
                         </div>
                     ))

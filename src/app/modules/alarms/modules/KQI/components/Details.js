@@ -15,8 +15,12 @@ import moment from "moment";
 import DefaultCell from "../../../../../components/Table/Cells/DefaultCell";
 
 const priorityMap = {
-    UNDEFINED: ''
+    'CRITICAL': ls('KQI_HISTORY_PRIORITY_CRITICAL', 'Критичный'),
+    'MAJOR': ls('KQI_HISTORY_PRIORITY_MAJOR', 'Высокий'),
+    'NORMAL': ls('KQI_HISTORY_PRIORITY_NORMAL', 'Нормальный'),
+    'MINOR': ls('KQI_HISTORY_PRIORITY_CRITICAL', 'Низкий'),
 };
+
 
 const periodMap = _.reduce(INTERVALS, (result, interval) => {
         result[String(interval).toUpperCase()] = ls(`ALARMS_KQI_HISTORY_DETAIL_PERIOD_${String(interval).toUpperCase()}`);
@@ -84,7 +88,7 @@ class Details extends React.PureComponent {
         return details;
     };
 
-    composeDetailName = detail => `${ls('ALARMS_KQI_HISTORY_DETAIL_TITLE', 'Детальная информация по KQI аварии №')}${detail.id || ''}(${priorityMap[String(detail.priority).toUpperCase()]})`;
+    composeDetailName = detail => `${ls('ALARMS_KQI_HISTORY_DETAIL_TITLE', 'Детальная информация по KQI аварии №')}${detail.id || ''}(${priorityMap[String(detail.priority).toUpperCase()] || ''})`;
 
     render() {
         const { detail, active } = this.props;
