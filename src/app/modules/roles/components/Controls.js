@@ -50,13 +50,20 @@ class RolesControls extends React.PureComponent {
         return (
             <div className={styles.rolesControls}>
                 <div className={styles.buttonGroup}>
-                    <Icon icon="addIcon" onClick={this.onAdd}/>
+                    <Icon
+                        icon="addIcon"
+                        onClick={this.onAdd}
+                        title={ls('ADD_ROLE_TITLE', 'Добавить роль')}
+                    />
                     <Dropdown
                         isOpen={this.state.removeConfirmOpen}
                         onToggle={this.triggerDelete}
                         trigger={
-                            <Icon icon={this.state.removeConfirmOpen ? 'deleteIconHover' : 'deleteIcon'}
-                                  onClick={this.triggerDelete}/>
+                            <Icon
+                                icon={this.state.removeConfirmOpen ? 'deleteIconHover' : 'deleteIcon'}
+                                onClick={this.triggerDelete}
+                                title={ls('DELETE_ROLE_TITLE', 'Удалить роль')}
+                            />
                         }
                     >
                         <div className={styles.confirmationMsg}>

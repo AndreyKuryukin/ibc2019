@@ -43,7 +43,7 @@ class RolesTable extends React.PureComponent {
         name: 'checked',
         width: 28,
     }, {
-        title: ls('ROLES_NAME', 'Название'),
+        title: ls('ROLES_NAME', 'Имя роли'),
         name: 'name',
         searchable: true,
         sortable: true,

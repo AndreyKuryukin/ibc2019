@@ -43,7 +43,7 @@ class UsersTable extends React.PureComponent {
         (users, divisionsById) => users.map(user => ({
             id: user.id,
             login: user.login,
-            name: `${user.first_name} ${user.last_name}`,
+            name: `${user.last_name} ${user.first_name}`,
             email: user.email,
             phone: user.phone,
             roles: user.roles.map(role => role.name).join(', '),
@@ -69,7 +69,7 @@ class UsersTable extends React.PureComponent {
         searchable: true,
         sortable: true,
     }, {
-        title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'Email'),
+        title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
         name: 'email',
         searchable: true,
         sortable: true,

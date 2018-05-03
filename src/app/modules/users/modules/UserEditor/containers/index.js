@@ -56,6 +56,9 @@ class UserEditor extends React.PureComponent {
                 required: !this.props.userId,
                 passwordEqual: true
             },
+            email: {
+                match: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            },
         };
         this.context.pageBlur && this.context.pageBlur(true);
     }
@@ -86,7 +89,10 @@ class UserEditor extends React.PureComponent {
         const customErrorMessages = {
             passwordEqual: ls('PASSWORD_NOT_EQUAL', 'Пароли не совпадают')
         };
-        const errors = validateForm(userData, this.validationConfig, customErrorMessages, customValidators);
+        const errors = validateForm({
+            ...userData,
+            login: userData.login.trim(),
+        }, this.validationConfig, customErrorMessages, customValidators);
         if (_.isEmpty(errors)) {
             const submit = userId ? rest.put : rest.post;
             const success = (response) => {
