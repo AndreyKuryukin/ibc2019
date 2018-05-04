@@ -56,7 +56,7 @@ class RolesListGrid extends React.PureComponent {
             this.props.subjectsData.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), [])
             : [];
         this.setState({
-            checked: value,
+            checked: allIds,
         });
 
         this.props.onCheck(allIds);

@@ -96,7 +96,7 @@ class Configurator extends React.PureComponent {
 
         if (_.isEmpty(errors)) {
             this.setState({ isLoading: true });
-
+            kpiConfig.level = Number(kpiConfig.level);
             rest.post('/api/v1/kqi', kpiConfig)
                 .then((response) => {
                     this.setState({ isLoading: false });
