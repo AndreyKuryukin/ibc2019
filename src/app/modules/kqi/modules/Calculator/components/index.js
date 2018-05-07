@@ -227,6 +227,10 @@ class Calculator extends React.PureComponent {
             config['equipment_type_grouping'] = false;
         }
 
+        if (key === 'location' && !value) {
+            config['location_grouping'] = null
+        }
+
         config['name'] = this.composeConfigName(config);
 
         this.setState({
@@ -314,12 +318,7 @@ class Calculator extends React.PureComponent {
                         <Location
                             locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}
                             groupingOptions={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
-                            onLocationChange={value => {
-                                this.setConfigProperty('location', value);
-                                if (!value) {
-                                    this.setConfigProperty('location_grouping', null)
-                                }
-                            }}
+                            onLocationChange={value => this.setConfigProperty('location', value)}
                             onGroupingTypeChange={value => this.setConfigProperty('location_grouping', value)}
                             config={this.state.config}
                             disabled={disableForm}
