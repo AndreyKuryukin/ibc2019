@@ -113,7 +113,8 @@ class Calculator extends React.PureComponent {
                 period: {
                     start_date,
                     end_date,
-                    regularity: 'day'
+                    regularity: 'day',
+                    auto: true,
                 },
                 location: '',
                 last_mile_technology: '',
@@ -176,7 +177,8 @@ class Calculator extends React.PureComponent {
                     const entity = _.find(map, item => String(item.id) === String(id));
                     itemName = entity && entity.name;
                 } else if (_.isObject(map)) {
-                    itemName = map[id];
+                    itemName = map[String(id).toUpperCase()];
+                    itemName = !!itemName ? itemName : map[String(id).toLowerCase()];
                 }
                 return itemName ? itemName : id;
             };
@@ -307,7 +309,7 @@ class Calculator extends React.PureComponent {
                         <Period
                             groupingOptions={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
                             errors={this.state.errors}
-                            isAutoGen={_.get(this.state.config, 'auto_gen', false)}
+                            isAutoGen={_.get(this.state.config, 'period.auto', false)}
                             disabled={disableForm}
                             config={this.state.config}
                             onAutoGenChange={value => this.setConfigProperty('period.auto', value)}
