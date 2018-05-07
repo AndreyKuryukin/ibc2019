@@ -45,7 +45,7 @@ class RoleEditor extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            role: props.role,
+            role: props.roleId ? props.role : {},
             errors: props.errors,
         };
     }
@@ -53,7 +53,7 @@ class RoleEditor extends React.PureComponent {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.role !== nextProps.role) {
-            const role = nextProps.role;
+            const role = this.props.roleId ? nextProps.role : this.state.role;
             role.subjects = this.subjectsToPermissions(role.subjects);
             this.setState({
                 role,

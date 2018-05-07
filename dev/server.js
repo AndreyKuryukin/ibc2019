@@ -36,7 +36,7 @@ const plugins = [
     // './users',
     // './policies',
     //  './kqi',
-     './reports',
+    // './reports',
     './sources',
     './alarms',
     './common',
