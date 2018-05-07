@@ -38,9 +38,9 @@ class Configurator extends React.PureComponent {
         this.state = {
             config: {
                 name: '',
-                ['kpi-object_type']: '',
-                kpi_parameter_type: null,
-                operator: '',
+                object_type: '',
+                parameter_type: null,
+                operator_type: '',
                 level: '',
             },
             errors: null,
@@ -79,7 +79,7 @@ class Configurator extends React.PureComponent {
 
     onChangeParameterType = (value) => {
 
-        this.setConfigProperty('kpi_parameter_type', value);
+        this.setConfigProperty('parameter_type', value);
     };
 
     onClose = () => {
@@ -139,8 +139,8 @@ class Configurator extends React.PureComponent {
                                 options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
                                 disabled={disableForm}
                                 value={_.get(config, 'kpi-object_type')}
-                                onChange={value => this.setConfigProperty('kpi-object_type', value)}
-                                valid={errors && _.isEmpty(errors['kpi-object_type'])}
+                                onChange={value => this.setConfigProperty('object_type', value)}
+                                valid={errors && _.isEmpty(errors['object_type'])}
                             />
                         </Field>
                         <Field
@@ -153,8 +153,8 @@ class Configurator extends React.PureComponent {
                             <Select
                                 options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
                                 onChange={this.onChangeParameterType}
-                                value={_.get(config, 'kpi_parameter_type')}
-                                valid={errors && _.isEmpty(errors.kpi_parameter_type)}
+                                value={_.get(config, 'parameter_type')}
+                                valid={errors && _.isEmpty(errors.parameter_type)}
                                 disabled={disableForm}
                             />
                         </Field>
@@ -167,8 +167,8 @@ class Configurator extends React.PureComponent {
                         >
                             <Select
                                 options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
-                                onChange={value => this.setConfigProperty('operator', value)}
-                                value={_.get(config, 'operator')}
+                                onChange={value => this.setConfigProperty('operator_type', value)}
+                                value={_.get(config, 'operator_type')}
                                 valid={errors && _.isEmpty(errors.operator)}
                                 disabled={disableForm}
                             />

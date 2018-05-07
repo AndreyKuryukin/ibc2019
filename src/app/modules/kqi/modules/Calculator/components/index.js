@@ -23,7 +23,7 @@ import UserGroups from './UserGroups';
 import moment from "moment";
 
 const NAME_PATTERN_SEQUENCE = [
-    'period',
+    'period.regularity',
     'location',
     'location_grouping',
     'last_mile_technology',
@@ -104,15 +104,17 @@ class Calculator extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        const start_date_time = moment().subtract(1, 'week').startOf('week').toDate();
-        const end_date_time = moment(start_date_time).endOf('week').toDate();
+        const start_date = moment().subtract(1, 'day').startOf('day').toDate();
+        const end_date = moment(start_date).endOf('day').toDate();
         this.state = {
             config: {
-                name: ls('WEEKLY', 'Еженедельный'),
+                name: ls('WEEKLY', 'Ежедневный'),
                 service_type: '',
-                period: 'WEEK',
-                start_date_time,
-                end_date_time,
+                period: {
+                    start_date,
+                    end_date,
+                    regularity: 'day'
+                },
                 location: '',
                 last_mile_technology: '',
                 last_inch_technology: '',
@@ -149,7 +151,7 @@ class Calculator extends React.PureComponent {
 
     composeConfigName = (config) => {
         const ENTITY_NAME_MAP = {
-            period: period,
+            'period.regularity': period,
             location: this.props.locationsList,
             last_mile_technology: LAST_MILE_TECHNOLOGIES,
             last_inch_technology: LAST_INCH_TECHNOLOGIES,
@@ -166,7 +168,7 @@ class Calculator extends React.PureComponent {
             abonent_group_grouping: abonent_group_grouping,
         };
         const composedName = _.reduce(NAME_PATTERN_SEQUENCE, (name, fieldName) => {
-            const value = config[fieldName];
+            const value = _.get(config, fieldName);
             const nameMap = ENTITY_NAME_MAP[fieldName];
             const getNameById = (map, id) => {
                 let itemName;
@@ -201,10 +203,9 @@ class Calculator extends React.PureComponent {
 
 
     setConfigProperty = (key, value) => {
-        const config = {
+        const config = _.set({
             ...this.state.config,
-            [key]: value,
-        };
+        }, key, value);
 
         if (key === 'manufacturer') {
             config['manufacturer_grouping'] = value.length > 1;
@@ -238,16 +239,18 @@ class Calculator extends React.PureComponent {
         this.context.history.push('/kqi');
     };
 
-    onIntervalChange = (start, end, period, groupingType) => {
+    onIntervalChange = (start_date, end_date, regularity, groupingType) => {
         const removeKeys = [
-            ...(start ? ['start_date_time'] : []),
-            ...(end ? ['end_date_time'] : []),
+            ...(start_date ? ['period.start_date'] : []),
+            ...(end_date ? ['period.end_date'] : []),
         ];
         const config = {
             ...this.state.config,
-            start_date_time: start,
-            end_date_time: end,
-            period,
+            period: {
+                start_date,
+                end_date,
+                regularity,
+            },
             date_time_grouping: groupingType,
         };
         config.name = this.composeConfigName(config);
@@ -261,13 +264,13 @@ class Calculator extends React.PureComponent {
         const { config } = this.state;
         const preparedConfig = {
             ...config,
-            date_time_grouping: _.get(config, 'date_time_grouping') ? [_.get(config, 'date_time_grouping')] : [GROUPING_TYPES.NONE],
-            location_grouping: _.get(config, 'location_grouping') ? [_.get(config, 'location_grouping')] : [GROUPING_TYPES.NONE],
-            last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            manufacturer_grouping: _.get(config, 'manufacturer_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            equipment_type_grouping: _.get(config, 'equipment_type_grouping') ? [_.get(config, 'equipment_type_grouping')] : [GROUPING_TYPES.NONE],
-            abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? [_.get(config, 'abonent_group_grouping')] : [GROUPING_TYPES.NONE],
+            date_time_grouping: _.get(config, 'date_time_grouping') ? _.get(config, 'date_time_grouping') : GROUPING_TYPES.NONE,
+            location_grouping: _.get(config, 'location_grouping') ? _.get(config, 'location_grouping') : GROUPING_TYPES.NONE,
+            last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            manufacturer_grouping: _.get(config, 'manufacturer_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            equipment_type_grouping: _.get(config, 'equipment_type_grouping') ? _.get(config, 'equipment_type_grouping') : GROUPING_TYPES.NONE,
+            abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? _.get(config, 'abonent_group_grouping') : GROUPING_TYPES.NONE,
         };
 
         this.props.onSubmit(preparedConfig);
@@ -303,7 +306,7 @@ class Calculator extends React.PureComponent {
                             isAutoGen={_.get(this.state.config, 'auto_gen', false)}
                             disabled={disableForm}
                             config={this.state.config}
-                            onAutoGenChange={value => this.setConfigProperty('auto_gen', value)}
+                            onAutoGenChange={value => this.setConfigProperty('period.auto', value)}
                             onGroupingTypeChange={value => this.setConfigProperty('date_time_grouping', value)}
                             onIntervalChange={this.onIntervalChange}
 

@@ -56,12 +56,6 @@ class KQI extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
-        }
-    }
-
     getConfigsByIdFromProps = createSelector(
         props => _.get(props, 'kqiData', []),
         configs => configs.reduce((byId, cfg) => ({ ...byId, [cfg.id]: cfg }), {}),

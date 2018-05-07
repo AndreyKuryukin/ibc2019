@@ -10,7 +10,8 @@ import { fetchConfigSuccess, fetchParameterTypesSuccess } from '../actions';
 class Configurator extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
-        pageBlur: PropTypes.func.isRequired
+        pageBlur: PropTypes.func.isRequired,
+        fetchKqi: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -39,9 +40,6 @@ class Configurator extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
-        this.context.pageBlur && this.context.pageBlur(true);
-    }
 
     state = {
         errors: null,
@@ -51,13 +49,13 @@ class Configurator extends React.PureComponent {
         name: {
             required: true
         },
-        ['kpi-object_type']: {
+        object_type: {
             required: true
         },
-        operator: {
+        operator_type: {
             required: true
         },
-        kpi_parameter_type: {
+        parameter_type: {
             required: true
         },
         level: {
@@ -68,6 +66,8 @@ class Configurator extends React.PureComponent {
     componentDidMount() {
         this.setState({ isLoading: true });
         const { configId } = this.props;
+
+        this.context.pageBlur && this.context.pageBlur(true);
 
         const requests = [rest.get('/api/v1/common/parameters')];
 
@@ -97,6 +97,7 @@ class Configurator extends React.PureComponent {
         if (_.isEmpty(errors)) {
             this.setState({ isLoading: true });
             kpiConfig.level = Number(kpiConfig.level);
+            kpiConfig.parameter_type = { id: kpiConfig.parameter_type };
             rest.post('/api/v1/kqi', kpiConfig)
                 .then((response) => {
                     this.setState({ isLoading: false });

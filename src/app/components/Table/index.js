@@ -10,7 +10,7 @@ import search from '../../util/search';
 import styles from './styles.scss';
 import HeaderCell from './HeaderCell';
 
-const SCROLL_WIDTH = 17;
+const SCROLL_WIDTH = 0;
 
 class Table extends React.Component {
     static childContextTypes = {

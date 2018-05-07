@@ -4,15 +4,21 @@ import { connect } from 'react-redux';
 import KQIComponent from '../components';
 import ls from 'i18n';
 import rest from '../../../rest';
-import {
-    fetchKQIConfigsSuccess,
-    fetchKQIProjectionsSuccess,
-} from '../actions';
+import { fetchKQIConfigsSuccess, fetchKQIProjectionsSuccess, } from '../actions';
+import _ from "lodash";
 
 class KQI extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
     };
+
+    static childContextTypes = {
+        fetchKqi: PropTypes.func.isRequired
+    };
+
+    getChildContext = () => ({
+        fetchKqi: this.onFetchKQI
+    });
 
     static propTypes = {
         match: PropTypes.object.isRequired,
@@ -41,6 +47,15 @@ class KQI extends React.PureComponent {
 
     componentDidMount() {
         this.context.navBar.setPageTitle(ls('KQI_PAGE_TITLE', 'Результат вычисления KQI'));
+        this.onFetchKQI();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const path = _.get(nextProps, 'match.url', '');
+        const previousPath = _.get(this.props, 'match.url', '');
+        if (previousPath !== path && path === '/kqi' ) {
+            this.onFetchKQI();
+        }
     }
 
     onFetchKQI = () => {
@@ -83,7 +98,6 @@ class KQI extends React.PureComponent {
                 history={this.props.history}
                 kqiData={this.props.kqiData}
                 projectionsData={this.props.projectionsData}
-                onMount={this.onFetchKQI}
                 isConfigsLoading={this.state.isConfigsLoading}
                 isProjectionsLoading={this.state.isProjectionsLoading}
                 onSelectConfig={this.onSelectConfig}

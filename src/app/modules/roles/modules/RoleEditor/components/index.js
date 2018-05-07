@@ -118,8 +118,7 @@ class RoleEditor extends React.PureComponent {
 
     onSubmit = () => {
         const role = this.state.role;
-        role.subjects = this.permissionsToSubjects(role.subjects);
-        this.props.onSubmit(this.props.roleId, role);
+        this.props.onSubmit(this.props.roleId, {...role, subjects: this.permissionsToSubjects(role.subjects)});
     };
 
     onClose = () => {

@@ -13,8 +13,8 @@ import styles from './styles.scss';
 
 const INTERVALS = {
     DAY: 'day',
-    HOUR : 'hour',
-    QUARTER : 'quarter',
+    HOUR: 'hour',
+    QUARTER: 'quarter',
     OTHER: 'other',
 };
 
@@ -58,15 +58,14 @@ class Period extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.config) {
             const {
-                start_date_time: start,
-                end_date_time: end,
-                period,
+                period = {},
                 date_time_grouping: groupingType,
             } = nextProps.config;
+            const { start_date = '', end_date = '' } = period;
             this.setState({
-                start: new Date(start),
-                end: new Date(end),
-                interval: period ? period.toLowerCase() : '',
+                start: new Date(start_date),
+                end: new Date(end_date),
+                interval: period.regularity ? period.regularity.toLowerCase() : '',
                 groupingType: groupingType ? groupingType.toLowerCase() : groupingType,
             })
         }

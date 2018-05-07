@@ -39,12 +39,14 @@ class Calculator extends React.PureComponent {
         kqi_id: {
             required: true,
         },
-        start_date_time: {
-            required: true,
-        },
-        end_date_time: {
-            required: true,
-        },
+        period: () => ({
+            start_date: {
+                required: true,
+            },
+            end_date: {
+                required: true,
+            }
+        }),
     };
 
     constructor(props) {
@@ -122,7 +124,7 @@ class Calculator extends React.PureComponent {
     };
 
     render() {
-        const {projection, projectionId} = this.props;
+        const { projection, projectionId } = this.props;
         return (
             <CalculatorComponent
                 active={this.props.active}
