@@ -42,7 +42,7 @@ class BasicParams extends React.PureComponent {
                     inputWidth="80%"
                     required
                 >
-                    {_.get(config, 'auto_gen') ?
+                    {_.get(config, 'period.auto') ?
                         <div className={styles.displayField}>{_.get(config, 'name')}</div> : <Input
                             id="name"
                             value={_.get(config, 'name')}
