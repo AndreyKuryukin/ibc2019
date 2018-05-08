@@ -1,0 +1,26 @@
+@import "../../scss/vars";
+
+$tile-dimension: 100px;
+$tile-width: $tile-dimension;
+$tile-height: $tile-dimension;
+
+.sideMenu {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: $tile-width;
+  .menuTile {
+    color: $white;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    justify-content: center;
+    align-items: center;
+    width: $tile-width;
+    height: $tile-height;
+    overflow: hidden;
+    &:hover {
+      background-color: $darkest-blue;
+    }
+  }
+}

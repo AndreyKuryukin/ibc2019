@@ -2,11 +2,12 @@ import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle, Navbar } from 'reactstrap';
+import { Navbar } from 'reactstrap';
 import _ from 'lodash';
 
 import styles from './styles.scss';
 import { withRouter } from "react-router-dom";
+import Menu from "../Menu/index";
 
 class PageWrapper extends React.Component {
 
@@ -61,8 +62,8 @@ class PageWrapper extends React.Component {
 
     setPageTitle = (title) => this.setState({ pageTitle: title, hidden: false });
 
-    renderMenuItems = (items = []) => items.map((item, index) => <DropdownItem key={`menu-item-${index}`}
-        onClick={() => this.onMenuClick(item)}>{item.title}</DropdownItem>);
+    // renderMenuItems = (items = []) => items.map((item, index) => <DropdownItem key={`menu-item-${index}`}
+    //                                                                            onClick={() => this.onMenuClick(item)}>{item.title}</DropdownItem>);
 
     pageBlur = (blur) => {
         this.setState({ blur })
@@ -72,32 +73,26 @@ class PageWrapper extends React.Component {
 
     render() {
         return <div className={classNames(styles.pageWrapper, { [styles.blur]: this.state.blur })}>
-            <Navbar color="faded"
-                    light
-                    className={classNames({
-                        [styles.navBar]: true,
-                        [styles.hidden]: this.state.hidden
-                    })}>
-                <div className={styles.menuWrapper}>
-                    <Dropdown isOpen={this.state.isOpen} toggle={this.toggle}>
-                        <DropdownToggle tag="div"
-                                        onClick={this.toggle}
-                                        data-toggle="dropdown"
-                                        aria-expanded={this.state.isOpen}>
-                            <div onClick={this.toggle} className={styles.qLogo}/>
-                        </DropdownToggle>
-                        <DropdownMenu className={styles.menuFix}>
-                            {this.renderMenuItems(this.props.user.menu)}
-                        </DropdownMenu>
-                    </Dropdown>
+            <Menu menuItems={this.props.user.menu}
+                  onClick={this.onMenuClick}
+                  className={classNames({ [styles.hidden]: this.state.hidden })}
+            />
+            <div className={styles.workspace}>
+                <Navbar color="faded"
+                        light
+                        className={classNames({
+                            [styles.navBar]: true,
+                            [styles.hidden]: this.state.hidden
+                        })}>
+                    <div className={styles.qLogo}/>
+                    <div className={styles.pageTitle}><h5>{this.state.pageTitle}</h5></div>
+                    <div className={styles.rightPanel}>
+                        <a href="/">{this.getUserName(this.props.user)}</a>
+                    </div>
+                </Navbar>
+                <div className={styles.pageContent}>
+                    {this.props.children}
                 </div>
-                <div className={styles.pageTitle}><h5>{this.state.pageTitle}</h5></div>
-                <div className={styles.rightPanel}>
-                    <a href="/">{this.getUserName(this.props.user)}</a>
-                </div>
-            </Navbar>
-            <div className={styles.pageContent}>
-                {this.props.children}
             </div>
         </div>
     }

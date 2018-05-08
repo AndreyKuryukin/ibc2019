@@ -6,29 +6,22 @@
 
 .pageWrapper {
   display: flex;
-  flex-grow: 1;
-  flex-direction: column;
+  flex-direction: row;
   height: 100%;
-  .navBar {
+  .workspace {
     display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    align-items: initial;
-    justify-content: stretch;
-    height: $navbar-height;
-    color: $white;
-    .menuWrapper {
-      display: inline-flex;
-      flex: 0;
-      .menuFix {
-        top: 10px !important;
-        * {
-          color: white;
-          &:hover {
-            color: black
-          }
-        }
-      }
+    flex-grow: 1;
+    flex-direction: column;
+    height: 100%;
+    .navBar {
+      display: flex;
+      flex-grow: 0;
+      flex-shrink: 0;
+      align-items: initial;
+      justify-content: stretch;
+      height: $navbar-height;
+      color: $white;
+
       .qLogo {
         background: url(../../../resources/img/common/Qligent_logo.svg) no-repeat;
         margin: 8px;
@@ -39,24 +32,24 @@
           cursor: pointer;
         }
       }
+      .pageTitle {
+        display: inline;
+        text-align: center;
+        padding: 10px;
+        flex: 1;
+      }
+      .rightPanel {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+      }
     }
-    .pageTitle {
-      display: inline;
-      text-align: center;
-      padding: 10px;
-      flex: 1;
-    }
-    .rightPanel {
+    .pageContent {
       display: flex;
-      align-items: center;
-      padding: 10px;
+      flex-grow: 1;
+      height: 100%;
+      z-index: 1;
     }
-  }
-  .pageContent {
-    display: flex;
-    flex-grow: 1;
-    height: 100%;
-    z-index: 1;
   }
 }
 
