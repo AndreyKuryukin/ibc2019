@@ -69,7 +69,7 @@ class Configurator extends React.PureComponent {
 
         this.context.pageBlur && this.context.pageBlur(true);
 
-        const requests = [rest.get('/api/v1/common/parameters')];
+        const requests = [rest.get('/api/v1/kqi/parameterTypes')];
 
         if (!_.isEmpty(configId)) {
             requests.push(rest.get('/api/v1/kqi/:configId', { urlParams: { configId } }));

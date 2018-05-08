@@ -28,11 +28,11 @@ class Configuration extends React.PureComponent {
     };
 
     getSeconds = (mills) => {
-        return moment.duration(mills, 'milliseconds').asSeconds();
+        return moment.duration(mills, 'milliseconds').asSeconds() || '';
     };
 
     getMilliSeconds = (secs) => {
-        return moment.duration(secs, 'seconds').asMilliseconds();
+        return moment.duration(Number(secs), 'seconds').asMilliseconds();
     };
 
 
@@ -44,7 +44,7 @@ class Configuration extends React.PureComponent {
             >
                 <Field
                     id="name"
-                    labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}:`}
+                    labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}`}
                     labelWidth="50%"
                     inputWidth="50%"
                     required
@@ -60,7 +60,7 @@ class Configuration extends React.PureComponent {
                 <Field
                     id="aggregation"
                     required
-                    labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}:`}
+                    labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}`}
                     labelWidth="50%"
                     inputWidth="50%"
                 >
@@ -78,7 +78,7 @@ class Configuration extends React.PureComponent {
                         <Field
                             id="rise_duration"
                             required
-                            labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}:`}
+                            labelText={`${ls('POLICIES_POLICY_FIELD_RISE_DURATION', 'Интервал агрегации')}`}
                             labelWidth="67%"
                             inputWidth="70px"
                         >
@@ -89,7 +89,7 @@ class Configuration extends React.PureComponent {
                                     name="rise_duration"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_duration'))}
                                     value={this.getSeconds(getPolicyProperty('threshold.rise_duration'))}
-                                    onChange={event => setPolicyProperty('threshold.rise_duration', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                    onChange={event => setPolicyProperty('threshold.rise_duration', this.getMilliSeconds(_.get(event, 'currentTarget.value')))}
                                 />
                                 <span style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
                             </div>
@@ -99,7 +99,7 @@ class Configuration extends React.PureComponent {
                         <Field
                             id="rise_value"
                             required
-                            labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}:`}
+                            labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}`}
                             labelWidth="50%"
                             inputWidth="70px"
                         >
@@ -110,7 +110,7 @@ class Configuration extends React.PureComponent {
                                     name="rise_value"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_value'))}
                                     value={this.getSeconds(getPolicyProperty('threshold.rise_value'))}
-                                    onChange={event => setPolicyProperty('threshold.rise_value', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                    onChange={event => setPolicyProperty('threshold.rise_value', this.getMilliSeconds(_.get(event, 'currentTarget.value')))}
                                 />
                                 <span style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
                             </div>
@@ -119,7 +119,7 @@ class Configuration extends React.PureComponent {
                 </div>
                 <Field
                     id="message"
-                    labelText={`${ls('POLICIES_POLICY_FIELD_MESSAGE', 'Текст сообщения')}:`}
+                    labelText={`${ls('POLICIES_POLICY_FIELD_MESSAGE', 'Текст сообщения')}`}
                     labelWidth="100%"
                     inputWidth="100%"
                     labelAlign="right"

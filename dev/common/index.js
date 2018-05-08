@@ -74,17 +74,17 @@ module.exports = (app) => {
         res.send(locations);
     });
 
-    app.get('/api/v1/common/manufacture', (req, res) => {
-        res.send(manufacturers);
-    });
-
-    app.get('/api/v1/common/equipment', (req, res) => {
-        res.send(equipments);
-    });
-
-    app.get('/api/v1/common/parameters', (req, res) => {
-        res.send(parameters);
-    });
+    // app.get('/api/v1/common/manufacture', (req, res) => {
+    //     res.send(manufacturers);
+    // });
+    //
+    // app.get('/api/v1/common/equipment', (req, res) => {
+    //     res.send(equipments);
+    // });
+    //
+    // app.get('/api/v1/common/parameters', (req, res) => {
+    //     res.send(parameters);
+    // });
 
     app.get('/api/v1/common/usergroup', (req, res) => {
         res.send(usergroups);

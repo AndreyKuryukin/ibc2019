@@ -40,8 +40,9 @@ const NAME_PATTERN_SEQUENCE = [
 
 const period = {
     HOUR: ls('WEEKLY', 'Ежечасный'),
-    DAY: ls('WEEKLY', 'Ежедневный'),
-    QUARTER: ls('WEEKLY', '15 минутный'),
+    DAY: ls('DAY', 'Ежедневный'),
+    QUARTER: ls('QUARTER', '15 минутный'),
+    OTHER: ls('OTHER', ''),
 };
 
 const last_mile_technology_grouping = {
@@ -113,7 +114,7 @@ class Calculator extends React.PureComponent {
                 period: {
                     start_date,
                     end_date,
-                    regularity: 'day',
+                    regularity: 'DAY',
                     auto: true,
                 },
                 location: '',
@@ -328,7 +329,7 @@ class Calculator extends React.PureComponent {
                         <Technology
                             id="last-mile-technology"
                             title={ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии последней мили')}
-                            label={`${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}:`}
+                            label={`${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}`}
                             technologies={Calculator.mapObjectToOptions(LAST_MILE_TECHNOLOGIES)}
                             onTechnologyChange={value => this.setConfigProperty('last_mile_technology', value)}
                             onGroupingChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
@@ -339,7 +340,7 @@ class Calculator extends React.PureComponent {
                         <Technology
                             id="last-inch-technology"
                             title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}
-                            label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}:`}
+                            label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}
                             technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}
                             onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}
                             onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}

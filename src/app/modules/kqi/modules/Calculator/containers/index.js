@@ -108,7 +108,13 @@ class Calculator extends React.PureComponent {
         const errors = validateForm(projection, this.validationConfig);
         if (_.isEmpty(errors)) {
             this.setState({ isLoading: true });
-            rest.post('/api/v1/kqi/projection', projection)
+            const projectionDTO = _.reduce(projection, (result, value, key) => {
+                if (!_.isEmpty(value)) {
+                    result[key] = value;
+                }
+                return result
+            }, {});
+            rest.post('/api/v1/kqi/projection', projectionDTO)
                 .then((response) => {
                     const kqi = response.data;
                     this.setState({ isLoading: false });

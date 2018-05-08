@@ -15,7 +15,7 @@ import Condition from './Condition';
 import styles from './styles.scss';
 import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 
-const notAllowedAccidentStyle = { width: '45%' };
+const notAllowedAccidentStyle = { width: '60%' };
 
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
@@ -37,7 +37,7 @@ class PolicyEditor extends React.PureComponent {
 
     static defaultProps = {
         policyId: null,
-        policy: null,
+        policy: {},
         errors: null,
         scopes: [],
         types: [],
@@ -112,11 +112,11 @@ class PolicyEditor extends React.PureComponent {
             .map(policy => ({ value: policy.id, title: policy.name })));
 
     getSeconds = (mills) => {
-        return moment.duration(mills, 'milliseconds').asSeconds();
+        return moment.duration(mills, 'milliseconds').asSeconds() || '';
     };
 
     getMilliSeconds = (secs) => {
-        return moment.duration(secs, 'seconds').asMilliseconds();
+        return moment.duration(Number(secs), 'seconds').asMilliseconds();
     };
 
     render() {
@@ -150,6 +150,7 @@ class PolicyEditor extends React.PureComponent {
                                     <Field
                                         id="scope-type"
                                         inputWidth="100%"
+                                        splitter=""
                                     >
                                         <Select
                                             id="scope-type"
@@ -162,6 +163,7 @@ class PolicyEditor extends React.PureComponent {
                                     <Field
                                         id="scope"
                                         inputWidth="100%"
+                                        splitter=""
                                     >
                                         <Select
                                             id="scope"
@@ -199,7 +201,7 @@ class PolicyEditor extends React.PureComponent {
                                         <div style={{ flex: 2 }}>
                                             <Field
                                                 id="cease_value"
-                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}:`}
+                                                labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}`}
                                                 labelWidth="50%"
                                                 inputWidth="50%"
                                                 required
@@ -239,6 +241,7 @@ class PolicyEditor extends React.PureComponent {
                                         labelWidth="97%"
                                         inputWidth="3%"
                                         labelAlign="right"
+                                        splitter=""
                                         title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
                                     >
                                         <Checkbox
@@ -249,10 +252,11 @@ class PolicyEditor extends React.PureComponent {
                                     </Field>
                                     <Field
                                         id="allow-accident"
-                                        labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}:`}
+                                        labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}`}
                                         labelWidth="97%"
                                         inputWidth="3%"
                                         labelAlign="right"
+                                        splitter=""
                                         title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
                                     >
                                         <Checkbox
@@ -264,6 +268,7 @@ class PolicyEditor extends React.PureComponent {
                                     <Field
                                         id="not-allowed-accident"
                                         inputWidth="100%"
+                                        splitter=""
                                         style={notAllowedAccidentStyle}
                                     >
                                         <Select

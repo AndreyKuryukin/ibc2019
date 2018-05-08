@@ -115,7 +115,7 @@ class Configurator extends React.PureComponent {
                     <div className={styles.configuratorContent}>
                         <Field
                             id="name"
-                            labelText={ls('KQI_CONFIGURATOR_NAME_LABEL', 'Название:')}
+                            labelText={ls('KQI_CONFIGURATOR_NAME_LABEL', 'Название')}
                             labelWidth="35%"
                             inputWidth="65%"
                             required
@@ -130,7 +130,7 @@ class Configurator extends React.PureComponent {
                         </Field>
                         <Field
                             id="object-type"
-                            labelText={ls('KQI_CONFIGURATOR_OBJECT_TYPE_LABEL', 'Тип объекта:')}
+                            labelText={ls('KQI_CONFIGURATOR_OBJECT_TYPE_LABEL', 'Тип объекта')}
                             labelWidth="35%"
                             inputWidth="65%"
                             required
@@ -145,7 +145,7 @@ class Configurator extends React.PureComponent {
                         </Field>
                         <Field
                             id="param"
-                            labelText={ls('KQI_PARAMETER_LABEL', 'Параметр:')}
+                            labelText={ls('KQI_PARAMETER_LABEL', 'Параметр')}
                             labelWidth="35%"
                             inputWidth="65%"
                             required
@@ -160,7 +160,7 @@ class Configurator extends React.PureComponent {
                         </Field>
                         <Field
                             id="operator"
-                            labelText={ls('KQI_OPERATOR_LABEL', 'Оператор:')}
+                            labelText={ls('KQI_OPERATOR_LABEL', 'Оператор')}
                             labelWidth="35%"
                             inputWidth="65%"
                             required
@@ -175,7 +175,7 @@ class Configurator extends React.PureComponent {
                         </Field>
                         <Field
                             id="level"
-                            labelText={ls('KQI_LEVEL_LABEL', 'Значение:')}
+                            labelText={ls('KQI_LEVEL_LABEL', 'Значение')}
                             labelWidth="35%"
                             inputWidth="65%"
                             required

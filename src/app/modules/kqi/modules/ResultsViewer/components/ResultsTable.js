@@ -27,7 +27,7 @@ class ResultsTable extends React.PureComponent {
         'location',
         'last_mile_technology',
         'last_inch_technology',
-        'manufacturer',
+        'manufacture',
         'equipment_type',
         'abonent_group',
         'date_time',
@@ -48,7 +48,7 @@ class ResultsTable extends React.PureComponent {
             this.setState({ data: mapedData })
         }
         if (!_.isEqual(nextProps.expandAll, this.state.expandAll)) {
-            this.setState({expandAll: nextProps.expandAll})
+            this.setState({ expandAll: nextProps.expandAll })
         }
     }
 
@@ -56,46 +56,45 @@ class ResultsTable extends React.PureComponent {
 
     mapData = data => {
         const nodeIds = [];
-        const mapedData =  _.reduce(data, (final, result) => {
+        const mapedData = _.reduce(data, (final, result) => {
             const deepSeries = _.reduce(this.hierarchy, (res, fieldName) => {
                 if (result[fieldName]) {
                     res.push(fieldName)
                 }
                 return res;
             }, []);
-
             const recursiveAdd = (children, index = 0) => {
                 const name = deepSeries[index];
                 const nextName = deepSeries[index + 1];
-                const targetNode = _.find(children, { name: result[name] });
-                if (targetNode) {
-                    if (_.isUndefined(targetNode.children)) {
-                        targetNode.children = [];
-                    }
-                    targetNode.children = recursiveAdd(targetNode.children, index + 1);
+                const existingNode = _.find(children, { name: result[name] });
+
+                if (existingNode) {
+                    existingNode.children = recursiveAdd(existingNode.children, index + 1);
                     return children;
                 }
+
                 const id = this.composeResultId(result, index);
                 nodeIds.push(id);
                 if (nextName === 'value') {
-                    return [{
+                    children.push({
                         name: result[name],
                         id,
                         result: result.value,
                         weight: result.weight,
                         originalResultNode: result
-                    }]
+                    })
                 } else {
-                    return children.concat([{
+                    children.push({
                         name: result[name],
                         id,
                         children: recursiveAdd([], index + 1)
-                    }]);
+                    });
                 }
+                return children;
             };
             return recursiveAdd(final);
         }, []);
-        this.setState({nodeIds});
+        this.setState({ nodeIds });
         return mapedData;
     };
 

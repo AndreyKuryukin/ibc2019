@@ -84,8 +84,9 @@ export class ProjectionsTable extends React.PureComponent {
         name: projection.name,
         creation_date: projection.creation_date,
         author: projection.author,
-        count: projection.count,
+        count: String(projection.count),
         last_calc_date: projection.last_calc_date,
+        result_id: projection.result_id,
         status: projection.status,
         auto: _.get(projection, 'auto', false),
         type: NODE_TYPES.PROJECTION,
@@ -106,16 +107,18 @@ export class ProjectionsTable extends React.PureComponent {
     bodyRowRender = (column, node) => {
         switch (column.name) {
             case 'name':
-                let href;
-                if (node.type === NODE_TYPES.PROJECTION) {
-                    href = `/kqi/calculate/${this.props.configId}/${node.id}`
+                if (node.type === NODE_TYPES.PROJECTION && node.result_id) {
+                    const href = `/kqi/view/${this.props.configId}/${node.id}/${node.result_id}`;
+                    return (
+                        <LinkCell
+                            href={href}
+                            content={node[column.name]}
+                        />
+                    );
                 }
-                return (
-                    <LinkCell
-                        href={href}
-                        content={node[column.name]}
-                    />
-                );
+                return <DefaultCell
+                    content={node[column.name]}
+                />;
             case 'auto':
                 return (
                     node[column.name] && <div className={styles.autoCount}>✔</div>

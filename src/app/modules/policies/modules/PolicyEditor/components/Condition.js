@@ -129,7 +129,7 @@ class Condition extends React.PureComponent {
                 <Field
                     id="operator"
                     required
-                    labelText={`${ls('POLICIES_CONDITION_FIELD_OPERATOR', 'Оператор')}:`}
+                    labelText={`${ls('POLICIES_CONDITION_FIELD_OPERATOR', 'Оператор')}`}
                     labelWidth="50%"
                     inputWidth="50%"
                 >
@@ -146,7 +146,7 @@ class Condition extends React.PureComponent {
                 </Field>
                 <Field
                     id="maxInterval"
-                    labelText={`${ls('POLICIES_CONDITION_FIELD_MAX_INTERVAL', 'Максимальный интервал')}:`}
+                    labelText={`${ls('POLICIES_CONDITION_FIELD_MAX_INTERVAL', 'Максимальный интервал')}`}
                     labelWidth="50%"
                     inputWidth="50%"
                     required
@@ -162,7 +162,7 @@ class Condition extends React.PureComponent {
                 </Field>
                 <Field
                     id="object"
-                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}:`}
+                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}`}
                     labelWidth="50%"
                     inputWidth="50%"
                     required
