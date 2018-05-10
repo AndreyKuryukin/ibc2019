@@ -5,8 +5,9 @@ $grey: #aaa;
 $white: #fff;
 $light-grey: #ccc;
 $smooth-grey: #f2f2f2;
+$menu-grey: #9b9b9b;
 
-$darkest-blue: #013D5B;
+$darkest-blue: #04283c;
 $dark-blue: #015680;
 $border-blue: #206A8F;
 $blue: #00aae7;
@@ -111,6 +112,9 @@ $notification-border: 1px solid $notification-border-color;
 $dropdown-border-width: 0;
 $dropdown-bg: $border-blue;
 $dropdown-padding-y: 8px;
+
+//MENU
+
 
 @import "~bootstrap/scss/functions";
 @import '~bootstrap/scss/variables';

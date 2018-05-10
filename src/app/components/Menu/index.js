@@ -5,6 +5,10 @@ import classNames from 'classnames';
 import styles from './styles.scss';
 import Icon from "../Icon/Icon";
 
+const iconMap = {
+    'kqi': 'menu-icon-kqi'
+}
+
 class Menu extends React.Component {
 
     static propTypes = {
@@ -14,10 +18,12 @@ class Menu extends React.Component {
         })),
         onClick: PropTypes.func,
         className: PropTypes.string,
+        path: PropTypes.string,
     };
 
     static defaultProps = {
         menuItems: [],
+        path: '',
         onClick: () => null
     };
 
@@ -25,31 +31,38 @@ class Menu extends React.Component {
         super(props);
     }
 
-    componentWillReceiveProps(nextProps) {
-
-    }
-
     onItemClick = (item) => {
         this.props.onClick(item)
     };
 
-    mapIconClass = (link) => {
-        return 'groupIcon'
+    mapIconClass = (name, active) => `menu-icon-${name}${active ? '-active' : ''}`;
+
+    getFeature = (path) => path.split('/')[1];
+
+    renderTile = (item, index, feature) => {
+        const clearLink = this.getFeature(item.link);
+        const isActive = clearLink === feature;
+        return (<div
+            onClick={() => this.onItemClick(item)}
+            key={index}
+            className={classNames(styles.menuTile, { [styles.activeTile]: isActive })}
+        >
+            <Icon icon={this.mapIconClass(clearLink, isActive)}/>
+            {item.title}
+        </div>)
     };
 
-    renderTile = (item, index) => (<div
-        onClick={() => this.onItemClick(item)}
-        key={index}
-        className={styles.menuTile}
-    >
-        <Icon icon={this.mapIconClass(item.link)}/>
-        {item.title}
-    </div>);
-
     render() {
-        const { menuItems, className } = this.props;
+        const { menuItems = [], className, path } = this.props;
+        const sortedItems = menuItems.sort((a, b) => {
+            if(a.title < b.title) return -1;
+            if(a.title > b.title) return 1;
+            return 0;
+        });
+
+        const feature = this.getFeature(path);
         return <div className={classNames(styles.sideMenu, className)}>
-            {menuItems.map(this.renderTile)}
+            {sortedItems.map((item, index) => this.renderTile(item, index, feature))}
         </div>
     }
 }

@@ -1,14 +1,14 @@
 @import "../../scss/vars";
 
-$tile-dimension: 100px;
-$tile-width: $tile-dimension;
-$tile-height: $tile-dimension;
+$tile-width: 120px;
+$tile-height: 104px;
 
 .sideMenu {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: $tile-width;
+  background-color: #063752;
   .menuTile {
     color: $white;
     display: flex;
@@ -20,6 +20,10 @@ $tile-height: $tile-dimension;
     height: $tile-height;
     overflow: hidden;
     &:hover {
+      background-color: $menu-grey;
+      filter: grayscale(1);
+    }
+    &.activeTile {
       background-color: $darkest-blue;
     }
   }

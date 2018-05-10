@@ -62,9 +62,6 @@ class PageWrapper extends React.Component {
 
     setPageTitle = (title) => this.setState({ pageTitle: title, hidden: false });
 
-    // renderMenuItems = (items = []) => items.map((item, index) => <DropdownItem key={`menu-item-${index}`}
-    //                                                                            onClick={() => this.onMenuClick(item)}>{item.title}</DropdownItem>);
-
     pageBlur = (blur) => {
         this.setState({ blur })
     };
@@ -76,6 +73,7 @@ class PageWrapper extends React.Component {
             <Menu menuItems={this.props.user.menu}
                   onClick={this.onMenuClick}
                   className={classNames({ [styles.hidden]: this.state.hidden })}
+                  path={_.get(this.props, 'location.pathname')}
             />
             <div className={styles.workspace}>
                 <Navbar color="faded"
