@@ -56,7 +56,7 @@ class KqiResults extends React.PureComponent {
     };
 
     fetchHistory = (nodes) => {
-        const { configId, projectionId} = this.props;
+        const { configId, projectionId } = this.props;
         if (_.isEmpty(nodes)) {
             this.props.onFetchResultHistorySuccess([])
         } else {
@@ -66,7 +66,12 @@ class KqiResults extends React.PureComponent {
                     projectionId
                 }
             }).then((response) => {
-                const history = response.data;
+                const data = response.data;
+                const history = nodes.map(node => {
+                    const item = _.find(data, { id: node.id });
+                    node.values = item ? item.values : [];
+                    return node
+                });
                 this.props.onFetchResultHistorySuccess(history)
             })
         }

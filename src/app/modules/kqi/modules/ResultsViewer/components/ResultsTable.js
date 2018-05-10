@@ -66,7 +66,7 @@ class ResultsTable extends React.PureComponent {
             const recursiveAdd = (children, index = 0) => {
                 const name = deepSeries[index];
                 const nextName = deepSeries[index + 1];
-                const existingNode = _.find(children, { name: result[name] });
+                const existingNode = _.find(children, { name: result[name]});
 
                 if (existingNode) {
                     existingNode.children = recursiveAdd(existingNode.children, index + 1);

@@ -20,7 +20,7 @@ class Graph extends React.PureComponent {
 
     getColorForResult = (() => {
         const colorMap = {};
-        return (result) => {
+        return (result, index) => {
             const getRandomColorHex = () => {
                 const hex = "0123456789ABCDEF";
                 let color = "#";
@@ -40,10 +40,12 @@ class Graph extends React.PureComponent {
     mapData = (historyData) => {
 
         const data = {
-            datasets: historyData.map(result => {
-                const label = Object.values(result).filter(value => _.isString(value)).join('_');
-                const borderColor = this.getColorForResult(result);
-                const data = result.values.map(value => ({ y: value.value * 100, t: value.date_time }));
+            datasets: historyData.map((result, index) => {
+                const label = Object.values(_.omit(result, 'id')).filter(value => _.isString(value)).join('_');
+                const borderColor = this.getColorForResult(result,index);
+                const data = result.values
+                    .map(value => ({ y: value.value * 100, t: value.date_time }))
+                    .sort((a,b) => new Date(a.t).getTime() - new Date(b.t).getTime());
                 return { label, data, borderColor, lineTension: 0 }
             })
         };
@@ -51,6 +53,7 @@ class Graph extends React.PureComponent {
     };
 
     render() {
+        const data = this.mapData(this.props.data);
         const options = {
             legend: {
                 display: true,
@@ -83,7 +86,7 @@ class Graph extends React.PureComponent {
                 }],
             }
         };
-        return <Line data={this.mapData(this.props.data)} options={options}/>;
+        return <Line data={data} options={options}/>;
     }
 }
 
