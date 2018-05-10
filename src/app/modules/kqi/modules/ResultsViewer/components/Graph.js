@@ -20,7 +20,7 @@ class Graph extends React.PureComponent {
 
     getColorForResult = (() => {
         const colorMap = {};
-        return (result) => {
+        return (result, index) => {
             const getRandomColorHex = () => {
                 const hex = "0123456789ABCDEF";
                 let color = "#";
@@ -40,9 +40,9 @@ class Graph extends React.PureComponent {
     mapData = (historyData) => {
 
         const data = {
-            datasets: historyData.map(result => {
-                const label = Object.values(result).filter(value => _.isString(value)).join('_');
-                const borderColor = this.getColorForResult(result);
+            datasets: historyData.map((result, index) => {
+                const label = Object.values(_.omit(result, 'id')).filter(value => _.isString(value)).join('_');
+                const borderColor = this.getColorForResult(result,index);
                 const data = result.values
                     .map(value => ({ y: value.value * 100, t: value.date_time }))
                     .sort((a,b) => new Date(a.t).getTime() - new Date(b.t).getTime());
