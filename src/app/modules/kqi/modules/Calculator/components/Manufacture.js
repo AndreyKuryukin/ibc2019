@@ -29,6 +29,7 @@ class Manufacture extends React.PureComponent {
 
         this.state = {
             checked: [],
+            manufactureList: this.mapData(props.manufactureList)
         };
     }
 
@@ -36,7 +37,12 @@ class Manufacture extends React.PureComponent {
         if (nextProps.checked !== this.state.checked) {
             this.setState({ checked: nextProps.checked })
         }
+        if (nextProps.manufactureList !== this.props.manufactureList) {
+            this.setState({ manufactureList: this.mapData(nextProps.manufactureList) })
+        }
     }
+
+    mapData = (data = []) => _.uniq(data).map(item => ({name: item, id: item}));
 
     bodyRowRender = (column, node) => {
         const checked = this.state.checked.includes(node.id);
@@ -56,7 +62,7 @@ class Manufacture extends React.PureComponent {
         if (node) {
             checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
         } else {
-            checked = value ? this.props.manufactureList.map(node => node.id) : [];
+            checked = value ? this.state.manufactureList.map(node => node.id) : [];
         }
 
         this.setState({
@@ -102,7 +108,7 @@ class Manufacture extends React.PureComponent {
                     <Grid
                         id="kqi-manufacture-grid"
                         columns={[{ name: 'name' }]}
-                        data={this.props.manufactureList}
+                        data={this.state.manufactureList}
                         bodyRowRender={this.bodyRowRender}
                         noCheckAll
                         noSearch
