@@ -190,6 +190,7 @@ class Table extends React.Component {
                         {data.map(node => (
                             <div
                                 key={node.id}
+                                id={node.id}
                                 className={classnames(styles.bodyRow, { [styles.selected]: selected === node.id })}
                                 onClick={() => this.onRowClick(node)}
                             >
