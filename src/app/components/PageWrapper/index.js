@@ -83,7 +83,7 @@ class PageWrapper extends React.Component {
                             [styles.hidden]: this.state.hidden
                         })}>
                     <div className={styles.qLogo}/>
-                    <div className={styles.pageTitle}><h5>{this.state.pageTitle}</h5></div>
+                    <div className={styles.pageTitle}><h6>{this.state.pageTitle}</h6></div>
                     <div className={styles.rightPanel}>
                         <a href="/">{this.getUserName(this.props.user)}</a>
                     </div>
