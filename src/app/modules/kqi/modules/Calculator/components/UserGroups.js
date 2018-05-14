@@ -54,7 +54,7 @@ class UserGroups extends React.PureComponent {
             >
                 <Field
                     id="abonent-group"
-                    labelText={`${ls('KQI_CONFIGURATOR_ABONENT_GROUP_FIELD_LABEL', 'Группа абонентов')}:`}
+                    labelText={`${ls('KQI_CONFIGURATOR_ABONENT_GROUP_FIELD_LABEL', 'Группа абонентов')}`}
                     labelWidth="32%"
                     inputWidth="68%"
                 >

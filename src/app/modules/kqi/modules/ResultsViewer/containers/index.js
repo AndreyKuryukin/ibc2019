@@ -56,15 +56,14 @@ class KqiResults extends React.PureComponent {
     };
 
     fetchHistory = (nodes) => {
-        const { configId, projectionId, resultId } = this.props;
+        const { configId, projectionId} = this.props;
         if (_.isEmpty(nodes)) {
             this.props.onFetchResultHistorySuccess([])
         } else {
-            rest.post('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', nodes, {
+            rest.post('/api/v1/kqi/:configId/projection/:projectionId/result', nodes, {
                 urlParams: {
                     configId,
-                    projectionId,
-                    resultId
+                    projectionId
                 }
             }).then((response) => {
                 const history = response.data;

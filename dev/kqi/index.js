@@ -198,61 +198,6 @@ module.exports = (app) => {
         }
     ];
 
-    const locations = [
-        {
-            id: 1,
-            name: 'МРФ Волга',
-        },
-        {
-            id: 2,
-            name: 'МРФ Москва',
-        },
-    ];
-
-    const manufacturers = [
-        {
-            id: 1,
-            name: 'Vendor 1',
-        },
-        {
-            id: 2,
-            name: 'Vendor 2',
-        },
-    ];
-
-    const equipments = [
-        {
-            id: 1,
-            name: 'SuperSTB 300-x',
-        },
-        {
-            id: 2,
-            name: 'SuperSTB 200-x',
-        },
-    ];
-
-    const usergroups = [
-        {
-            id: 1,
-            name: 'Группа 1',
-        },
-        {
-            id: 2,
-            name: 'Группа 2',
-        },
-    ];
-
-    const parameters = [
-        {
-            id: 1,
-            name: 'loading',
-        },
-        {
-            id: 2,
-            name: 'bandwidth',
-        },
-    ];
-
 
     app.get('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', (req, res) => {
         res.send(kqiResults);
@@ -302,26 +247,6 @@ module.exports = (app) => {
             res.status = 401;
             res.end();
         }
-    });
-
-    app.get('/api/v1/common/location', (req, res) => {
-        res.send(locations);
-    });
-
-    app.get('/api/v1/common/manufacture', (req, res) => {
-        res.send(manufacturers);
-    });
-
-    app.get('/api/v1/common/equipment', (req, res) => {
-        res.send(equipments);
-    });
-
-    app.get('/api/v1/common/parameters', (req, res) => {
-        res.send(parameters);
-    });
-
-    app.get('/api/v1/common/usergroup', (req, res) => {
-        res.send(usergroups);
     });
 
     app.post('/api/v1/kqi', (req, res) => {

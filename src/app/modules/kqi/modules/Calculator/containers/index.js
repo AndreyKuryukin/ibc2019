@@ -39,12 +39,14 @@ class Calculator extends React.PureComponent {
         kqi_id: {
             required: true,
         },
-        start_date_time: {
-            required: true,
-        },
-        end_date_time: {
-            required: true,
-        },
+        period: () => ({
+            start_date: {
+                required: true,
+            },
+            end_date: {
+                required: true,
+            }
+        }),
     };
 
     constructor(props) {
@@ -106,7 +108,13 @@ class Calculator extends React.PureComponent {
         const errors = validateForm(projection, this.validationConfig);
         if (_.isEmpty(errors)) {
             this.setState({ isLoading: true });
-            rest.post('/api/v1/kqi/projection', projection)
+            const projectionDTO = _.reduce(projection, (result, value, key) => {
+                if (!_.isEmpty(value)) {
+                    result[key] = value;
+                }
+                return result
+            }, {});
+            rest.post('/api/v1/kqi/projection', projectionDTO)
                 .then((response) => {
                     const kqi = response.data;
                     this.setState({ isLoading: false });
@@ -122,7 +130,7 @@ class Calculator extends React.PureComponent {
     };
 
     render() {
-        const {projection, projectionId} = this.props;
+        const { projection, projectionId } = this.props;
         return (
             <CalculatorComponent
                 active={this.props.active}

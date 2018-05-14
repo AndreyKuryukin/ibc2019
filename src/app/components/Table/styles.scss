@@ -18,12 +18,13 @@
   .tableBody {
     display: flex;
     flex: 1 1 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     overflow-x: hidden;
     flex-direction: column;
     background: repeating-linear-gradient(180deg, $smooth-grey, $smooth-grey $table-cell-height, $white $table-cell-height, $white $table-cell-height*2);
     .bodyRow {
       display: flex;
+      overflow: hidden;
       height: $table-cell-height;
       min-height: $table-cell-height;
       max-height: $table-cell-height;

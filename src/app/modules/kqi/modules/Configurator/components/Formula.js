@@ -13,13 +13,13 @@ class Formula extends React.PureComponent {
     static defaultProps = {
         config: PropTypes.object,
         title: ls('KPI_FORMULA_TITLE', 'Формула вычисления KQI (%)'),
-        numeratorPattern: ls('KPI_NUMERATOR_PATTERN', 'Σ (измерений при которых: {{kpi-object_type}}.{{kpi_parameter_type}} {{operator}} {{level}})'),
-        denominatorPattern: ls('KPI_DENOMINATOR_PATTERN', 'количество измерений {{kpi-object_type}}.{{kpi_parameter_type}}'),
+        numeratorPattern: ls('KPI_NUMERATOR_PATTERN', 'Σ (измерений при которых: {{object_type}}.{{parameter_type}} {{operator_type}} {{level}})'),
+        denominatorPattern: ls('KPI_DENOMINATOR_PATTERN', 'количество измерений {{object_type}}.{{parameter_type}}'),
         multiplierPattern: ls('KPI_MULTIPLIER_PATTERN', 'Х 100'),
         keyMap: {
-            ['kpi-object_type']: ls('KPI_OBJECT_TYPE', '<Тип объекта>'),
-            kpi_parameter_type: ls('KPI_PARAMETER_TYPE', '<Параметер>'),
-            operator: ls('KPI_OPERATOR_TYPE', '<Оператор>'),
+            object_type: ls('KPI_OBJECT_TYPE', '<Тип объекта>'),
+            parameter_type: ls('KPI_PARAMETER_TYPE', '<Параметер>'),
+            operator_type: ls('KPI_OPERATOR_TYPE', '<Оператор>'),
             level: ls('KPI_LEVEL', '<Значение>'),
         }
     };

@@ -10,6 +10,7 @@ import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells
 import styles from './styles.scss';
 import { DATE, DATE_TIME } from '../../../costants/date';
 import _ from "lodash";
+import Table from "../../../components/Table/index";
 
 const NODE_TYPES = {
     PROJECTION: 'projection',
@@ -32,8 +33,8 @@ export class ProjectionsTable extends React.PureComponent {
     };
 
     static getColumns = memoize(() => [{
-        title: ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции Krc'),
-        name: 'projection',
+        title: ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции'),
+        name: 'name',
         searchable: true,
         sortable: true,
     }, {
@@ -61,7 +62,7 @@ export class ProjectionsTable extends React.PureComponent {
         name: 'status',
     }, {
         title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
-        name: 'auto_gen',
+        name: 'auto',
         width: 110,
     }, {
         title: ls('KQI_GRAPH_COLUMN_TITLE', 'График'),
@@ -77,28 +78,17 @@ export class ProjectionsTable extends React.PureComponent {
         width: 25,
     }]);
 
-    mapResult = result => ({
-        id: result.id,
-        projection: moment(result.creation_date).format(DATE),
-        creation_date: moment(result.creation_date).format(DATE_TIME),
-        author: result.author,
-        count: '',
-        last_calc_date: '',
-        status: result.status,
-        auto_gen: false,
-        type: NODE_TYPES.RESULT,
-    });
 
     mapProjection = projection => ({
-        id: projection.projection_id,
-        projection: projection.projection_name,
-        creation_date: '',
-        author: '',
-        count: projection.results.length,
-        last_calc_date: '',
-        status: '',
-        auto_gen: _.get(projection, 'auto_gen', false),
-        children: projection.results.map(this.mapResult),
+        id: projection.id,
+        name: projection.name,
+        creation_date: projection.creation_date,
+        author: projection.author,
+        count: String(projection.count),
+        last_calc_date: projection.last_calc_date,
+        result_id: projection.result_id,
+        status: projection.status,
+        auto: _.get(projection, 'auto', false),
         type: NODE_TYPES.PROJECTION,
     });
 
@@ -116,20 +106,20 @@ export class ProjectionsTable extends React.PureComponent {
 
     bodyRowRender = (column, node) => {
         switch (column.name) {
-            case 'projection':
-                let href;
-                if (node.type === NODE_TYPES.RESULT) {
-                    href = `/kqi/view/${this.props.configId}/${_.get(node, 'parents.0.id')}/${node.id}/`
-                } else if (node.type === NODE_TYPES.PROJECTION) {
-                    href = `/kqi/calculate/${this.props.configId}/${node.id}`
+            case 'name':
+                if (node.type === NODE_TYPES.PROJECTION && node.result_id) {
+                    const href = `/kqi/view/${this.props.configId}/${node.id}/${node.result_id}`;
+                    return (
+                        <LinkCell
+                            href={href}
+                            content={node[column.name]}
+                        />
+                    );
                 }
-                return (
-                    <LinkCell
-                        href={href}
-                        content={node[column.name]}
-                    />
-                );
-            case 'auto_gen':
+                return <DefaultCell
+                    content={node[column.name]}
+                />;
+            case 'auto':
                 return (
                     node[column.name] && <div className={styles.autoCount}>✔</div>
                 );
@@ -160,6 +150,7 @@ export class ProjectionsTable extends React.PureComponent {
                 return (
                     <IconCell
                         icon="graph-icon"
+                        onClick={() => null}
                     />
                 );
             case 'status':
@@ -192,7 +183,7 @@ export class ProjectionsTable extends React.PureComponent {
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
 
         return (
-            <TreeView
+            <Table
                 data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

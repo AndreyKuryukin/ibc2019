@@ -69,7 +69,7 @@ class Equipment extends React.PureComponent {
             >
                 <Field
                     id="equipment-type"
-                    labelText={`${ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_FIELD_LABEL', 'Тип оборудования')}:`}
+                    labelText={`${ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_FIELD_LABEL', 'Тип оборудования')}`}
                     labelWidth="32%"
                     inputWidth="68%"
                 >

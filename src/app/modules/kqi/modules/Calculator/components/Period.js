@@ -12,10 +12,10 @@ import Select from '../../../../../components/Select';
 import styles from './styles.scss';
 
 const INTERVALS = {
-    DAY: 'day',
-    HOUR : 'hour',
-    QUARTER : 'quarter',
-    OTHER: 'other',
+    DAY: 'DAY',
+    HOUR: 'HOUR',
+    QUARTER: 'QUARTER',
+    OTHER: 'OTHER',
 };
 
 class Period extends React.PureComponent {
@@ -45,12 +45,14 @@ class Period extends React.PureComponent {
 
     constructor(props) {
         super(props);
-
+        const { config = {}, groupingOptions = [] } = props;
+        const { period = {} } = config;
+        const { start_date: start, end_date: end } = period;
         this.state = {
-            start: null,
-            end: null,
+            start,
+            end,
             interval: INTERVALS.OTHER,
-            groupingOptions: [],
+            groupingOptions: this.getFilteredGroupingOptions(start, end, groupingOptions),
             groupingType: null,
         };
     }
@@ -58,16 +60,15 @@ class Period extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (nextProps.config) {
             const {
-                start_date_time: start,
-                end_date_time: end,
-                period,
+                period = {},
                 date_time_grouping: groupingType,
             } = nextProps.config;
+            const { start_date = '', end_date = '' } = period;
             this.setState({
-                start: new Date(start),
-                end: new Date(end),
-                interval: period ? period.toLowerCase() : '',
-                groupingType: groupingType ? groupingType.toLowerCase() : groupingType,
+                start: new Date(start_date),
+                end: new Date(end_date),
+                interval: period.regularity ? period.regularity : '',
+                groupingType: groupingType ? groupingType.toUpperCase() : groupingType,
             })
         }
 
@@ -155,6 +156,7 @@ class Period extends React.PureComponent {
                     <Field
                         id="day-interval"
                         labelText={ls('TIME_INTERVAL_DAY', 'День')}
+                        splitter=""
                         inputWidth={15}
                         labelAlign="right"
                     >
@@ -171,6 +173,7 @@ class Period extends React.PureComponent {
                         labelText={ls('TIME_INTERVAL_HOUR', 'Час')}
                         inputWidth={15}
                         labelAlign="right"
+                        splitter=""
                         style={{
                             marginTop: 0,
                             marginLeft: 10,
@@ -189,6 +192,7 @@ class Period extends React.PureComponent {
                         labelText={ls('TIME_INTERVAL_QUARTER', '15 минут')}
                         inputWidth={15}
                         labelAlign="right"
+                        splitter=""
                         style={{
                             marginTop: 0,
                             marginLeft: 10,
@@ -204,7 +208,7 @@ class Period extends React.PureComponent {
                     </Field>
                     <Field
                         id="other-interval"
-                        labelText={`${ls('TIME_INTERVAL_OTHER', 'Другое')}:`}
+                        labelText={`${ls('TIME_INTERVAL_OTHER', 'Другое')}`}
                         inputWidth={15}
                         labelAlign="right"
                         style={{
@@ -247,7 +251,7 @@ class Period extends React.PureComponent {
                             checked={this.state.isGroupingChecked}
                             onChange={this.onGroupingCheck}
                             style={{ marginLeft: 30 }}
-                            disabled={disabled}
+                            disabled={this.state.interval !== INTERVALS.OTHER || disabled}
                         />
                         <Field
                             id="date-time-grouping"
@@ -263,8 +267,8 @@ class Period extends React.PureComponent {
                                 value={this.state.groupingType}
                                 options={this.state.groupingOptions}
                                 onChange={this.onGroupingTypeChange}
-                                disabled={!this.state.isGroupingChecked || disabled}
-                                noEmptyOption
+                                placeholder={ls('KQI_CALCULATOR_GROUPING_PLACEHOLDER', 'Выберите группировку')}
+                                disabled={this.state.interval !== INTERVALS.OTHER || disabled}
                             />
                         </Field>
                     </div>
