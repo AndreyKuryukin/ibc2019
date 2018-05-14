@@ -40,6 +40,7 @@ const plugins = [
     './sources',
     './alarms',
     './common',
+    './user'
 ];
 
 app.use((req, res, next) => {
