@@ -40,12 +40,12 @@ $link-decoration: underline;
 $body-bg: $dark-blue;
 
 //TABS
-$nav-tabs-link-hover-border-color: transparent $dark-blue;
-$nav-link-padding-y: .3rem;
-$nav-link-padding-x: .3rem;
-$nav-tabs-border-width: 1px;
+$nav-tabs-link-hover-border-color: transparent;
+$nav-link-padding-y: 0;
+$nav-link-padding-x: 0;
+$nav-tabs-border-width: 0;
 $nav-tabs-link-secondary-bg: $light-blue;
-$nav-tabs-link-active-border-color: transparent $dark-blue;
+$nav-tabs-link-active-border-color: transparent;
 
 // MODAL
 $modal-content-bg: $dark-blue;

@@ -36,7 +36,7 @@ class Roles extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle(ls('ROLES_PAGE_TITLE', 'Роли'));
+        this.context.navBar.setPageTitle([ls('USERS_PAGE_TITLE', 'Пользователи'), ls('ROLES_PAGE_TITLE', 'Роли')]);
     }
 
     fetchRoles = () => {

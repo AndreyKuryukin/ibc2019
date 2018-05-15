@@ -33,10 +33,21 @@
         }
       }
       .pageTitle {
-        display: inline;
-        text-align: center;
+        display: flex;
         padding: 10px;
         flex: 1;
+        justify-content: center;
+        > * {
+          padding-left: 8px;
+          &:not(:last-child) {
+            &:after {
+              content: '';
+              padding-left: 8px;
+              border-right: 2px solid $white;
+            }
+          }
+        }
+
       }
       .rightPanel {
         display: flex;

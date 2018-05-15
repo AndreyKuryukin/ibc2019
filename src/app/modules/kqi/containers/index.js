@@ -46,7 +46,7 @@ class KQI extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle(ls('KQI_PAGE_TITLE', 'Результат вычисления KQI'));
+        this.context.navBar.setPageTitle(ls('KQI_PAGE_TITLE', 'KQI'));
         this.onFetchKQI();
     }
 
