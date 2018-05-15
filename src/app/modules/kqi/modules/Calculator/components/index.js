@@ -234,7 +234,9 @@ class Calculator extends React.PureComponent {
             config['location_grouping'] = null
         }
 
-        config['name'] = this.composeConfigName(config);
+        if (_.get(config, 'period.auto')) {
+            config['name'] = this.composeConfigName(config);
+        }
 
         this.setState({
             config,

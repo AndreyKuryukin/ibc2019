@@ -1,3 +1,12 @@
+@mixin orange-underline {
+  content: '';
+  background-color: transparent !important;
+  border-bottom: 4px solid #fd7f00;
+  height: 4px;
+  width: 100%;
+  display: block;
+}
+
 .nav-tabs{
   display: flex;
   flex-direction: row;
@@ -8,14 +17,15 @@
     margin-right: 15px;
     margin-left: 15px;
     height: 32px;
+    &:not(.active):hover {
+      &:after {
+        @include orange-underline;
+        opacity: 0.5;
+      }
+    }
     &.active {
       &:after {
-        content: '';
-        background-color: transparent !important;
-        border-bottom: 4px solid #fd7f00;
-        height: 4px;
-        width: 100%;
-        display: block;
+        @include orange-underline;
       }
     }
     .nav-link {

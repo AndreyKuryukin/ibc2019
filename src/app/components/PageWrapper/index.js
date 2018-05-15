@@ -66,6 +66,20 @@ class PageWrapper extends React.Component {
         this.setState({ blur })
     };
 
+    renderTitle = (title) => {
+        if (_.isString(title)) {
+            return <h6>{title}</h6>;
+        } else if (_.isArray(title)) {
+            return title.map((path, index) => {
+                if (index === title.length - 1) {
+                    return <h6>{path}</h6>;
+                }
+                return <h6><b>{path}</b></h6>;
+            })
+        }
+
+    };
+
     getUserName = user => `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`;
 
     render() {
@@ -83,7 +97,9 @@ class PageWrapper extends React.Component {
                             [styles.hidden]: this.state.hidden
                         })}>
                     <div className={styles.qLogo}/>
-                    <div className={styles.pageTitle}><h6>{this.state.pageTitle}</h6></div>
+                    <div className={styles.pageTitle}>
+                        {this.renderTitle(this.state.pageTitle)}
+                    </div>
                     <div className={styles.rightPanel}>
                         <a href="/">{this.getUserName(this.props.user)}</a>
                     </div>
