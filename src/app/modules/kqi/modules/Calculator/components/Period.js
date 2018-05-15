@@ -14,8 +14,13 @@ import styles from './styles.scss';
 const INTERVALS = {
     DAY: 'DAY',
     HOUR: 'HOUR',
-    QUARTER: 'QUARTER',
+    WEEK: 'WEEK',
     OTHER: 'OTHER',
+};
+
+const intervalFieldStyle ={
+    marginTop: 0,
+    marginLeft: 10,
 };
 
 class Period extends React.PureComponent {
@@ -76,12 +81,12 @@ class Period extends React.PureComponent {
 
     getFilteredGroupingOptions = (start, end, groupingOptions) => {
         if (!start || !end) return [];
-        if (moment(end).diff(moment(start), 'days') > 1) {
+        if (moment(end).diff(moment(start), 'week') >= 1) {
             return groupingOptions;
+        } else if (moment(end).diff(moment(start), 'days') >= 1) {
+            return groupingOptions.filter(opt => opt.value !== 'WEEK');
         } else if (moment(end).diff(moment(start), 'hours') > 1) {
-            return groupingOptions.filter(opt => opt.value !== 'DAY');
-        } else if (moment(end).diff(moment(start), 'minutes') > 15) {
-            return groupingOptions.filter(opt => opt.value === 'QUARTER');
+            return groupingOptions.filter(opt => opt.value === 'HOUR');
         } else {
             return [];
         }
@@ -133,15 +138,9 @@ class Period extends React.PureComponent {
 
     onIntervalChange = (interval, value) => {
         if (value) {
-            let intervalCount = 1;
-            let finalInterval = interval;
-            if (interval === INTERVALS.QUARTER) {
-                intervalCount = 15;
-                interval = 'minute';
-            }
-            const start = interval !== INTERVALS.OTHER ? moment().subtract(intervalCount, interval).startOf(interval).toDate() : this.state.start;
+            const start = interval !== INTERVALS.OTHER ? moment().subtract(1, interval).startOf(interval).toDate() : this.state.start;
             const end = interval !== INTERVALS.OTHER ? moment(start).endOf(interval).toDate() : this.state.end;
-            this.configureAndSetState(start, end, finalInterval);
+            this.configureAndSetState(start, end, interval);
         }
     };
 
@@ -154,11 +153,27 @@ class Period extends React.PureComponent {
             >
                 <div className={styles.kqiPeriod}>
                     <Field
+                        id="hour-interval"
+                        labelText={ls('TIME_INTERVAL_HOUR', 'Час')}
+                        inputWidth={15}
+                        labelAlign="right"
+                        splitter=""
+                    >
+                        <Radio
+                            id="hour-interval"
+                            name="time-interval"
+                            checked={this.state.interval === INTERVALS.HOUR}
+                            onChange={v => this.onIntervalChange(INTERVALS.HOUR, v)}
+                            disabled={disabled}
+                        />
+                    </Field>
+                    <Field
                         id="day-interval"
                         labelText={ls('TIME_INTERVAL_DAY', 'День')}
                         splitter=""
                         inputWidth={15}
                         labelAlign="right"
+                        style={intervalFieldStyle}
                     >
                         <Radio
                             id="day-interval"
@@ -170,39 +185,17 @@ class Period extends React.PureComponent {
                     </Field>
                     <Field
                         id="week-interval"
-                        labelText={ls('TIME_INTERVAL_HOUR', 'Час')}
+                        labelText={ls('TIME_INTERVAL_WEEK', 'Неделя')}
                         inputWidth={15}
                         labelAlign="right"
                         splitter=""
-                        style={{
-                            marginTop: 0,
-                            marginLeft: 10,
-                        }}
+                        style={intervalFieldStyle}
                     >
                         <Radio
                             id="week-interval"
                             name="time-interval"
-                            checked={this.state.interval === INTERVALS.HOUR}
-                            onChange={v => this.onIntervalChange(INTERVALS.HOUR, v)}
-                            disabled={disabled}
-                        />
-                    </Field>
-                    <Field
-                        id="month-interval"
-                        labelText={ls('TIME_INTERVAL_QUARTER', '15 минут')}
-                        inputWidth={15}
-                        labelAlign="right"
-                        splitter=""
-                        style={{
-                            marginTop: 0,
-                            marginLeft: 10,
-                        }}
-                    >
-                        <Radio
-                            id="month-interval"
-                            name="time-interval"
-                            checked={this.state.interval === INTERVALS.QUARTER}
-                            onChange={v => this.onIntervalChange(INTERVALS.QUARTER, v)}
+                            checked={this.state.interval === INTERVALS.WEEK}
+                            onChange={v => this.onIntervalChange(INTERVALS.WEEK, v)}
                             disabled={disabled}
                         />
                     </Field>
@@ -211,10 +204,7 @@ class Period extends React.PureComponent {
                         labelText={`${ls('TIME_INTERVAL_OTHER', 'Другое')}`}
                         inputWidth={15}
                         labelAlign="right"
-                        style={{
-                            marginTop: 0,
-                            marginLeft: 10,
-                        }}
+                        style={intervalFieldStyle}
                     >
                         <Radio
                             id="other-interval"
@@ -251,7 +241,6 @@ class Period extends React.PureComponent {
                             checked={this.state.isGroupingChecked}
                             onChange={this.onGroupingCheck}
                             style={{ marginLeft: 30 }}
-                            disabled={this.state.interval !== INTERVALS.OTHER || disabled}
                         />
                         <Field
                             id="date-time-grouping"
@@ -268,7 +257,7 @@ class Period extends React.PureComponent {
                                 options={this.state.groupingOptions}
                                 onChange={this.onGroupingTypeChange}
                                 placeholder={ls('KQI_CALCULATOR_GROUPING_PLACEHOLDER', 'Выберите группировку')}
-                                disabled={this.state.interval !== INTERVALS.OTHER || disabled}
+                                disabled={!this.state.isGroupingChecked}
                             />
                         </Field>
                     </div>

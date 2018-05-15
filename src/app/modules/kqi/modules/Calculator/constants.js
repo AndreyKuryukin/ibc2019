@@ -25,7 +25,7 @@ export const SERVICE_TYPES = {
 export const DATE_TIME_GROUPING = {
     DAY: ls('DAY_GROUPING', 'Дням'),
     HOUR: ls('HOUR_GROUPING', 'Часам'),
-    QUARTER: ls('QUARTER_GROUPING', '15 минутам')
+    WEEK: ls('WEEK_GROUPING', 'Неделям'),
 };
 
 export const LOCATION_GROUPING = {

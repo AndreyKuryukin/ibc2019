@@ -39,10 +39,10 @@ const NAME_PATTERN_SEQUENCE = [
 ];
 
 const period = {
-    HOUR: ls('WEEKLY', 'Ежечасный'),
-    DAY: ls('DAY', 'Ежедневный'),
-    QUARTER: ls('QUARTER', '15 минутный'),
-    OTHER: ls('OTHER', ''),
+    HOUR: ls('PERIOD_HOUR', 'Ежечасный'),
+    DAY: ls('PERIOD_DAY', 'Ежедневный'),
+    WEEK: ls('PERIOD_WEEK', 'Еженедельный'),
+    OTHER: ls('PERIOD_OTHER', ''),
 };
 
 const last_mile_technology_grouping = {

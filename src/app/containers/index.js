@@ -120,10 +120,12 @@ class App extends React.Component {
         const commonSubjects = this.getCommonRoutes();
         const totalSubjects = user.subjects.concat(commonSubjects);
         user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
-        user.menu = user.subjects.map(subject => ({
-            title: subjectMap[subject.name.toUpperCase()].title,
-            link: subjectMap[subject.name.toUpperCase()].link,
-        }));
+        user.menu = user.subjects
+            .filter(subject => subject.name !== 'LOGIN')
+            .map(subject => ({
+                title: subjectMap[subject.name.toUpperCase()].title,
+                link: subjectMap[subject.name.toUpperCase()].link,
+            }));
         this.props.onFetchUserSuccess(user);
     };
 
