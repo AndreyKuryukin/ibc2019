@@ -121,6 +121,7 @@ class Manufacture extends React.PureComponent {
                     labelWidth="97%"
                     inputWidth="3%"
                     labelAlign="right"
+                    splitter=""
                 >
                     <Checkbox
                         id="manufacture-grouping"

@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Navbar } from 'reactstrap';
 import _ from 'lodash';
-
+import { Link } from 'react-router-dom';
 import styles from './styles.scss';
 import { withRouter } from "react-router-dom";
 import Menu from "../Menu/index";
+import Icon from '../Icon/Icon';
+import rest from '../../rest';
+import { resetActiveUserSuccess } from '../../actions';
 
 class PageWrapper extends React.Component {
 
@@ -26,10 +29,12 @@ class PageWrapper extends React.Component {
 
     static propTypes = {
         user: PropTypes.object,
+        onLogOut: PropTypes.func,
     };
 
     static defaultProps = {
         user: null,
+        onLogOut: () => null,
     };
 
     constructor(props) {
@@ -60,6 +65,17 @@ class PageWrapper extends React.Component {
         this.props.history.push(item.link)
     };
 
+    onLogOut = () => {
+        rest.post('api/v1/auth/logout')
+            .then(() => {
+                this.props.onLogOut();
+                this.props.history.push('/login');
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    };
+
     setPageTitle = (title) => this.setState({ pageTitle: title, hidden: false });
 
     pageBlur = (blur) => {
@@ -86,6 +102,10 @@ class PageWrapper extends React.Component {
                     <div className={styles.pageTitle}><h6>{this.state.pageTitle}</h6></div>
                     <div className={styles.rightPanel}>
                         <a href="/">{this.getUserName(this.props.user)}</a>
+                        <Icon
+                            icon="userIcon"
+                            onClick={this.onLogOut}
+                        />
                     </div>
                 </Navbar>
                 <div className={styles.pageContent}>
@@ -100,5 +120,8 @@ const mapStateToProps = state => ({
     user: state.user,
 });
 
+const mapDispatchToProps = (dispatch, props) => ({
+    onLogOut: () => dispatch(resetActiveUserSuccess()),
+});
 
-export default withRouter(connect(mapStateToProps, null)(PageWrapper));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PageWrapper));
