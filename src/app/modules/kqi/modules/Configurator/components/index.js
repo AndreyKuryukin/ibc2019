@@ -10,6 +10,7 @@ import Field from "../../../../../components/Field";
 import Formula from './Formula';
 import styles from './styles.scss';
 import { OBJECT_TYPES, OPERATOR_TYPES, } from '../constants';
+import DraggableWrapper from '../../../../../components/DraggableWrapper';
 
 class Configurator extends React.PureComponent {
     static contextTypes = {
@@ -92,8 +93,8 @@ class Configurator extends React.PureComponent {
 
     mapConfig = (config) => {
         const conf = { ...config };
-        if (config.kpi_parameter_type) {
-            conf.kpi_parameter_type = _.get(this.props.paramTypesById, `${config.kpi_parameter_type}.name`, '');
+        if (config.parameter_type) {
+            conf.parameter_type = _.get(this.props.paramTypesById, `${config.parameter_type}.name`, '');
         }
         if (config.operator) {
             conf.operator = OPERATOR_TYPES[config.operator];
@@ -105,107 +106,118 @@ class Configurator extends React.PureComponent {
         const disableForm = !!this.props.config;
         const { config, errors } = this.state;
         return (
-            <Modal
-                isOpen={this.props.active}
-                className={styles.kqiConfigurator}
-            >
-                <ModalHeader
-                    toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KPI/KQI')}</ModalHeader>
-                <ModalBody>
-                    <div className={styles.configuratorContent}>
-                        <Field
-                            id="name"
-                            labelText={ls('KQI_CONFIGURATOR_NAME_LABEL', 'Название')}
-                            labelWidth="35%"
-                            inputWidth="65%"
-                            required
-                        >
-                            <Input
+            <DraggableWrapper>
+                <Modal
+                    isOpen={this.props.active}
+                    className={styles.kqiConfigurator}
+                >
+                    <ModalHeader
+                        className="handle"
+                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI')}</ModalHeader>
+                    <ModalBody>
+                        <div className={styles.configuratorContent}>
+                            <Field
                                 id="name"
-                                disabled={disableForm}
-                                value={config.name}
-                                onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
-                                valid={errors && _.isEmpty(errors.name)}
-                            />
-                        </Field>
-                        <Field
-                            id="object-type"
-                            labelText={ls('KQI_CONFIGURATOR_OBJECT_TYPE_LABEL', 'Тип объекта')}
-                            labelWidth="35%"
-                            inputWidth="65%"
-                            required
-                        >
-                            <Select
-                                options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
-                                disabled={disableForm}
-                                value={_.get(config, 'kpi-object_type')}
-                                onChange={value => this.setConfigProperty('object_type', value)}
-                                valid={errors && _.isEmpty(errors['object_type'])}
-                            />
-                        </Field>
-                        <Field
-                            id="param"
-                            labelText={ls('KQI_PARAMETER_LABEL', 'Параметр')}
-                            labelWidth="35%"
-                            inputWidth="65%"
-                            required
-                        >
-                            <Select
-                                options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
-                                onChange={this.onChangeParameterType}
-                                value={_.get(config, 'parameter_type')}
-                                valid={errors && _.isEmpty(errors.parameter_type)}
-                                disabled={disableForm}
-                            />
-                        </Field>
-                        <Field
-                            id="operator"
-                            labelText={ls('KQI_OPERATOR_LABEL', 'Оператор')}
-                            labelWidth="35%"
-                            inputWidth="65%"
-                            required
-                        >
-                            <Select
-                                options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
-                                onChange={value => this.setConfigProperty('operator_type', value)}
-                                value={_.get(config, 'operator_type')}
-                                valid={errors && _.isEmpty(errors.operator)}
-                                disabled={disableForm}
-                            />
-                        </Field>
-                        <Field
-                            id="level"
-                            labelText={ls('KQI_LEVEL_LABEL', 'Значение')}
-                            labelWidth="35%"
-                            inputWidth="65%"
-                            required
-                        >
-                            <Input
-                                type="number"
+                                labelText={ls('KQI_CONFIGURATOR_NAME_LABEL', 'Название')}
+                                labelWidth="35%"
+                                inputWidth="65%"
+                                required
+                            >
+                                <Input
+                                    id="name"
+                                    disabled={disableForm}
+                                    value={config.name}
+                                    onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
+                                    valid={errors && _.isEmpty(errors.name)}
+                                    placeholder={ls('KQI_CONFIGURATOR_NAME_PLACEHOLDER', 'Название')}
+                                />
+                            </Field>
+                            <Field
+                                id="object-type"
+                                labelText={ls('KQI_CONFIGURATOR_OBJECT_TYPE_LABEL', 'Тип объекта')}
+                                labelWidth="35%"
+                                inputWidth="65%"
+                                required
+                            >
+                                <Select
+                                    id="object-type"
+                                    options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
+                                    disabled={disableForm}
+                                    value={_.get(config, 'object_type')}
+                                    onChange={value => this.setConfigProperty('object_type', value)}
+                                    valid={errors && _.isEmpty(errors['object_type'])}
+                                    placeholder={ls('KQI_CONFIGURATOR_OBJECT_TYPE_PLACEHOLDER', 'Тип объекта')}
+                                />
+                            </Field>
+                            <Field
+                                id="param"
+                                labelText={ls('KQI_PARAMETER_LABEL', 'Параметр')}
+                                labelWidth="35%"
+                                inputWidth="65%"
+                                required
+                            >
+                                <Select
+                                    id="param"
+                                    options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
+                                    onChange={this.onChangeParameterType}
+                                    value={_.get(config, 'parameter_type')}
+                                    valid={errors && _.isEmpty(errors.parameter_type)}
+                                    disabled={disableForm}
+                                    placeholder={ls('KQI_CONFIGURATOR_PARAMETER_PLACEHOLDER', 'Параметр')}
+                                />
+                            </Field>
+                            <Field
+                                id="operator"
+                                labelText={ls('KQI_OPERATOR_LABEL', 'Оператор')}
+                                labelWidth="35%"
+                                inputWidth="65%"
+                                required
+                            >
+                                <Select
+                                    id="operator"
+                                    options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
+                                    onChange={value => this.setConfigProperty('operator_type', value)}
+                                    value={_.get(config, 'operator_type')}
+                                    valid={errors && _.isEmpty(errors.operator)}
+                                    disabled={disableForm}
+                                    placeholder={ls('KQI_CONFIGURATOR_OPERATOR_PLACEHOLDER', 'Оператор')}
+                                />
+                            </Field>
+                            <Field
                                 id="level"
-                                value={config.level}
-                                onChange={event => this.setConfigProperty('level', event.currentTarget.value)}
-                                valid={errors && _.isEmpty(errors.level)}
-                                disabled={disableForm}
+                                labelText={ls('KQI_LEVEL_LABEL', 'Значение')}
+                                labelWidth="35%"
+                                inputWidth="65%"
+                                required
+                            >
+                                <Input
+                                    type="number"
+                                    id="level"
+                                    value={config.level}
+                                    onChange={event => this.setConfigProperty('level', event.currentTarget.value)}
+                                    valid={errors && _.isEmpty(errors.level)}
+                                    disabled={disableForm}
+                                    placeholder={ls('KQI_CONFIGURATOR_LEVEL_PLACEHOLDER', 'Значение')}
+                                />
+                            </Field>
+                            <Formula
+                                config={this.mapConfig(config)}
                             />
-                        </Field>
-                        <Formula
-                            config={this.mapConfig(config)}
-                        />
 
-                    </div>
-                </ModalBody>
-                <ModalFooter>
-                    <Button outline color="action" onClick={this.onClose}>
-                        {ls('CANCEL', 'Отмена')}
-                    </Button>
-                    {
-                        !disableForm && <Button color="action" onClick={this.onSubmit}>
-                            {ls('OK', 'OK')}
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button outline color="action" onClick={this.onClose}>
+                            {ls('CANCEL', 'Отмена')}
                         </Button>
-                    }
-                </ModalFooter>
-            </Modal>
+                        {
+                            !disableForm && <Button color="action" onClick={this.onSubmit}>
+                                {ls('OK', 'OK')}
+                            </Button>
+                        }
+                    </ModalFooter>
+                </Modal>
+            </DraggableWrapper>
         );
     }
 }
