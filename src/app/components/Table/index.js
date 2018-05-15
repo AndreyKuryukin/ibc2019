@@ -92,8 +92,9 @@ class Table extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
+            const { by, direction } = this.state.sort;
             this.setState({
-                data: Array.isArray(nextProps.data) ? nextProps.data : [],
+                data: Array.isArray(nextProps.data) ? naturalSort(nextProps.data, [direction], node => [_.get(node, by, '')]) : [],
             });
         }
     }
@@ -120,7 +121,7 @@ class Table extends React.Component {
 
         const sortedData = this.props.customSortFunction
             ? this.props.customSortFunction(columnName, nextDirection)
-            : naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`)]);
+            : naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`, '')]);
 
         this.setState({
             sort: {
