@@ -84,13 +84,13 @@ class PageWrapper extends React.Component {
 
     renderTitle = (title) => {
         if (_.isString(title)) {
-            return <h6>{title}</h6>;
+            return <span>{title}</span>;
         } else if (_.isArray(title)) {
             return title.map((path, index) => {
                 if (index === title.length - 1) {
-                    return <h6>{path}</h6>;
+                    return <span>{path}</span>;
                 }
-                return <h6><b>{path}</b></h6>;
+                return <span><b>{path}</b></span>;
             })
         }
 

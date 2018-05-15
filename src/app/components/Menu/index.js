@@ -48,7 +48,7 @@ class Menu extends React.Component {
             className={classNames(styles.menuTile, { [styles.activeTile]: isActive })}
         >
             <Icon icon={this.mapIconClass(clearLink, isActive)}/>
-            {item.title}
+            <span className={styles.tileTitle}>{item.title}</span>
         </div>)
     };
 
