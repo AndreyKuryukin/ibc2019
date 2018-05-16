@@ -109,7 +109,7 @@ class Calculator extends React.PureComponent {
         const end_date = moment(start_date).endOf('day').toDate();
         this.state = {
             config: {
-                name: ls('WEEKLY', 'Ежедневный'),
+                name: period.DAY,
                 service_type: '',
                 period: {
                     start_date,

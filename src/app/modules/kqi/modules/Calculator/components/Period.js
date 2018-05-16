@@ -56,14 +56,14 @@ class Period extends React.PureComponent {
         this.state = {
             start,
             end,
-            interval: INTERVALS.OTHER,
+            interval: period.regularity ? period.regularity : INTERVALS.DAY,
             groupingOptions: this.getFilteredGroupingOptions(start, end, groupingOptions),
             groupingType: null,
         };
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.config) {
+        if (this.props.config !== nextProps.config) {
             const {
                 period = {},
                 date_time_grouping: groupingType,
@@ -74,7 +74,7 @@ class Period extends React.PureComponent {
                 end: new Date(end_date),
                 interval: period.regularity ? period.regularity : '',
                 groupingType: groupingType ? groupingType.toUpperCase() : groupingType,
-            })
+            });
         }
 
     }
