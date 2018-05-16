@@ -9,6 +9,10 @@ import Grid from '../../../../../components/Grid';
 import styles from './styles.scss';
 import { CheckedCell } from '../../../../../components/Table/Cells';
 
+const panelStyle = { flex: '1 1 0' };
+const allManufacturesFieldStyle = { width: 100 };
+const gridCellStyle = { marginLeft: 0 };
+
 class Manufacture extends React.PureComponent {
     static propTypes = {
         isGroupingChecked: PropTypes.bool,
@@ -42,7 +46,7 @@ class Manufacture extends React.PureComponent {
         }
     }
 
-    mapData = (data = []) => _.uniq(data).map(item => ({name: item, id: item}));
+    mapData = (data = []) => _.uniq(data).map(item => ({ name: item, id: item }));
 
     bodyRowRender = (column, node) => {
         const checked = this.state.checked.includes(node.id);
@@ -50,7 +54,7 @@ class Manufacture extends React.PureComponent {
             <CheckedCell
                 id={`kqi-manufacture-grid-${node.id}`}
                 onChange={(value) => this.onCheck(value, node)}
-                style={{ marginLeft: 0 }}
+                style={gridCellStyle}
                 value={checked}
                 text={node[column.name]}
             />
@@ -78,11 +82,11 @@ class Manufacture extends React.PureComponent {
             && this.state.checked.length < this.props.manufactureList.length;
         const isAllChecked = !checkedPartially && this.props.manufactureList.length !== 0
             && this.state.checked.length === this.props.manufactureList.length;
-        const { disabled, groupingValue } = this.props;
+        const { disabled } = this.props;
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_MANUFACTURE_TITLE', 'Производитель')}
-                style={{ flex: '1 1 0' }}
+                style={panelStyle}
             >
                 <div className={styles.manufactures}>
                     <div className={styles.manufactureLabel}>
@@ -93,7 +97,7 @@ class Manufacture extends React.PureComponent {
                             labelWidth="75%"
                             inputWidth="25%"
                             labelAlign="right"
-                            style={{ width: 100 }}
+                            style={allManufacturesFieldStyle}
                         >
                             <Checkbox
                                 id="all-manufactures"
@@ -121,12 +125,13 @@ class Manufacture extends React.PureComponent {
                     labelWidth="97%"
                     inputWidth="3%"
                     labelAlign="right"
+                    splitter=""
                 >
                     <Checkbox
                         id="manufacture-grouping"
-                        checked={this.props.isGroupingChecked || groupingValue}
+                        checked={this.props.isGroupingChecked}
                         onChange={this.props.onGroupingChange}
-                        disabled={disabled}
+                        disabled={disabled || this.state.checked.length !== 0}
                     />
                 </Field>
             </Panel>

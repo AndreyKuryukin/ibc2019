@@ -30,21 +30,29 @@ class CheckedCell extends React.PureComponent {
 
     render() {
         const { type, text, value, checkedPartially, id } = this.props;
-        const style = {
-            marginRight: text ? 10 : 0,
+        const inputStyle = {
+            marginLeft: 0,
+            marginRight: 0,
             ...this.props.style,
+        };
+        const style = {
+            marginLeft: text ? 10 : 0
         };
         const Component = type === 'check' ? Checkbox : Radio;
         return (
             <div className="table-cell-content" title={text}>
                 <Component
                     id={id}
-                    style={style}
+                    style={inputStyle}
                     onChange={this.onChange}
                     checked={value}
                     checkedPartially={checkedPartially}
                 />
-                <span className="truncated">{text}</span>
+                <span className="truncated"
+                      style={style}
+                >
+                    {text}
+                </span>
             </div>
         );
     }

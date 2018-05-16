@@ -19,12 +19,35 @@ $tile-height: 104px;
     width: $tile-width;
     height: $tile-height;
     overflow: hidden;
-    &:hover {
-      background-color: $menu-grey;
+    .tileTitle {
+      margin-top: 10px;
+      cursor: default;
+      font-family: Tahoma;
+      font-size: 12px;
+      font-weight: normal;
+      font-style: normal;
+      font-stretch: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      text-align: left;
+      color: #ffffff;
+    }
+    &:not(.activeTile):hover {
+      //background-color: $menu-grey;
+      cursor: pointer;
       filter: grayscale(1);
+      .iconBlock, .tileTitle
+      {
+        opacity: 0.5;
+        cursor: pointer !important;
+      }
     }
     &.activeTile {
       background-color: $darkest-blue;
+      .iconBlock {
+        cursor: default;
+      }
     }
+
   }
 }

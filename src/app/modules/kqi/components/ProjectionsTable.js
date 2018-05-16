@@ -173,7 +173,6 @@ export class ProjectionsTable extends React.PureComponent {
     filter = (data, searchableColumns, searchText) =>
         data.filter(
             node => searchableColumns.find(column => search(node[column.name], searchText))
-                || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
         );
 
     render() {

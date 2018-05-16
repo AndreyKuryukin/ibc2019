@@ -30,7 +30,7 @@ class PoliciesControls extends React.PureComponent {
 
     render() {
         return (
-            <div className={styles.controls}>
+            <div className={styles.policiesControls}>
                 <div className={styles.buttonGroup}>
                     <Icon icon="addIcon" onClick={this.onAdd}/>
                 </div>

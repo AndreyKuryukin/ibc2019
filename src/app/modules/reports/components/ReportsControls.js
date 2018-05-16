@@ -30,7 +30,7 @@ class ReportsControls extends React.PureComponent {
 
     render() {
         return (
-            <div className={styles.controls}>
+            <div className={styles.reportControls}>
                 <Icon icon="addIcon" onClick={this.onAdd}/>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}

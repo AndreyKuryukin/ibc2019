@@ -4,6 +4,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
+import moment from 'moment';
 import styles from './styles.scss';
 import {
     DATE_TIME_GROUPING,
@@ -20,7 +21,7 @@ import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
 import UserGroups from './UserGroups';
-import moment from "moment";
+import { INTERVALS } from '../constants';
 
 const NAME_PATTERN_SEQUENCE = [
     'period.regularity',
@@ -39,10 +40,10 @@ const NAME_PATTERN_SEQUENCE = [
 ];
 
 const period = {
-    HOUR: ls('WEEKLY', 'Ежечасный'),
-    DAY: ls('DAY', 'Ежедневный'),
-    QUARTER: ls('QUARTER', '15 минутный'),
-    OTHER: ls('OTHER', ''),
+    HOUR: ls('PERIOD_HOUR', 'Ежечасный'),
+    DAY: ls('PERIOD_DAY', 'Ежедневный'),
+    WEEK: ls('PERIOD_WEEK', 'Еженедельный'),
+    OTHER: ls('PERIOD_OTHER', ''),
 };
 
 const last_mile_technology_grouping = {
@@ -109,12 +110,12 @@ class Calculator extends React.PureComponent {
         const end_date = moment(start_date).endOf('day').toDate();
         this.state = {
             config: {
-                name: ls('WEEKLY', 'Ежедневный'),
+                name: period.DAY,
                 service_type: '',
                 period: {
                     start_date,
                     end_date,
-                    regularity: 'DAY',
+                    regularity: INTERVALS.DAY,
                     auto: true,
                 },
                 location: '',
@@ -179,9 +180,9 @@ class Calculator extends React.PureComponent {
                     itemName = entity && entity.name;
                 } else if (_.isObject(map)) {
                     itemName = map[String(id).toUpperCase()];
-                    itemName = !!itemName ? itemName : map[String(id).toLowerCase()];
+                    itemName = itemName === undefined ? map[String(id).toLowerCase()] : itemName;
                 }
-                return itemName ? itemName : id;
+                return itemName !== undefined ? itemName : id;
             };
             if (value) {
                 if (_.isArray(value)) {
@@ -211,7 +212,7 @@ class Calculator extends React.PureComponent {
         }, key, value);
 
         if (key === 'manufacturer') {
-            config['manufacturer_grouping'] = value.length > 1;
+            config['manufacturer_grouping'] = value.length === 0 && _.get(config, 'manufacturer_grouping', false);
         }
 
         if (key === 'abonent_group' && !!value) {
@@ -256,13 +257,18 @@ class Calculator extends React.PureComponent {
         const config = {
             ...this.state.config,
             period: {
+                auto: regularity !== INTERVALS.OTHER && _.get(this.state.config, 'period.auto' , false),
                 start_date,
                 end_date,
                 regularity,
             },
             date_time_grouping: groupingType,
         };
-        config.name = this.composeConfigName(config);
+
+        if (_.get(config, 'period.auto')) {
+            config['name'] = this.composeConfigName(config);
+        }
+
         this.setState({
             config,
             errors: _.omit(this.state.errors, removeKeys),
@@ -358,7 +364,6 @@ class Calculator extends React.PureComponent {
                                 onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
                                 disabled={disableForm}
                                 checked={_.get(this.state.config, 'manufacturer', [])}
-                                groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}
                             />
                             <div className={styles.panels}>
                                 <Equipment

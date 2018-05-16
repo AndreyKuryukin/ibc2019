@@ -92,9 +92,8 @@ class Table extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
-            const { by, direction } = this.state.sort;
             this.setState({
-                data: Array.isArray(nextProps.data) ? naturalSort(nextProps.data, [direction], node => [_.get(node, by, '')]) : [],
+                data: Array.isArray(nextProps.data) ? nextProps.data : [],
             });
         }
     }

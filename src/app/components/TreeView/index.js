@@ -65,7 +65,8 @@ class TreeView extends React.Component {
     mapData = (data, parents = []) => {
         const result = [];
         const sortedData = this.sort(data, this.state.sort.columnName, this.state.sort.direction);
-        sortedData.forEach((node, index) => {
+        sortedData.forEach((originNode, index) => {
+            const node = {...originNode};
             node.isLast = (index + 1) === data.length;
             if (!_.isEmpty(node.children)) {
                 result.push({ ...node, expandable: true, parents });

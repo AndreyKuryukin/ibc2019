@@ -31,7 +31,7 @@ class ColumnFilterForm extends React.PureComponent {
         }, () => {
             this.props.onColumnFilterChange(values);
             const lastKey = values.keySeq().last();
-            if (values.get(lastKey).length > 0) {
+            if (values.get(lastKey) && values.get(lastKey).length > 0) {
                 this.setState({
                     values: values.set(lastKey + 1, ''),
                 });
@@ -68,7 +68,7 @@ class ColumnFilterForm extends React.PureComponent {
                         <Input
                             key={key}
                             value={value}
-                            onChange={event => this.setFilterValue(key, _.get(event, 'target.value'))}
+                            onChange={event => this.setFilterValue(key, _.get(event, 'target.value', ''))}
                             onBlur={event => this.onBlurInput(event, key)}
                             style={{ width: '90%' }}
                         />

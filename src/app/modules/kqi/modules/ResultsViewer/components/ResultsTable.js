@@ -75,7 +75,7 @@ class ResultsTable extends React.PureComponent {
 
                 const id = this.composeResultId(result, index);
                 nodeIds.push(id);
-                if (nextName === 'value') {
+                if (nextName === 'value' || !nextName) {
                     children.push({
                         name: result[name],
                         id,
@@ -142,6 +142,7 @@ class ResultsTable extends React.PureComponent {
                                         text={node.name}
                                         onChange={(value) => this.onCheck(value, node)}
                                         value={isRowChecked}
+                                        style={{ marginLeft: 0 }}
                     />
                 }
                 return <DefaultCell

@@ -118,10 +118,10 @@
 }
 
 .menu-icon-reports {
-  @include iconBuilder(33px, 34px, 'menu/reports.svg');
+  @include iconBuilder(26px, 34px, 'menu/reports.svg');
 }
 .menu-icon-reports-active {
-  @include iconBuilder(33px, 34px, 'menu/reports-active.svg');
+  @include iconBuilder(26px, 34px, 'menu/reports-active.svg');
 }
 
 .menu-icon-sources {
@@ -153,8 +153,8 @@
 }
 
 .menu-icon-policies {
-  @include iconBuilder(33px, 34px, 'menu/policies.svg');
+  @include iconBuilder(26px, 34px, 'menu/policies.svg');
 }
 .menu-icon-policies-active {
-  @include iconBuilder(33px, 34px, 'menu/policies-active.svg');
+  @include iconBuilder(26px, 34px, 'menu/policies-active.svg');
 }

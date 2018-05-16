@@ -37,7 +37,7 @@ class BasicParams extends React.PureComponent {
             >
                 <Field
                     id="name"
-                    labelText={`${ls('KQI_CALCULATOR_NAME_FIELD_LABEL', 'Название')}:`}
+                    labelText={ls('KQI_CALCULATOR_NAME_FIELD_LABEL', 'Название')}
                     labelWidth="20%"
                     inputWidth="80%"
                     required
@@ -53,7 +53,7 @@ class BasicParams extends React.PureComponent {
                 </Field>
                 <Field
                     id="service-type"
-                    labelText={`${ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}:`}
+                    labelText={ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}
                     labelWidth="20%"
                     inputWidth="80%"
                 >
@@ -68,7 +68,7 @@ class BasicParams extends React.PureComponent {
                 </Field>
                 <Field
                     id="kqi"
-                    labelText={`${ls('KQI_CALCULATOR_KQI_FIELD_LABEL', 'KQI')}:`}
+                    labelText={ls('KQI_CALCULATOR_KQI_FIELD_LABEL', 'KQI')}
                     labelWidth="20%"
                     inputWidth="80%"
                     required
