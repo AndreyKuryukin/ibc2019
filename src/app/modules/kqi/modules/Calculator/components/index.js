@@ -180,9 +180,9 @@ class Calculator extends React.PureComponent {
                     itemName = entity && entity.name;
                 } else if (_.isObject(map)) {
                     itemName = map[String(id).toUpperCase()];
-                    itemName = !!itemName ? itemName : map[String(id).toLowerCase()];
+                    itemName = itemName === undefined ? map[String(id).toLowerCase()] : itemName;
                 }
-                return itemName ? itemName : id;
+                return itemName !== undefined ? itemName : id;
             };
             if (value) {
                 if (_.isArray(value)) {
@@ -264,7 +264,11 @@ class Calculator extends React.PureComponent {
             },
             date_time_grouping: groupingType,
         };
-        config.name = this.composeConfigName(config);
+
+        if (_.get(config, 'period.auto')) {
+            config['name'] = this.composeConfigName(config);
+        }
+
         this.setState({
             config,
             errors: _.omit(this.state.errors, removeKeys),
