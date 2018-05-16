@@ -42,3 +42,10 @@ export const LAST_INCH_TECHNOLOGIES = {
     WIFI: 'WiFi',
     LAN: 'LAN',
 };
+
+export const INTERVALS = {
+    DAY: 'DAY',
+    HOUR: 'HOUR',
+    WEEK: 'WEEK',
+    OTHER: 'OTHER',
+};
