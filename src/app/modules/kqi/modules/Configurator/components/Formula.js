@@ -18,7 +18,7 @@ class Formula extends React.PureComponent {
         multiplierPattern: ls('KPI_MULTIPLIER_PATTERN', 'Х 100'),
         keyMap: {
             object_type: ls('KPI_OBJECT_TYPE', '<Тип объекта>'),
-            parameter_type: ls('KPI_PARAMETER_TYPE', '<Параметер>'),
+            parameter_type: ls('KPI_PARAMETER_TYPE', '<Параметр>'),
             operator_type: ls('KPI_OPERATOR_TYPE', '<Оператор>'),
             level: ls('KPI_LEVEL', '<Значение>'),
         }

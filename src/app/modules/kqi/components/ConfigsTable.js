@@ -25,7 +25,7 @@ class ConfigsTable extends React.PureComponent {
     };
 
     static getColumns = memoize(() => [{
-        title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
+        title: ls('KQI_NAME_COLUMN_TITLE', 'Название'),
         name: 'name',
         searchable: true,
         sortable: true,
