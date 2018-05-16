@@ -10,18 +10,15 @@ import Field from '../../../../../components/Field';
 import DateTimePicker from '../../../../../components/DateTimePicker';
 import Select from '../../../../../components/Select';
 import styles from './styles.scss';
-
-const INTERVALS = {
-    DAY: 'DAY',
-    HOUR: 'HOUR',
-    WEEK: 'WEEK',
-    OTHER: 'OTHER',
-};
+import { INTERVALS } from '../constants';
 
 const intervalFieldStyle ={
     marginTop: 0,
     marginLeft: 10,
 };
+const groupingCheckboxStyle = { marginLeft: 30 };
+const groupingFieldStyle = { flexGrow: 1 };
+const dateTimePickerStyle = { marginLeft: 15 };
 
 class Period extends React.PureComponent {
     static propTypes = {
@@ -230,7 +227,7 @@ class Period extends React.PureComponent {
                         onChange={this.onEndChange}
                         inputWidth={90}
                         format={'DD.MM.YYYY HH:mm'}
-                        style={{ marginLeft: 15 }}
+                        style={dateTimePickerStyle}
                         time
                         valid={errors && _.isEmpty(errors.end_date_time)}
                         disabled={disabled}
@@ -240,16 +237,14 @@ class Period extends React.PureComponent {
                             id="date-time-grouping-check"
                             checked={this.state.isGroupingChecked}
                             onChange={this.onGroupingCheck}
-                            style={{ marginLeft: 30 }}
+                            style={groupingCheckboxStyle}
                         />
                         <Field
                             id="date-time-grouping"
                             labelText={ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}
                             labelWidth="38%"
                             inputWidth="62%"
-                            style={{
-                                flexGrow: 1,
-                            }}
+                            style={groupingFieldStyle}
                         >
                             <Select
                                 id="date-time-grouping"
@@ -273,7 +268,7 @@ class Period extends React.PureComponent {
                         id="auto-checkbox"
                         checked={this.props.isAutoGen}
                         onChange={this.props.onAutoGenChange}
-                        disabled={disabled}
+                        disabled={disabled || this.state.interval === INTERVALS.OTHER}
                     />
                 </Field>
             </Panel>

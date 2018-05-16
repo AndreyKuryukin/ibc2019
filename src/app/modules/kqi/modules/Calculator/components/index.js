@@ -4,6 +4,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
+import moment from 'moment';
 import styles from './styles.scss';
 import {
     DATE_TIME_GROUPING,
@@ -20,7 +21,7 @@ import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
 import UserGroups from './UserGroups';
-import moment from "moment";
+import { INTERVALS } from '../constants';
 
 const NAME_PATTERN_SEQUENCE = [
     'period.regularity',
@@ -114,7 +115,7 @@ class Calculator extends React.PureComponent {
                 period: {
                     start_date,
                     end_date,
-                    regularity: 'DAY',
+                    regularity: INTERVALS.DAY,
                     auto: true,
                 },
                 location: '',
@@ -256,6 +257,7 @@ class Calculator extends React.PureComponent {
         const config = {
             ...this.state.config,
             period: {
+                auto: regularity !== INTERVALS.OTHER && _.get(this.state.config, 'period.auto' , false),
                 start_date,
                 end_date,
                 regularity,
