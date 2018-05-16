@@ -211,7 +211,7 @@ class Calculator extends React.PureComponent {
         }, key, value);
 
         if (key === 'manufacturer') {
-            config['manufacturer_grouping'] = value.length > 1;
+            config['manufacturer_grouping'] = value.length === 0 && _.get(config, 'manufacturer_grouping', false);
         }
 
         if (key === 'abonent_group' && !!value) {
@@ -358,7 +358,6 @@ class Calculator extends React.PureComponent {
                                 onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
                                 disabled={disableForm}
                                 checked={_.get(this.state.config, 'manufacturer', [])}
-                                groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}
                             />
                             <div className={styles.panels}>
                                 <Equipment
