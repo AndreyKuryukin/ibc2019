@@ -66,12 +66,7 @@ class KqiResults extends React.PureComponent {
                 }
             }).then((response) => {
                 const data = response.data;
-                const history = nodes.map(node => {
-                    const item = _.find(data, { id: node.id });
-                    node.values = item ? item.values : [];
-                    return node
-                });
-                this.props.onFetchResultHistorySuccess(history)
+                this.props.onFetchResultHistorySuccess(data);
             })
         }
     };

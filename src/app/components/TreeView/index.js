@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import classnames from 'classnames';
-
+import memoize from 'memoizejs';
 import { naturalSort } from '../../util/sort';
 import Table from '../Table';
 import styles from './styles.scss';
@@ -34,23 +34,11 @@ class TreeView extends React.Component {
         bodyRowRender: () => null,
     };
 
-    static getDefaultSortBy(columns) {
-        const defaultSortColumn = columns.find(column => column.sortable);
-
-        return defaultSortColumn ? defaultSortColumn.name : null;
-    }
-
     constructor(props) {
         super(props);
 
-        const sortBy = TreeView.getDefaultSortBy(props.columns);
-
         this.state = {
             expanded: props.expanded || [],
-            sort: {
-                columnName: sortBy,
-                direction: 'asc',
-            },
         };
     }
 
@@ -60,25 +48,29 @@ class TreeView extends React.Component {
         }
     }
 
-    sort = (data, columnName, direction) => naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')]);
+    sort = memoize((data, columnName, direction) =>
+        naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')])
+            .reduce((result, nextNode, index, array) => {
+                const node = {
+                    ...nextNode,
+                    isLast: (index + 1) === array.length,
+                };
 
-    mapData = (data, parents = []) => {
-        const result = [];
-        const sortedData = this.sort(data, this.state.sort.columnName, this.state.sort.direction);
-        sortedData.forEach((originNode, index) => {
-            const node = {...originNode};
-            node.isLast = (index + 1) === data.length;
-            if (!_.isEmpty(node.children)) {
-                result.push({ ...node, expandable: true, parents });
-                if (this.isExpanded(node.id)) {
-                    result.push(...this.mapData(node.children, [...parents, node]));
-                }
-            } else {
-                result.push({ ...node, parents });
-            }
-        });
-        return result;
-    };
+                return !_.isEmpty(node.children) && this.isExpanded(node.id)
+                    ? [...result, node].concat(this.sort(node.children, columnName, direction))
+                    : [...result, node];
+                },
+            []));
+
+    mapData = (data, parents = []) =>
+        data.map((originNode, index) => ({
+            ...originNode,
+            parents,
+            expandable: !_.isEmpty(originNode.children),
+            children: !_.isEmpty(originNode.children) && this.isExpanded(originNode.id)
+                ? this.mapData(originNode.children, [...parents, originNode])
+                : _.get(originNode, 'children', []),
+        }));
 
     triggerExpand = (id) => {
         this.setState({
@@ -114,7 +106,7 @@ class TreeView extends React.Component {
         </div>
     );
 
-    transitCells = (parents) =>
+    transitCells = (parents = []) =>
         parents.map((parent, index) => (
             <div className={classnames({
                 [styles.transitCell]: !parent.isLast,
@@ -134,12 +126,12 @@ class TreeView extends React.Component {
 
     render() {
         const { data, ...rest } = this.props;
-        const newData = this.mapData(data);
+        const mappedData = this.mapData(data);
         return <Table
             {...rest}
-            data={newData}
+            data={mappedData}
             bodyRowRender={this.bodyRowRender}
-            customSortFunction={(columnName, direction) => { this.setState({ sort: { columnName, direction }}) }}
+            customSortFunction={this.sort}
         />
     }
 }

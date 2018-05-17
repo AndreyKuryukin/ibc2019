@@ -70,10 +70,9 @@ class Table extends React.Component {
 
         const defaultSortDirection = 'asc';
         const sortBy = Table.getDefaultSortBy(props.columns);
-        const data = Array.isArray(props.data) ? props.data : [];
 
         this.state = {
-            data: sortBy ? naturalSort(data, [defaultSortDirection], node => [_.get(node, `${sortBy}`, '')]) : data,
+            data: Array.isArray(props.data) ? this.getSortedData(props.data, sortBy, defaultSortDirection) : [],
             cntrlIsPressed: false,
             selected: [],
             sort: {
@@ -92,8 +91,10 @@ class Table extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.data !== nextProps.data) {
+            const { by, direction } = this.state.sort;
+
             this.setState({
-                data: Array.isArray(nextProps.data) ? nextProps.data : [],
+                data: Array.isArray(nextProps.data) ? this.getSortedData(nextProps.data, by, direction) : [],
             });
         }
     }
@@ -107,6 +108,11 @@ class Table extends React.Component {
         return this.thead ? this.thead.getBoundingClientRect().height : 22;
     }
 
+    getSortedData = (data, columnName, direction) =>
+        this.props.customSortFunction
+            ? this.props.customSortFunction(data, columnName, direction)
+            : naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')]);
+
     onRowClick = (node) => {
         this.setState({ selected: node.id });
         if (typeof this.props.onSelectRow === 'function') {
@@ -118,9 +124,7 @@ class Table extends React.Component {
         const { by, direction } = this.state.sort;
         const nextDirection = (direction === 'asc' && by === columnName) ? 'desc' : 'asc';
 
-        const sortedData = this.props.customSortFunction
-            ? this.props.customSortFunction(columnName, nextDirection)
-            : naturalSort(this.state.data, [nextDirection], node => [_.get(node, `${columnName}`, '')]);
+        const sortedData = this.getSortedData(this.props.data, columnName, nextDirection)
 
         this.setState({
             sort: {

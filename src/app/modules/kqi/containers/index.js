@@ -58,6 +58,10 @@ class KQI extends React.PureComponent {
         }
     }
 
+    componentWillUnmount() {
+        this.props.onFetchProjectionsSuccess([]);
+    }
+
     onFetchKQI = () => {
         this.setState({ isConfigsLoading: true });
         rest.get('/api/v1/kqi')
