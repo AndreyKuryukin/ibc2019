@@ -117,7 +117,7 @@ class Period extends React.PureComponent {
         this.configureAndSetState(start, end, INTERVALS.OTHER);
     };
 
-    onGroupingCheck = (value) => {
+    /* onGroupingCheck = (value) => {
         this.setState({ isGroupingChecked: value });
         if (value) {
             this.props.onGroupingTypeChange(this.state.groupingType);
@@ -131,7 +131,7 @@ class Period extends React.PureComponent {
             this.setState({ groupingType: value });
             this.props.onGroupingTypeChange(value);
         }
-    };
+    }; */
 
     onIntervalChange = (interval, value) => {
         if (value) {
@@ -232,30 +232,30 @@ class Period extends React.PureComponent {
                         valid={errors && _.isEmpty(errors.end_date_time)}
                         disabled={disabled}
                     />
-                    <div className={styles.groupingBlock}>
-                        <Checkbox
-                            id="date-time-grouping-check"
-                            checked={this.state.isGroupingChecked}
-                            onChange={this.onGroupingCheck}
-                            style={groupingCheckboxStyle}
-                        />
-                        <Field
-                            id="date-time-grouping"
-                            labelText={ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}
-                            labelWidth="38%"
-                            inputWidth="62%"
-                            style={groupingFieldStyle}
-                        >
-                            <Select
-                                id="date-time-grouping"
-                                value={this.state.groupingType}
-                                options={this.state.groupingOptions}
-                                onChange={this.onGroupingTypeChange}
-                                placeholder={ls('KQI_CALCULATOR_GROUPING_PLACEHOLDER', 'Выберите группировку')}
-                                disabled={!this.state.isGroupingChecked}
-                            />
-                        </Field>
-                    </div>
+                    {/*<div className={styles.groupingBlock}>*/}
+                        {/*<Checkbox*/}
+                            {/*id="date-time-grouping-check"*/}
+                            {/*checked={this.state.isGroupingChecked}*/}
+                            {/*onChange={this.onGroupingCheck}*/}
+                            {/*style={groupingCheckboxStyle}*/}
+                        {/*/>*/}
+                        {/*<Field*/}
+                            {/*id="date-time-grouping"*/}
+                            {/*labelText={ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}*/}
+                            {/*labelWidth="38%"*/}
+                            {/*inputWidth="62%"*/}
+                            {/*style={groupingFieldStyle}*/}
+                        {/*>*/}
+                            {/*<Select*/}
+                                {/*id="date-time-grouping"*/}
+                                {/*value={this.state.groupingType}*/}
+                                {/*options={this.state.groupingOptions}*/}
+                                {/*onChange={this.onGroupingTypeChange}*/}
+                                {/*placeholder={ls('KQI_CALCULATOR_GROUPING_PLACEHOLDER', 'Выберите группировку')}*/}
+                                {/*disabled={!this.state.isGroupingChecked}*/}
+                            {/*/>*/}
+                        {/*</Field>*/}
+                    {/*</div>*/}
                 </div>
                 <Field
                     id="auto-checkbox"

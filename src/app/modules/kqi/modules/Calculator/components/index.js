@@ -262,7 +262,7 @@ class Calculator extends React.PureComponent {
                 end_date,
                 regularity,
             },
-            date_time_grouping: groupingType,
+            // date_time_grouping: groupingType,
         };
 
         if (_.get(config, 'period.auto')) {
@@ -279,13 +279,16 @@ class Calculator extends React.PureComponent {
         const { config } = this.state;
         const preparedConfig = {
             ...config,
-            date_time_grouping: _.get(config, 'date_time_grouping') ? _.get(config, 'date_time_grouping') : GROUPING_TYPES.NONE,
+            // date_time_grouping: _.get(config, 'date_time_grouping') ? _.get(config, 'date_time_grouping') : GROUPING_TYPES.NONE,
+            date_time_grouping: GROUPING_TYPES.NONE,
             location_grouping: _.get(config, 'location_grouping') ? _.get(config, 'location_grouping') : GROUPING_TYPES.NONE,
             last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
-            last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            // last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            last_inch_technology_grouping: GROUPING_TYPES.NONE,
             manufacturer_grouping: _.get(config, 'manufacturer_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
             equipment_type_grouping: _.get(config, 'equipment_type_grouping') ? _.get(config, 'equipment_type_grouping') : GROUPING_TYPES.NONE,
-            abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? _.get(config, 'abonent_group_grouping') : GROUPING_TYPES.NONE,
+            // abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? _.get(config, 'abonent_group_grouping') : GROUPING_TYPES.NONE,
+            abonent_group_grouping: GROUPING_TYPES.NONE,
         };
 
         this.props.onSubmit(preparedConfig);
@@ -345,17 +348,17 @@ class Calculator extends React.PureComponent {
                             value={_.get(this.state.config, 'last_mile_technology')}
                             groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
                         />
-                        <Technology
-                            id="last-inch-technology"
-                            title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}
-                            label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}
-                            technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}
-                            onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}
-                            onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}
-                            disabled={disableForm}
-                            value={_.get(this.state.config, 'last_inch_technology')}
-                            groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}
-                        />
+                        {/*<Technology*/}
+                            {/*id="last-inch-technology"*/}
+                            {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
+                            {/*label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}*/}
+                            {/*technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}*/}
+                            {/*onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}*/}
+                            {/*onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}*/}
+                            {/*disabled={disableForm}*/}
+                            {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
+                            {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
+                        {/*/>*/}
                         <div className={styles.bottomContent}>
                             <Manufacture
                                 isGroupingChecked={_.get(this.state.config, 'manufacturer_grouping', false)}
@@ -374,14 +377,14 @@ class Calculator extends React.PureComponent {
                                     value={_.get(config, 'equipment_type')}
                                     groupingValue={_.get(config, 'equipment_type_grouping')}
                                 />
-                                <UserGroups
-                                    usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}
-                                    onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}
-                                    onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}
-                                    disabled={disableForm}
-                                    value={_.get(config, 'abonent_group')}
-                                    groupingValue={_.get(config, 'abonent_group_grouping')}
-                                />
+                                {/*<UserGroups*/}
+                                    {/*usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}*/}
+                                    {/*onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}*/}
+                                    {/*onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}*/}
+                                    {/*disabled={disableForm}*/}
+                                    {/*value={_.get(config, 'abonent_group')}*/}
+                                    {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
+                                {/*/>*/}
                             </div>
                         </div>
                     </div>
