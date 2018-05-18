@@ -55,7 +55,7 @@ class AlarmsViewer extends React.PureComponent {
         }, '');
 
     getAlarmContent = (key) => {
-        switch(key) {
+        switch (key) {
             case 'duration':
                 return this.getReadableDuration(_.get(this.props.alarm, key, 0));
             case 'notified': {
@@ -72,7 +72,10 @@ class AlarmsViewer extends React.PureComponent {
                 );
             }
             case 'attributes':
-                return _.get(this.props.alarm, key, []).join(', ');
+                return <ul>{_.reduce(_.get(this.props.alarm, key, {}), (result, value, key) => {
+                    result.push(`${key}=${value}`);
+                    return result;
+                }, []).map(attr => <li>{attr}</li>)}</ul>;
             default:
                 return _.get(this.props.alarm, key, '');
         }
@@ -102,8 +105,10 @@ class AlarmsViewer extends React.PureComponent {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={this.onClose}>{ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_CANCEL', 'Отмена')}</Button>
-                        <Button color="action" onClick={this.onClose}>{ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_OK', 'Ок')}</Button>
+                        <Button outline color="action"
+                                onClick={this.onClose}>{ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_CANCEL', 'Отмена')}</Button>
+                        <Button color="action"
+                                onClick={this.onClose}>{ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_OK', 'Ок')}</Button>
                     </ModalFooter>
                 </Modal>
             </DraggableWrapper>

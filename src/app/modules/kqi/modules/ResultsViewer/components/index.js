@@ -16,6 +16,7 @@ class ResultsViewer extends React.PureComponent {
         active: PropTypes.bool,
         match: PropTypes.object,
         results: PropTypes.array,
+        locations: PropTypes.array,
         resHistory: PropTypes.object,
         onMount: PropTypes.func,
         fetchHistory: PropTypes.func,
@@ -27,6 +28,7 @@ class ResultsViewer extends React.PureComponent {
         active: false,
         match: {},
         results: [],
+        locations: [],
         resHistory: {},
         onMount: () => null,
         fetchHistory: () => null,
@@ -83,6 +85,7 @@ class ResultsViewer extends React.PureComponent {
                                 <ResultsTable
                                     data={results}
                                     searchText={this.state.searchText}
+                                    locations={this.props.locations}
                                     prealoder={false}
                                     onCheck={this.onCheck}
                                     expandAll

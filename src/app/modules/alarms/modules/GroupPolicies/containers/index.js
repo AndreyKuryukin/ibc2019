@@ -5,6 +5,7 @@ import rest from '../../../../../rest';
 import GroupPoliciesComponent from '../components/index';
 import { fetchAlarmsSuccess, fetchRegionsSuccess, fetchLocationsSuccess } from '../actions';
 import ls from "i18n";
+import moment from "moment";
 
 class GroupPolicies extends React.PureComponent {
     static contextTypes = {
@@ -50,7 +51,12 @@ class GroupPolicies extends React.PureComponent {
 
     onFetchAlarms = (filter, isLoaderHidden) => {
         if (!isLoaderHidden) this.setState({ isLoading: true });
-        const alarmsPromise = rest.get('/api/v1/alarms/gp', {}, { queryParams: filter })
+        //todo: Переделать на реальные фильтры
+        const start_ent_stab = {
+            start: moment().subtract(1, 'weeks').unix() * 1000,
+            end: moment().unix() * 1000
+        };
+        const alarmsPromise = rest.get('/api/v1/alerts', {}, { queryParams: {...filter, ...start_ent_stab }})
             .then((response) => {
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);

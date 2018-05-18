@@ -10,6 +10,7 @@ import CheckedCell from "../../../../../components/Table/Cells/CheckedCell";
 class ResultsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
+        locations: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         expandAll: PropTypes.bool,
@@ -18,6 +19,7 @@ class ResultsTable extends React.PureComponent {
 
     static defaultProps = {
         data: [],
+        locations: [],
         searchText: '',
         preloader: false,
         onCheck: () => null,
@@ -39,6 +41,9 @@ class ResultsTable extends React.PureComponent {
         this.state = {
             checked: [],
             checkedNodes: [],
+            valueMap: {
+                location: this.mapLocations(props.locations)
+            }
         };
     }
 
@@ -50,7 +55,19 @@ class ResultsTable extends React.PureComponent {
         if (!_.isEqual(nextProps.expandAll, this.state.expandAll)) {
             this.setState({ expandAll: nextProps.expandAll })
         }
+        if (!_.isEqual(nextProps.locations, this.props.locations)) {
+            this.setState({ valueMap: { location: this.mapLocations(nextProps.locations) } });
+        }
     }
+
+    mapLocations = (locations) => _.reduce(locations, (result, location) => {
+        result[location.id] = location.name;
+        return result;
+    }, {});
+
+    getMapedValueWithDefault = (result, fieldName) => {
+        return _.get(this.state.valueMap, `${fieldName}.${result[fieldName]}`, result[fieldName]);
+    };
 
     composeResultId = (result, index) => `${Object.values(result).join('_').trim()}-${index}`;
 
@@ -66,7 +83,7 @@ class ResultsTable extends React.PureComponent {
             const recursiveAdd = (children, index = 0) => {
                 const name = deepSeries[index];
                 const nextName = deepSeries[index + 1];
-                const existingNode = _.find(children, { name: result[name]});
+                const existingNode = _.find(children, { name: result[name] });
 
                 if (existingNode) {
                     existingNode.children = recursiveAdd(existingNode.children, index + 1);
@@ -77,7 +94,7 @@ class ResultsTable extends React.PureComponent {
                 nodeIds.push(id);
                 if (nextName === 'value' || !nextName) {
                     children.push({
-                        name: result[name],
+                        name: this.getMapedValueWithDefault(result, name),
                         id,
                         result: result.value,
                         weight: result.weight,
@@ -85,7 +102,7 @@ class ResultsTable extends React.PureComponent {
                     })
                 } else {
                     children.push({
-                        name: result[name],
+                        name: this.getMapedValueWithDefault(result, name),
                         id,
                         children: recursiveAdd([], index + 1)
                     });

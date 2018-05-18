@@ -70,9 +70,9 @@ module.exports = (app) => {
         res.send(regions);
     });
 
-    app.get('/api/v1/common/location', (req, res) => {
-        res.send(locations);
-    });
+    // app.get('/api/v1/common/location', (req, res) => {
+    //     res.send(locations);
+    // });
 
     // app.get('/api/v1/common/manufacture', (req, res) => {
     //     res.send(manufacturers);
@@ -82,11 +82,11 @@ module.exports = (app) => {
     //     res.send(equipments);
     // });
     //
-    // app.get('/api/v1/common/parameters', (req, res) => {
-    //     res.send(parameters);
-    // });
-
-    app.get('/api/v1/common/usergroup', (req, res) => {
-        res.send(usergroups);
+    app.get('/api/v1/common/parameters', (req, res) => {
+        res.send(parameters);
     });
+
+    // app.get('/api/v1/common/usergroup', (req, res) => {
+    //     res.send(usergroups);
+    // });
 };

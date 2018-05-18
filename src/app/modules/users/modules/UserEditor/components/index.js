@@ -282,6 +282,22 @@ class UserEditor extends React.Component {
                                     </Tooltip>
                                 </Field>
                                 <Field
+                                    id="email"
+                                    labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                    required
+                                >
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        value={this.getUserProperty('email', '')}
+                                        onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
+                                        valid={errors && _.isEmpty(errors.email)}
+                                        errorMessage={_.get(errors, 'email.title')}
+                                    />
+                                </Field>
+                                <Field
                                     id="name"
                                     labelText={ls('USER_NAME_FIELD_TITLE', 'Имя')}
                                     labelWidth="50%"
@@ -305,21 +321,6 @@ class UserEditor extends React.Component {
                                         name="last-name"
                                         value={this.getUserProperty('last_name', '')}
                                         onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
-                                    />
-                                </Field>
-                                <Field
-                                    id="email"
-                                    labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}
-                                    labelWidth="50%"
-                                    inputWidth="50%"
-                                >
-                                    <Input
-                                        id="email"
-                                        name="email"
-                                        value={this.getUserProperty('email', '')}
-                                        onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
-                                        valid={errors && _.isEmpty(errors.email)}
-                                        errorMessage={_.get(errors, 'email.title')}
                                     />
                                 </Field>
                                 <Field

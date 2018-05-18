@@ -29,7 +29,7 @@ class AlarmsViewer extends React.PureComponent {
             const urlParams = {
                 id: this.props.alarmId,
             };
-            rest.get('/api/v1/alarms/gp/:id', { urlParams })
+            rest.get('/api/v1/alerts/:id', { urlParams })
                 .then((response) => {
                     const alarm = response.data;
                     this.props.onFetchAlarmSuccess(alarm);

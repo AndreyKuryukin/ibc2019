@@ -39,25 +39,33 @@ class KqiResults extends React.PureComponent {
 
     componentDidMount() {
         const { configId, projectionId, resultId } = this.props;
-        this.fetchResult(configId, projectionId, resultId);
+        this.fetchData(configId, projectionId, resultId);
     }
 
-    fetchResult = (configId, projectionId, resultId) => {
-        rest.get('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', {
-            urlParams: {
-                configId,
-                projectionId,
-                resultId
-            }
-        }).then((response) => {
-            const result = response.data;
-            this.props.onFetchResultSuccess(result)
-        })
+    fetchData = (configId, projectionId, resultId) => {
+        Promise.all([this.fetchLocations(), this.fetchResult(configId, projectionId, resultId)])
+            .then(([locationsResponse, resultResponse]) => {
+                const result = resultResponse.data;
+                const locations = locationsResponse.data;
+                this.setState({ locations }, () => {
+                    this.props.onFetchResultSuccess(result);
+                })
+            });
     };
+
+    fetchResult = (configId, projectionId, resultId) => rest.get('/api/v1/kqi/:configId/projection/:projectionId/result/:resultId', {
+        urlParams: {
+            configId,
+            projectionId,
+            resultId
+        }
+    });
+
+    fetchLocations = () => rest.get('/api/v1/common/location');
 
     fetchHistory = (nodes) => {
         const { configId, projectionId } = this.props;
-        this.props.onFetchResultHistorySuccess([])
+        this.props.onFetchResultHistorySuccess([]);
         if (!_.isEmpty(nodes)) {
             rest.post('/api/v1/kqi/:configId/projection/:projectionId/result', nodes, {
                 urlParams: {
@@ -86,6 +94,7 @@ class KqiResults extends React.PureComponent {
                 resHistory={this.props.resHistory}
                 onMount={this.onFetchKQI}
                 isLoading={this.state.isLoading}
+                locations={this.state.locations}
                 fetchHistory={this.fetchHistory}
                 onClose={this.props.onClose}
             />

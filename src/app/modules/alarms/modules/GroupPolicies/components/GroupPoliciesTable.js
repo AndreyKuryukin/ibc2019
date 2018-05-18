@@ -30,16 +30,22 @@ class GroupPoliciesTable extends React.PureComponent {
             name: 'id',
             searchable: true,
             sortable: true,
+            width: 150,
+
         }, {
             title: ls('ALARMS_GROUP_POLICIES_PRIORITY_COLUMN', 'Приоритет'),
             name: 'priority',
             searchable: true,
             sortable: true,
+            width: 150,
+
         }, {
             title: ls('ALARMS_GROUP_POLICIES_RAISE_TIME_COLUMN', 'Время возникновения'),
             name: 'raise_time',
             searchable: true,
             sortable: true,
+            width: 150,
+
         }, {
             title: ls('ALARMS_GROUP_POLICIES_DURATION_COLUMN', 'Длительность'),
             name: 'duration',
@@ -55,12 +61,12 @@ class GroupPoliciesTable extends React.PureComponent {
         }
     ]));
 
-    getReadableDuration = (seconds = 0) =>
-        ['days', 'hours', 'minutes'].reduce((result, key) => {
-            const duration = moment.duration(seconds, 'seconds');
+    getReadableDuration = (milliseconds = 0) =>
+        ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
+            const duration = moment.duration(milliseconds, 'milliseconds');
             const method = duration[key];
             const units = method.call(duration).toString();
-            const readableUnits = (key === 'hours' || key === 'minutes') && units.length === 1 ? '0' + units : units;
+            const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
             const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
 
             return `${result}${nextPart}`;
