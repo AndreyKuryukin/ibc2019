@@ -7,6 +7,7 @@ $tree-space-width: 28px;
 %cell {
   height: $table-cell-height;
   width: $tree-control-width;
+  min-width: $tree-control-width;
 }
 
 %showPseudo {
@@ -50,7 +51,9 @@ $tree-space-width: 28px;
 .cellContainer {
   display: flex;
   flex-direction: row;
+  width: 100%;
   align-items: center;
+  overflow: hidden;
 }
 
 .expandedCell {
@@ -116,6 +119,7 @@ $tree-space-width: 28px;
 .transitCell {
   @extend %cell;
   width: $tree-space-width;
+  min-width: $tree-space-width;
   &:before {
     @extend  %verticalStick;
   }
@@ -123,6 +127,7 @@ $tree-space-width: 28px;
 
 .emptyCell {
   width: $tree-space-width;
+  min-width: $tree-space-width;
   @extend %cell;
 }
 

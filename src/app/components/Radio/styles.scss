@@ -1,5 +1,5 @@
 .radioWrapper {
-  display: inline-block;
+  display: flex;
   input:checked + .radioInput:before {
     background: url('../../../resources/img/checkbox/radio_checked.png') no-repeat center;
   }

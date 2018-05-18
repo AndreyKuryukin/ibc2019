@@ -9,6 +9,7 @@ class IconCell extends React.PureComponent {
         href: PropTypes.string,
         text: PropTypes.string,
         style: PropTypes.object,
+        cellStyle: PropTypes.object,
         onIconClick: PropTypes.func,
         onLinkClick: PropTypes.func,
     };
@@ -17,23 +18,26 @@ class IconCell extends React.PureComponent {
         href: '',
         text: '',
         style: {},
+        iconProps: {},
+        cellStyle: {},
         onIconClick: () => null,
         onLinkClick: () => null,
     };
 
     render() {
-        const { icon, href, text, style, onIconClick, onLinkClick } = this.props;
+        const { icon, href, text, style, cellStyle, iconProps, onIconClick, onLinkClick } = this.props;
         const iconStyle = {
             marginRight: text ? 10 : 0,
             ...style,
         };
 
         return (
-            <div className="table-cell-content" title={text}>
+            <div className="table-cell-content" style={cellStyle} title={text}>
                 <Icon
                     icon={icon}
                     style={iconStyle}
                     onClick={onIconClick}
+                    {...iconProps}
                 />
                 <span className="truncated">
                     {href ? (

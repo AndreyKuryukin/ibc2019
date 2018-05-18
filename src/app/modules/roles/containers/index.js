@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { Button } from 'reactstrap';
 import { deleteRoleSuccess, fetchListOfRolesSuccess } from '../actions';
 import rest from '../../../rest';
 import { selectRolesData } from '../selectors';
@@ -37,7 +36,7 @@ class Roles extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle(ls('ROLES_PAGE_TITLE', 'Роли'));
+        this.context.navBar.setPageTitle([ls('USERS_PAGE_TITLE', 'Пользователи'), ls('ROLES_PAGE_TITLE', 'Роли')]);
     }
 
     fetchRoles = () => {
@@ -47,42 +46,30 @@ class Roles extends React.PureComponent {
                 const roles = response.data;
                 this.props.onFetchRolesSuccess(roles);
                 this.setState({ isLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
             });
     };
 
-    onRemoveConfirmed = (ids) => {
+    onRemoveConfirmed = (ids, onSuccess) => {
         this.setState({ isLoading: true });
         Promise.all(
             ids.map(id => rest.delete('/api/v1/role/:roleId', {}, { urlParams: { roleId: id } }))
         ).then(([...deletedIds]) => {
             this.props.onDeleteRolesSuccess(ids);
+            onSuccess();
+            this.setState({ isLoading: false });
+        })
+        .catch((e) => {
+            console.error(e);
             this.setState({ isLoading: false });
         });
     };
 
-    onRemove = (ids) => {
-        this.context.notifications.notify({
-            title: ls('ROLES_REMOVE_CONFIRM_TITLE', 'Подтвердите действие:'),
-            message: ls('ROLES_REMOVE_CONFIRM_MESSAGE', 'Удаление роли'),
-            type: 'CONFIRMATION',
-            code: 'remove-roles',
-            actions: [
-                <Button color='action'
-                        onClick={() => {
-                            this.context.notifications.close('remove-roles');
-                            this.onRemoveConfirmed(ids)
-                        }}>
-                    {ls('GENERAL_REMOVE', "Удалить")}
-                </Button>,
-                <Button outline
-                        color="action"
-                        style={{color: 'black'}}
-                        onClick={() => this.context.notifications.close('remove-roles')}>
-                    {ls('GENERAL_CANCEL', "Отмена")}
-                </Button>,
-            ]
-        });
-
+    onRemove = (ids, onSuccess) => {
+        this.onRemoveConfirmed(ids, onSuccess);
     };
 
     render() {

@@ -20,33 +20,45 @@ class Field extends React.PureComponent {
         required: PropTypes.bool,
         children: PropTypes.node,
         style: PropTypes.object,
+        title: PropTypes.string,
+        splitter: PropTypes.string
     }
 
     static defaultProps = {
         id: '',
         labelText: '',
-        labelWidth: '50%',
-        inputWidth: '50%',
+        labelWidth: null,
+        inputWidth: null,
         labelAlign: 'left',
         required: false,
         children: null,
         style: {},
-    }
+        title: '',
+        splitter: ':'
+    };
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, inputWidth, required, children, style } = this.props;
+        const { id, labelText, labelWidth, labelAlign, splitter, disabled, inputWidth, required, children, style, title } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
-            { [styles.required]: required },
-            { [styles.rightLabel]: labelAlign === 'right' },
+            {
+                [styles.required]: required,
+                [styles.rightLabel]: labelAlign === 'right',
+                [styles.disabled]: disabled,
+
+            },
         );
         return (
-            <div className={classes} style={style}>
+            <div
+                className={classes}
+                style={style}
+                title={title || null}
+            >
                 <label
                     htmlFor={id}
                     className={styles.fieldLabel}
                     style={{ width: labelWidth }}
-                >{labelText}</label>
+                >{`${labelText}${splitter}`}</label>
                 <div
                     className={styles.fieldInput}
                     style={{ width: inputWidth }}

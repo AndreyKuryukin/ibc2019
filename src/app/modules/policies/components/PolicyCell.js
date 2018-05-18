@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import styles from './styles.scss';
 
 class PolicyCell extends React.PureComponent {
@@ -11,28 +12,30 @@ class PolicyCell extends React.PureComponent {
         title: PropTypes.string,
         name: PropTypes.string,
         columns: PropTypes.array,
+        isInHeader: PropTypes.bool,
         sort: PropTypes.object,
-    }
+    };
 
     static defaultProps = {
         title: '',
         name: '',
         columns: [],
+        isInHeader: false,
         sort: null,
-    }
+    };
 
     onColumnClick = (columnName) => {
         if (this.props.sort !== null) {
             this.context.sort(`${this.props.name}.${columnName}`);
         }
-    }
+    };
 
     onParentClick = (e) => {
         e.stopPropagation();
-    }
+    };
 
     render() {
-        const { title, name: columnName, columns, sort } = this.props;
+        const { title, name: columnName, columns, isInHeader, sort } = this.props;
 
         return (
             <div className={styles.policyCell} onClick={this.onParentClick}>
@@ -42,7 +45,7 @@ class PolicyCell extends React.PureComponent {
                     return (
                         <div
                             key={name}
-                            className={styles.subtitle}
+                            className={classnames(styles.subtitle, { [styles.inHeader]: isInHeader })}
                             onClick={() => this.onColumnClick(name)}
                         >
                             {sortDirection && <span>{sortDirection === 'asc' ? '\u2B07' : '\u2B06'}</span>}

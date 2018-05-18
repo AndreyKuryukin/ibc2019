@@ -2,40 +2,22 @@ import axios from 'axios';
 import _ from 'lodash';
 import { LOGIN_REQUEST, LOGIN_SUCCESS_RESPONSE, SIGN_IN_URL } from '../costants/login';
 
-axios.defaults.headers.common.Authorization = localStorage.getItem('jwtToken');
+const responseCodeHooks = {};
 
 export const request = (url, params) => new Promise((resolve, reject) => {
     axios({ ...params, baseURL: window.location.origin, url })
         .then(response => {
-            const status = _.get(response, 'status');
-            if (status === 401) {
-
-            }
+            const status = _.get(response, 'status', '');
+            responseCodeHooks[status] && responseCodeHooks[status](response);
             resolve({ data: _.get(response, 'data'), headers: _.get(response, 'headers') })
         })
         .catch((error) => {
             const response = _.get(error, 'response');
+            const status = _.get(response, 'status', '');
+            responseCodeHooks[status] && responseCodeHooks[status](response);
             reject(response);
-
         });
 });
-
-
-export const signIn = (login, password) => request(SIGN_IN_URL, {
-    method: 'POST',
-    headers: { 'Content-type': 'application/json' },
-    data: {
-        [LOGIN_REQUEST.LOGIN]: login,
-        [LOGIN_REQUEST.PASSWORD]: password,
-    },
-}).then((response) => {
-    const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];
-    const userName = response.data[LOGIN_SUCCESS_RESPONSE.USER_NAME];
-    localStorage.setItem('jwtToken', token);
-    axios.defaults.headers.common.Authorization = localStorage.getItem('jwtToken');
-    return userName;
-});
-
 
 export const composeUrl = (url, params = {}) =>
     _.reduce(params, (result, value, key) => result.replace(`:${key}`, value), url);
@@ -60,4 +42,11 @@ export default {
         data,
         params: config.queryParams,
     }),
+    onResponseCode: (errorCode, callback) => {
+        responseCodeHooks[errorCode] = callback;
+    },
+    setCommonHeader: (name, value) => {
+        // axios.defaults.headers.common.Authorization = localStorage.getItem('jwtToken');
+        axios.defaults.headers.common[name] = value;
+    }
 };

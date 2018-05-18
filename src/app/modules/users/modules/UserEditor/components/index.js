@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Form } from 'reactstrap';
+import { Form, Tooltip } from 'reactstrap';
 import Modal from '../../../../../components/Modal';
 import Input from '../../../../../components/Input';
 import styles from './styles.scss';
@@ -11,6 +11,9 @@ import Panel from '../../../../../components/Panel';
 import Radio from '../../../../../components/Radio';
 import ls from 'i18n';
 import Divisions from "./Divisions";
+import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
+
+const bodyStyle = { padding: 0 };
 
 class UserEditor extends React.Component {
     static contextTypes = {
@@ -18,20 +21,23 @@ class UserEditor extends React.Component {
     };
 
     static propTypes = {
-        userId: PropTypes.number,
+        userId: PropTypes.string,
         user: PropTypes.object,
         active: PropTypes.bool,
         onSubmit: PropTypes.func.isRequired,
+        onClose: PropTypes.func.isRequired,
         onMount: PropTypes.func,
         rolesList: PropTypes.array,
         groupsList: PropTypes.array,
         divisions: PropTypes.object,
+        errors: PropTypes.object,
     };
 
     static defaultProps = {
         rolesList: [],
         groupsList: [],
         divisions: null,
+        errors: null,
         active: false,
         onMount: () => null,
     };
@@ -40,7 +46,9 @@ class UserEditor extends React.Component {
         super(props);
 
         this.state = {
-            user: {},
+            user: props.user,
+            errors: null,
+            showTooltipFor: null,
         };
     }
 
@@ -56,12 +64,17 @@ class UserEditor extends React.Component {
                 user: nextProps.user,
             });
         }
+
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
     }
 
     shouldComponentUpdate(nextProps, nextState) {
         const isCheckedIdsChanged = this.state.checkedIds !== nextState.checkedIds;
-
-        return !isCheckedIdsChanged;
+        const isRolesListChanged = this.state.rolesList !== nextProps.rolesList;
+        const isGroupsListChanged = this.state.groupsList !== nextProps.groupsList;
+        return true; //isCheckedIdsChanged || isRolesListChanged || isGroupsListChanged;
     }
 
     getUserProperty = (key, defaultValue) => _.get(this.state.user, key, defaultValue);
@@ -72,29 +85,69 @@ class UserEditor extends React.Component {
             [key]: value,
         };
 
+        let errors = null;
+        if (key === 'password' || key === 'confirm') {
+            errors = user.password === user.confirm ? _.omit(this.state.errors, ['password', 'confirm']) : this.state.errors;
+        } else {
+            errors = _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors;
+        }
+
         this.setState({
             user,
+            errors,
         });
-    }
+    };
 
     onClose = () => {
         this.context.history.push('/users');
+        this.props.onClose();
     };
 
     roleIdsToRoles = (roleIds) => {
-        return roleIds.map(id => _.find(this.props.rolesList, role => role.id === id));
+        return Array.isArray(roleIds) ? roleIds.map(id => _.find(this.props.rolesList, role => role.id === id)) : [];
     };
 
     groupIdsToGroups = (groupIds) => {
-        return groupIds.map(id => _.find(this.props.groupsList, role => role.id === id));
+        return Array.isArray(groupIds) ? groupIds.map(id => _.find(this.props.groupsList, role => role.id === id)) : [];
     };
 
     onSubmit = () => {
-        const user = _.omit(this.state.user, 'confirm');
+        const user = { ...this.state.user };
         user.roles = this.roleIdsToRoles(user.roles);
         user.groups = this.groupIdsToGroups(user.groups);
         if (typeof this.props.onSubmit === 'function') {
             this.props.onSubmit(this.props.userId, user);
+        }
+    };
+
+
+    onPasswordClick = (e) => {
+        const isCapsLockOn = e.getModifierState('CapsLock');
+
+        this.setState({
+            showTooltipFor: isCapsLockOn ? e.target.id : null,
+        });
+    };
+
+    onPasswordKeyDown = (e) => {
+        if (e.keyCode === 20) {
+            const isCapsLockOn = e.getModifierState('CapsLock');
+            this.setState({
+                showTooltipFor: isCapsLockOn ? e.target.id : null,
+            });
+        }
+    };
+
+    onPasswordBlur = () => {
+        this.setState({ showTooltipFor: null });
+    };
+
+    onChangePhone = (e) => {
+        const value = e.target.value;
+        const reg = new RegExp(/^([0-9]){0,11}$/);
+
+        if (reg.test(value)) {
+            this.setUserProperty('phone', value);
         }
     };
 
@@ -106,8 +159,10 @@ class UserEditor extends React.Component {
             groupsList,
             divisions,
         } = this.props;
+        const { errors, showTooltipFor } = this.state;
 
         return (
+            <DraggableWrapper>
             <Modal
                 isOpen={active}
                 title={userId ? ls('USER_EDIT_USER', 'Редактирование пользователя') : ls('USER_ADD_USER', 'Создание пользователя')}
@@ -115,6 +170,8 @@ class UserEditor extends React.Component {
                 onSubmit={this.onSubmit}
                 className={styles.userEditor}
                 modalClassName={styles.userEditor}
+                submitTitle={userId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}
+                cancelTitle={ls('CANCEL', 'Отмена')}
             >
                 <div
                     className={styles.userEditorContent}
@@ -134,13 +191,13 @@ class UserEditor extends React.Component {
                                     id="ldap"
                                     type="radio"
                                     name="authentication-mode"
-                                    checked={this.getUserProperty('authenticationMode', '') === 'ldap'}
-                                    onChange={value => this.setUserProperty('authenticationMode', value)}
+                                    checked={this.getUserProperty('ldap_auth')}
+                                    onChange={value => this.setUserProperty('ldap_auth', true)}
                                 />
                             </Field>
                             <Field
                                 id="custom"
-                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Другой')}
+                                labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Внутренний')}
                                 labelAlign="right"
                                 labelWidth="95%"
                                 inputWidth="5%"
@@ -149,8 +206,8 @@ class UserEditor extends React.Component {
                                     id="custom"
                                     type="radio"
                                     name="authentication-mode"
-                                    checked={this.getUserProperty('authenticationMode', '') === 'custom'}
-                                    onChange={value => this.setUserProperty('authenticationMode', value)}
+                                    checked={!this.getUserProperty('ldap_auth')}
+                                    onChange={value => this.setUserProperty('ldap_auth', false)}
                                 />
                             </Field>
                         </Panel>
@@ -163,6 +220,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="login"
                                     labelText={ls('USER_LOGIN_FIELD_TITLE', 'Логин')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                     required
                                 >
                                     <Input
@@ -170,12 +229,16 @@ class UserEditor extends React.Component {
                                         name="login"
                                         value={this.getUserProperty('login', '')}
                                         onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
+                                        valid={errors && _.isEmpty(errors.login)}
+                                        errorMessage={_.get(errors, 'login.title')}
                                     />
                                 </Field>
                                 <Field
                                     id="password"
                                     labelText={ls('USER_PASSWORD_FIELD_TITLE', 'Пароль')}
-                                    required
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                    required={!userId}
                                 >
                                     <Input
                                         id="password"
@@ -183,12 +246,23 @@ class UserEditor extends React.Component {
                                         type="password"
                                         value={this.getUserProperty('password', '')}
                                         onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
+                                        onClick={this.onPasswordClick}
+                                        onKeyDown={this.onPasswordKeyDown}
+                                        onFocus={this.onPasswordFocus}
+                                        onBlur={this.onPasswordBlur}
+                                        valid={errors && _.isEmpty(errors.password)}
+                                        errorMessage={_.get(errors, 'password.title')}
                                     />
+                                    <Tooltip placement="right" isOpen={showTooltipFor === 'password'} target="password">
+                                        {ls('CAPS_LOCK_IS_ON_TEXT', 'Включен Caps Lock!')}
+                                    </Tooltip>
                                 </Field>
                                 <Field
                                     id="confirm"
                                     labelText={ls('USER_CONFIRM_FIELD_TITLE', 'Подтвердите пароль')}
-                                    required
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                    required={!userId}
                                 >
                                     <Input
                                         id="confirm"
@@ -196,11 +270,38 @@ class UserEditor extends React.Component {
                                         type="password"
                                         value={this.getUserProperty('confirm', '')}
                                         onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
+                                        onClick={this.onPasswordClick}
+                                        onKeyDown={this.onPasswordKeyDown}
+                                        onFocus={this.onPasswordFocus}
+                                        onBlur={this.onPasswordBlur}
+                                        valid={errors && _.isEmpty(errors.confirm)}
+                                        errorMessage={_.get(errors, 'confirm.title')}
+                                    />
+                                    <Tooltip placement="right" isOpen={showTooltipFor === 'confirm'} target="confirm">
+                                        {ls('CAPS_LOCK_IS_ON_TEXT', 'Включен Caps Lock!')}
+                                    </Tooltip>
+                                </Field>
+                                <Field
+                                    id="email"
+                                    labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                    required
+                                >
+                                    <Input
+                                        id="email"
+                                        name="email"
+                                        value={this.getUserProperty('email', '')}
+                                        onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
+                                        valid={errors && _.isEmpty(errors.email)}
+                                        errorMessage={_.get(errors, 'email.title')}
                                     />
                                 </Field>
                                 <Field
                                     id="name"
                                     labelText={ls('USER_NAME_FIELD_TITLE', 'Имя')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="name"
@@ -212,6 +313,8 @@ class UserEditor extends React.Component {
                                 <Field
                                     id="last-name"
                                     labelText={ls('USER_LAST_NAME_FIELD_TITLE', 'Фамилия')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="last-name"
@@ -221,25 +324,16 @@ class UserEditor extends React.Component {
                                     />
                                 </Field>
                                 <Field
-                                    id="email"
-                                    labelText={ls('USER_EMAIL_FIELD_TITLE', 'E-mail')}
-                                >
-                                    <Input
-                                        id="email"
-                                        name="email"
-                                        value={this.getUserProperty('email', '')}
-                                        onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
-                                    />
-                                </Field>
-                                <Field
                                     id="phone"
                                     labelText={ls('USER_PHONE_FIELD_TITLE', 'Телефон')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
                                 >
                                     <Input
                                         id="phone"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
-                                        onChange={event => this.setUserProperty('phone', _.get(event, 'target.value'))}
+                                        onChange={this.onChangePhone}
                                     />
                                 </Field>
                             </Form>
@@ -248,9 +342,10 @@ class UserEditor extends React.Component {
                     <div className={styles.userEditorColumn}>
                         <Panel
                             title={ls('USER_ROLE_PANEL_TITLE', 'Роль')}
-                            bodyStyle={{ padding: 0 }}
+                            bodyStyle={bodyStyle}
                         >
                             <RolesGrid
+                                id="user-editor-roles-grid"
                                 data={rolesList}
                                 checked={this.getUserProperty('roles', [])}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
@@ -267,7 +362,7 @@ class UserEditor extends React.Component {
                     <div className={styles.userEditorColumn}>
                         <Panel
                             title={ls('USER_NOTIFICATION_GROUP_PANEL_TITLE', 'Группы уведомлений')}
-                            bodyStyle={{ padding: 0 }}
+                            bodyStyle={bodyStyle}
                         >
                             <RolesGrid
                                 data={groupsList}
@@ -279,6 +374,7 @@ class UserEditor extends React.Component {
                     </div>
                 </div>
             </Modal>
+            </DraggableWrapper>
         );
     }
 }

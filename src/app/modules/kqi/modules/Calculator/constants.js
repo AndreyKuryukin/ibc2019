@@ -1,3 +1,5 @@
+import ls from "i18n";
+
 export const GROUPING_TYPES = {
     NONE: 'NONE',
     SELF: 'SELF',
@@ -21,22 +23,29 @@ export const SERVICE_TYPES = {
 };
 
 export const DATE_TIME_GROUPING = {
-    DAY: 'Дням',
-    WEEK: 'Неделям',
-    MONTH: 'Месяцам'
+    DAY: ls('DAY_GROUPING', 'Дням'),
+    HOUR: ls('HOUR_GROUPING', 'Часам'),
+    WEEK: ls('WEEK_GROUPING', 'Неделям'),
 };
 
 export const LOCATION_GROUPING = {
-    BRANCH: 'Филиалам',
+    BRANCH: 'РФ',
 };
 
 export const LAST_MILE_TECHNOLOGIES = {
     FTTB: 'FTTB',
     GPON: 'GPON',
-    XDSL: 'XDSL',
+    XDSL: 'xDSL',
 };
 
 export const LAST_INCH_TECHNOLOGIES = {
-    WIFI: 'WIFI',
+    WIFI: 'WiFi',
     LAN: 'LAN',
+};
+
+export const INTERVALS = {
+    DAY: 'DAY',
+    HOUR: 'HOUR',
+    WEEK: 'WEEK',
+    OTHER: 'OTHER',
 };

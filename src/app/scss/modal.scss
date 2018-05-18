@@ -27,7 +27,7 @@
 
 .modal-footer {
   height: $modal-footer-height;
-  justify-content: space-between;
+  justify-content: flex-end;
   flex-grow: 0;
   flex-shrink: 0;
   padding: $modal-footer-padding;

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Modal as ReactstrapModal, ModalHeader, ModalBody, ModalFooter, Button } from 'reactstrap';
+import { Button, Modal as ReactstrapModal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import DraggableWrapper from "../DraggableWrapper/index";
 
 class Modal extends React.PureComponent {
     static propTypes = {
-        isOpen:  PropTypes.bool,
+        isOpen: PropTypes.bool,
         title: PropTypes.string,
         className: PropTypes.string,
         onSubmit: PropTypes.func,
@@ -29,18 +30,22 @@ class Modal extends React.PureComponent {
             onClose,
             className,
             size,
+            submitTitle,
+            cancelTitle
         } = this.props;
         return (
-            <ReactstrapModal isOpen={isOpen} toggle={onClose} className={className} size={size}>
-                <ModalHeader toggle={onClose}>{title}</ModalHeader>
-                <ModalBody>
-                    {this.props.children}
-                </ModalBody>
-                <ModalFooter>
-                    <Button color="action" onClick={onSubmit}>OK</Button>
-                    <Button color="action" onClick={onClose}>Cancel</Button>
-                </ModalFooter>
-            </ReactstrapModal>
+            <DraggableWrapper>
+                <ReactstrapModal isOpen={isOpen} toggle={onClose} className={className} size={size}>
+                    <ModalHeader toggle={onClose} className={'handle'}>{title}</ModalHeader>
+                    <ModalBody>
+                        {this.props.children}
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button outline color="action" onClick={onClose}>{cancelTitle || 'Cancel'}</Button>
+                        <Button color="action" onClick={onSubmit}>{submitTitle || 'OK'}</Button>
+                    </ModalFooter>
+                </ReactstrapModal>
+            </DraggableWrapper>
         );
     }
 }

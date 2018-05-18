@@ -1,10 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Checkbox from '../../Checkbox';
+import Radio from "../../Radio/index";
 
 class CheckedCell extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
+        type: PropTypes.oneOf(['check', 'radio']),
         text: PropTypes.string,
         value: PropTypes.bool,
         checkedPartially: PropTypes.bool,
@@ -15,6 +17,7 @@ class CheckedCell extends React.PureComponent {
     static defaultProps = {
         text: '',
         value: false,
+        type: 'check',
         style: {},
         onChange: () => null,
     };
@@ -26,20 +29,30 @@ class CheckedCell extends React.PureComponent {
     };
 
     render() {
-        const style = {
-            marginRight: this.props.text ? 10 : 0,
+        const { type, text, value, checkedPartially, id } = this.props;
+        const inputStyle = {
+            marginLeft: 0,
+            marginRight: 0,
             ...this.props.style,
         };
+        const style = {
+            marginLeft: text ? 10 : 0
+        };
+        const Component = type === 'check' ? Checkbox : Radio;
         return (
-            <div className="table-cell-content" title={this.props.text}>
-                <Checkbox
-                    id={this.props.id}
-                    style={style}
+            <div className="table-cell-content" title={text}>
+                <Component
+                    id={id}
+                    style={inputStyle}
                     onChange={this.onChange}
-                    checked={this.props.value}
-                    checkedPartially={this.props.checkedPartially}
+                    checked={value}
+                    checkedPartially={checkedPartially}
                 />
-                <span className="truncated">{this.props.text}</span>
+                <span className="truncated"
+                      style={style}
+                >
+                    {text}
+                </span>
             </div>
         );
     }

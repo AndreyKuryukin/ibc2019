@@ -8,17 +8,25 @@ class DateTimePicker extends React.PureComponent {
 
     static DEFAULT_INPUT_WIDTH = 140;
     static DEFAULT_TRIGGER_WIDTH = 22;
+    static MIN_DATE = new Date(1900, 0, 1);
+    static MAX_DATE = new Date(2099, 11, 31);
 
     static propsTypes = {
         inputWidth: PropTypes.number,
+        min: PropTypes.instanceOf(Date),
+        max: PropTypes.instanceOf(Date),
         date: PropTypes.bool,
         time: PropTypes.bool,
+        valid: PropTypes.bool,
     };
 
     static defaultProps = {
         inputWidth: DateTimePicker.DEFAULT_INPUT_WIDTH,
+        min: new Date(1900, 0, 1),
+        max: new Date(2099, 11, 31),
         date: true,
         time: false,
+        valid: true,
     };
 
     constructor(props) {
@@ -59,6 +67,9 @@ class DateTimePicker extends React.PureComponent {
             inputWidth,
             time,
             date,
+            min,
+            max,
+            valid,
             ...rest
         } = this.props;
 
@@ -68,13 +79,20 @@ class DateTimePicker extends React.PureComponent {
                 width: inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH,
             },
         };
+        const minDate = min || DateTimePicker.MIN_DATE;
+        const maxDate = max || DateTimePicker.MAX_DATE;
+        const invalid = valid !== null && !valid;
+
         return <Picker popupTransition={this.transitionClass(inputProps)}
+                       className={invalid ? 'invalid' : ''}
                        inputProps={inputProps}
                        style={{ width }}
                        onToggle={this.onToggle}
                        time={time}
                        date={date}
                        open={this.state.show}
+                       min={minDate}
+                       max={maxDate}
                        {...rest}
         />
     }

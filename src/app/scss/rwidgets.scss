@@ -2,6 +2,11 @@
 
 .rw-widget {
   font-size: inherit;
+  &.invalid {
+    input {
+      border-color: #dc3545;
+    }
+  }
   .rw-widget-picker {
     display: block;
     height: $input-height;
@@ -82,6 +87,7 @@
 .rw-popup {
   width: $calendar-width;
   background-color: $border-blue;
+  border: $border-blue 1px solid;
 }
 
 .rw-calendar-popup .rw-popup {

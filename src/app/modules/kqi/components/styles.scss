@@ -2,16 +2,31 @@
 
 .kqiWrapper {
   display: flex;
-  flex-direction: column;
   flex-grow: 1;
   height: 100%;
   width: 100%;
-  padding: 1em;
+  padding: 0 9px 0 0;
+  .kqiColumn {
+    display: flex;
+    flex-direction: column;
+  }
+  .kqiColumn + .kqiColumn {
+    margin-left: 5px;
+  }
+  .configsTableContainer {
+    width: 340px;
+  }
+  .calculationsTableContainer {
+    flex-grow: 1;
+  }
 }
 
 .kqiControls {
-  padding: .5rem;
+  padding: 7px 18px;
+  height: 36px;
   display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   background: $white;
@@ -24,4 +39,14 @@
   .search {
     width: 20em;
   }
+}
+
+.deleteStyle {
+  color: $grey;
+  cursor: pointer;
+}
+.autoCount {
+  display: flex;
+  flex-grow: 1;
+  justify-content: center;
 }

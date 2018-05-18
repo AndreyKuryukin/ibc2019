@@ -1,11 +1,24 @@
 @import '../../scss/vars';
 
+.disabled {
+  &:before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    background: rgba(255,255,255,.5);
+    z-index: 1;
+  }
+}
+
 .fieldWrapper {
   display: flex;
   flex-wrap: wrap;
   flex-direction: row;
   align-items: center;
-  &.required {
+  position: relative;
+  &.required .fieldLabel {
     color: $orange;
   }
   &.rightLabel {
@@ -22,8 +35,11 @@
   .fieldInput {
     background: $white;
   }
+  .invalidField {
+    border: 1px solid red
+  }
   .form-check-input {
-    position: relative;
+    //position: relative;
     margin-left: 0;
   }
 }

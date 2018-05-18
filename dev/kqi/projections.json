@@ -1,0 +1,152 @@
+[
+  {
+    "name": "Ежемесячный_GPON_С группировкой по технологии_С группировкой по hw версии",
+    "service_type": "IPTV",
+    "period": "MONTH",
+    "start_date_time": "2018-02-28T21:00:00.000Z",
+    "end_date_time": "2018-03-31T20:59:59.999Z",
+    "location": "",
+    "last_mile_technology": "GPON",
+    "last_inch_technology": "",
+    "manufacturer": "",
+    "equipment_type": "",
+    "abonent_group": "",
+    "kqi_id": "3",
+    "auto_gen": true,
+    "date_time_grouping": [
+      "NONE"
+    ],
+    "last_mile_technology_grouping": [
+      "SELF"
+    ],
+    "equipment_type_grouping": [
+      "HW"
+    ],
+    "location_grouping": [
+      "NONE"
+    ],
+    "last_inch_technology_grouping": [
+      "NONE"
+    ],
+    "manufacturer_grouping": [
+      "NONE"
+    ],
+    "abonent_group_grouping": [
+      "NONE"
+    ]
+  },
+  {
+    "name": "Еженедельный_МРФ Москва_LAN",
+    "service_type": "IPTV",
+    "period": "WEEK",
+    "start_date_time": "2018-04-08T21:00:00.000Z",
+    "end_date_time": "2018-04-15T20:59:59.999Z",
+    "location": "2",
+    "last_mile_technology": "",
+    "last_inch_technology": "LAN",
+    "manufacturer": "",
+    "equipment_type": "",
+    "abonent_group": "",
+    "kqi_id": "1",
+    "auto_gen": true,
+    "date_time_grouping": [
+      "NONE"
+    ],
+    "location_grouping": [
+      "NONE"
+    ],
+    "last_mile_technology_grouping": [
+      "NONE"
+    ],
+    "last_inch_technology_grouping": [
+      "NONE"
+    ],
+    "manufacturer_grouping": [
+      "NONE"
+    ],
+    "equipment_type_grouping": [
+      "NONE"
+    ],
+    "abonent_group_grouping": [
+      "NONE"
+    ],
+    "id": 1524051030727
+  },
+  {
+    "name": "Ежемесячный_МРФ Москва_GPON_LAN_Vendor 1,Vendor 2_С группировкой по производителю оборудования_С группировкой по sw версии",
+    "service_type": "",
+    "period": "MONTH",
+    "start_date_time": "2018-02-28T21:00:00.000Z",
+    "end_date_time": "2018-03-31T20:59:59.999Z",
+    "location": "2",
+    "last_mile_technology": "GPON",
+    "last_inch_technology": "LAN",
+    "manufacturer": [
+      1,
+      2
+    ],
+    "equipment_type": "",
+    "abonent_group": "",
+    "kqi_id": "1",
+    "auto_gen": true,
+    "date_time_grouping": [
+      "NONE"
+    ],
+    "manufacturer_grouping": [
+      "SELF"
+    ],
+    "equipment_type_grouping": [
+      "SW"
+    ],
+    "location_grouping": [
+      "NONE"
+    ],
+    "last_mile_technology_grouping": [
+      "NONE"
+    ],
+    "last_inch_technology_grouping": [
+      "NONE"
+    ],
+    "abonent_group_grouping": [
+      "NONE"
+    ],
+    "id": 1524051093826
+  },
+  {
+    "name": "Еженедельный_С группировкой по sw версии_Формировать список абонентов",
+    "service_type": "IPTV",
+    "period": "WEEK",
+    "start_date_time": "2018-04-15T21:00:00.000Z",
+    "end_date_time": "2018-04-22T20:59:59.999Z",
+    "location": "",
+    "last_mile_technology": "",
+    "last_inch_technology": "",
+    "manufacturer": "",
+    "equipment_type": "",
+    "abonent_group": null,
+    "kqi_id": "2",
+    "auto_gen": true,
+    "abonent_group_grouping": [
+      "ABONENT"
+    ],
+    "equipment_type_grouping": [
+      "SW"
+    ],
+    "date_time_grouping": [
+      "NONE"
+    ],
+    "location_grouping": [
+      "NONE"
+    ],
+    "last_mile_technology_grouping": [
+      "NONE"
+    ],
+    "last_inch_technology_grouping": [
+      "NONE"
+    ],
+    "manufacturer_grouping": [
+      "NONE"
+    ],
+    "id": 1524842299910
+  }
+]

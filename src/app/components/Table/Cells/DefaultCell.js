@@ -6,13 +6,13 @@ class DefaultCell extends React.PureComponent {
         content: PropTypes.node,
         sortDirection: PropTypes.string,
         onClick: PropTypes.func,
-    }
+    };
 
     static defaultProps = {
         content: null,
         sortDirection: '',
         onClick: () => null,
-    }
+    };
 
     render() {
         const {

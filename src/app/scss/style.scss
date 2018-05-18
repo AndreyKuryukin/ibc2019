@@ -29,6 +29,7 @@ body {
 @import 'tables.scss';
 @import 'modal.scss';
 @import 'images.scss';
+@import 'fields.scss';
 @import 'rwidgets.scss';
 
 input:not([type=checkbox]), input:not([type=radio]), select {
@@ -37,7 +38,7 @@ input:not([type=checkbox]), input:not([type=radio]), select {
 }
 
 input[type=checkbox], input[type=radio] {
-  display: none;
+  opacity: 0;
 }
 .btn-action, .btn-outline-action, .btn-outline-action:hover {
   color: #fff;
@@ -50,4 +51,16 @@ input[type=number]::-webkit-outer-spin-button {
 }
 input[type='number'] {
   -moz-appearance:textfield;
+}
+input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: $placeholder !important;
+  font-style: italic;
+}
+input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: $placeholder !important;
+  font-style: italic;
+}
+input:-ms-input-placeholder { /* Microsoft Edge */
+  color: $placeholder !important;
+  font-style: italic;
 }

@@ -1,9 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from "i18n";
+import memoize from 'memoizejs';
 import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
+import search from '../../../../../util/search';
+
+const bodyStyle = { padding: 0 };
 
 class Divisions extends React.Component {
 
@@ -24,8 +28,14 @@ class Divisions extends React.Component {
 
         this.state = {
             division: props.division,
+            searchText: '',
         };
     }
+
+    static getColumns = memoize(() => [{
+        name: 'name',
+        searchable: true,
+    }]);
 
     componentWillReceiveProps(nextProps) {
         if (this.props.division !== nextProps.division) {
@@ -53,32 +63,42 @@ class Divisions extends React.Component {
                 style={{ marginLeft: 0 }}
                 value={checked}
                 checkedPartially={false}
+                type={'radio'}
                 text={node[column.name]}
             />
         );
     };
 
+    onSearchTextChange = (searchText) => {
+        this.setState({ searchText });
+    };
+
+    filter = (data, searchText) => data.filter(node => search(node.name, searchText) || (node.children && this.filter(node.children, searchText).length > 0));
+
     render() {
-        const {
-            data,
-        } = this.props;
+        const { data } = this.props;
+        const { searchText } = this.state;
+
+        const filteredData = searchText ? this.filter(data, searchText) : data;
 
         return (
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Подразделения')}
-                bodyStyle={{ padding: 0 }}
+                bodyStyle={bodyStyle}
             >
                 <Grid
                     id="user-editor-divisions-grid"
-                    data={data}
+                    data={filteredData}
                     columns={[
                         {
                             name: 'name',
                         }
                     ]}
+                    noCheckAll
                     bodyRowRender={this.bodyRowRender}
                     checkedPartially={false}
                     isAllChecked={false}
+                    onSearchTextChange={this.onSearchTextChange}
                     tree
                 />
             </Panel>

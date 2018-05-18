@@ -37,10 +37,11 @@ export default class Example extends React.Component {
 
     renderTabs = (children = []) =>
         children.map((child, index) => <NavItem
-            className={classnames({[styles.inactiveItem]: this.state.activeTab !== child.props.id})}
+            className={classnames({
+                [styles.active]: this.state.activeTab === child.props.id
+            })}
             key={`tab-pane-${child.props.id || index}`}>
             <NavLink
-                className={classnames({ active: this.state.activeTab === child.props.id })}
                 onClick={() => {
                     this.toggle(child.props.id || index);
                 }}
@@ -71,7 +72,7 @@ export default class Example extends React.Component {
     render() {
         return (
             <div className={classnames(styles.tabsWrapper, this.props.className)}>
-                <Nav tabs >
+                <Nav tabs>
                     {this.renderTabs(this.props.children)}
                 </Nav>
                 <TabContent activeTab={this.state.activeTab} className={styles.tabContent}>

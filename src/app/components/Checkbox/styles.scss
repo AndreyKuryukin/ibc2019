@@ -1,5 +1,6 @@
 .checkboxWrapper {
   display: flex;
+  align-items: center;
   input:checked + .checkboxInput:before {
     background: url('../../../resources/img/checkbox/checkbox_checked.png') no-repeat center;
   }

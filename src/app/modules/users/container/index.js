@@ -40,7 +40,7 @@ class Users extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle('Пользователи');
+        this.context.navBar.setPageTitle([ls('USERS_PAGE_TITLE', 'Пользователи'), ls('USERS_PAGE_TITLE', 'Пользователи')]);
     }
 
     onUsersMount = () => {
@@ -53,10 +53,14 @@ class Users extends React.PureComponent {
                 this.props.onFetchUsersSuccess(users);
                 this.props.onFetchDivisionsSuccess(divisions);
                 this.setState({ isLoading: false });
+            })
+            .catch((e) => {
+                console.error(e);
+                this.setState({ isLoading: false });
             });
     };
 
-    onDelete = (ids) => {
+    onDelete = (ids, onSuccess) => {
         this.setState({
             isLoading: true,
         });
@@ -65,6 +69,7 @@ class Users extends React.PureComponent {
             ids.map(id => rest.delete('/api/v1/user/:userId', {}, { urlParams: { userId: id } }))
         ).then(() => {
             this.props.onDeleteUsersSuccess(ids);
+            onSuccess();
             this.setState({ isLoading: false });
         }).catch((e) => {
             console.error(e);

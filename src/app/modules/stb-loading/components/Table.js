@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
-
+import memoize from 'memoizejs';
 import Table from '../../../components/Table';
 import { DefaultCell } from '../../../components/Table/Cells';
 
@@ -19,7 +19,7 @@ export class StbLoadingTable extends React.PureComponent {
         preloader: false,
     };
 
-    getColumns = () => [{
+    static getColumns = memoize(() => [{
         title: ls('STB_LOADING_SERVICE_COLUMN_TITLE', 'Услуга'),
         name: 'service',
         searchable: true,
@@ -44,7 +44,7 @@ export class StbLoadingTable extends React.PureComponent {
         name: 'loadingTime',
         searchable: true,
         sortable: true,
-    }];
+    }]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell
@@ -61,7 +61,7 @@ export class StbLoadingTable extends React.PureComponent {
 
     render() {
         const { data, searchText } = this.props;
-        const columns = this.getColumns();
+        const columns = StbLoadingTable.getColumns();
         return (
             <Table
                 data={data}

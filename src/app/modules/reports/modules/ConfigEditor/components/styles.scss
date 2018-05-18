@@ -1,0 +1,33 @@
+@import '../../../../../scss/vars';
+
+.configEditor {
+  width: 900px !important;
+  max-width: 900px !important;
+  .configEditorContent {
+    display: flex;
+    .configEditorColumn {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      > div + div {
+        margin-top: 1px;
+      }
+    }
+    .configEditorColumn + .configEditorColumn {
+      margin-left: 1px;
+    }
+  }
+}
+
+.intervalsGroup {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.truncated_field {
+  display: block;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}

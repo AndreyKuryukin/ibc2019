@@ -5,12 +5,14 @@ import _ from 'lodash';
 import RoleEditorComponent from '../components';
 import { selectSelectedRole, selectSourceOptions, selectSubjects, selectSubjectsByRole } from '../selectors';
 import { createRole, updateRole } from '../../../actions';
-import { fetchRoleSuccess, fetchSubjectsSuccess } from '../actions';
+import { fetchRoleSuccess, fetchSubjectsSuccess, resetRolesEditor } from '../actions';
 import rest from '../../../../../rest';
+import { validateForm } from "../../../../../util/validation";
 
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
@@ -18,6 +20,7 @@ class RoleEditor extends React.PureComponent {
         onUpdateRoleSuccess: PropTypes.func,
         onCreateRoleSuccess: PropTypes.func,
         onFetchRoleSuccess: PropTypes.func,
+        resetRolesEditor: PropTypes.func,
     };
 
     static defaultProps = {
@@ -25,6 +28,17 @@ class RoleEditor extends React.PureComponent {
         onUpdateRoleSuccess: () => null,
         onCreateRoleSuccess: () => null,
         onFetchRoleSuccess: () => null,
+        resetRolesEditor: () => null,
+    };
+
+    state = {
+        errors: null,
+    };
+
+    validationConfig = {
+        name: {
+            required: true
+        },
     };
 
     componentDidMount() {
@@ -52,25 +66,39 @@ class RoleEditor extends React.PureComponent {
                     this.props.onFetchSubjectsSuccess(response.data);
                 })
         }
+        this.context.pageBlur && this.context.pageBlur(true);
     }
 
     onSubmit = (roleId, roleData) => {
-        const submit = roleId ? rest.put : rest.post;
-        const success = (response) => {
-            const callback = roleId ? this.props.onUpdateRoleSuccess : this.props.onCreateRoleSuccess;
-            const role = response.data;
-            callback(role);
-            this.context.history.push('/roles');
-        };
+        const errors = validateForm({
+            ...roleData,
+            name: roleData.name.trim(),
+        }, this.validationConfig);
+        if (_.isEmpty(errors)) {
+            const submit = roleId ? rest.put : rest.post;
+            const success = (response) => {
+                const callback = roleId ? this.props.onUpdateRoleSuccess : this.props.onCreateRoleSuccess;
+                const role = response.data;
+                callback(role);
+                this.context.history.push('/roles');
+            };
 
-        submit('/api/v1/role', roleData)
-            .then(success);
+            submit('/api/v1/role', roleData)
+                .then(success)
+                .catch((e) => {
+                    console.error(e);
+                });
+        } else {
+            this.setState({ errors });
+        }
     };
 
     render() {
         return (
             <RoleEditorComponent
                 onSubmit={this.onSubmit}
+                errors={this.state.errors}
+                onClose={this.props.resetRolesEditor}
                 {...this.props}
             />
         );
@@ -89,6 +117,7 @@ const mapDispatchToProps = dispatch => ({
     onCreateRoleSuccess: role => dispatch(createRole(role)),
     onUpdateRoleSuccess: role => dispatch(updateRole(role)),
     onFetchSubjectsSuccess: subjects => dispatch(fetchSubjectsSuccess(subjects)),
+    resetRolesEditor: () => dispatch(resetRolesEditor()),
 });
 
 export default connect(

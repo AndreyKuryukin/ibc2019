@@ -1,11 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import Table from './Table';
-import Controls from './Controls';
+import classnames from 'classnames';
+import ls from 'i18n';
+import { createSelector } from 'reselect';
+import _ from 'lodash';
+import ProjectionsTable from './ProjectionsTable';
+import ProjectionsControls from './ProjectionsControls';
+import ConfigsTable from './ConfigsTable';
+import ConfigsControls from './ConfigsControls';
 import styles from './styles.scss';
 import Configurator from '../modules/Configurator/containers';
 import Calculator from '../modules/Calculator/containers';
+import ResultsViewer from '../modules/ResultsViewer/containers';
+import Panel from '../../../components/Panel';
 
 class KQI extends React.PureComponent {
     static childContextTypes = {
@@ -16,21 +23,30 @@ class KQI extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         kqiData: PropTypes.array,
-        isLoading: PropTypes.bool,
+        projectionsData: PropTypes.array,
+        isConfigsLoading: PropTypes.bool,
+        isProjectionsLoading: PropTypes.bool,
         onMount: PropTypes.func,
+        onSelectConfig: PropTypes.func,
+        onEditConfig: PropTypes.func,
     };
 
     static defaultProps = {
-        isLoading: false,
+        kqiData: [],
+        projectionsData: [],
+        isConfigsLoading: false,
+        isProjectionsLoading: false,
         onMount: () => null,
+        onEditConfig: () => null,
+        onSelectConfig: null,
     };
-
 
     constructor(props) {
         super(props);
 
         this.state = {
-            searchText: '',
+            configsSearchText: '',
+            calculationsSearchText: '',
         };
     }
 
@@ -40,31 +56,77 @@ class KQI extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
-        }
-    }
+    getConfigsByIdFromProps = createSelector(
+        props => _.get(props, 'kqiData', []),
+        configs => configs.reduce((byId, cfg) => ({ ...byId, [cfg.id]: cfg }), {}),
+    );
 
-    onSearchTextChange = (searchText) => {
-        this.setState({ searchText });
-    }
+    onConfigsSearchTextChange = (searchText) => {
+        this.setState({ configsSearchText: searchText });
+    };
+
+    onCalculationsSearchTextChange = (searchText) => {
+        this.setState({ calculationsSearchText: searchText });
+    };
+
+    onResultsViewerClose = () => {
+        const { params } = this.props.match;
+        const configId = params.configId || null;
+
+        this.props.history.push(`/kqi/view/${configId}`);
+    };
+
+    onEditConfig = (id) => {
+        this.props.history.push(`/kqi/configure/${id}`);
+    };
 
     render() {
-        const { params } = this.props.match;
-        const isConfiguratorActive = params.action === 'configure';
-        const isCalculatorActive = params.action === 'calculate';
+        const { params = {} } = this.props.match;
+        const { action, resultId, projectionId, configId } = params;
+        const isConfiguratorActive = action === 'configure';
+        const isCalculatorActive = action === 'calculate';
+        const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
+        const cfgName = configId ? _.get(this.getConfigsByIdFromProps(this.props), `${configId}.name`, '') : '';
 
         return (
             <div className={styles.kqiWrapper}>
-                <Controls onSearchTextChange={this.onSearchTextChange} />
-                <Table
-                    data={this.props.kqiData}
-                    searchText={this.state.searchText}
-                    preloader={false}
-                />
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive} />}
-                {isCalculatorActive && <Calculator active={isCalculatorActive} />}
+                <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
+                    <Panel
+                        title={ls('KQI_SYSTEM_TITLE', 'Система')}
+                        bodyStyle={{ padding: 0 }}
+                    >
+                        <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange}/>
+                        <ConfigsTable
+                            data={this.props.kqiData}
+                            searchText={this.state.configsSearchText}
+                            preloader={this.props.isConfigsLoading}
+                            onSelectConfig={this.props.onSelectConfig}
+                            onEditConfig={this.onEditConfig}
+                        />
+                    </Panel>
+                </div>
+                <div className={classnames(styles.kqiColumn, styles.calculationsTableContainer)}>
+                    <Panel
+                        title={`${ls('KQI_PROJECTIONS_TITLE', 'Проекции')} ${cfgName}`}
+                        bodyStyle={{ padding: 0 }}
+                    >
+                        <ProjectionsControls onSearchTextChange={this.onCalculationsSearchTextChange}/>
+                        <ProjectionsTable
+                            data={this.props.projectionsData}
+                            searchText={this.state.calculationsSearchText}
+                            preloader={this.props.isProjectionsLoading}
+                            configId={configId}
+                        />
+                    </Panel>
+                </div>
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={configId}/>}
+                {isCalculatorActive && <Calculator active={isCalculatorActive} projectionId={projectionId}/>}
+                {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
+                                                         projectionId={projectionId}
+                                                         resultId={resultId}
+                                                         configId={configId}
+                                                         onClose={this.onResultsViewerClose}
+                />}
             </div>
         );
     }

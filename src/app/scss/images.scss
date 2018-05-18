@@ -19,6 +19,9 @@
     @include imgByPath('delete_hover.png');
   }
 }
+.deleteIconHover {
+  @include iconBuilder(22px, 22px, 'delete_hover.png');
+}
 .groupIcon {
   @include iconBuilder(22px, 22px, 'group.png');
   &:hover {
@@ -57,4 +60,101 @@
   &:hover {
     @include imgByPath('calc_kqi_hover.png');
   }
+}
+
+.icon-pdf {
+  @include iconBuilder(22px, 22px, 'PDF.png');
+}
+.icon-xls {
+  @include iconBuilder(22px, 22px, 'XLS.png');
+}
+.icon-template {
+  @include iconBuilder(22px, 22px, 'template.png');
+}
+.icon-state-failed {
+  @include iconBuilder(22px, 22px, 'failed.png');
+}
+.icon-state-running {
+  @include iconBuilder(22px, 22px, 'running.png');
+}
+.icon-state-success {
+  @include iconBuilder(22px, 22px, 'success.png');
+}
+.icon-retry {
+  @include iconBuilder(22px, 22px, 'retry.png');
+}
+
+.source-running {
+  @include iconBuilder(22px, 22px, 'source-running.png');
+}
+
+.source-success {
+  @include iconBuilder(22px, 22px, 'source-success.png');
+}
+
+.source-failed {
+  @include iconBuilder(22px, 22px, 'source-failed.png');
+}
+
+.help-icon {
+  @include iconBuilder(22px, 22px, 'help.png');
+}
+
+.refresh-icon {
+  @include iconBuilder(22px, 22px, 'refresh.png');
+}
+.edit-icon {
+  @include iconBuilder(22px, 22px, 'config.png');
+}
+.graph-icon {
+  @include iconBuilder(22px, 22px, 'graph_icon.png');
+}
+
+.menu-icon-kqi {
+  @include iconBuilder(33px, 34px, 'menu/kqi.svg');
+}
+.menu-icon-kqi-active {
+  @include iconBuilder(33px, 34px, 'menu/kqi-active.svg');
+}
+
+.menu-icon-reports {
+  @include iconBuilder(26px, 34px, 'menu/reports.svg');
+}
+.menu-icon-reports-active {
+  @include iconBuilder(26px, 34px, 'menu/reports-active.svg');
+}
+
+.menu-icon-sources {
+  @include iconBuilder(33px, 34px, 'menu/sources.svg');
+}
+.menu-icon-sources-active {
+  @include iconBuilder(33px, 34px, 'menu/sources-active.svg');
+}
+
+.menu-icon-alarms {
+  @include iconBuilder(33px, 34px, 'menu/alarms.svg');
+}
+.menu-icon-alarms-active {
+  @include iconBuilder(33px, 34px, 'menu/alarms-active.svg');
+}
+
+.menu-icon-users {
+  @include iconBuilder(33px, 34px, 'menu/users.svg');
+}
+.menu-icon-users-active {
+  @include iconBuilder(33px, 34px, 'menu/users-active.svg');
+}
+
+.menu-icon-roles {
+  @include iconBuilder(33px, 34px, 'menu/users.svg');
+}
+.menu-icon-roles-active {
+  @include iconBuilder(33px, 34px, 'menu/users-active.svg');
+}
+
+.menu-icon-policies {
+  @include iconBuilder(26px, 34px, 'menu/policies.svg');
+}
+.menu-icon-policies-active {
+  @include iconBuilder(26px, 34px, 'menu/policies-active.svg');
 }

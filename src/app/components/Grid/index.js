@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
+import classNames from 'classnames';
 import Input from '../Input';
 import Checkbox from '../Checkbox';
 import Table from '../Table';
@@ -16,6 +17,9 @@ class Grid extends React.PureComponent {
         columns: PropTypes.arrayOf(PropTypes.object),
         isAllChecked: PropTypes.bool,
         checkedPartially: PropTypes.bool,
+        noCheckAll: PropTypes.bool,
+        noSearch: PropTypes.bool,
+        disabled: PropTypes.bool,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
         onCheckAll: PropTypes.func,
@@ -28,6 +32,9 @@ class Grid extends React.PureComponent {
         isAllChecked: false,
         checkedPartially: false,
         tree: false,
+        noCheckAll: false,
+        noSearch: false,
+        disabled: false,
         headerRowRender: null,
         bodyRowRender: () => null,
         onCheckAll: () => null,
@@ -42,30 +49,38 @@ class Grid extends React.PureComponent {
             onSearchTextChange,
             checkedPartially,
             tree,
+            noCheckAll,
+            noSearch,
+            disabled,
             ...rest
         } = this.props;
 
         return (
-            <div className={styles.gridWrapper}>
+            <div className={classNames({
+                [styles.gridWrapper]: true,
+                [styles.disabled]: disabled
+            })}>
                 <div className={styles.gridControls}>
-                    <Checkbox
+                    {!noCheckAll && <Checkbox
                         id={`${id}-all`}
                         onChange={onCheckAll}
                         checked={isAllChecked}
                         checkedPartially={checkedPartially}
-                    />
-                    <Input
+                    />}
+                    {!noSearch && <Input
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.gridSearch}
                         onChange={e => onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
-                    />
+                    />}
                 </div>
                 <div className={styles.gridBody}>
-                    {tree ? <TreeView
-                        {...rest}
-                    /> : <Table
-                        {...rest}
-                    />}
+                    <div className={styles.gridBodyInner}>
+                        {tree ? <TreeView
+                            {...rest}
+                        /> : <Table
+                            {...rest}
+                        />}
+                    </div>
                 </div>
             </div>
         );

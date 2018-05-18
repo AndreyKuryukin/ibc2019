@@ -6,12 +6,15 @@
   flex-grow: 1;
   height: 100%;
   width: 100%;
-  padding: 1em;
+  padding: 0 9px 0 0;
 }
 
-.controls {
-  padding: .5rem;
+.policiesControls {
+  padding: 7px 18px;
+  height: 36px;
   display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
   align-items: center;
   justify-content: space-between;
   background: $white;
@@ -23,7 +26,7 @@
   }
 }
 
-.policyTable thead tr {
+.policyTable .tableHeader {
   height: 44px;
 }
 
@@ -33,6 +36,7 @@
 }
 .policyCell {
   display: flex;
+  flex-grow: 1;
   margin: 0 -$table-cell-left-right-padding;
   flex-wrap: wrap;
   .title {
@@ -49,7 +53,7 @@
   .subtitle + .subtitle {
     border-left: $table-left-border;
   }
-  .subtitle + .subtitle:before {
+  .inHeader + .inHeader:before {
     content: '';
     display: block;
     position: absolute;

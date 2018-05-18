@@ -4,22 +4,75 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
-import Panel from '../../../../../components/Panel';
-import Select from '../../../../../components/Select';
-import Field from "../../../../../components/Field";
-import Checkbox from "../../../../../components/Checkbox";
-import DatePicker from "../../../../../components/DateTimePicker";
+import moment from 'moment';
 import styles from './styles.scss';
 import {
-    GROUPING_TYPES,
-    EQUIPMENT_TYPE_GROUPING,
-    ABONENT_GROUP_GROUPING,
-    SERVICE_TYPES,
     DATE_TIME_GROUPING,
-    LOCATION_GROUPING,
-    LAST_MILE_TECHNOLOGIES,
+    GROUPING_TYPES,
     LAST_INCH_TECHNOLOGIES,
+    LAST_MILE_TECHNOLOGIES,
+    LOCATION_GROUPING,
+    SERVICE_TYPES,
 } from '../constants';
+import Period from './Period';
+import BasicParams from './BasicParams';
+import Location from './Location';
+import Technology from './Technology';
+import Manufacture from './Manufacture';
+import Equipment from './Equipment';
+import UserGroups from './UserGroups';
+import { INTERVALS } from '../constants';
+
+const NAME_PATTERN_SEQUENCE = [
+    'period.regularity',
+    'location',
+    'location_grouping',
+    'last_mile_technology',
+    'last_mile_technology_grouping',
+    'last_inch_technology',
+    'last_inch_technology_grouping',
+    'manufacturer',
+    'manufacturer_grouping',
+    'equipment_type',
+    'equipment_type_grouping',
+    'abonent_group',
+    'abonent_group_grouping',
+];
+
+const period = {
+    HOUR: ls('PERIOD_HOUR', 'Ежечасный'),
+    DAY: ls('PERIOD_DAY', 'Ежедневный'),
+    WEEK: ls('PERIOD_WEEK', 'Еженедельный'),
+    OTHER: ls('PERIOD_OTHER', ''),
+};
+
+const last_mile_technology_grouping = {
+    true: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПМ'),
+};
+
+const last_inch_technology_grouping = {
+    true: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПД'),
+};
+
+const manufacturer_grouping = {
+    true: ls('WITH_MANUFACTURER_GROUPING', 'С группировкой по производителю оборудования'),
+};
+
+const equipment_type_grouping = {
+    SELF: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по типу оборудования'),
+    HW: ls('WITH_HW_GROUPING', 'С группировкой по hw версии'),
+    SW: ls('WITH_SW_GROUPING', 'С группировкой по sw версии'),
+};
+
+const abonent_group_grouping = {
+    SELF: ls('WITH_ABONENT_GROUPS_GROUPING', 'С группировкой по группам абонентов'),
+    ABONENT: ls('WITH_ABONENT_GROUPING', 'Формировать список абонентов'),
+};
+
+const location_grouping = {
+    BRANCH: ls('WITH_BRANCH_GROUPING', 'С группировкой по РФ'),
+};
+
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -35,6 +88,8 @@ class Calculator extends React.PureComponent {
         usergroupsList: PropTypes.array,
         onSubmit: PropTypes.func.isRequired,
         onMount: PropTypes.func,
+        errors: PropTypes.object,
+        config: PropTypes.object,
     };
 
     static defaultProps = {
@@ -46,35 +101,46 @@ class Calculator extends React.PureComponent {
         usergroupsList: [],
         onSubmit: () => null,
         onMount: () => null,
+        errors: null,
     };
 
     constructor(props) {
         super(props);
+        const start_date = moment().subtract(1, 'day').startOf('day').toDate();
+        const end_date = moment(start_date).endOf('day').toDate();
         this.state = {
             config: {
-                name: '',
-                description: '',
+                name: period.DAY,
                 service_type: '',
-                start_date_time: null,
-                end_date_time: null,
+                period: {
+                    start_date,
+                    end_date,
+                    regularity: INTERVALS.DAY,
+                    auto: true,
+                },
                 location: '',
                 last_mile_technology: '',
                 last_inch_technology: '',
-                manufacture: '',
+                manufacturer: '',
                 equipment_type: '',
                 abonent_group: '',
-                kqi_config_id: null,
+                kqi_id: null,
+                auto_gen: true,
             },
+            errors: null,
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
+    componentWillReceiveProps(nextProps) {
+        if (this.state.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+        if (!_.isEmpty(nextProps.config) && this.state.config !== nextProps.config) {
+            this.setState({ config: nextProps.config });
         }
     }
 
-    static mapObjectToOptions (object) {
+    static mapObjectToOptions(object) {
         return _.map(object, (title, value) => ({ value, title }));
     }
 
@@ -86,384 +152,240 @@ class Calculator extends React.PureComponent {
         }),
     );
 
-    setConfigProperty = (key, value) => {
-        const config = {
-            ...this.state.config,
-            [key]: value,
+    composeConfigName = (config) => {
+        const ENTITY_NAME_MAP = {
+            'period.regularity': period,
+            location: this.props.locationsList,
+            last_mile_technology: LAST_MILE_TECHNOLOGIES,
+            last_inch_technology: LAST_INCH_TECHNOLOGIES,
+            service_type: SERVICE_TYPES,
+            manufacturer: this.props.manufactureList,
+            equipment_type: this.props.equipmentsList,
+            abonent_group: this.props.usergroupsList,
+            kqi_id: this.props.kqiList,
+            location_grouping: location_grouping,
+            last_mile_technology_grouping: last_mile_technology_grouping,
+            last_inch_technology_grouping: last_inch_technology_grouping,
+            manufacturer_grouping: manufacturer_grouping,
+            equipment_type_grouping: equipment_type_grouping,
+            abonent_group_grouping: abonent_group_grouping,
         };
-
-        this.setState({ config });
+        const composedName = _.reduce(NAME_PATTERN_SEQUENCE, (name, fieldName) => {
+            const value = _.get(config, fieldName);
+            const nameMap = ENTITY_NAME_MAP[fieldName];
+            const getNameById = (map, id) => {
+                let itemName;
+                if (_.isArray(map)) {
+                    const entity = _.find(map, item => String(item.id) === String(id));
+                    itemName = entity && entity.name;
+                } else if (_.isObject(map)) {
+                    itemName = map[String(id).toUpperCase()];
+                    itemName = itemName === undefined ? map[String(id).toLowerCase()] : itemName;
+                }
+                return itemName !== undefined ? itemName : id;
+            };
+            if (value) {
+                if (_.isArray(value)) {
+                    if (nameMap) {
+                        const names = value.map(id => getNameById(nameMap, id));
+                        name.push(names.join(','));
+                    } else {
+                        name.push(value.join(','));
+                    }
+                } else {
+                    if (nameMap) {
+                        name.push(getNameById(nameMap, value))
+                    } else {
+                        name.push(config[fieldName])
+                    }
+                }
+            }
+            return name;
+        }, []);
+        return composedName.join('_')
     };
 
-    setGroupingProperty = (prop, key, checked) => {
-        const updated = checked
-            ? [..._.get(this.state.config, `${prop}`, []), key]
-            : _.without(_.get(this.state.config, `${prop}`, []), key);
 
-        this.setConfigProperty(prop, updated);
+    setConfigProperty = (key, value) => {
+        const config = _.set({
+            ...this.state.config,
+        }, key, value);
+
+        if (key === 'manufacturer') {
+            config['manufacturer_grouping'] = value.length === 0 && _.get(config, 'manufacturer_grouping', false);
+        }
+
+        if (key === 'abonent_group' && !!value) {
+            config['abonent_group_grouping'] = false;
+        }
+
+        if (key === 'last_mile_technology' && !!value) {
+            config['last_mile_technology_grouping'] = false;
+        }
+
+        if (key === 'last_inch_technology' && !!value) {
+            config['last_inch_technology_grouping'] = false;
+        }
+
+        if (key === 'equipment_type' && !!value) {
+            config['equipment_type_grouping'] = false;
+        }
+
+        if (key === 'location' && !value) {
+            config['location_grouping'] = null
+        }
+
+        if (_.get(config, 'period.auto')) {
+            config['name'] = this.composeConfigName(config);
+        }
+
+        this.setState({
+            config,
+            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
+        });
     };
 
     onClose = () => {
         this.context.history.push('/kqi');
     };
 
+    onIntervalChange = (start_date, end_date, regularity, groupingType) => {
+        const removeKeys = [
+            ...(start_date ? ['period.start_date'] : []),
+            ...(end_date ? ['period.end_date'] : []),
+        ];
+        const config = {
+            ...this.state.config,
+            period: {
+                auto: regularity !== INTERVALS.OTHER && _.get(this.state.config, 'period.auto' , false),
+                start_date,
+                end_date,
+                regularity,
+            },
+            // date_time_grouping: groupingType,
+        };
+
+        if (_.get(config, 'period.auto')) {
+            config['name'] = this.composeConfigName(config);
+        }
+
+        this.setState({
+            config,
+            errors: _.omit(this.state.errors, removeKeys),
+        });
+    };
+
     onSubmit = () => {
         const { config } = this.state;
         const preparedConfig = {
             ...config,
-            date_time_grouping: _.get(config, 'date_time_grouping') ? [_.get(config, 'date_time_grouping')] : [GROUPING_TYPES.NONE] ,
-            location_grouping: _.get(config, 'location_grouping') ? [_.get(config, 'location_grouping')] : [GROUPING_TYPES.NONE],
-            last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            manufacture_grouping: _.get(config, 'manufacture_grouping', false) ? [GROUPING_TYPES.SELF] : [GROUPING_TYPES.NONE],
-            equipment_grouping: _.get(config, 'equipment_grouping', []).length > 0 ? _.get(config, 'equipment_grouping') : [GROUPING_TYPES.NONE],
-            abonent_grouping: _.get(config, 'abonent_grouping', []).length > 0 ? _.get(config, 'abonent_grouping') : [GROUPING_TYPES.NONE],
+            // date_time_grouping: _.get(config, 'date_time_grouping') ? _.get(config, 'date_time_grouping') : GROUPING_TYPES.NONE,
+            date_time_grouping: GROUPING_TYPES.NONE,
+            location_grouping: _.get(config, 'location_grouping') ? _.get(config, 'location_grouping') : GROUPING_TYPES.NONE,
+            last_mile_technology_grouping: _.get(config, 'last_mile_technology_grouping') ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            // last_inch_technology_grouping: _.get(config, 'last_inch_technology_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            last_inch_technology_grouping: GROUPING_TYPES.NONE,
+            manufacturer_grouping: _.get(config, 'manufacturer_grouping', false) ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
+            equipment_type_grouping: _.get(config, 'equipment_type_grouping') ? _.get(config, 'equipment_type_grouping') : GROUPING_TYPES.NONE,
+            // abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? _.get(config, 'abonent_group_grouping') : GROUPING_TYPES.NONE,
+            abonent_group_grouping: GROUPING_TYPES.NONE,
         };
+
         this.props.onSubmit(preparedConfig);
     };
 
-    getPanelsConfig = () => [{
-        title: ls('KQI_CALCULATOR_BASIC_PARAMETERS_TITLE', 'Основные параметры'),
-        fields: [{
-            id: 'service-type',
-            labelText: `${ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}:`,
-            labelWidth: '20%',
-            inputWidth: '80%',
-            children: (
-                <Select
-                    id="service-type"
-                    options={Calculator.mapObjectToOptions(SERVICE_TYPES)}
-                    onChange={value => this.setConfigProperty('service_type', value)}
-                />
-            ),
-        }, {
-            id: 'kqi',
-            labelText: `${ls('KQI_CALCULATOR_KQI_FIELD_LABEL', 'KQI')}:`,
-            labelWidth: '20%',
-            inputWidth: '80%',
-            children: (
-                <Select
-                    id="kqi"
-                    options={Calculator.mapListToOptions(this.props, 'kqiList')}
-                    onChange={value => this.setConfigProperty('kqi_config_id', value)}
-                />
-            ),
-        }]
-    }, {
-        title: ls('KQI_CALCULATOR_SETTINGS_TITLE', 'Настройки'),
-        horizontal: true,
-        fields: [{
-            id: 'time-interval',
-            labelText: `${ls('KQI_CALCULATOR_TIME_INTERVAL_FIELD_LABEL', 'Временной интервал')}:`,
-            labelWidth: '32%',
-            inputWidth: '68%',
-            style: {
-                flex: '1 1 0',
-            },
-            children: (
-                <div style={{ display: 'flex' }}>
-                    <DatePicker
-                        value={_.get(this.state.config, 'start_date_time', null)}
-                        onChange={value => this.setConfigProperty('start_date_time', value)}
-                        inputWidth={90}
-                        format={'DD.MM.YYYY HH:mm'}
-                        time
-                    />
-                    <DatePicker
-                        value={_.get(this.state.config, 'end_date_time', null)}
-                        min={_.get(this.state.config, 'start_date_time', null)}
-                        onChange={value => this.setConfigProperty('end_date_time', value)}
-                        inputWidth={90}
-                        format={'DD.MM.YYYY HH:mm'}
-                        style={{ marginLeft: 5 }}
-                        time
-                    />
-                </div>
-            ),
-        }, {
-            id: 'date-time-grouping',
-            labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '32%',
-            inputWidth: '68%',
-            style: {
-                flex: '1 1 0',
-                marginTop: 0,
-            },
-            children: (
-                <Select
-                    id="date-time-grouping"
-                    options={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
-                    onChange={value => this.setConfigProperty('date_time_grouping', value)}
-                />
-            ),
-        }]
-    }, {
-        title: ls('KQI_CALCULATOR_LOCATION_TITLE', 'Расположение'),
-        horizontal: true,
-        fields: [{
-            id: 'location',
-            labelText: `${ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'Местоположение')}:`,
-            labelWidth: '32%',
-            inputWidth: '66%',
-            style: {
-                flex: '1 1 0',
-            },
-            children: (
-                <Select
-                    id="location"
-                    options={Calculator.mapListToOptions(this.props, 'locationsList')}
-                    onChange={value => this.setConfigProperty('location', value)}
-                />
-            ),
-        }, {
-            id: 'location-grouping',
-            labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '32%',
-            inputWidth: '68%',
-            style: {
-                flex: '1 1 0',
-                marginTop: 0,
-            },
-            children: (
-                <Select
-                    id="location-grouping"
-                    options={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
-                    onChange={value => this.setConfigProperty('location_grouping', value)}
-                />
-            ),
-        }]
-    }, {
-        title: ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии ПМ'),
-        horizontal: true,
-        fields: [{
-            id: 'last-mile-technology',
-            labelText: `${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}:`,
-            labelWidth: '32%',
-            inputWidth: '66%',
-            style: {
-                flex: '1 1 0',
-            },
-            children: (
-                <Select
-                    id="last-mile-technology"
-                    options={Calculator.mapObjectToOptions(LAST_MILE_TECHNOLOGIES)}
-                    onChange={value => this.setConfigProperty('last_mile_technology', value)}
-                />
-            ),
-        }, {
-            id: 'last-mile-technology-grouping',
-            labelText: `${ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}:`,
-            labelWidth: '32%',
-            inputWidth: '68%',
-            style: {
-                flex: '1 1 0',
-                marginTop: 0,
-            },
-            children: (
-                <Select
-                    id="last-mile-technology-grouping"
-                    options={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
-                    onChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
-                />
-            ),
-        }]
-    }, {
-        title: ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии ПД'),
-        horizontal: true,
-        fields: [{
-            id: 'last-inch-technology',
-            labelText: `${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}:`,
-            labelWidth: '32%',
-            inputWidth: '66%',
-            style: {
-                flex: '1 1 0',
-            },
-            children: (
-                <Select
-                    id="last-inch-technology"
-                    options={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}
-                    onChange={value => this.setConfigProperty('last_inch_technology', value)}
-                />
-            ),
-        }, {
-            id: 'last-inch-technology-grouping',
-            labelText: ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии'),
-            labelWidth: '90%',
-            inputWidth: '6%',
-            labelAlign: 'right',
-            style: {
-                flex: '1 1 0',
-                marginTop: 0,
-            },
-            children: (
-                <Checkbox
-                    id="last-inch-technology-grouping"
-                    checked={_.get(this.state.config, 'last_inch_technology_grouping', false)}
-                    onChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}
-                />
-            ),
-        }]
-    }, {
-        title: ls('KQI_CALCULATOR_MANUFACTURE_TITLE', 'Производитель'),
-        horizontal: true,
-        fields: [{
-            id: 'manufacture',
-            labelText: `${ls('KQI_CALCULATOR_MANUFACTURE_FIELD_LABEL', 'Производитель')}:`,
-            labelWidth: '32%',
-            inputWidth: '66%',
-            style: {
-                flex: '1 1 0',
-            },
-            children: (
-                <Select
-                    id="manufacture"
-                    options={Calculator.mapListToOptions(this.props, 'manufactureList')}
-                    onChange={value => this.setConfigProperty('manufacture', value)}
-                />
-            ),
-        }, {
-            id: 'manufacture-grouping',
-            labelText: ls('KQI_CALCULATOR_MANUFACTURE_GROUPING_FIELD_LABEL', 'С группировкой по производителю оборудования'),
-            labelWidth: '90%',
-            inputWidth: '6%',
-            labelAlign: 'right',
-            style: {
-                flex: '1 1 0',
-                marginTop: 0,
-            },
-            children: (
-                <Checkbox
-                    id="manufacture-grouping"
-                    checked={_.get(this.state.config, 'manufacture_grouping', false)}
-                    onChange={value => this.setConfigProperty('manufacture_grouping', value)}
-                />
-            ),
-        }]
-    }];
-
     render() {
-        const panels = this.getPanelsConfig();
-
+        const disableForm = !!this.props.config;
+        const { manufactureList } = this.props;
+        const { config } = this.state;
         return (
             <Modal
                 isOpen={this.props.active}
                 className={styles.kqiCalculator}
             >
                 <ModalHeader
-                    toggle={this.onClose}>{ls('KQI_CALCULATOR_TITLE', 'Вычисление KQI')}</ModalHeader>
+                    toggle={this.onClose}
+                >
+                    {ls('KQI_CALCULATOR_TITLE', 'Вычисление KQI')}
+                </ModalHeader>
                 <ModalBody>
                     <div className={styles.kqiCalculatorContent}>
-                        {panels.map((panel, index) => {
-                            const { fields, ...panelProps } = panel;
-                            return (
-                                <Panel
-                                    key={`kqi-calculator-panel-${index}`}
-                                    {...panelProps}
-                                >
-                                    {fields.map(fieldProps => (
-                                        <Field key={fieldProps.id} {...fieldProps} />
-                                    ))}
-                                </Panel>
-                            )
-                        })}
-                        <div className={styles.panelsGroup}>
-                            <Panel
-                                title={ls('KQI_CALCULATOR_EQUIPMENT_TITLE', 'Оборудование')}
-                            >
-                                <Field
-                                    id="equipment-type"
-                                    labelText={`${ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_FIELD_LABEL', 'Тип оборудования')}:`}
-                                    labelWidth="32%"
-                                    inputWidth="68%"
-                                >
-                                    <Select
-                                        id="equipment-type"
-                                        options={Calculator.mapListToOptions(this.props, 'equipmentsList')}
-                                        onChange={value => this.setConfigProperty('equipment_type', value)}
-                                    />
-                                </Field>
-                                <Field
-                                    id="equipment-type-grouping"
-                                    labelText={ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_GROUPING_FIELD_LABEL', 'С группировкой по типу оборудования')}
-                                    labelWidth="67%"
-                                    inputWidth="5%"
-                                    labelAlign="right"
-                                >
-                                    <Checkbox
-                                        id="equipment-type-grouping"
-                                        checked={_.get(this.state.config, 'equipment_grouping', []).includes(EQUIPMENT_TYPE_GROUPING.SELF)}
-                                        onChange={value => this.setGroupingProperty('equipment_grouping', EQUIPMENT_TYPE_GROUPING.SELF, value)}
-                                    />
-                                </Field>
-                                <Field
-                                    id="hw-version-grouping"
-                                    labelText={ls('KQI_CONFIGURATOR_HW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по hw версии')}
-                                    labelWidth="67%"
-                                    inputWidth="5%"
-                                    labelAlign="right"
-                                >
-                                    <Checkbox
-                                        id="hw-version-grouping"
-                                        checked={_.get(this.state.config, 'equipment_grouping', []).includes(EQUIPMENT_TYPE_GROUPING.HW)}
-                                        onChange={value => this.setGroupingProperty('equipment_grouping', EQUIPMENT_TYPE_GROUPING.HW, value)}
-                                    />
-                                </Field>
-                                <Field
-                                    id="sw-version-grouping"
-                                    labelText={ls('KQI_CONFIGURATOR_SW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по sw версии')}
-                                    labelWidth="67%"
-                                    inputWidth="5%"
-                                    labelAlign="right"
-                                >
-                                    <Checkbox
-                                        id="sw-version-grouping"
-                                        checked={_.get(this.state.config, 'equipment_grouping', []).includes(EQUIPMENT_TYPE_GROUPING.SW)}
-                                        onChange={value => this.setGroupingProperty('equipment_grouping', EQUIPMENT_TYPE_GROUPING.SW, value)}
-                                    />
-                                </Field>
-                            </Panel>
-                            <Panel
-                                title={ls('KQI_CALCULATOR_ABONENT_TITLE', '')}
-                            >
-                                <Field
-                                    id="abonent-group"
-                                    labelText={`${ls('KQI_CONFIGURATOR_ABONENT_GROUP_FIELD_LABEL', 'Группа абонентов')}:`}
-                                    labelWidth="32%"
-                                    inputWidth="68%"
-                                >
-                                    <Select
-                                        id="abonent-group"
-                                        options={Calculator.mapListToOptions(this.props, 'usergroupsList')}
-                                        onChange={value => this.setConfigProperty('abonent_group', value)}
-                                    />
-                                </Field>
-                                <Field
-                                    id="abonent-grouping"
-                                    labelText={ls('KQI_CONFIGURATOR_ABONENT_GROUPING_FIELD_LABEL', 'С группировкой по группам абонентов')}
-                                    labelWidth="67%"
-                                    inputWidth="5%"
-                                    labelAlign="right"
-                                >
-                                    <Checkbox
-                                        id="abonent-grouping"
-                                        checked={_.get(this.state.config, 'abonent_grouping', []).includes(ABONENT_GROUP_GROUPING.SELF)}
-                                        onChange={value => this.setGroupingProperty('abonent_grouping', ABONENT_GROUP_GROUPING.SELF, value)}
-                                    />
-                                </Field>
-                                <Field
-                                    id="abonent-list-grouping"
-                                    labelText={ls('KQI_CONFIGURATOR_ABONENT_LIST_FIELD_LABEL', 'Формировать список абонентов')}
-                                    labelWidth="67%"
-                                    inputWidth="5%"
-                                    labelAlign="right"
-                                >
-                                    <Checkbox
-                                        id="abonent-list-grouping"
-                                        checked={_.get(this.state.config, 'abonent_grouping', []).includes(ABONENT_GROUP_GROUPING.ABONENT)}
-                                        onChange={value => this.setGroupingProperty('abonent_grouping', ABONENT_GROUP_GROUPING.ABONENT, value)}
-                                    />
-                                </Field>
-                            </Panel>
+                        <BasicParams
+                            onChange={this.setConfigProperty}
+                            config={this.state.config}
+                            kqiOptions={Calculator.mapListToOptions(this.props, 'kqiList')}
+                            serviceTypesOptions={Calculator.mapObjectToOptions(SERVICE_TYPES)}
+                            errors={this.state.errors}
+                            disabled={disableForm}
+                        />
+                        <Period
+                            groupingOptions={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
+                            errors={this.state.errors}
+                            isAutoGen={_.get(this.state.config, 'period.auto', false)}
+                            disabled={disableForm}
+                            config={this.state.config}
+                            onAutoGenChange={value => this.setConfigProperty('period.auto', value)}
+                            onGroupingTypeChange={value => this.setConfigProperty('date_time_grouping', value)}
+                            onIntervalChange={this.onIntervalChange}
+
+                        />
+                        <Location
+                            locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}
+                            groupingOptions={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
+                            onLocationChange={value => this.setConfigProperty('location', value)}
+                            onGroupingTypeChange={value => this.setConfigProperty('location_grouping', value)}
+                            config={this.state.config}
+                            disabled={disableForm}
+                        />
+                        <Technology
+                            id="last-mile-technology"
+                            title={ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии последней мили')}
+                            label={`${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}`}
+                            technologies={Calculator.mapObjectToOptions(LAST_MILE_TECHNOLOGIES)}
+                            onTechnologyChange={value => this.setConfigProperty('last_mile_technology', value)}
+                            onGroupingChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
+                            disabled={disableForm}
+                            value={_.get(this.state.config, 'last_mile_technology')}
+                            groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
+                        />
+                        {/*<Technology*/}
+                            {/*id="last-inch-technology"*/}
+                            {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
+                            {/*label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}*/}
+                            {/*technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}*/}
+                            {/*onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}*/}
+                            {/*onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}*/}
+                            {/*disabled={disableForm}*/}
+                            {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
+                            {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
+                        {/*/>*/}
+                        <div className={styles.bottomContent}>
+                            <Manufacture
+                                isGroupingChecked={_.get(this.state.config, 'manufacturer_grouping', false)}
+                                manufactureList={manufactureList}
+                                onCheckManufactures={value => this.setConfigProperty('manufacturer', value)}
+                                onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
+                                disabled={disableForm}
+                                checked={_.get(this.state.config, 'manufacturer', [])}
+                            />
+                            <div className={styles.panels}>
+                                <Equipment
+                                    equipmentsList={Calculator.mapListToOptions(this.props, 'equipmentsList')}
+                                    onEquipmentTypeChange={value => this.setConfigProperty('equipment_type', value)}
+                                    onGroupingChange={value => this.setConfigProperty('equipment_type_grouping', value)}
+                                    disabled={disableForm}
+                                    value={_.get(config, 'equipment_type')}
+                                    groupingValue={_.get(config, 'equipment_type_grouping')}
+                                />
+                                {/*<UserGroups*/}
+                                    {/*usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}*/}
+                                    {/*onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}*/}
+                                    {/*onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}*/}
+                                    {/*disabled={disableForm}*/}
+                                    {/*value={_.get(config, 'abonent_group')}*/}
+                                    {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
+                                {/*/>*/}
+                            </div>
                         </div>
                     </div>
                 </ModalBody>

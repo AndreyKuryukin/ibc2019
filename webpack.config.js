@@ -55,6 +55,7 @@ module.exports = {
                             modules: true,
                             importLoaders: 1,
                             localIdentName: '[local]',
+                            minimize: prodMode
                         },
                     }, 'fast-sass-loader'],
                 }),
@@ -63,7 +64,15 @@ module.exports = {
                 test: /\.css$/,
                 loader: ExtractTextPlugin.extract({
                     fallback: 'style-loader',
-                    use: ['css-loader?modules&importLoaders=1&localIdentName=[local]'],
+                    use: [{
+                        loader: 'css-loader',
+                        options: {
+                            modules: true,
+                            importLoaders: 1,
+                            localIdentName: '[local]',
+                            minimize: prodMode
+                        },
+                    }],
                 }),
             },
             {
@@ -88,6 +97,7 @@ module.exports = {
         ...plugins,
         new CopyWebpackPlugin([
             'src/static/index.html',
+            'src/resources/img/favicon.ico',
         ]),
         new ExtractTextPlugin('styles.css', {
             allChunks: true,
