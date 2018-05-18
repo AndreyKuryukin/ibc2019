@@ -52,7 +52,7 @@ class ResultsTable extends React.PureComponent {
         }
     }
 
-    composeResultId = (result, index) => `${Object.values(result).join('_').trim()}-${index}`;
+    composeResultId = (result, index) => `${JSON.stringify(result)}-${index}`;
 
     mapData = data => {
         const nodeIds = [];
