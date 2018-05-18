@@ -69,7 +69,7 @@ class ResultsTable extends React.PureComponent {
         return _.get(this.state.valueMap, `${fieldName}.${result[fieldName]}`, result[fieldName]);
     };
 
-    composeResultId = (result, index) => `${Object.values(result).join('_').trim()}-${index}`;
+    composeResultId = (result, index) => `${JSON.stringify(result)}-${index}`;
 
     mapData = data => {
         const nodeIds = [];
