@@ -11,12 +11,29 @@ class Graph extends React.PureComponent {
     static propTypes = {
         active: PropTypes.bool,
         data: PropTypes.array,
+        locations: PropTypes.array,
     };
 
     static defaultProps = {
         active: false,
         data: [],
+        locations: [],
     };
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            valueMap: {
+                location: this.mapLocations(props.locations)
+            }
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(nextProps.locations, this.props.locations)) {
+            this.setState({ valueMap: { location: this.mapLocations(nextProps.locations) } });
+        }
+    }
 
     getColorForResult = (() => {
         const colorMap = {};
@@ -37,11 +54,28 @@ class Graph extends React.PureComponent {
         }
     })();
 
+    getMapedValueWithDefault = (fieldName, value) => {
+        return _.get(this.state.valueMap, `${fieldName}.${value}`, value);
+    };
+
+    mapLocations = (locations) => _.reduce(locations, (result, location) => {
+        result[location.id] = location.name;
+        return result;
+    }, {});
+
+    composeGraphLabel = (result) => _.reduce(_.omit(result, 'id'), (parts, value, key) => {
+        const part = this.getMapedValueWithDefault(key, value);
+        if (!_.isEmpty(part) && !_.isObject(part)) {
+            parts.push(part)
+        }
+        return parts
+    }, []).join('_');
+
     mapData = (historyData) => {
 
         const data = {
             datasets: historyData.map((result, index) => {
-                const label = Object.values(_.omit(result, 'id')).filter(value => _.isString(value)).join('_');
+                const label = this.composeGraphLabel(result);
                 const borderColor = this.getColorForResult(result,index);
                 const data = result.values
                     .map(value => ({ y: value.value * 100, t: value.date_time }))
