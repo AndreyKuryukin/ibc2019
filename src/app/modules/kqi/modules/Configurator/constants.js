@@ -4,6 +4,7 @@ export const OPERATOR_TYPES = {
     GE: '>=',
     LT: '<',
     LE: '<=',
+    NE: '!=',
 };
 
 export const OBJECT_TYPES = {
