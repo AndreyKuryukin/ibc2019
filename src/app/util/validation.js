@@ -2,7 +2,11 @@ import _ from 'lodash';
 import ls from '../../i18n';
 
 const validators = {
-    required: (value, testValue) => testValue ? (value === '0' || value === 0 || !!value === testValue) : !testValue,
+    required: (value, testValue) => {
+        const pureValue = _.isString(value) ? value.trim() : value;
+
+        return testValue ? (value === '0' || value === 0 || !!pureValue === testValue) : !testValue;
+    },
     min: (value, testValue) => value >= testValue,
     max: (value, testValue) => value <= testValue,
     notEmpty: (value, testValue) => !_.isEmpty(value) === testValue,
