@@ -29,7 +29,7 @@ class ResultsViewer extends React.PureComponent {
         match: {},
         results: [],
         locations: [],
-        resHistory: {},
+        resHistory: [],
         onMount: () => null,
         fetchHistory: () => null,
         isLoading: false,
@@ -44,11 +44,6 @@ class ResultsViewer extends React.PureComponent {
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
-        }
-    }
 
     onSearchTextChange = (searchText) => {
         this.setState({ searchText });

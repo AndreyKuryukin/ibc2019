@@ -96,7 +96,7 @@ class ResultsTable extends React.PureComponent {
                     children.push({
                         name: this.getMapedValueWithDefault(result, name),
                         id,
-                        result: result.value,
+                        result: `${result.value * 100}%`,
                         weight: result.weight,
                         originalResultNode: result
                     })

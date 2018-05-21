@@ -103,7 +103,6 @@ class Graph extends React.PureComponent {
                 yAxes: [{
                     ticks: {
                         beginAtZero: false,
-                        max: 100,
                         steps: 10,
                         callback: (value, index, values) => {
                             return `${value}%`;
@@ -116,7 +115,12 @@ class Graph extends React.PureComponent {
                 }],
                 xAxes: [{
                     type: 'time',
-                    distribution: 'series'
+                    distribution: 'series',
+                    time: {
+                        displayFormats: {
+                            millisecond: 'h:mm:ss a'
+                        }
+                    }
                 }],
             }
         };

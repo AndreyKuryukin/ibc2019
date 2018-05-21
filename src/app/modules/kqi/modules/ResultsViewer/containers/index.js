@@ -45,6 +45,7 @@ class KqiResults extends React.PureComponent {
     fetchData = (configId, projectionId, resultId) => {
         Promise.all([this.fetchLocations(), this.fetchResult(configId, projectionId, resultId)])
             .then(([locationsResponse, resultResponse]) => {
+                this.props.onFetchResultHistorySuccess([]);
                 const result = resultResponse.data;
                 const locations = locationsResponse.data;
                 this.setState({ locations }, () => {
@@ -65,7 +66,6 @@ class KqiResults extends React.PureComponent {
 
     fetchHistory = (nodes) => {
         const { configId, projectionId } = this.props;
-        this.props.onFetchResultHistorySuccess([]);
         if (!_.isEmpty(nodes)) {
             rest.post('/api/v1/kqi/:configId/projection/:projectionId/result', nodes, {
                 urlParams: {
