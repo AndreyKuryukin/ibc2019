@@ -89,10 +89,7 @@ class UserEditor extends React.PureComponent {
         const customErrorMessages = {
             passwordEqual: ls('PASSWORD_NOT_EQUAL', 'Пароли не совпадают')
         };
-        const errors = validateForm({
-            ...userData,
-            login: userData.login.trim(),
-        }, this.validationConfig, customErrorMessages, customValidators);
+        const errors = validateForm(userData, this.validationConfig, customErrorMessages, customValidators);
         if (_.isEmpty(errors)) {
             const submit = userId ? rest.put : rest.post;
             const success = (response) => {
