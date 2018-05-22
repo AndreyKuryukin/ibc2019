@@ -6,6 +6,9 @@ import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 import Checkbox from '../../../../../components/Checkbox';
 import * as _ from "lodash";
+import styles from './styles.scss';
+
+const fieldStyle = { flex: '1 1 0' };
 
 class Technology extends React.PureComponent {
     static propTypes = {
@@ -50,9 +53,7 @@ class Technology extends React.PureComponent {
                     labelText={this.props.label}
                     labelWidth="32%"
                     inputWidth="66%"
-                    style={{
-                        flex: '1 1 0',
-                    }}
+                    style={fieldStyle}
                 >
                     <Select
                         id={this.props.id}
@@ -63,23 +64,24 @@ class Technology extends React.PureComponent {
                         disabled={disabled}
                     />
                 </Field>
-                <Field
-                    id={`${this.props.id}-grouping`}
-                    labelText={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии')}
-                    labelWidth="90%"
-                    inputWidth="6%"
-                    labelAlign="right"
-                    style={{
-                        flex: '1 1 0',
-                    }}
-                >
-                    <Checkbox
+                <div className={styles.groupingBlock}>
+                    <Field
                         id={`${this.props.id}-grouping`}
-                        checked={_.get(this.props, 'groupingValue', this.state.isGroupingChecked)}
-                        onChange={this.onGroupingCheck}
-                        disabled={disabled || value}
-                    />
-                </Field>
+                        labelText={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии')}
+                        inputWidth={25}
+                        labelWidth={405}
+                        labelAlign="right"
+                        style={fieldStyle}
+                        splitter=""
+                    >
+                        <Checkbox
+                            id={`${this.props.id}-grouping`}
+                            checked={_.get(this.props, 'groupingValue', this.state.isGroupingChecked)}
+                            onChange={this.onGroupingCheck}
+                            disabled={disabled || value}
+                        />
+                    </Field>
+                </div>
             </Panel>
         );
     }

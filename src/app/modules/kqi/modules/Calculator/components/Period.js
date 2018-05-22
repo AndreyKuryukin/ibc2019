@@ -215,7 +215,7 @@ class Period extends React.PureComponent {
                         value={this.state.start}
                         max={this.state.end}
                         onChange={this.onStartChange}
-                        inputWidth={90}
+                        inputWidth={115}
                         format={'DD.MM.YYYY HH:mm'}
                         time
                         valid={errors && _.isEmpty(errors.start_date_time)}
@@ -225,7 +225,7 @@ class Period extends React.PureComponent {
                         value={this.state.end}
                         min={this.state.start}
                         onChange={this.onEndChange}
-                        inputWidth={90}
+                        inputWidth={115}
                         format={'DD.MM.YYYY HH:mm'}
                         style={dateTimePickerStyle}
                         time
@@ -263,6 +263,7 @@ class Period extends React.PureComponent {
                     labelWidth="98%"
                     inputWidth="2%"
                     labelAlign="right"
+                    splitter=""
                 >
                     <Checkbox
                         id="auto-checkbox"

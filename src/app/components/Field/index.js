@@ -22,7 +22,7 @@ class Field extends React.PureComponent {
         style: PropTypes.object,
         title: PropTypes.string,
         splitter: PropTypes.string
-    }
+    };
 
     static defaultProps = {
         id: '',
