@@ -80,6 +80,9 @@
 .icon-state-success {
   @include iconBuilder(22px, 22px, 'success.png');
 }
+.icon-state-unknown {
+  @include iconBuilder(22px, 22px, 'unknown.png');
+}
 .icon-retry {
   @include iconBuilder(22px, 22px, 'retry.png');
 }
@@ -157,4 +160,7 @@
 }
 .menu-icon-policies-active {
   @include iconBuilder(26px, 34px, 'menu/policies-active.svg');
+}
+.logout-icon {
+  @include iconBuilder(15px, 15px, 'logout.png');
 }

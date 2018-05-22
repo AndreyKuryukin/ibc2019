@@ -76,6 +76,7 @@ class Equipment extends React.PureComponent {
                     <Select
                         id="equipment-type"
                         options={this.props.equipmentsList}
+                        placeholder={ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_PLACEHOLDER', 'Тип оборудования')}
                         onChange={this.onEquipmentTypeChange}
                         value={value}
                         disabled={disabled}
