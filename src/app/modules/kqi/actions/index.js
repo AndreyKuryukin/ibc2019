@@ -9,3 +9,9 @@ export const fetchKQIProjectionsSuccess = projections => ({
     type: FETCH_KQI_PROJECTIONS_SUCCESS,
     payload: { projections },
 });
+
+export const DELETE_KQI_CONFIG_SUCCESS = 'kqi/DELETE_KQI_CONFIG_SUCCESS';
+export const deleteKqiConfigSuccess = id => ({
+    type: DELETE_KQI_CONFIG_SUCCESS,
+    payload: { id },
+});

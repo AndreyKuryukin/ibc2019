@@ -14,6 +14,8 @@ import Calculator from '../modules/Calculator/containers';
 import ResultsViewer from '../modules/ResultsViewer/containers';
 import Panel from '../../../components/Panel';
 
+const panelBodyStyle = { padding: 0 };
+
 class KQI extends React.PureComponent {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
@@ -29,6 +31,7 @@ class KQI extends React.PureComponent {
         onMount: PropTypes.func,
         onSelectConfig: PropTypes.func,
         onEditConfig: PropTypes.func,
+        onDeleteConfig: PropTypes.func,
     };
 
     static defaultProps = {
@@ -39,6 +42,7 @@ class KQI extends React.PureComponent {
         onMount: () => null,
         onEditConfig: () => null,
         onSelectConfig: null,
+        onDeleteConfig: () => null,
     };
 
     constructor(props) {
@@ -93,7 +97,7 @@ class KQI extends React.PureComponent {
                 <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
                     <Panel
                         title={ls('KQI_SYSTEM_TITLE', 'Система')}
-                        bodyStyle={{ padding: 0 }}
+                        bodyStyle={panelBodyStyle}
                     >
                         <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange}/>
                         <ConfigsTable
@@ -102,6 +106,7 @@ class KQI extends React.PureComponent {
                             preloader={this.props.isConfigsLoading}
                             onSelectConfig={this.props.onSelectConfig}
                             onEditConfig={this.onEditConfig}
+                            onDeleteConfig={this.props.onDeleteConfig}
                         />
                     </Panel>
                 </div>
