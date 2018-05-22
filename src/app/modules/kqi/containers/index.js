@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import KQIComponent from '../components';
 import ls from 'i18n';
 import rest from '../../../rest';
-import { fetchKQIConfigsSuccess, fetchKQIProjectionsSuccess, } from '../actions';
+import { fetchKQIConfigsSuccess, fetchKQIProjectionsSuccess, deleteKqiConfigSuccess } from '../actions';
 import _ from "lodash";
 
 class KQI extends React.PureComponent {
@@ -27,6 +27,7 @@ class KQI extends React.PureComponent {
         projectionsData: PropTypes.array,
         onFetchKQISuccess: PropTypes.func,
         onFetchProjectionsSuccess: PropTypes.func,
+        onDeleteKqiConfigSuccess: PropTypes.func,
     };
 
     static defaultProps = {
@@ -34,6 +35,7 @@ class KQI extends React.PureComponent {
         projectionsData: [],
         onFetchKQISuccess: () => null,
         onFetchProjectionsSuccess: () => null,
+        onDeleteKqiConfigSuccess: () => null,
     };
 
     constructor(props) {
@@ -61,6 +63,22 @@ class KQI extends React.PureComponent {
     componentWillUnmount() {
         this.props.onFetchProjectionsSuccess([]);
     }
+
+    onDeleteConfig = (id) => {
+        this.setState({ isConfigsLoading: true });
+        if (id) {
+            const urlParams = { kqiId: id };
+            rest.delete('/api/v1/kqi/:kqiId', {}, { urlParams })
+                .then(() => {
+                    this.props.onDeleteKqiConfigSuccess(id);
+                    this.setState({ isConfigsLoading: false });
+                })
+                .catch((e) => {
+                    console.error(e);
+                    this.setState({ isConfigsLoading: false });
+                });
+        }
+    };
 
     onFetchKQI = () => {
         this.setState({ isConfigsLoading: true });
@@ -105,6 +123,7 @@ class KQI extends React.PureComponent {
                 isConfigsLoading={this.state.isConfigsLoading}
                 isProjectionsLoading={this.state.isProjectionsLoading}
                 onSelectConfig={this.onSelectConfig}
+                onDeleteConfig={this.onDeleteConfig}
             />
         );
     }
@@ -118,6 +137,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     onFetchKQISuccess: kqi => dispatch(fetchKQIConfigsSuccess(kqi)),
     onFetchProjectionsSuccess: projections => dispatch(fetchKQIProjectionsSuccess(projections)),
+    onDeleteKqiConfigSuccess: id => dispatch(deleteKqiConfigSuccess(id)),
 });
 
 export default connect(

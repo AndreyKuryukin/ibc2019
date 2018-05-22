@@ -91,7 +91,11 @@ class Configurator extends React.PureComponent {
             });
     };
 
-    onSubmitKPI = (kpiConfig) => {
+    onSubmitKPI = (config) => {
+        const kpiConfig = {
+            ...config,
+            name: config.name.trim(),
+        };
         const errors = validateForm(kpiConfig, this.validationConfig);
 
         if (_.isEmpty(errors)) {

@@ -148,6 +148,7 @@ class Configurator extends React.PureComponent {
                                     onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     placeholder={ls('KQI_CONFIGURATOR_NAME_PLACEHOLDER', 'Название')}
+                                    maxlength={255}
                                 />
                             </Field>
                             <Field
@@ -196,7 +197,7 @@ class Configurator extends React.PureComponent {
                                     options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
                                     onChange={value => this.setConfigProperty('operator_type', value)}
                                     value={_.get(config, 'operator_type')}
-                                    valid={errors && _.isEmpty(errors.operator)}
+                                    valid={errors && _.isEmpty(errors.operator_type)}
                                     disabled={disableForm}
                                     placeholder={ls('KQI_CONFIGURATOR_OPERATOR_PLACEHOLDER', 'Оператор')}
                                 />

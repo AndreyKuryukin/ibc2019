@@ -9,6 +9,9 @@ import Checkbox from '../../../../../components/Checkbox';
 import styles from './styles.scss';
 import _ from "lodash";
 
+const fieldStyle = { flex: '1 1 0' };
+const selectStyle = { width: 290 };
+
 class Location extends React.PureComponent {
     static propTypes = {
         locationOptions: PropTypes.array,
@@ -71,9 +74,7 @@ class Location extends React.PureComponent {
                     labelText={ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'МРФ')}
                     labelWidth="32%"
                     inputWidth="66%"
-                    style={{
-                        flex: '1 1 0',
-                    }}
+                    style={fieldStyle}
                 >
                     <Select
                         id="location"
@@ -85,32 +86,30 @@ class Location extends React.PureComponent {
                     />
                 </Field>
                 <div className={styles.groupingBlock}>
-                    <Checkbox
-                        id="location-grouping-check"
-                        checked={this.state.isGroupingChecked || _.get(config, 'location_grouping')}
-                        onChange={this.onGroupingCheck}
-                        style={{ marginLeft: 18 }}
-                        disabled={disabled}
-                    />
                     <Field
-                        id="location-grouping"
+                        id="location-grouping-check"
                         labelText={ls('KQI_CALCULATOR_GROUPING_FIELD_LABEL', 'С группировкой по')}
-                        labelWidth="30%"
-                        inputWidth="70%"
-                        style={{
-                            flexGrow: 1,
-                            paddingLeft : 6
-                        }}
+                        inputWidth={25}
+                        labelWidth={115}
+                        labelAlign="right"
+                        style={fieldStyle}
                     >
-                        <Select
-                            id="location-grouping"
-                            disabled={!this.state.isGroupingChecked || disabled}
-                            options={!!_.get(config, 'location') ? [this.props.groupingOptions[0]] : this.props.groupingOptions}
-                            value={_.get(config, 'location_grouping')}
-                            onChange={this.onGroupingTypeChange}
-                            noEmptyOption
+                        <Checkbox
+                            id="location-grouping-check"
+                            checked={this.state.isGroupingChecked || _.get(config, 'location_grouping')}
+                            onChange={this.onGroupingCheck}
+                            disabled={disabled}
                         />
                     </Field>
+                    <Select
+                        id="location-grouping"
+                        disabled={!this.state.isGroupingChecked || disabled}
+                        options={this.props.groupingOptions}
+                        value={_.get(config, 'location_grouping')}
+                        onChange={this.onGroupingTypeChange}
+                        style={selectStyle}
+                        noEmptyOption
+                    />
                 </div>
             </Panel>
         );
