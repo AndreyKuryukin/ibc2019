@@ -14,6 +14,7 @@ class ConfigsTable extends React.PureComponent {
         preloader: PropTypes.bool,
         onSelectConfig: PropTypes.func,
         onEditConfig: PropTypes.func,
+        onDeleteConfig: PropTypes.func,
     };
 
     static defaultProps = {
@@ -22,6 +23,7 @@ class ConfigsTable extends React.PureComponent {
         preloader: false,
         onSelectConfig: () => null,
         onEditConfig: () => null,
+        onDeleteConfig: () => null,
     };
 
     static getColumns = memoize(() => [{
@@ -74,15 +76,17 @@ class ConfigsTable extends React.PureComponent {
                         }}
                     />
                 );
-            case 'delete':
+            case 'delete': {
+                const onDeleteConfig = this.onDelete.bind(this, node.id);
                 return (
-                    <div
+                    !node.predefined && <div
                         className={styles.deleteStyle}
-                        onClick={() => this.onDelete(node.id)}
+                        onClick={onDeleteConfig}
                     >
                         ×
                     </div>
                 );
+            }
             default:
                 return (
                     <DefaultCell
@@ -90,6 +94,11 @@ class ConfigsTable extends React.PureComponent {
                     />
                 );
         }
+    };
+
+    onDelete = (id, e) => {
+        e.stopPropagation();
+        this.props.onDeleteConfig(id);
     };
 
     filter = (data, columns, searchText) => {
