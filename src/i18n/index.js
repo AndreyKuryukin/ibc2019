@@ -28,6 +28,8 @@ const languageMap = {
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_DAY: 'ежесуточный',
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_WEEK: 'еженедельный',
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_MONTH: 'ежемесячный',
+
+    PAGE_NOT_FOUND: 'Страница не найдена',
 };
 
 const ls = (key, defaultValue) => _.get(languageMap, key, defaultValue);
