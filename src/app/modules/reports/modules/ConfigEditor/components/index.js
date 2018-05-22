@@ -12,18 +12,14 @@ import Period from './Period';
 import UsersGrid from './UsersGrid';
 import styles from './styles.scss';
 
-const REPORT_TYPE_OPTIONS = [{
-    value: 'PDF',
-    title: 'PDF'
-}, {
-    value: 'XLS',
-    title: 'XLS'
-}];
+// const REPORT_TYPE_OPTIONS = [{
+//     value: 'PDF',
+//     title: 'PDF'
+// }, {
+//     value: 'XLS',
+//     title: 'XLS'
+// }];
 
-const REPORT_MRF_OPTIONS = [{
-    value: 'Волга',
-    title: 'Волга'
-}];
 
 const REGULARITY_MAP = {
     'WEEK': ls('WEEKLY', 'Еженедельный'),
@@ -46,6 +42,7 @@ class ConfigEditor extends React.PureComponent {
         active: PropTypes.bool,
         users: PropTypes.array,
         templates: PropTypes.array,
+        locations: PropTypes.array,
         onSubmit: PropTypes.func,
         onMount: PropTypes.func,
         errors: PropTypes.object,
@@ -55,6 +52,7 @@ class ConfigEditor extends React.PureComponent {
         active: false,
         users: [],
         templates: [],
+        locations: [],
         onSubmit: () => null,
         onMount: () => null,
         errors: null,
@@ -67,7 +65,7 @@ class ConfigEditor extends React.PureComponent {
             config: {
                 name: '<Имя_шаблона>_Еженедельный_PDF',
                 template_id: null,
-                type: 'PDF',
+                type: 'XLS',
                 period: {
                     regularity: '',
                     auto: true,
@@ -96,6 +94,8 @@ class ConfigEditor extends React.PureComponent {
             this.setState({ templates: nextProps.templates });
         }
     }
+
+    mapLocationOptions = (locations) => locations.map((location) => ({title: location.name, value: location.id}));
 
     getConfigProperty = (key, defaultValue) => _.get(this.state.config, key, defaultValue);
 
@@ -233,24 +233,24 @@ class ConfigEditor extends React.PureComponent {
                                             valid={!_.get(errors, 'template_id', false)}
                                         />
                                     </Field>
-                                    <Field
-                                        id="type"
-                                        labelText={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}
-                                        labelWidth="30%"
-                                        inputWidth="70%"
-                                        required
-                                    >
-                                        <Select
-                                            id="type"
-                                            options={REPORT_TYPE_OPTIONS}
-                                            value={this.getConfigProperty('type')}
-                                            placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}
-                                            onChange={value => this.setConfigProperty('type', value)}
-                                            valid={!_.get(errors, 'type', false)}
-                                            errorMessage={_.get(errors, 'type.title')}
-                                            noEmptyOption
-                                        />
-                                    </Field>
+                                    {/*<Field*/}
+                                        {/*id="type"*/}
+                                        {/*labelText={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}*/}
+                                        {/*labelWidth="30%"*/}
+                                        {/*inputWidth="70%"*/}
+                                        {/*required*/}
+                                    {/*>*/}
+                                        {/*<Select*/}
+                                            {/*id="type"*/}
+                                            {/*options={REPORT_TYPE_OPTIONS}*/}
+                                            {/*value={this.getConfigProperty('type')}*/}
+                                            {/*placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}*/}
+                                            {/*onChange={value => this.setConfigProperty('type', value)}*/}
+                                            {/*valid={!_.get(errors, 'type', false)}*/}
+                                            {/*errorMessage={_.get(errors, 'type.title')}*/}
+                                            {/*noEmptyOption*/}
+                                        {/*/>*/}
+                                    {/*</Field>*/}
 
                                 </Panel>
                                 <Panel
@@ -265,7 +265,7 @@ class ConfigEditor extends React.PureComponent {
                                     >
                                         <Select
                                             id="mrf"
-                                            options={REPORT_MRF_OPTIONS}
+                                            options={this.mapLocationOptions(this.props.locations)}
                                             value={this.getConfigProperty('mrf')}
                                             placeholder={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                                             onChange={value => this.setConfigProperty('mrf', value)}

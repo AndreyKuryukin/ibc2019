@@ -169,7 +169,7 @@ class ReportsTable extends React.PureComponent {
                         iconTitle={type && type.toUpperCase()}
                         text={node[column.name]}
                         disabled={node.state === 'FAILED'}
-                        href={state !== 'failed' && state !== 'running' && node.path}
+                        href={state !== 'failed' && state !== 'running' && node.file_path}
                     />
                 );
             case 'retry': {

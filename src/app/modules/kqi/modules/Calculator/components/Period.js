@@ -263,6 +263,7 @@ class Period extends React.PureComponent {
                     labelWidth="98%"
                     inputWidth="2%"
                     labelAlign="right"
+                    splitter=""
                 >
                     <Checkbox
                         id="auto-checkbox"

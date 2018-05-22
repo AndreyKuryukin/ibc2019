@@ -29,7 +29,8 @@ export const DATE_TIME_GROUPING = {
 };
 
 export const LOCATION_GROUPING = {
-    BRANCH: 'РФ',
+    RF: 'РФ',
+    MRF: 'МРФ',
 };
 
 export const LAST_MILE_TECHNOLOGIES = {

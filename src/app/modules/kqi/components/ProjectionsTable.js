@@ -127,7 +127,7 @@ export class ProjectionsTable extends React.PureComponent {
                 return (
                     <IconCell
                         icon="edit-icon"
-                        onIconClick={() => null}
+                        onIconClick={() => this.props.onViewProjection(node.id)}
                     />
                 );
             case 'delete':

@@ -33,9 +33,17 @@ class Location extends React.PureComponent {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        const config = _.get(nextProps, 'config', this.props.config);
+        const groupingType = _.get(config, 'location_grouping');
+        if (groupingType !== this.state.groupingType) {
+            this.setState({ groupingType });
+        }
+    }
+
     onGroupingCheck = (value) => {
         if (value) {
-            this.props.onGroupingTypeChange(this.state.groupingType);
+            this.props.onGroupingTypeChange('RF');
         } else {
             this.props.onGroupingTypeChange(null);
         }
@@ -82,7 +90,7 @@ class Location extends React.PureComponent {
                         checked={this.state.isGroupingChecked || _.get(config, 'location_grouping')}
                         onChange={this.onGroupingCheck}
                         style={{ marginLeft: 18 }}
-                        disabled={disabled || !!_.get(config, 'location')}
+                        disabled={disabled}
                     />
                     <Field
                         id="location-grouping"
@@ -91,12 +99,13 @@ class Location extends React.PureComponent {
                         inputWidth="70%"
                         style={{
                             flexGrow: 1,
+                            paddingLeft : 6
                         }}
                     >
                         <Select
                             id="location-grouping"
                             disabled={!this.state.isGroupingChecked || disabled}
-                            options={this.props.groupingOptions}
+                            options={!!_.get(config, 'location') ? [this.props.groupingOptions[0]] : this.props.groupingOptions}
                             value={_.get(config, 'location_grouping')}
                             onChange={this.onGroupingTypeChange}
                             noEmptyOption

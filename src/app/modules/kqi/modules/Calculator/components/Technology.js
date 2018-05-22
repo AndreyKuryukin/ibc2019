@@ -69,6 +69,7 @@ class Technology extends React.PureComponent {
                     labelWidth="90%"
                     inputWidth="6%"
                     labelAlign="right"
+                    splitter=""
                     style={{
                         flex: '1 1 0',
                     }}

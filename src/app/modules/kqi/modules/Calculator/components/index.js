@@ -9,6 +9,7 @@ import styles from './styles.scss';
 import {
     DATE_TIME_GROUPING,
     GROUPING_TYPES,
+    INTERVALS,
     LAST_INCH_TECHNOLOGIES,
     LAST_MILE_TECHNOLOGIES,
     LOCATION_GROUPING,
@@ -20,8 +21,6 @@ import Location from './Location';
 import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
-import UserGroups from './UserGroups';
-import { INTERVALS } from '../constants';
 
 const NAME_PATTERN_SEQUENCE = [
     'period.regularity',
@@ -70,7 +69,8 @@ const abonent_group_grouping = {
 };
 
 const location_grouping = {
-    BRANCH: ls('WITH_BRANCH_GROUPING', 'С группировкой по РФ'),
+    RF: ls('WITH_RF_GROUPING', 'С группировкой по РФ'),
+    MRF: ls('WITH_MRF_GROUPING', 'С группировкой по МРФ'),
 };
 
 
@@ -231,9 +231,9 @@ class Calculator extends React.PureComponent {
             config['equipment_type_grouping'] = false;
         }
 
-        if (key === 'location' && !value) {
-            config['location_grouping'] = null
-        }
+        if (key === 'location' && config['location_grouping'] === 'MRF') {
+                config['location_grouping'] = 'RF'
+        };
 
         if (_.get(config, 'period.auto')) {
             config['name'] = this.composeConfigName(config);
@@ -257,7 +257,7 @@ class Calculator extends React.PureComponent {
         const config = {
             ...this.state.config,
             period: {
-                auto: regularity !== INTERVALS.OTHER && _.get(this.state.config, 'period.auto' , false),
+                auto: regularity !== INTERVALS.OTHER && _.get(this.state.config, 'period.auto', false),
                 start_date,
                 end_date,
                 regularity,
@@ -349,15 +349,15 @@ class Calculator extends React.PureComponent {
                             groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
                         />
                         {/*<Technology*/}
-                            {/*id="last-inch-technology"*/}
-                            {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
-                            {/*label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}*/}
-                            {/*technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}*/}
-                            {/*onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}*/}
-                            {/*onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}*/}
-                            {/*disabled={disableForm}*/}
-                            {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
-                            {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
+                        {/*id="last-inch-technology"*/}
+                        {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
+                        {/*label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}*/}
+                        {/*technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}*/}
+                        {/*onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}*/}
+                        {/*onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}*/}
+                        {/*disabled={disableForm}*/}
+                        {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
+                        {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
                         {/*/>*/}
                         <div className={styles.bottomContent}>
                             <Manufacture
@@ -378,12 +378,12 @@ class Calculator extends React.PureComponent {
                                     groupingValue={_.get(config, 'equipment_type_grouping')}
                                 />
                                 {/*<UserGroups*/}
-                                    {/*usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}*/}
-                                    {/*onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}*/}
-                                    {/*onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}*/}
-                                    {/*disabled={disableForm}*/}
-                                    {/*value={_.get(config, 'abonent_group')}*/}
-                                    {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
+                                {/*usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}*/}
+                                {/*onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}*/}
+                                {/*onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}*/}
+                                {/*disabled={disableForm}*/}
+                                {/*value={_.get(config, 'abonent_group')}*/}
+                                {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
                                 {/*/>*/}
                             </div>
                         </div>

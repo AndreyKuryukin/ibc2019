@@ -80,6 +80,13 @@ class KQI extends React.PureComponent {
         this.props.history.push(`/kqi/configure/${id}`);
     };
 
+    onViewProjection = (id) => {
+        const { params } = this.props.match;
+        const configId = params.configId || null;
+
+        this.props.history.push(`/kqi/calculate/${configId}/${id}`);
+    };
+
     render() {
         const { params = {} } = this.props.match;
         const { action, resultId, projectionId, configId } = params;
@@ -116,6 +123,7 @@ class KQI extends React.PureComponent {
                             searchText={this.state.calculationsSearchText}
                             preloader={this.props.isProjectionsLoading}
                             configId={configId}
+                            onViewProjection={this.onViewProjection}
                         />
                     </Panel>
                 </div>
