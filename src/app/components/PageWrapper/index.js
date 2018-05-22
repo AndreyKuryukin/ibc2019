@@ -12,6 +12,8 @@ import Icon from '../Icon/Icon';
 import rest from '../../rest';
 import { resetActiveUserSuccess } from '../../actions';
 
+const logoutIconStyle = { marginLeft: 20 };
+
 class PageWrapper extends React.Component {
 
     static childContextTypes = {
@@ -119,8 +121,9 @@ class PageWrapper extends React.Component {
                     <div className={styles.rightPanel}>
                         <a href="/">{this.getUserName(this.props.user)}</a>
                         <Icon
-                            icon="userIcon"
+                            icon="logout-icon"
                             onClick={this.onLogOut}
+                            style={logoutIconStyle}
                         />
                     </div>
                 </Navbar>
