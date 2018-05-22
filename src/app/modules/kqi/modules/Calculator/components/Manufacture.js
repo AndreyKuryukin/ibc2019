@@ -122,13 +122,13 @@ class Manufacture extends React.PureComponent {
                 <Field
                     id="manufacture-grouping"
                     labelText={ls('KQI_CALCULATOR_MANUFACTURE_GROUPING_FIELD_LABEL', 'С группировкой по производителю оборудования')}
-                    labelWidth="97%"
-                    inputWidth="3%"
+                    inputWidth={25}
+                    labelWidth={300}
                     labelAlign="right"
                     splitter=""
                     style={{
                         justifyContent: 'flex-end'
-                        
+
                     }}
                 >
                     <Checkbox

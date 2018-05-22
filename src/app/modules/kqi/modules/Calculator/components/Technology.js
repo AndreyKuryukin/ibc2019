@@ -70,10 +70,10 @@ class Technology extends React.PureComponent {
                     labelText={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии')}
 
                     inputWidth={25}
-                        labelWidth={405}
+                    labelWidth={405}
                     labelAlign="right"
-                    splitter=""style={fieldStyle}
-                        splitter=""
+                    splitter=""
+                    style={fieldStyle}
                 >
                     <Checkbox
                         id={`${this.props.id}-grouping`}
