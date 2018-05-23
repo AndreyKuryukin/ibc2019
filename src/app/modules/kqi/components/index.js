@@ -102,8 +102,8 @@ class KQI extends React.PureComponent {
 
     render() {
         const { params = {} } = this.props.match;
-        const { action, resultId, projectionId, configId: kqiConfigId } = params;
-        const configId = kqiConfigId || this.state.selectedKQIConfigId;
+        const { action, resultId, projectionId, configId: urlKqiId } = params;
+        const configId = urlKqiId || this.state.selectedKQIConfigId;
         const isConfiguratorActive = action === 'configure';
         const isCalculatorActive = action === 'calculate';
         const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
@@ -142,7 +142,7 @@ class KQI extends React.PureComponent {
                         />
                     </Panel>
                 </div>
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={configId}/>}
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={urlKqiId}/>}
                 {isCalculatorActive && <Calculator active={isCalculatorActive} projectionId={projectionId}/>}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}

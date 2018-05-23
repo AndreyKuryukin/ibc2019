@@ -8,6 +8,8 @@ import * as _ from "lodash";
 import CheckedCell from "../../../../../components/Table/Cells/CheckedCell";
 import search from '../../../../../util/search';
 
+const checkedCellStyle = { marginLeft: 0 };
+
 class ResultsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
@@ -161,7 +163,7 @@ class ResultsTable extends React.PureComponent {
                                         text={node.name}
                                         onChange={(value) => this.onCheck(value, node)}
                                         value={isRowChecked}
-                                        style={{ marginLeft: 0 }}
+                                        style={checkedCellStyle}
                     />
                 }
                 return <DefaultCell
