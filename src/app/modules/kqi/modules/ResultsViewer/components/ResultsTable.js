@@ -6,6 +6,7 @@ import TreeView from '../../../../../components/TreeView';
 import { DefaultCell } from '../../../../../components/Table/Cells';
 import * as _ from "lodash";
 import CheckedCell from "../../../../../components/Table/Cells/CheckedCell";
+import search from '../../../../../util/search';
 
 class ResultsTable extends React.PureComponent {
     static propTypes = {
@@ -173,6 +174,12 @@ class ResultsTable extends React.PureComponent {
             }
         }
     };
+
+    filter = (data, searchableColumns, searchText) =>
+        data.filter(
+            node => searchableColumns.find(column => search(node[column.name], searchText))
+            || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
+        );
 
     render() {
         const { searchText } = this.props;
