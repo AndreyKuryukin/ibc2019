@@ -31,6 +31,7 @@ class ResultsTable extends React.PureComponent {
         'last_inch_technology',
         'manufacture',
         'equipment_type',
+        'sw_version',
         'abonent_group',
         'date_time',
         'value'

@@ -47,7 +47,12 @@ class KqiResults extends React.PureComponent {
             .then(([locationsResponse, resultResponse]) => {
                 this.props.onFetchResultHistorySuccess([]);
                 const result = resultResponse.data;
-                const locations = locationsResponse.data;
+                let locations = locationsResponse.data;
+                locations = _.reduce(locations, (resultList, mrf) => {
+                    resultList.push(_.omit(mrf, 'rf'));
+                    const { rf = [] } = mrf;
+                    return resultList.concat(rf);
+                }, []);
                 this.setState({ locations }, () => {
                     this.props.onFetchResultSuccess(result);
                 })
