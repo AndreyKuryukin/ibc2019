@@ -51,6 +51,7 @@ class KQI extends React.PureComponent {
         this.state = {
             configsSearchText: '',
             calculationsSearchText: '',
+            selectedKQIConfigId: null,
         };
     }
 
@@ -75,7 +76,7 @@ class KQI extends React.PureComponent {
 
     onResultsViewerClose = () => {
         const { params } = this.props.match;
-        const configId = params.configId || null;
+        const configId = params.configId || this.state.selectedKQIConfigId;
 
         this.props.history.push(`/kqi/view/${configId}`);
     };
@@ -84,16 +85,25 @@ class KQI extends React.PureComponent {
         this.props.history.push(`/kqi/configure/${id}`);
     };
 
+    onSelectConfig = (kqiId) => {
+        this.setState({
+            selectedKQIConfigId: kqiId,
+        }, () => {
+            this.props.onSelectConfig(kqiId);
+        });
+    };
+
     onViewProjection = (id) => {
         const { params } = this.props.match;
-        const configId = params.configId || null;
+        const configId = params.configId || this.state.selectedKQIConfigId;
 
         this.props.history.push(`/kqi/calculate/${configId}/${id}`);
     };
 
     render() {
         const { params = {} } = this.props.match;
-        const { action, resultId, projectionId, configId } = params;
+        const { action, resultId, projectionId, configId: kqiConfigId } = params;
+        const configId = kqiConfigId || this.state.selectedKQIConfigId;
         const isConfiguratorActive = action === 'configure';
         const isCalculatorActive = action === 'calculate';
         const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
@@ -111,7 +121,7 @@ class KQI extends React.PureComponent {
                             data={this.props.kqiData}
                             searchText={this.state.configsSearchText}
                             preloader={this.props.isConfigsLoading}
-                            onSelectConfig={this.props.onSelectConfig}
+                            onSelectConfig={this.onSelectConfig}
                             onEditConfig={this.onEditConfig}
                             onDeleteConfig={this.props.onDeleteConfig}
                         />

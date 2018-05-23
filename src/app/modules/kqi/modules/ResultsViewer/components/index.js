@@ -45,7 +45,8 @@ class ResultsViewer extends React.PureComponent {
     }
 
 
-    onSearchTextChange = (searchText) => {
+    onSearchTextChange = (e) => {
+        const searchText = e.target.value;
         this.setState({ searchText });
     };
 
