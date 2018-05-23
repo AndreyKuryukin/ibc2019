@@ -84,7 +84,6 @@ class Calculator extends React.PureComponent {
         kqiList: PropTypes.array,
         locationsList: PropTypes.array,
         manufactureList: PropTypes.array,
-        equipmentsList: PropTypes.array,
         usergroupsList: PropTypes.array,
         onSubmit: PropTypes.func.isRequired,
         onMount: PropTypes.func,
@@ -97,7 +96,6 @@ class Calculator extends React.PureComponent {
         kqiList: [],
         locationsList: [],
         manufactureList: [],
-        equipmentsList: [],
         usergroupsList: [],
         onSubmit: () => null,
         onMount: () => null,
@@ -121,7 +119,7 @@ class Calculator extends React.PureComponent {
                 location: '',
                 last_mile_technology: '',
                 last_inch_technology: '',
-                manufacturer: '',
+                manufacturer: [],
                 equipment_type: '',
                 abonent_group: '',
                 kqi_id: null,
@@ -206,7 +204,7 @@ class Calculator extends React.PureComponent {
     };
 
 
-    setConfigProperty = (key, value) => {
+    setConfigProperty = (key, value, callback) => {
         const config = _.set({
             ...this.state.config,
         }, key, value);
@@ -232,8 +230,8 @@ class Calculator extends React.PureComponent {
         }
 
         if (key === 'location' && config['location_grouping'] === 'MRF') {
-                config['location_grouping'] = 'RF'
-        };
+            config['location_grouping'] = 'RF'
+        }
 
         if (_.get(config, 'period.auto')) {
             config['name'] = this.composeConfigName(config);
@@ -242,7 +240,7 @@ class Calculator extends React.PureComponent {
         this.setState({
             config,
             errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
-        });
+        }, callback);
     };
 
     onClose = () => {
@@ -292,6 +290,20 @@ class Calculator extends React.PureComponent {
         };
 
         this.props.onSubmit(preparedConfig);
+    };
+
+    onCheckManufactures = (manufactures) => {
+        const manufacturer = manufactures.map(item => item.id);
+        const equipmentsList = _.reduce(manufactures, (list, manufacture) =>
+                list.concat(manufacture.equipment || []),
+            []);
+        let selectedEquipment = _.get(this.state, 'config.equipment_type', '');
+        selectedEquipment = equipmentsList.find(equip => equip === selectedEquipment) || '';
+        this.setState({equipmentsList}, () => {
+            this.setConfigProperty('manufacturer', manufacturer, () => {
+                this.setConfigProperty('equipment_type', selectedEquipment)
+            });
+        })
     };
 
     render() {
@@ -363,14 +375,14 @@ class Calculator extends React.PureComponent {
                             <Manufacture
                                 isGroupingChecked={_.get(this.state.config, 'manufacturer_grouping', false)}
                                 manufactureList={manufactureList}
-                                onCheckManufactures={value => this.setConfigProperty('manufacturer', value)}
+                                onCheckManufactures={this.onCheckManufactures}
                                 onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
                                 disabled={disableForm}
                                 checked={_.get(this.state.config, 'manufacturer', [])}
                             />
                             <div className={styles.panels}>
                                 <Equipment
-                                    equipmentsList={Calculator.mapListToOptions(this.props, 'equipmentsList')}
+                                    equipmentsList={Calculator.mapListToOptions(this.state, 'equipmentsList')}
                                     onEquipmentTypeChange={value => this.setConfigProperty('equipment_type', value)}
                                     onGroupingChange={value => this.setConfigProperty('equipment_type_grouping', value)}
                                     disabled={disableForm}

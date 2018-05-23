@@ -33,6 +33,7 @@ class Manufacture extends React.PureComponent {
 
         this.state = {
             checked: [],
+            checkedNodes: [],
             manufactureList: this.mapData(props.manufactureList)
         };
     }
@@ -46,7 +47,11 @@ class Manufacture extends React.PureComponent {
         }
     }
 
-    mapData = (data = []) => _.uniq(data).map(item => ({ name: item, id: item }));
+    mapData = (data = []) => _.uniqBy(data, item => item.manufacture).map(item => ({
+        name: item.manufacture,
+        id: item.manufacture,
+        equipment: item.equipment
+    }));
 
     bodyRowRender = (column, node) => {
         const checked = this.state.checked.includes(node.id);
@@ -63,17 +68,21 @@ class Manufacture extends React.PureComponent {
 
     onCheck = (value, node) => {
         let checked = [];
+        let checkedNodes = [];
         if (node) {
-            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id)
+            checked = value ? [...this.state.checked, node.id] : _.without(this.state.checked, node.id);
+            checkedNodes = value ? [...this.state.checkedNodes, node] : this.state.checkedNodes.filter(item => item.id !== node.id);
         } else {
             checked = value ? this.state.manufactureList.map(node => node.id) : [];
+            checkedNodes = value ? this.state.manufactureList: [];
         }
 
         this.setState({
             checked,
+            checkedNodes
         });
 
-        this.props.onCheckManufactures(checked);
+        this.props.onCheckManufactures(checkedNodes);
     };
 
     render() {

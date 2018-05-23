@@ -69,7 +69,6 @@ class Calculator extends React.PureComponent {
             rest.get('/api/v1/kqi'),
             rest.get('/api/v1/common/location'),
             rest.get('/api/v1/common/manufacture'),
-            rest.get('/api/v1/common/equipment'),
             rest.get('/api/v1/common/usergroup'),
         ];
         if (!_.isUndefined(projectionId)) {
@@ -81,7 +80,6 @@ class Calculator extends React.PureComponent {
                                         kqiResponse,
                                         locationResponse,
                                         manufactureResponse,
-                                        equipmentResponse,
                                         usergroupResponse,
                                         projectionResponse
                                     ]) => {
@@ -89,7 +87,6 @@ class Calculator extends React.PureComponent {
                 kqi: kqiResponse.data,
                 locations: locationResponse.data,
                 manufactures: manufactureResponse.data,
-                equipments: equipmentResponse.data,
                 usergroups: usergroupResponse.data,
             });
 
@@ -152,7 +149,6 @@ const mapStateToProps = state => ({
     kqiList: state.kqi.calculator.lists.kqi,
     locationsList: state.kqi.calculator.lists.locations,
     manufactureList: state.kqi.calculator.lists.manufactures,
-    equipmentsList: state.kqi.calculator.lists.equipments,
     usergroupsList: state.kqi.calculator.lists.usergroups,
     projection: _.get(state, 'kqi.calculator.projection'),
 });
