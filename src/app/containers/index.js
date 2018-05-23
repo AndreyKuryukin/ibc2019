@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import ls from 'i18n';
 import Login from '../modules/login/containers';
 import Roles from '../modules/roles/containers';
 import Users from '../modules/users/container';
@@ -18,6 +18,18 @@ import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import _ from "lodash";
 
+const noMatchStyle = {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    fontSize: 22,
+};
+
+const NoMatch = () => (
+    <div style={noMatchStyle}>{ls('PAGE_NOT_FOUND', 'Страница не найдена')}</div>
+);
 
 class App extends React.Component {
 
@@ -185,7 +197,10 @@ class App extends React.Component {
 
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
-                {routes}
+                <Switch>
+                    {routes}
+                    <Route component={NoMatch} />
+                </Switch>
             </div>
         );
     }
