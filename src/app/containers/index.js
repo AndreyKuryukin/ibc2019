@@ -16,9 +16,10 @@ import Alarms from '../modules/alarms/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
-import { setGlobalTimezone } from '../util/date';
+import { setGlobalTimezone, convertDateToUTC0 } from '../util/date';
 import _ from "lodash";
 import momentTz from 'moment-timezone';
+import moment from 'moment';
 
 const noMatchStyle = {
     display: 'flex',

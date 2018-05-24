@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
-import moment from 'moment';
 import { createSelector } from 'reselect';
 import memoize from 'memoizejs';
 import Table from '../../../components/Table';

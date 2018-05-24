@@ -11,6 +11,7 @@ import styles from './styles.scss';
 import ReportCell from './ReportCell';
 import { DATE_TIME } from '../../../costants/date';
 import search from '../../../util/search';
+import { convertUTC0ToLocal } from '../../../util/date';
 
 class ReportsTable extends React.PureComponent {
     static propTypes = {
@@ -78,11 +79,11 @@ class ReportsTable extends React.PureComponent {
     getReportTimeStatus = (report) => {
         switch(report.state) {
             case 'RUNNING': {
-                return `c ${moment(report.start).format(DATE_TIME)}`;
+                return `c ${convertUTC0ToLocal(report.start).format(DATE_TIME)}`;
             }
             case 'FAILED':
             case 'SUCCESS':
-                return `в ${moment(report.end).format(DATE_TIME)}`;
+                return `в ${convertUTC0ToLocal(report.end).format(DATE_TIME)}`;
             default:
                 return '';
         }
@@ -92,8 +93,8 @@ class ReportsTable extends React.PureComponent {
         id: report.id,
         name: report.name,
         path: report.file_path,
-        start: report.create_start_time ? moment(report.create_start_time).format(DATE_TIME) : '',
-        end: report.create_end_time ? moment(report.create_end_time).format(DATE_TIME) : '',
+        start: report.create_start_time ? convertUTC0ToLocal(report.create_start_time).format(DATE_TIME) : '',
+        end: report.create_end_time ? convertUTC0ToLocal(report.create_end_time).format(DATE_TIME) : '',
         state: report.state,
         type: ls(`REPORT_TYPE_${config.type}`, ''),
         nodeType: config.type,

@@ -4,6 +4,7 @@ import memoize from 'memoizejs';
 import ls from 'i18n';
 import moment from 'moment';
 import search from '../../../../../util/search';
+import { convertUTC0ToLocal } from '../../../../../util/date';
 import Table from '../../../../../components/Table';
 import { DefaultCell, LinkCell } from '../../../../../components/Table/Cells';
 
@@ -75,7 +76,7 @@ class GroupPoliciesTable extends React.PureComponent {
     mapData = memoize((data) => data.map((node) => ({
         id: node.id.toString(),
         priority: node.priority,
-        raise_time: moment(node.raise_time).format('HH:mm DD:MM:YYYY'),
+        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD:MM:YYYY'),
         duration: this.getReadableDuration(node.duration),
         policy_name: node.policy_name,
     })));
