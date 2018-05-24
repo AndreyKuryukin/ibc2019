@@ -68,7 +68,7 @@ class ConfigsTable extends React.PureComponent {
                 );
             case 'edit': 
                 return (
-                    <div
+                    !node.predefined && <div
                         className="edit-icon"
                         onClick={(event) => {
                             event.stopPropagation();
