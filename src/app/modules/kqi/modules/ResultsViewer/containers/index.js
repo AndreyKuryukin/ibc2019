@@ -81,6 +81,8 @@ class KqiResults extends React.PureComponent {
                 const data = response.data;
                 this.props.onFetchResultHistorySuccess(data);
             })
+        } else {
+            this.props.onFetchResultHistorySuccess([]);
         }
     };
 
