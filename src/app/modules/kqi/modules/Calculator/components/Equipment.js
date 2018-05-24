@@ -40,10 +40,6 @@ class Equipment extends React.PureComponent {
 
     getGropingOptions = () => ([
             {
-                title: ls('KQI_CONFIGURATOR_HW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по hw версии'),
-                value: EQUIPMENT_TYPE_GROUPING.HW
-            },
-            {
                 title: ls('KQI_CONFIGURATOR_SW_VERSION_GROUPING_FIELD_LABEL', 'С группировкой по sw версии'),
                 value: EQUIPMENT_TYPE_GROUPING.SW
             },
