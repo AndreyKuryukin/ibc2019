@@ -17,6 +17,7 @@ import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import _ from "lodash";
+import momentTz from 'moment-timezone';
 
 const noMatchStyle = {
     display: 'flex',
@@ -115,7 +116,12 @@ class App extends React.Component {
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data || {};
-                this.onFetchUserSuccess(user)
+                this.onFetchUserSuccess(user);
+                if (user.time_zone) {
+                    momentTz.tz.setDefault(user.time_zone)
+                } else {
+                    momentTz.tz.setDefault(momentTz.tz.guess())
+                }
             })
             .catch(() => {
                 this.props.onFetchUserSuccess({
@@ -197,7 +203,7 @@ class App extends React.Component {
             <div style={{ display: 'flex', flexGrow: 1 }}>
                 <Switch>
                     {routes}
-                    <Route component={NoMatch} />
+                    <Route component={NoMatch}/>
                 </Switch>
             </div>
         );
