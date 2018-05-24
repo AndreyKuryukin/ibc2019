@@ -16,6 +16,7 @@ import Alarms from '../modules/alarms/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
+import { setGlobalTimezone } from '../util/date';
 import _ from "lodash";
 import momentTz from 'moment-timezone';
 
@@ -113,14 +114,19 @@ class App extends React.Component {
         rest.onResponseCode('200', this.refreshToken);
         const token = localStorage.getItem('jwtToken');
         rest.setCommonHeader('Authorization', token);
+
+        this.state = { token };
+    }
+
+    componentDidMount() {
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data || {};
                 this.onFetchUserSuccess(user);
                 if (user.time_zone) {
-                    momentTz.tz.setDefault(user.time_zone)
+                    setGlobalTimezone(user.time_zone);
                 } else {
-                    momentTz.tz.setDefault(momentTz.tz.guess())
+                    setGlobalTimezone(momentTz.tz.guess());
                 }
             })
             .catch(() => {
@@ -128,7 +134,6 @@ class App extends React.Component {
                     subjects: this.getCommonRoutes(),
                 });
             });
-        this.state = { token };
     }
 
     onFetchUserSuccess = (user) => {

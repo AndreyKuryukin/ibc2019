@@ -9,6 +9,7 @@ import Table from '../../../components/Table';
 import { CheckedCell, DefaultCell, IconCell } from '../../../components/Table/Cells';
 import MailLink from "../../../components/MailLink/index";
 import search from '../../../util/search';
+import { convertUTC0ToLocal } from '../../../util/date';
 
 class UsersTable extends React.PureComponent {
     static propTypes = {
@@ -49,10 +50,10 @@ class UsersTable extends React.PureComponent {
             roles: user.roles.map(role => role.name).join(', '),
             division: _.get(divisionsById, `${user.division_id}.name`, ''),
             groups: user.groups.map(group => group.name).join(', '),
-            created: moment(user.created).format('YYYY-MM-DD HH:mm:ss'),
-            last_connection: user.last_connection ? moment(user.last_connection).format('YYYY-MM-DD HH:mm:ss') : '',
+            created: convertUTC0ToLocal(user.created).format('YYYY-MM-DD HH:mm:ss'),
+            last_connection: user.last_connection ? convertUTC0ToLocal(user.last_connection).format('YYYY-MM-DD HH:mm:ss') : '',
             disabled: user.disabled ? ls('NO', 'Нет') : ls('YES', 'Да'),
-        }))
+        })),
     );
 
     static getColumns = memoize(() => [{
