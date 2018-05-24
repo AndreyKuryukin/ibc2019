@@ -5,7 +5,6 @@ const initialState = {
         kqi: [],
         locations: [],
         manufactures: [],
-        equipments: [],
         usergroups: [],
     }
 };

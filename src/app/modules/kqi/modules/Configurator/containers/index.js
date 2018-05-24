@@ -91,7 +91,11 @@ class Configurator extends React.PureComponent {
             });
     };
 
-    onSubmitKPI = (kpiConfig) => {
+    onSubmitKPI = (config) => {
+        const kpiConfig = {
+            ...config,
+            name: config.name.trim(),
+        };
         const errors = validateForm(kpiConfig, this.validationConfig);
 
         if (_.isEmpty(errors)) {
@@ -119,8 +123,7 @@ class Configurator extends React.PureComponent {
                 isLoading={this.state.isLoading}
                 active={this.props.active}
                 config={_.isUndefined(configId) ? null : config}
-                paramTypes={this.props.paramTypes}
-                paramTypesById={this.props.paramTypesById}
+                objectTypes={this.props.objectTypes}
                 onSubmit={this.onSubmitKPI}
                 errors={this.state.errors}
             />
@@ -129,8 +132,7 @@ class Configurator extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    paramTypes: state.kqi.configurator.paramTypes,
-    paramTypesById: state.kqi.configurator.paramTypesById,
+    objectTypes: state.kqi.configurator.objectTypes,
     config: state.kqi.configurator.config,
 });
 

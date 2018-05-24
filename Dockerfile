@@ -12,6 +12,7 @@ RUN mkdir /www
 COPY build/index.html /www
 COPY build/styles.css /www
 COPY build/app.js /www
+COPY build/favicon.ico /www
 
 ENV BACKEND_0=BACKEND_0
 ENV BACKEND_1=BACKEND_1

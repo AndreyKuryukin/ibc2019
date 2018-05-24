@@ -30,7 +30,7 @@ class GroupPoliciesTable extends React.PureComponent {
             name: 'id',
             searchable: true,
             sortable: true,
-            width: 150,
+            width: 300,
 
         }, {
             title: ls('ALARMS_GROUP_POLICIES_PRIORITY_COLUMN', 'Приоритет'),

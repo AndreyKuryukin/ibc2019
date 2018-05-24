@@ -24,10 +24,13 @@ const languageMap = {
     ALARMS_GROUP_POLICIES_NOTIFICATION_STATUS_SUCCESS: 'Готово',
     ALARMS_GROUP_POLICIES_NOTIFICATION_STATUS_RUNNING: 'В процессе',
     ALARMS_GROUP_POLICIES_NOTIFICATION_STATUS_FAILED: 'Ошибка',
+    ALARMS_GROUP_POLICIES_NOTIFICATION_STATUS_UNKNOWN: 'Неизвестно',
 
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_DAY: 'ежесуточный',
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_WEEK: 'еженедельный',
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_MONTH: 'ежемесячный',
+
+    PAGE_NOT_FOUND: 'Страница не найдена',
 };
 
 const ls = (key, defaultValue) => _.get(languageMap, key, defaultValue);

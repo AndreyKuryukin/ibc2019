@@ -40,9 +40,6 @@ class ConfigEditor extends React.PureComponent {
         template_id: {
             required: true,
         },
-        type: {
-            required: true,
-        },
         mrf: {
             required: true,
         },
@@ -59,19 +56,23 @@ class ConfigEditor extends React.PureComponent {
     onMount = () => {
         this.context.pageBlur && this.context.pageBlur(true);
         this.setState({ isLoading: true });
-        Promise.all([rest.get('/api/v1/user'), rest.get('/api/v1/report/config/templateTypes')])
-            .then(([userResponse, templatesResponse]) => {
+        Promise.all([rest.get('/api/v1/user'), rest.get('/api/v1/report/config/templateTypes'), this.fetchLocations()])
+            .then(([userResponse, templatesResponse, locationsResp]) => {
                 const users = userResponse.data;
                 const templates = templatesResponse.data;
-                this.props.onFetchUsersSuccess(users);
-                this.props.onFetchTemplatesSuccess(templates);
-                this.setState({ isLoading: false });
+                const locations = locationsResp.data;
+                this.setState({ isLoading: false, locations }, () => {
+                    this.props.onFetchUsersSuccess(users);
+                    this.props.onFetchTemplatesSuccess(templates);
+                });
             })
             .catch((e) => {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
     };
+
+    fetchLocations = () => rest.get('/api/v1/common/location');
 
     onSubmit = (config) => {
         const errors = validateForm(config, this.validationConfig);
@@ -103,6 +104,7 @@ class ConfigEditor extends React.PureComponent {
                 onMount={this.onMount}
                 onSubmit={this.onSubmit}
                 errors={this.state.errors}
+                locations={this.state.locations}
             />
         )
     }

@@ -1,9 +1,9 @@
 import React from 'react';
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-
+import ls from 'i18n';
 import Login from '../modules/login/containers';
 import Roles from '../modules/roles/containers';
 import Users from '../modules/users/container';
@@ -17,7 +17,20 @@ import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import _ from "lodash";
+import momentTz from 'moment-timezone';
 
+const noMatchStyle = {
+    display: 'flex',
+    flexGrow: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    fontSize: 22,
+};
+
+const NoMatch = () => (
+    <div style={noMatchStyle}>{ls('PAGE_NOT_FOUND', 'Страница не найдена')}</div>
+);
 
 class App extends React.Component {
 
@@ -102,9 +115,12 @@ class App extends React.Component {
         rest.setCommonHeader('Authorization', token);
         rest.get('api/v1/user/current')
             .then((userResp) => {
-                const user = userResp.data;
-                if (user) {
-                    this.onFetchUserSuccess(user)
+                const user = userResp.data || {};
+                this.onFetchUserSuccess(user);
+                if (user.time_zone) {
+                    momentTz.tz.setDefault(user.time_zone)
+                } else {
+                    momentTz.tz.setDefault(momentTz.tz.guess())
                 }
             })
             .catch(() => {
@@ -185,7 +201,10 @@ class App extends React.Component {
 
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
-                {routes}
+                <Switch>
+                    {routes}
+                    <Route component={NoMatch}/>
+                </Switch>
             </div>
         );
     }

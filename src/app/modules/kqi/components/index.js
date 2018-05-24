@@ -14,6 +14,8 @@ import Calculator from '../modules/Calculator/containers';
 import ResultsViewer from '../modules/ResultsViewer/containers';
 import Panel from '../../../components/Panel';
 
+const panelBodyStyle = { padding: 0 };
+
 class KQI extends React.PureComponent {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
@@ -29,6 +31,7 @@ class KQI extends React.PureComponent {
         onMount: PropTypes.func,
         onSelectConfig: PropTypes.func,
         onEditConfig: PropTypes.func,
+        onDeleteConfig: PropTypes.func,
     };
 
     static defaultProps = {
@@ -39,6 +42,7 @@ class KQI extends React.PureComponent {
         onMount: () => null,
         onEditConfig: () => null,
         onSelectConfig: null,
+        onDeleteConfig: () => null,
     };
 
     constructor(props) {
@@ -47,6 +51,7 @@ class KQI extends React.PureComponent {
         this.state = {
             configsSearchText: '',
             calculationsSearchText: '',
+            selectedKQIConfigId: null,
         };
     }
 
@@ -71,7 +76,7 @@ class KQI extends React.PureComponent {
 
     onResultsViewerClose = () => {
         const { params } = this.props.match;
-        const configId = params.configId || null;
+        const configId = params.configId || this.state.selectedKQIConfigId;
 
         this.props.history.push(`/kqi/view/${configId}`);
     };
@@ -80,9 +85,25 @@ class KQI extends React.PureComponent {
         this.props.history.push(`/kqi/configure/${id}`);
     };
 
+    onSelectConfig = (kqiId) => {
+        this.setState({
+            selectedKQIConfigId: kqiId,
+        }, () => {
+            this.props.onSelectConfig(kqiId);
+        });
+    };
+
+    onViewProjection = (id) => {
+        const { params } = this.props.match;
+        const configId = params.configId || this.state.selectedKQIConfigId;
+
+        this.props.history.push(`/kqi/calculate/${configId}/${id}`);
+    };
+
     render() {
         const { params = {} } = this.props.match;
-        const { action, resultId, projectionId, configId } = params;
+        const { action, resultId, projectionId, configId: urlKqiId } = params;
+        const configId = urlKqiId || this.state.selectedKQIConfigId;
         const isConfiguratorActive = action === 'configure';
         const isCalculatorActive = action === 'calculate';
         const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
@@ -93,15 +114,16 @@ class KQI extends React.PureComponent {
                 <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
                     <Panel
                         title={ls('KQI_SYSTEM_TITLE', 'Система')}
-                        bodyStyle={{ padding: 0 }}
+                        bodyStyle={panelBodyStyle}
                     >
                         <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange}/>
                         <ConfigsTable
                             data={this.props.kqiData}
                             searchText={this.state.configsSearchText}
                             preloader={this.props.isConfigsLoading}
-                            onSelectConfig={this.props.onSelectConfig}
+                            onSelectConfig={this.onSelectConfig}
                             onEditConfig={this.onEditConfig}
+                            onDeleteConfig={this.props.onDeleteConfig}
                         />
                     </Panel>
                 </div>
@@ -116,10 +138,11 @@ class KQI extends React.PureComponent {
                             searchText={this.state.calculationsSearchText}
                             preloader={this.props.isProjectionsLoading}
                             configId={configId}
+                            onViewProjection={this.onViewProjection}
                         />
                     </Panel>
                 </div>
-                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={configId}/>}
+                {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={urlKqiId}/>}
                 {isCalculatorActive && <Calculator active={isCalculatorActive} projectionId={projectionId}/>}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}

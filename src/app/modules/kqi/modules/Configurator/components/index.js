@@ -9,7 +9,7 @@ import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
 import Formula from './Formula';
 import styles from './styles.scss';
-import { OBJECT_TYPES, OPERATOR_TYPES, } from '../constants';
+import { OPERATOR_TYPES, } from '../constants';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 
 class Configurator extends React.PureComponent {
@@ -19,8 +19,7 @@ class Configurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
-        paramTypes: PropTypes.array,
-        paramTypesById: PropTypes.object,
+        objectTypes: PropTypes.array,
         onMount: PropTypes.func,
         onSubmit: PropTypes.func.isRequired,
         errors: PropTypes.object,
@@ -28,8 +27,7 @@ class Configurator extends React.PureComponent {
 
     static defaultProps = {
         active: false,
-        paramTypes: [],
-        paramTypesById: null,
+        objectTypes: [],
         onMount: () => null,
         errors: null,
     };
@@ -37,6 +35,7 @@ class Configurator extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            paramTypes: [],
             config: {
                 name: '',
                 object_type: '',
@@ -67,7 +66,7 @@ class Configurator extends React.PureComponent {
         return _.map(object, (title, value) => ({ value, title }));
     }
 
-    setConfigProperty = (key, value) => {
+    setConfigProperty = (key, value, callback) => {
         const config = {
             ...this.state.config,
             [key]: value,
@@ -75,7 +74,7 @@ class Configurator extends React.PureComponent {
         this.setState({
             config,
             errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
-        });
+        }, callback);
     };
 
     onChangeParameterType = (value) => {
@@ -106,6 +105,19 @@ class Configurator extends React.PureComponent {
 
         if (value.length <= 21 && isValidValue) {
             this.setConfigProperty('level', value);
+        }
+    };
+
+    onObjectTypeChange = (type) => {
+        if (type) {
+            const object_type = _.find(this.props.objectTypes, { type }) || {};
+            this.setState({ paramTypes: object_type.parameters || [] }, () => {
+                this.setConfigProperty('object_type', object_type.type);
+            });
+        } else {
+            this.setConfigProperty('parameter_type', value, () => {
+                this.setConfigProperty('object_type', type);
+            });
         }
     };
 
@@ -148,6 +160,7 @@ class Configurator extends React.PureComponent {
                                     onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     placeholder={ls('KQI_CONFIGURATOR_NAME_PLACEHOLDER', 'Название')}
+                                    maxlength={255}
                                 />
                             </Field>
                             <Field
@@ -159,10 +172,10 @@ class Configurator extends React.PureComponent {
                             >
                                 <Select
                                     id="object-type"
-                                    options={Configurator.mapObjectToOptions(OBJECT_TYPES)}
+                                    options={this.props.objectTypes.map(obj => ({ title: obj.type, value: obj.type }))}
                                     disabled={disableForm}
                                     value={_.get(config, 'object_type')}
-                                    onChange={value => this.setConfigProperty('object_type', value)}
+                                    onChange={value => this.onObjectTypeChange(value)}
                                     valid={errors && _.isEmpty(errors['object_type'])}
                                     placeholder={ls('KQI_CONFIGURATOR_OBJECT_TYPE_PLACEHOLDER', 'Тип объекта')}
                                 />
@@ -176,7 +189,10 @@ class Configurator extends React.PureComponent {
                             >
                                 <Select
                                     id="param"
-                                    options={this.props.paramTypes.map(type => ({ value: type.id, title: type.name }))}
+                                    options={this.state.paramTypes.map(type => ({
+                                        value: type.id,
+                                        title: type.display_name
+                                    }))}
                                     onChange={this.onChangeParameterType}
                                     value={_.get(config, 'parameter_type')}
                                     valid={errors && _.isEmpty(errors.parameter_type)}
@@ -196,7 +212,7 @@ class Configurator extends React.PureComponent {
                                     options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
                                     onChange={value => this.setConfigProperty('operator_type', value)}
                                     value={_.get(config, 'operator_type')}
-                                    valid={errors && _.isEmpty(errors.operator)}
+                                    valid={errors && _.isEmpty(errors.operator_type)}
                                     disabled={disableForm}
                                     placeholder={ls('KQI_CONFIGURATOR_OPERATOR_PLACEHOLDER', 'Оператор')}
                                 />
