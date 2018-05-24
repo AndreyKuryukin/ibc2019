@@ -29,8 +29,8 @@ class ResultsTable extends React.PureComponent {
     };
 
     hierarchy = [
-        'rf',
         'mrf',
+        'rf',
         'last_mile_technology',
         'last_inch_technology',
         'manufacture',
@@ -113,7 +113,7 @@ class ResultsTable extends React.PureComponent {
                     children.push({
                         name: displayName,
                         id,
-                        result: `${result.value * 100}%`,
+                        result: `${(result.value * 100).toFixed(2)}%`,
                         weight: result.weight,
                         originalResultNode: result
                     })
