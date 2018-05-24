@@ -29,8 +29,8 @@ class ResultsTable extends React.PureComponent {
     };
 
     hierarchy = [
-        'rf',
         'mrf',
+        'rf',
         'last_mile_technology',
         'last_inch_technology',
         'manufacture',
