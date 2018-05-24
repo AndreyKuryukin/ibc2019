@@ -6,6 +6,7 @@ import ConfigEditorComponent from '../components';
 import { fetchUsersSuccess, fetchTemplatesSuccess } from '../actions';
 import rest from '../../../../../rest';
 import { validateForm } from '../../../../../util/validation';
+import { convertDateToUTC0 } from '../../../../../util/date';
 
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
@@ -74,7 +75,15 @@ class ConfigEditor extends React.PureComponent {
 
     fetchLocations = () => rest.get('/api/v1/common/location');
 
-    onSubmit = (config) => {
+    onSubmit = (conf) => {
+        const config = {
+            ...conf,
+            period: {
+                ...conf.period,
+                start_date: convertDateToUTC0(conf.period.start_date).toISOString(),
+                end_date: convertDateToUTC0(conf.period.end_date).toISOString(),
+            },
+        };
         const errors = validateForm(config, this.validationConfig);
 
         if (_.isEmpty(errors)) {

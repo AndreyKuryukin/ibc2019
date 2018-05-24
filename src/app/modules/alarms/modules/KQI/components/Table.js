@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import memoize from 'memoizejs';
 import search from '../../../../../util/search';
+import { convertUTC0ToLocal } from '../../../../../util/date';
 import Table from '../../../../../components/Table';
 import { DefaultCell, LinkCell } from '../../../../../components/Table/Cells';
 import ls from "i18n";
 import { createSelector } from "reselect";
 import { DATE_TIME } from "../../../../../costants/date";
-import moment from "moment";
 
 const priorityMap = {
     'CRITICAL': ls('KQI_HISTORY_PRIORITY_CRITICAL', 'Критичный'),
@@ -50,7 +50,7 @@ class KqiTable extends React.PureComponent {
         data => data.map((element) => ({
             id: String(element.id),
             priority: priorityMap[String(element.priority).toUpperCase()],
-            raise_time: moment(element.raise_time).format(DATE_TIME),
+            raise_time: convertUTC0ToLocal(element.raise_time).format(DATE_TIME),
             policy_name: element.policy_name,
             period: periodMap[String(element.period).toUpperCase()]
         })),

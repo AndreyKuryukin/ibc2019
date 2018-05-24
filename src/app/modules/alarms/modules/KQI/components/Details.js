@@ -11,8 +11,8 @@ import Field from "../../../../../components/Field/index";
 import { DATE, INTERVALS, TIME_DATE, TIME_MINUTES } from '../../../../../costants/date';
 
 import _ from "lodash";
-import moment from "moment";
 import DefaultCell from "../../../../../components/Table/Cells/DefaultCell";
+import { convertUTC0ToLocal } from '../../../../../util/date';
 
 const priorityMap = {
     'CRITICAL': ls('KQI_HISTORY_PRIORITY_CRITICAL', 'Критичный'),
@@ -108,7 +108,7 @@ class Details extends React.PureComponent {
                     labelWidth="50%"
                     inputWidth="50%"
                 >
-                    {moment(_.get(detail, 'raise_time')).format(`${TIME_MINUTES} ${DATE}`)}
+                    {convertUTC0ToLocal(_.get(detail, 'raise_time')).format(`${TIME_MINUTES} ${DATE}`)}
                 </Field>
                 <Field
                     id="password"

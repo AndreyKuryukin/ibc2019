@@ -42,7 +42,7 @@ class StbLoadingControls extends React.PureComponent {
 
     onShow = () => {
         console.log('onShow');
-    }
+    };
 
     render() {
         return (
