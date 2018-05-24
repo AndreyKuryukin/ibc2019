@@ -29,7 +29,8 @@ class ResultsTable extends React.PureComponent {
     };
 
     hierarchy = [
-        'location',
+        'rf',
+        'mrf',
         'last_mile_technology',
         'last_inch_technology',
         'manufacture',
@@ -42,11 +43,13 @@ class ResultsTable extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        const locationmap = this.mapLocations(props.locations);
         this.state = {
             checked: [],
             checkedNodes: [],
             valueMap: {
-                location: this.mapLocations(props.locations)
+                rf: locationmap,
+                mrf: locationmap
             }
         };
     }
@@ -60,12 +63,21 @@ class ResultsTable extends React.PureComponent {
             this.setState({ expandAll: nextProps.expandAll })
         }
         if (!_.isEqual(nextProps.locations, this.props.locations)) {
-            this.setState({ valueMap: { location: this.mapLocations(nextProps.locations) } });
+            const locationmap = this.mapLocations(nextProps.locations);
+            this.setState({
+                valueMap: {
+                    rf: locationmap,
+                    mrf: locationmap
+                }
+            });
         }
     }
 
     mapLocations = (locations) => _.reduce(locations, (result, location) => {
         result[location.id] = location.name;
+        if (_.isArray(location.rf)) {
+            result = _.merge(result, this.mapLocations(location.rf));
+        }
         return result;
     }, {});
 
@@ -97,16 +109,18 @@ class ResultsTable extends React.PureComponent {
                 const id = this.composeResultId(result, index);
                 nodeIds.push(id);
                 if (nextName === 'value' || !nextName) {
+                    const displayName = this.getMapedValueWithDefault(result, name);
                     children.push({
-                        name: this.getMapedValueWithDefault(result, name),
+                        name: displayName,
                         id,
                         result: `${result.value * 100}%`,
                         weight: result.weight,
                         originalResultNode: result
                     })
                 } else {
+                    const displayName = this.getMapedValueWithDefault(result, name);
                     children.push({
-                        name: this.getMapedValueWithDefault(result, name),
+                        name: displayName,
                         id,
                         children: recursiveAdd([], index + 1)
                     });
@@ -181,7 +195,7 @@ class ResultsTable extends React.PureComponent {
     filter = (data, searchableColumns, searchText) =>
         data.filter(
             node => searchableColumns.find(column => search(node[column.name], searchText))
-            || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
+                || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
         );
 
     render() {
