@@ -101,7 +101,7 @@ class ResultsTable extends React.PureComponent {
                 const nextName = deepSeries[index + 1];
                 const displayName = this.getMapedValueWithDefault(result, name);
                 const existingNode = _.find(children, { name: displayName });
-                if (existingNode) {
+                if (existingNode && !_.isUndefined(existingNode.children)) {
                     existingNode.children = recursiveAdd(existingNode.children, index + 1);
                     return children;
                 }
@@ -112,7 +112,7 @@ class ResultsTable extends React.PureComponent {
                     children.push({
                         name: displayName,
                         id,
-                        result: `${Math.floor((result.value * 10000)) / 100}%`,
+                        result: `${Math.floor((result.value * 100)) / 100}%`,
                         weight: result.weight,
                         originalResultNode: result
                     })
