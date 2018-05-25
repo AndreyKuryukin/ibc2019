@@ -58,7 +58,7 @@ class Login extends React.PureComponent {
                     this.setState({ loading: false });
                     const user = userResp.data;
                     this.context.fetchUserSuccess(user);
-                    this.props.history.push('/roles');
+                    this.props.history.push('/users');
                 })
                 .catch((error) => {
                     this.context.notifications.notify({
