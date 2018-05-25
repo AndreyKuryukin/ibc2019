@@ -54,15 +54,9 @@ class Menu extends React.Component {
 
     render() {
         const { menuItems = [], className, path } = this.props;
-        const sortedItems = menuItems.sort((a, b) => {
-            if(a.title < b.title) return -1;
-            if(a.title > b.title) return 1;
-            return 0;
-        });
-
         const feature = this.getFeature(path);
         return <div className={classNames(styles.sideMenu, className)}>
-            {sortedItems.map((item, index) => this.renderTile(item, index, feature))}
+            {menuItems.map((item, index) => this.renderTile(item, index, feature))}
         </div>
     }
 }

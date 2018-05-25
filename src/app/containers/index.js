@@ -5,7 +5,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
 import Login from '../modules/login/containers';
-import Roles from '../modules/roles/containers';
 import Users from '../modules/users/container';
 import Policies from '../modules/policies/containers';
 import Reports from '../modules/reports/containers';
@@ -16,10 +15,9 @@ import Alarms from '../modules/alarms/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
-import { setGlobalTimezone, convertDateToUTC0 } from '../util/date';
+import { setGlobalTimezone } from '../util/date';
 import _ from "lodash";
 import momentTz from 'moment-timezone';
-import moment from 'moment';
 
 const noMatchStyle = {
     display: 'flex',
@@ -38,11 +36,6 @@ class App extends React.Component {
 
     getMapedSubjects = () => {
         return {
-            'LANDING': {
-                path: '/',
-                component: Login,
-                exact: true
-            },
             'LOGIN': {
                 title: 'Выход',
                 link: '/login',
@@ -50,17 +43,18 @@ class App extends React.Component {
                 exact: true,
                 component: Login
             },
-            'USERS': {
-                title: 'Пользователи',
-                link: '/users',
-                path: "/users/:action?/:id?",
-                component: Users
+            'LANDING': {
+                title: 'Рабочий стол',
+                path: '/landing',
+                link: '/landing',
+                component: Login,
+                exact: true
             },
-            'ROLES': {
-                title: 'Роли',
-                link: '/roles',
-                path: "/roles/:action?/:id?",
-                component: Roles
+            'KQI': {
+                title: 'KPI/KQI',
+                link: '/kqi',
+                path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
+                component: KQI
             },
             'POLICY': {
                 title: 'Политики',
@@ -68,23 +62,17 @@ class App extends React.Component {
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
+            'ALARMS': {
+                title: 'Аварии',
+                link: '/alarms/group-policies/current',
+                path: "/alarms/:subject/:state/:id?",
+                component: Alarms
+            },
             'REPORTS': {
-                title: 'Отчёты',
+                title: 'Отчётность',
                 link: '/reports',
                 path: '/reports/:action?',
                 component: Reports
-            },
-            'STB_LOADING': {
-                title: 'Время загрузки STB',
-                link: '/stb-loading',
-                path: "/stb-loading",
-                component: StbLoading
-            },
-            'KQI': {
-                title: 'KQI',
-                link: '/kqi',
-                path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
-                component: KQI
             },
             'SOURCES': {
                 title: 'Источники',
@@ -92,11 +80,17 @@ class App extends React.Component {
                 path: "/sources",
                 component: Sources
             },
-            'ALARMS': {
-                title: 'Отчёт по авариям',
-                link: '/alarms/group-policies/current',
-                path: "/alarms/:subject/:state/:id?",
-                component: Alarms
+            'USERS': {
+                title: 'Работа с пользователями',
+                link: '/users',
+                path: "/users/:action?/:id?",
+                component: Users
+            },
+            'STB_LOADING': {
+                title: 'Время загрузки STB',
+                link: '/stb-loading',
+                path: "/stb-loading",
+                component: StbLoading
             }
         }
     };
@@ -118,6 +112,10 @@ class App extends React.Component {
 
         this.state = { token };
     }
+
+    menuSorter = (subjA, subjB, menuOrder) => {
+        return menuOrder.findIndex(item => item === subjA) - menuOrder.findIndex(item => item === subjB);
+    };
 
     componentDidMount() {
         rest.get('api/v1/user/current')
@@ -141,9 +139,11 @@ class App extends React.Component {
         const subjectMap = this.getMapedSubjects() || {};
         const commonSubjects = this.getCommonRoutes();
         const totalSubjects = user.subjects.concat(commonSubjects);
+        const menuOrder = Object.keys(subjectMap);
         user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
         user.menu = user.subjects
-            .filter(subject => subject.name !== 'LOGIN')
+            .filter(subject => subject.name !== 'LOGIN' && subject.name.toUpperCase() !== 'ROLES')
+            .sort((subjA, subjB) => this.menuSorter(subjA.name.toUpperCase(), subjB.name.toUpperCase(), menuOrder))
             .map(subject => ({
                 title: subjectMap[subject.name.toUpperCase()].title,
                 link: subjectMap[subject.name.toUpperCase()].link,
@@ -172,11 +172,6 @@ class App extends React.Component {
             link: '/users'
         },
         {
-            id: 'roles-page',
-            name: 'ROLES',
-            link: '/roles'
-        },
-        {
             id: 'reports-page',
             name: 'REPORTS',
             link: '/reports'
@@ -191,13 +186,21 @@ class App extends React.Component {
             name: 'LOGIN',
             link: '/login'
         },
+        {
+            id: 'landing-page',
+            name: 'LANDING',
+            link: '/landing'
+        },
     ];
 
     renderRoutes = (subjects = []) => {
         const subjectMap = this.getMapedSubjects() || {};
 
-        return subjects.map(subject => <Route
-            key={subject.name} {...subjectMap[subject.name.toUpperCase()]}/>);
+        return subjects.map(subject => {
+            const config = subjectMap[subject.name.toUpperCase()];
+            return config ? <Route
+                key={subject.name} {...config}/> : null
+        });
     };
 
     render() {

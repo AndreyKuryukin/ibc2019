@@ -46,7 +46,7 @@ class GroupPolicies extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle(ls('ALARMS_GROUP_POLICIES_PAGE_TITLE', 'Сообщения по групповым политикам'));
+        this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls('ALARMS_GROUP_POLICIES_PAGE_TITLE', 'Групповые политики')]);
     }
 
     onFetchAlarms = (filter, isLoaderHidden) => {

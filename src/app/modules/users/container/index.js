@@ -40,7 +40,7 @@ class Users extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle([ls('USERS_PAGE_TITLE', 'Пользователи'), ls('USERS_PAGE_TITLE', 'Пользователи')]);
+        this.context.navBar.setPageTitle([ls('USERS_PAGE_TITLE', 'Работа с пользователями'), ls('USERS_PAGE_TITLE', 'Пользователи')]);
     }
 
     onUsersMount = () => {

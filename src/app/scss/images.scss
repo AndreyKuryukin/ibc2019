@@ -161,6 +161,14 @@
 .menu-icon-policies-active {
   @include iconBuilder(26px, 34px, 'menu/policies-active.svg');
 }
+
+.menu-icon-landing {
+  @include iconBuilder(41px, 34px, 'menu/workspace.svg');
+}
+.menu-icon-landing-active {
+  @include iconBuilder(41px, 34px, 'menu/workspace-active.svg');
+}
+
 .logout-icon {
-  @include iconBuilder(15px, 15px, 'logout.png');
+  @include iconBuilder(15px, 15px, 'common/logout.svg');
 }
