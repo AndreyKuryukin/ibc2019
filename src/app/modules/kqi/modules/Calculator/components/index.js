@@ -301,7 +301,10 @@ class Calculator extends React.PureComponent {
         selectedEquipment = equipmentsList.find(equip => equip === selectedEquipment) || '';
         this.setState({equipmentsList}, () => {
             this.setConfigProperty('manufacturer', manufacturer, () => {
-                this.setConfigProperty('equipment_type', selectedEquipment)
+                this.setConfigProperty('equipment_type', selectedEquipment, () => {})
+                if (manufactures.length === 1) {
+                    this.setConfigProperty('equipment_type_grouping', null)
+                }
             });
         })
     };

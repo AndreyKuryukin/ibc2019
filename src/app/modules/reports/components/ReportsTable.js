@@ -41,6 +41,7 @@ class ReportsTable extends React.PureComponent {
         name: 'end',
         sortable: true,
         searchable: true,
+        width: 130
     }, {
         title: '',
         name: 'retry',
@@ -54,6 +55,7 @@ class ReportsTable extends React.PureComponent {
         name: 'type',
         sortable: true,
         searchable: true,
+        width: 60
     }, {
         title: ls('REPORTS_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',

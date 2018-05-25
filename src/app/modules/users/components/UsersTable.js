@@ -78,6 +78,7 @@ class UsersTable extends React.PureComponent {
         name: 'phone',
         searchable: true,
         sortable: true,
+        width: 110,
     }, {
         title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
         name: 'roles',
@@ -100,16 +101,19 @@ class UsersTable extends React.PureComponent {
         name: 'created',
         searchable: true,
         sortable: true,
+        width: 130,
     }, {
         title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
         name: 'last_connection',
         searchable: true,
         sortable: true,
+        width: 130,
     }, {
         title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
         name: 'disabled',
         searchable: true,
         sortable: true,
+        width: 70
     }]);
 
     onCheck = (value, node) => {
