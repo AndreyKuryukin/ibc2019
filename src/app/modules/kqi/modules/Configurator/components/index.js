@@ -124,10 +124,11 @@ class Configurator extends React.PureComponent {
     mapConfig = (config) => {
         const conf = { ...config };
         if (config.parameter_type) {
-            conf.parameter_type = _.get(this.props.paramTypesById, `${config.parameter_type}.name`, '');
+            const paramType = this.state.paramTypes.find(param => param.id === config.parameter_type);
+            conf.parameter_type = _.get(paramType, 'name', '');
         }
-        if (config.operator) {
-            conf.operator = OPERATOR_TYPES[config.operator];
+        if (config.operator_type) {
+            conf.operator_type = OPERATOR_TYPES[config.operator_type];
         }
         return conf;
     };
@@ -160,7 +161,7 @@ class Configurator extends React.PureComponent {
                                     onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     placeholder={ls('KQI_CONFIGURATOR_NAME_PLACEHOLDER', 'Название')}
-                                    maxlength={255}
+                                    maxLength={255}
                                 />
                             </Field>
                             <Field
@@ -237,7 +238,6 @@ class Configurator extends React.PureComponent {
                             <Formula
                                 config={this.mapConfig(config)}
                             />
-
                         </div>
                     </ModalBody>
                     <ModalFooter>
