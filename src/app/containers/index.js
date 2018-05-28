@@ -18,6 +18,7 @@ import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
 import _ from "lodash";
 import momentTz from 'moment-timezone';
+import Roles from "../modules/roles/containers/index";
 
 const noMatchStyle = {
     display: 'flex',
@@ -85,6 +86,12 @@ class App extends React.Component {
                 link: '/users',
                 path: "/users/:action?/:id?",
                 component: Users
+            },
+            'ROLES': {
+                title: 'Работа с пользователями',
+                link: '/roles',
+                path: "/roles/:action?/:id?",
+                component: Roles
             },
             'STB_LOADING': {
                 title: 'Время загрузки STB',
@@ -190,6 +197,11 @@ class App extends React.Component {
             id: 'landing-page',
             name: 'LANDING',
             link: '/landing'
+        },
+        {
+            id: 'sources-page',
+            name: 'SOURCES',
+            link: '/sources'
         },
     ];
 
