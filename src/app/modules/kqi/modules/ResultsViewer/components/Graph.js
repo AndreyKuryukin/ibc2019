@@ -22,16 +22,24 @@ class Graph extends React.PureComponent {
 
     constructor(props) {
         super(props);
+        const locationmap = this.mapLocations(props.locations);
         this.state = {
             valueMap: {
-                location: this.mapLocations(props.locations)
+                rf: locationmap,
+                mrf: locationmap
             }
         };
     }
 
     componentWillReceiveProps(nextProps) {
         if (!_.isEqual(nextProps.locations, this.props.locations)) {
-            this.setState({ valueMap: { location: this.mapLocations(nextProps.locations) } });
+            const locationmap = this.mapLocations(nextProps.locations);
+            this.setState({
+                valueMap: {
+                    rf: locationmap,
+                    mrf: locationmap
+                }
+            });
         }
     }
 
@@ -78,7 +86,7 @@ class Graph extends React.PureComponent {
                 const label = this.composeGraphLabel(result);
                 const borderColor = this.getColorForResult(result,index);
                 const data = result.values
-                    .map(value => ({ y: value.value * 100, t: value.date_time }))
+                    .map(value => ({ y: (value.value).toFixed(2), t: value.date_time }))
                     .sort((a,b) => new Date(a.t).getTime() - new Date(b.t).getTime());
                 return { label, data, borderColor, lineTension: 0 }
             })

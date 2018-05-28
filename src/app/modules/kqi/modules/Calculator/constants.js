@@ -8,7 +8,6 @@ export const GROUPING_TYPES = {
 export const EQUIPMENT_TYPE_GROUPING = {
     NONE: GROUPING_TYPES.NONE,
     SELF: GROUPING_TYPES.SELF,
-    HW: 'HW',
     SW: 'SW',
 };
 

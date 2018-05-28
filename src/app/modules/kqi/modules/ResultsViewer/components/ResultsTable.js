@@ -29,8 +29,8 @@ class ResultsTable extends React.PureComponent {
     };
 
     hierarchy = [
-        'rf',
         'mrf',
+        'rf',
         'last_mile_technology',
         'last_inch_technology',
         'manufacture',
@@ -99,9 +99,9 @@ class ResultsTable extends React.PureComponent {
             const recursiveAdd = (children, index = 0) => {
                 const name = deepSeries[index];
                 const nextName = deepSeries[index + 1];
-                const existingNode = _.find(children, { name: result[name] });
-
-                if (existingNode) {
+                const displayName = this.getMapedValueWithDefault(result, name);
+                const existingNode = _.find(children, { name: displayName });
+                if (existingNode && !_.isUndefined(existingNode.children)) {
                     existingNode.children = recursiveAdd(existingNode.children, index + 1);
                     return children;
                 }
@@ -109,16 +109,14 @@ class ResultsTable extends React.PureComponent {
                 const id = this.composeResultId(result, index);
                 nodeIds.push(id);
                 if (nextName === 'value' || !nextName) {
-                    const displayName = this.getMapedValueWithDefault(result, name);
                     children.push({
                         name: displayName,
                         id,
-                        result: `${result.value * 100}%`,
+                        result: `${Math.floor((result.value * 100)) / 100}%`,
                         weight: result.weight,
                         originalResultNode: result
                     })
                 } else {
-                    const displayName = this.getMapedValueWithDefault(result, name);
                     children.push({
                         name: displayName,
                         id,

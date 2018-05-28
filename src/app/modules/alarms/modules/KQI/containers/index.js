@@ -27,7 +27,7 @@ class KQI extends React.PureComponent {
     };
 
     componentDidMount() {
-        this.context.navBar.setPageTitle(ls('ALARMS_KQI_PAGE_TITLE', 'Сообщения по KQI'));
+        this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'),ls('ALARMS_KQI_PAGE_TITLE', 'Сообщения по KQI')]);
         const state = _.get(this.props, 'match.params.state', 'history');
         const id = _.get(this.props, 'match.params.id');
         if (state === 'history') {

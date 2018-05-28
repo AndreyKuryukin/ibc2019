@@ -37,11 +37,13 @@ export class ProjectionsTable extends React.PureComponent {
         name: 'name',
         searchable: true,
         sortable: true,
+        width: 350
     }, {
         title: ls('KQI_CREATED_COLUMN_TITLE', 'Дата создания'),
         name: 'creation_date',
         searchable: true,
         sortable: true,
+        width: 130
     }, {
         title: ls('KQI_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',
@@ -52,14 +54,17 @@ export class ProjectionsTable extends React.PureComponent {
         name: 'count',
         searchable: true,
         sortable: true,
+        width: 80
     }, {
         title: ls('KQI_LAST_DATE_COLUMN_TITLE', 'Дата последнего вычисления'),
         name: 'last_calc_date',
         searchable: true,
         sortable: true,
+        width: 200,
     }, {
         title: ls('KQI_STATUS_COLUMN_TITLE', 'Статус последнего вычисления'),
         name: 'status',
+        width: 200
     }, {
         title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
         name: 'auto',

@@ -31,14 +31,14 @@ class GroupPoliciesTable extends React.PureComponent {
             name: 'id',
             searchable: true,
             sortable: true,
-            width: 300,
+            width: 500,
 
         }, {
             title: ls('ALARMS_GROUP_POLICIES_PRIORITY_COLUMN', 'Приоритет'),
             name: 'priority',
             searchable: true,
             sortable: true,
-            width: 150,
+            width: 120,
 
         }, {
             title: ls('ALARMS_GROUP_POLICIES_RAISE_TIME_COLUMN', 'Время возникновения'),
@@ -52,13 +52,13 @@ class GroupPoliciesTable extends React.PureComponent {
             name: 'duration',
             searchable: true,
             sortable: true,
-            width: 150,
+            width: 120,
         }, {
             title: ls('ALARMS_GROUP_POLICIES_POLICY_NAME_COLUMN', 'Название политики по каталогу'),
             name: 'policy_name',
             searchable: true,
             sortable: true,
-            width: 250,
+            width: 200,
         }
     ]));
 
