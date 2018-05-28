@@ -5,7 +5,7 @@ import moment from 'moment';
 import { createSelector } from 'reselect';
 import memoize from 'memoizejs';
 import search from '../../../util/search';
-import TreeView from '../../../components/TreeView';
+import { convertUTC0ToLocal } from '../../../util/date';
 import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 import { DATE, DATE_TIME } from '../../../costants/date';
@@ -82,10 +82,10 @@ export class ProjectionsTable extends React.PureComponent {
     mapProjection = projection => ({
         id: projection.id,
         name: projection.name,
-        creation_date: projection.creation_date,
+        creation_date: convertUTC0ToLocal(projection.creation_date).format(DATE_TIME) || '',
         author: projection.author,
         count: String(projection.count),
-        last_calc_date: projection.last_calc_date,
+        last_calc_date: convertUTC0ToLocal(projection.last_calc_date).format(DATE_TIME) || '',
         result_id: projection.result_id,
         status: projection.status,
         auto: _.get(projection, 'auto', false),
@@ -143,7 +143,7 @@ export class ProjectionsTable extends React.PureComponent {
             case 'last_calc_date':
                 return (
                     <DefaultCell
-                        content={node[column.name] ? moment(node[column.name]).format(DATE_TIME) : ''}
+                        content={node[column.name]}
                     />
                 );
             case 'graph':
