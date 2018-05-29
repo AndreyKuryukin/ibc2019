@@ -121,9 +121,9 @@ class Calculator extends React.PureComponent {
                     console.error(e);
                     this.setState({ isLoading: false });
                 });
-        } else {
-            this.setState({ errors });
         }
+
+        this.setState({ errors });
     };
 
     render() {

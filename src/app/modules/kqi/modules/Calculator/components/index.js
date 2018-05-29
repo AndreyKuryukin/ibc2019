@@ -154,10 +154,10 @@ class Calculator extends React.PureComponent {
 
     static mapListToOptions = createSelector(
         (props, listName) => _.get(props, `${listName}`, []),
-        list => list.map((item) => {
+        list => list.map ? list.map((item) => {
             if (typeof item === 'string') return { value: item, title: item };
             if (typeof item === 'object') return { value: item.id, title: item.name };
-        }),
+        }) : [],
     );
 
     composeConfigName = (config) => {
