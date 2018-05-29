@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
 import Login from '../modules/login/containers';
+import Dasboard from '../modules/dashboard/containers';
 import Users from '../modules/users/container';
 import Policies from '../modules/policies/containers';
 import Reports from '../modules/reports/containers';
@@ -48,7 +49,7 @@ class App extends React.Component {
                 title: 'Рабочий стол',
                 path: '/landing',
                 link: '/landing',
-                component: Login,
+                component: Dasboard,
                 exact: true
             },
             'KQI': {

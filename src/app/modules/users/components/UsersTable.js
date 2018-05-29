@@ -69,7 +69,7 @@ class UsersTable extends React.PureComponent {
         name: 'name',
         searchable: true,
         sortable: true,
-        width: "25%",
+        width: 140,
     }, {
         title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
         name: 'email',
