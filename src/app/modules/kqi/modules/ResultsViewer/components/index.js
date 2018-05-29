@@ -17,7 +17,8 @@ class ResultsViewer extends React.PureComponent {
         match: PropTypes.object,
         results: PropTypes.array,
         locations: PropTypes.array,
-        resHistory: PropTypes.object,
+        resHistory: PropTypes.array,
+        projection: PropTypes.object,
         onMount: PropTypes.func,
         fetchHistory: PropTypes.func,
         isLoading: PropTypes.bool,
@@ -30,6 +31,7 @@ class ResultsViewer extends React.PureComponent {
         results: [],
         locations: [],
         resHistory: [],
+        projection: {},
         onMount: () => null,
         fetchHistory: () => null,
         isLoading: false,
@@ -90,6 +92,7 @@ class ResultsViewer extends React.PureComponent {
                             <div className={styles.kqiResultsViewerGraphContainer}>
                                 <Graph data={resHistory}
                                        locations={this.props.locations}
+                                       projection={this.props.projection}
                                 />
                             </div>
                         </div>

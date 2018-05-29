@@ -21,6 +21,7 @@ import Location from './Location';
 import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
+import { convertUTC0ToLocal, convertDateToUTC0 } from '../../../../../util/date';
 
 const NAME_PATTERN_SEQUENCE = [
     'period.regularity',
@@ -134,7 +135,16 @@ class Calculator extends React.PureComponent {
             this.setState({ errors: nextProps.errors });
         }
         if (!_.isEmpty(nextProps.config) && this.state.config !== nextProps.config) {
-            this.setState({ config: nextProps.config });
+            this.setState({
+                config: {
+                    ...nextProps.config,
+                    period: {
+                        ...nextProps.config.period,
+                        start_date: convertUTC0ToLocal(nextProps.config.period.start_date).toDate(),
+                        end_date: convertUTC0ToLocal(nextProps.config.period.end_date).toDate(),
+                    },
+                },
+            });
         }
     }
 
@@ -144,10 +154,10 @@ class Calculator extends React.PureComponent {
 
     static mapListToOptions = createSelector(
         (props, listName) => _.get(props, `${listName}`, []),
-        list => list.map((item) => {
+        list => list.map ? list.map((item) => {
             if (typeof item === 'string') return { value: item, title: item };
             if (typeof item === 'object') return { value: item.id, title: item.name };
-        }),
+        }) : [],
     );
 
     composeConfigName = (config) => {
@@ -287,6 +297,11 @@ class Calculator extends React.PureComponent {
             equipment_type_grouping: _.get(config, 'equipment_type_grouping') ? _.get(config, 'equipment_type_grouping') : GROUPING_TYPES.NONE,
             // abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? _.get(config, 'abonent_group_grouping') : GROUPING_TYPES.NONE,
             abonent_group_grouping: GROUPING_TYPES.NONE,
+            period: {
+                ...config.period,
+                start_date: convertDateToUTC0(config.period.start_date).toISOString(),
+                end_date: convertDateToUTC0(config.period.end_date).toISOString(),
+            },
         };
 
         this.props.onSubmit(preparedConfig);
@@ -342,7 +357,6 @@ class Calculator extends React.PureComponent {
                             onAutoGenChange={value => this.setConfigProperty('period.auto', value)}
                             onGroupingTypeChange={value => this.setConfigProperty('date_time_grouping', value)}
                             onIntervalChange={this.onIntervalChange}
-
                         />
                         <Location
                             locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}

@@ -10,6 +10,7 @@ import styles from './login.scss';
 class Login extends React.PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func,
+        onInput: PropTypes.func,
         loading: PropTypes.bool,
         errors: PropTypes.array,
         loginFailed: PropTypes.bool
@@ -17,6 +18,7 @@ class Login extends React.PureComponent {
 
     static defaultProps = {
         onSubmit: () => null,
+        onInput: () => null,
         errors: {},
     };
 
@@ -42,7 +44,9 @@ class Login extends React.PureComponent {
 
     inputValue = (event, valuePath) => {
         const errors = _.omit({ ...this.state.errors }, valuePath);
-        this.setState({ [valuePath]: _.get(event, 'currentTarget.value'), errors });
+        this.setState({ [valuePath]: _.get(event, 'currentTarget.value'), errors }, () => {
+            this.props.onInput();
+        });
     };
 
     render() {

@@ -81,11 +81,11 @@ class ReportsTable extends React.PureComponent {
     getReportTimeStatus = (report) => {
         switch(report.state) {
             case 'RUNNING': {
-                return `c ${convertUTC0ToLocal(report.start).format(DATE_TIME)}`;
+                return `c ${report.start}`;
             }
             case 'FAILED':
             case 'SUCCESS':
-                return `в ${convertUTC0ToLocal(report.end).format(DATE_TIME)}`;
+                return `в ${report.end}`;
             default:
                 return '';
         }
@@ -98,20 +98,16 @@ class ReportsTable extends React.PureComponent {
         start: report.create_start_time ? convertUTC0ToLocal(report.create_start_time).format(DATE_TIME) : '',
         end: report.create_end_time ? convertUTC0ToLocal(report.create_end_time).format(DATE_TIME) : '',
         state: report.state,
-        type: ls(`REPORT_TYPE_${config.type}`, ''),
-        nodeType: config.type,
-        author: config.author,
-        comment: config.comment,
-        notify: config.notify_users && Array.isArray(config.notify_users) ? config.notify_users.join(', ') : '',
-        isLastSuccess
+        type: config.type,
+        nodeType: 'report',
     });
 
 
     mapConfig = config => ({
         id: config.id,
-        type: ls(`REPORT_TYPE_${config.type}`, ''),
-        nodeType: config.type,
-        author: config.author,
+        type: config.type,
+        nodeType: 'config',
+        author: config.author_name,
         comment: config.comment,
         notify: config.notify_users && Array.isArray(config.notify_users) ? config.notify_users.join(', ') : '',
         name: config.name,
@@ -164,15 +160,15 @@ class ReportsTable extends React.PureComponent {
     bodyRowRender = (column, node) => {
         switch (column.name) {
             case 'name':
-                const type = _.get(node, 'nodeType', '').toLowerCase();
+                const type = _.get(node, 'type', '');
                 const state = _.get(node, 'state', '').toLowerCase();
                 return (
                     <ReportCell
-                        formatIcon={type && `icon-${type}`}
+                        formatIcon={type && `icon-${type.toLowerCase()}`}
                         iconTitle={type && type.toUpperCase()}
                         text={node[column.name]}
                         disabled={node.state === 'FAILED'}
-                        href={state !== 'failed' && state !== 'running' && node.file_path}
+                        href={state !== 'failed' && state !== 'running' && node.path}
                     />
                 );
             case 'retry': {
@@ -190,6 +186,12 @@ class ReportsTable extends React.PureComponent {
                             justifyContent: 'center'
                         }}
                     /> : ''
+            }
+            case 'type': {
+                const type = _.get(node, 'type', '');
+                return (node.nodeType === 'config') ? <DefaultCell
+                        content={ls(`REPORT_TYPE_${String(type).toUpperCase()}`, '')}
+                    /> : '';
             }
             case 'state': {
                 const state = _.get(node, 'state', '').toLowerCase();

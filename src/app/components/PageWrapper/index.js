@@ -74,7 +74,7 @@ class PageWrapper extends React.Component {
                 this.props.history.push('/login');
             })
             .catch((e) => {
-                console.error(e);
+                this.props.history.push('/login');
             });
     };
 

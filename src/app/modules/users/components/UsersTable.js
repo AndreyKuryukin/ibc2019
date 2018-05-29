@@ -63,16 +63,19 @@ class UsersTable extends React.PureComponent {
         name: 'login',
         searchable: true,
         sortable: true,
+        width: 110,
     }, {
         title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
         sortable: true,
+        width: 140,
     }, {
         title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
         name: 'email',
         searchable: true,
         sortable: true,
+        width: 120,
     }, {
         title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
         name: 'phone',
@@ -90,6 +93,7 @@ class UsersTable extends React.PureComponent {
         name: 'division',
         searchable: true,
         sortable: true,
+        width: 110,
     }, {
         title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
         name: 'groups',
