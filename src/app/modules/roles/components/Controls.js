@@ -30,7 +30,7 @@ class RolesControls extends React.PureComponent {
     }
 
     onAdd = () => {
-        this.context.history.push('/roles/add');
+        this.context.history.push('/users-and-roles/roles/add');
     };
 
     onSearchTextChange = (event) => {

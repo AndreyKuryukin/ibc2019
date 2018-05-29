@@ -16,7 +16,7 @@ class Configurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
-        configId: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+        configId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         paramTypes: PropTypes.array,
         paramTypesById: PropTypes.object,
         config: PropTypes.object,

@@ -11,6 +11,11 @@ const cmpMap = {
     'cli': KQI // Заглушка !!!
 };
 
+const tabStyle = {
+    display: 'flex',
+    height: '100%',
+};
+
 class Alarms extends React.PureComponent {
 
     render() {
@@ -29,18 +34,21 @@ class Alarms extends React.PureComponent {
                       activeTabId={`/alarms/${subject}/${state}`}
             >
                 <div id="/alarms/group-policies/current"
-                     tabTitle={ls('GROUP_POLICIES_TAB_TITLE', 'Групповые политики')}
+                     tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'Групповые политики')}
+                     style={tabStyle}
                 >
                     {subject === 'group-policies' && rendered}
                 </div>
                 <div id="/alarms/cli/current"
-                     tabTitle={ls('CLI_TAB_TITLE', 'КИ')}
+                     tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
+                     style={tabStyle}
                 >
                     {subject === 'cli' && rendered}
 
                 </div>
                 <div id="/alarms/kqi/history"
-                     tabTitle={ls('KQI_TAB_TITLE', 'KQI')}
+                     tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
+                     style={tabStyle}
                 >
                     {subject === 'kqi' && rendered}
                 </div>

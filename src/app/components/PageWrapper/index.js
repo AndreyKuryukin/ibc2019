@@ -90,9 +90,9 @@ class PageWrapper extends React.Component {
         } else if (_.isArray(title)) {
             return title.map((path, index) => {
                 if (index === title.length - 1) {
-                    return <span>{path}</span>;
+                    return <span key={index}>{path}</span>;
                 }
-                return <span><b>{path}</b></span>;
+                return <span key={index}><b>{path}</b></span>;
             })
         }
 

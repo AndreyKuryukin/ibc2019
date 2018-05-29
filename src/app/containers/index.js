@@ -12,6 +12,7 @@ import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
 import Alarms from '../modules/alarms/containers';
+import UsersAndRoles from '../modules/usersAndRoles/components';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
@@ -83,15 +84,15 @@ class App extends React.Component {
             },
             'USERS': {
                 title: 'Работа с пользователями',
-                link: '/users',
-                path: "/users/:action?/:id?",
-                component: Users
+                link: '/users-and-roles/users',
+                path: "/users-and-roles/:page/:action?/:id?",
+                component: UsersAndRoles
             },
             'ROLES': {
                 title: 'Работа с пользователями',
                 link: '/roles',
                 path: "/roles/:action?/:id?",
-                component: Roles
+                component: UsersAndRoles
             },
             'STB_LOADING': {
                 title: 'Время загрузки STB',
@@ -176,7 +177,7 @@ class App extends React.Component {
         {
             id: 'users-page',
             name: 'USERS',
-            link: '/users'
+            link: '/users-and-roles/users'
         },
         {
             id: 'reports-page',

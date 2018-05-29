@@ -183,7 +183,7 @@ class UsersTable extends React.PureComponent {
                 return (
                     <IconCell
                         icon="adminIcon"
-                        href={`/users/edit/${node.id}`}
+                        href={`/users-and-roles/users/edit/${node.id}`}
                         text={value}
                     />
                 );
