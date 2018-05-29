@@ -10,10 +10,6 @@ import RolesControls from './Controls';
 import ls from "i18n";
 
 class Roles extends React.Component {
-    static childContextTypes = {
-        history: PropTypes.object.isRequired,
-    };
-
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -37,12 +33,6 @@ class Roles extends React.Component {
             searchText: '',
             isAllChecked: false,
             checkedIds: [],
-        };
-    }
-
-    getChildContext() {
-        return {
-            history: this.props.history,
         };
     }
 
@@ -75,40 +65,31 @@ class Roles extends React.Component {
             checkedIds,
         } = this.state;
 
-        const { match, rolesData, history, isLoading } = this.props;
+        const { match, rolesData, isLoading } = this.props;
         const { params } = match;
         const isEditorActive = params.action === 'edit' || params.action === 'add';
         const roleId = params.id ? params.id : null;
+
         return (
-            <TabPanel onTabClick={(tabId) => history && history.push(`${tabId}`)}
-                      activeTabId="/roles"
-                      className={styles.rolesContainer}
-            >
-                <div id="/users"
-                     tabTitle={ls('USERS_TAB_TITLE', 'Пользователи')}
+            <div className={styles.rolesWrapper}>
+                <RolesControls
+                    checkedIds={checkedIds}
+                    searchText={searchText}
+                    onSearchTextChange={this.onSearchTextChange}
+                    onRemove={this.onRemove}
                 />
-                <div id="/roles"
-                     tabTitle={ls('ROLES_TAB_TITLE', 'Роли')}
-                     className={styles.rolesWrapper}>
-                    <RolesControls
-                        checkedIds={checkedIds}
-                        searchText={searchText}
-                        onSearchTextChange={this.onSearchTextChange}
-                        onRemove={this.onRemove}
-                    />
-                    <RolesTable
-                        searchText={searchText}
-                        preloader={isLoading}
-                        data={rolesData}
-                        onCheck={this.onCheck}
-                        checked={checkedIds}
-                    />
-                    {isEditorActive && <RoleEditor
-                        active={isEditorActive}
-                        roleId={roleId}
-                    />}
-                </div>
-            </TabPanel>
+                <RolesTable
+                    searchText={searchText}
+                    preloader={isLoading}
+                    data={rolesData}
+                    onCheck={this.onCheck}
+                    checked={checkedIds}
+                />
+                {isEditorActive && <RoleEditor
+                    active={isEditorActive}
+                    roleId={roleId}
+                />}
+            </div>
         );
     }
 }

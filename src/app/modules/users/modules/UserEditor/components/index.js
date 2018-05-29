@@ -99,7 +99,7 @@ class UserEditor extends React.Component {
     };
 
     onClose = () => {
-        this.context.history.push('/users');
+        this.context.history.push('/users-and-roles/users');
         this.props.onClose();
     };
 

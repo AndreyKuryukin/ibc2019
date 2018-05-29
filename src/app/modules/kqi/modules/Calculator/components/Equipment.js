@@ -14,7 +14,7 @@ class Equipment extends React.PureComponent {
         onEquipmentTypeChange: PropTypes.func,
         onGroupingChange: PropTypes.func,
         disabled: PropTypes.bool,
-        value: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+        value: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         groupingValue: PropTypes.string
     };
 

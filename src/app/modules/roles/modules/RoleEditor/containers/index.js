@@ -16,7 +16,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     static propTypes = {
-        roleId: PropTypes.number,
+        roleId: PropTypes.string,
         onUpdateRoleSuccess: PropTypes.func,
         onCreateRoleSuccess: PropTypes.func,
         onFetchRoleSuccess: PropTypes.func,
@@ -80,7 +80,7 @@ class RoleEditor extends React.PureComponent {
                 const callback = roleId ? this.props.onUpdateRoleSuccess : this.props.onCreateRoleSuccess;
                 const role = response.data;
                 callback(role);
-                this.context.history.push('/roles');
+                this.context.history.push('/users-and-roles/roles');
             };
 
             submit('/api/v1/role', roleData)

@@ -12,6 +12,8 @@ import styles from './styles.scss';
 import ls from "i18n";
 import Field from "../../../../../components/Field/index";
 
+const permissionsTableStyle = { height: 370 };
+const permissionsTableBodyStyle = { padding: 0 };
 
 class RoleEditor extends React.PureComponent {
     static contextTypes = {
@@ -122,7 +124,7 @@ class RoleEditor extends React.PureComponent {
     };
 
     onClose = () => {
-        this.context.history.push('/roles');
+        this.context.history.push('/users-and-roles/roles');
         this.props.onClose();
     };
 
@@ -162,7 +164,7 @@ class RoleEditor extends React.PureComponent {
                             >
                                 <Input
                                     id="name"
-                                    value={role.name}
+                                    value={role.name || ''}
                                     onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     errorMessage={_.get(errors, 'name.title')}
@@ -186,8 +188,8 @@ class RoleEditor extends React.PureComponent {
                         </Panel>
                         <Panel
                             title={ls('ROLE_PERMISSIONS_PANEL_TITLE', 'Разрешения')}
-                            style={{ height: 370 }}
-                            bodyStyle={{ padding: 0 }}
+                            style={permissionsTableStyle}
+                            bodyStyle={permissionsTableBodyStyle}
                         >
                             <PermissionList subjectsData={subjectsData}
                                             onCheck={this.onCheck}
@@ -198,7 +200,7 @@ class RoleEditor extends React.PureComponent {
                             title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
                         >
                             <Input type="textarea"
-                                   value={role.description}
+                                   value={role.description || ''}
                                    onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
                                    rows={6}
                             />

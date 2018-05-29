@@ -13,10 +13,6 @@ const iconStyle = { marginLeft: 10 };
 const groupIconStyle = { marginLeft: 20 };
 
 class Users extends React.Component {
-    static childContextTypes = {
-        history: PropTypes.object.isRequired,
-    };
-
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -38,12 +34,6 @@ class Users extends React.Component {
         onUnlock: () => null,
         onLock: () => null,
     };
-
-    getChildContext() {
-        return {
-            history: this.props.history,
-        };
-    }
 
     constructor(props) {
         super(props);
@@ -71,7 +61,7 @@ class Users extends React.Component {
     };
 
     onAdd = () => {
-        this.props.history.push('/users/add');
+        this.props.history.push('/users-and-roles/users/add');
     };
 
     onDelete = () => {
@@ -99,7 +89,7 @@ class Users extends React.Component {
     };
 
     render() {
-        const { match, history } = this.props;
+        const { match } = this.props;
         const { searchText } = this.state;
         const { params } = match;
 
@@ -107,64 +97,56 @@ class Users extends React.Component {
         const userId = params.id ? String(params.id) : null;
 
         return (
-            <TabPanel onTabClick={(tabId) => history && history.push(`${tabId}`)}
-                      activeTabId="/users"
-                      className={styles.usersContainer}>
-                <div className={styles.usersWrapper}
-                     id="/users"
-                     tabTitle={ls('USERS_TAB_TITLE', 'Пользователи')}>
-
-                    <div className={styles.controlsWrapper}>
-                        <Icon
-                            icon="addIcon"
-                            onClick={this.onAdd}
-                            title={ls('ADD_USER_TITLE', 'Добавить пользователя')}
-                        />
-                        <Icon
-                            icon="deleteIcon"
-                            onClick={this.onDelete}
-                            style={iconStyle}
-                            title={ls('DELETE_USER_TITLE', 'Удалить пользователя')}
-                        />
-                        <Icon
-                            icon="lockIcon"
-                            onClick={this.onLock}
-                            style={iconStyle}
-                            title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
-                        />
-                        <Icon
-                            icon="unlockIcon"
-                            onClick={this.onUnlock}
-                            title={ls('UNLOCK_USER_TITLE', 'Разблокировать пользователя')}
-                        />
-                        <Icon
-                            icon="groupIcon"
-                            style={groupIconStyle}
-                            title={ls('CREATE_USER_GROUP_TITLE', 'Создать группу пользователей')}
-                        />
-                        <Input
-                            placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
-                            className={styles.search}
-                            onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
-                        />
-                    </div>
-
-                    <UsersTable
-                        data={this.props.usersData}
-                        divisionsById={this.props.divisionsById}
-                        searchText={searchText}
-                        checked={this.state.checkedIds}
-                        onCheck={this.onCheck}
-                        preloader={this.props.isLoading}
+            <div className={styles.usersWrapper}>
+                <div className={styles.controlsWrapper}>
+                    <Icon
+                        icon="addIcon"
+                        onClick={this.onAdd}
+                        title={ls('ADD_USER_TITLE', 'Добавить пользователя')}
                     />
-
-                    {isEditorActive && <UserEditor
-                        active={isEditorActive}
-                        userId={userId}
-                    />}
+                    <Icon
+                        icon="deleteIcon"
+                        onClick={this.onDelete}
+                        style={iconStyle}
+                        title={ls('DELETE_USER_TITLE', 'Удалить пользователя')}
+                    />
+                    <Icon
+                        icon="lockIcon"
+                        onClick={this.onLock}
+                        style={iconStyle}
+                        title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
+                    />
+                    <Icon
+                        icon="unlockIcon"
+                        onClick={this.onUnlock}
+                        title={ls('UNLOCK_USER_TITLE', 'Разблокировать пользователя')}
+                    />
+                    <Icon
+                        icon="groupIcon"
+                        style={groupIconStyle}
+                        title={ls('CREATE_USER_GROUP_TITLE', 'Создать группу пользователей')}
+                    />
+                    <Input
+                        placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
+                        className={styles.search}
+                        onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
+                    />
                 </div>
-                <div id="/roles" tabTitle={ls('ROLES_TAB_TITLE', 'Роли')} />
-            </TabPanel>
+
+                <UsersTable
+                    data={this.props.usersData}
+                    divisionsById={this.props.divisionsById}
+                    searchText={searchText}
+                    checked={this.state.checkedIds}
+                    onCheck={this.onCheck}
+                    preloader={this.props.isLoading}
+                />
+
+                {isEditorActive && <UserEditor
+                    active={isEditorActive}
+                    userId={userId}
+                />}
+            </div>
         );
     }
 }

@@ -141,10 +141,10 @@
   @include iconBuilder(33px, 34px, 'menu/alarms-active.svg');
 }
 
-.menu-icon-users {
+.menu-icon-users-and-roles {
   @include iconBuilder(33px, 34px, 'menu/users.svg');
 }
-.menu-icon-users-active {
+.menu-icon-users-and-roles-active {
   @include iconBuilder(33px, 34px, 'menu/users-active.svg');
 }
 

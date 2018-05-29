@@ -1,31 +1,28 @@
+$navPanelHeight: 36px;
+$underlineHeight: 4px;
+$navItemHeight: $navPanelHeight - $underlineHeight;
+$underlineColor: #fd7f00;
+
 @mixin orange-underline {
   content: '';
   background-color: transparent !important;
-  border-bottom: 4px solid #fd7f00;
-  height: 4px;
+  border-bottom: $underlineHeight solid $underlineColor;
+  height: $underlineHeight;
   width: 100%;
   display: block;
 }
 
-.nav-tabs{
+.nav-tabs {
   display: flex;
   flex-direction: row;
-  justify-content: center;
-  height: 38px;
-  background-color: #ebebeb;
+  height: $navItemHeight;
   .nav-item {
     margin-right: 15px;
     margin-left: 15px;
-    height: 32px;
     &:not(.active):hover {
       &:after {
         @include orange-underline;
         opacity: 0.5;
-      }
-    }
-    &.active {
-      &:after {
-        @include orange-underline;
       }
     }
     .nav-link {

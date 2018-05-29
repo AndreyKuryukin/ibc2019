@@ -108,7 +108,7 @@ class RolesTable extends React.PureComponent {
             case 'name':
                 return (
                     <LinkCell
-                        href={`/roles/edit/${node.id}`}
+                        href={`/users-and-roles/roles/edit/${node.id}`}
                         content={text}
                     />
                 );

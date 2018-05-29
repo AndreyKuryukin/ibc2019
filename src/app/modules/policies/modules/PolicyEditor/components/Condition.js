@@ -136,9 +136,8 @@ class Condition extends React.PureComponent {
                     <Select
                         id="operator"
                         required
-                        defaultValue="AND"
                         type="select"
-                        value={this.getConditionProperty('conjunction.type')}
+                        value={this.getConditionProperty('conjunction.type', 'AND')}
                         options={this.getOperators()}
                         onChange={value => this.setConditionProperty('conjunction.type', value, true)}
                         valid={errors && _.isEmpty(_.get(errors, 'conjunction.type', null))}
@@ -170,8 +169,7 @@ class Condition extends React.PureComponent {
                     <Select
                         id="object"
                         type="select"
-                        value={this.getConditionProperty('objectType', '')}
-                        defaultValue="STB"
+                        value={this.getConditionProperty('objectType', 'STB')}
                         options={this.mapObjectTypes(['STB', 'TEST'])}
                         onChange={value => this.setConditionProperty('objectType', value, true)}
                         valid={errors && _.isEmpty(errors.objectType)}

@@ -14,9 +14,8 @@ class Select extends React.PureComponent {
         noEmptyOption: false,
         errorMessage: ls('DEFAULT_ERROR_MSG', 'Это поле заполнено неверно'),
         valid: true,
-        defaultValue: null,
         onChange: () => null,
-        value: null
+        value: '',
     };
 
     constructor() {
@@ -27,7 +26,7 @@ class Select extends React.PureComponent {
     onChange = (event) => {
         const value = event.currentTarget.value;
         if (value === PLACEHOLDER_VALUE) {
-            this.setState({ value: null });
+            this.setState({ value: '' });
             this.props.onChange(null);
         } else {
             this.setState({ value: value });

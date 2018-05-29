@@ -43,6 +43,7 @@ class CheckedCell extends React.PureComponent {
             <div className="table-cell-content" title={text}>
                 <Component
                     id={id}
+                    name={id}
                     style={inputStyle}
                     onChange={this.onChange}
                     checked={value}

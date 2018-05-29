@@ -15,7 +15,7 @@ class Calculator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
-        projectionId: PropTypes.oneOfType(PropTypes.number, PropTypes.string),
+        projectionId: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
         projection: PropTypes.object,
         kqiList: PropTypes.array,
         manufactureList: PropTypes.array,

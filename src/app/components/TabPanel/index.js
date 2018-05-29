@@ -6,76 +6,105 @@ import styles from './styles.scss';
 
 import { Nav, NavItem, NavLink, TabContent, TabPane } from 'reactstrap';
 
-export default class Example extends React.Component {
+const tabPaneStyle = { height: '100%' };
+const navStyle = { position: 'relative' };
+
+export default class TabPanel extends React.Component {
 
     static propTypes = {
-        activeTab: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+        activeTabId: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
         onTabClick: PropTypes.func,
         children: PropTypes.arrayOf(PropTypes.shape({
-            props: PropTypes.objectOf(PropTypes.shape({
+            props: PropTypes.shape({
                 id: PropTypes.string.isRequired,
-                tabTitle: PropTypes.string.isRequired
-            })),
+                tabtitle: PropTypes.string.isRequired
+            }),
         }))
     };
 
     constructor(props) {
         super(props);
-        this.toggle = this.toggle.bind(this);
         this.state = {
-            activeTab: props.activeTabId
+            activeTabId: props.activeTabId,
+            underlineLeft: 0,
+            underlineWidth: 0,
         };
     }
 
+    componentDidMount() {
+        const underlineLeft = this.activeTab.offsetLeft;
+        const { width: underlineWidth } = this.activeTab.getBoundingClientRect();
+        this.setState({
+            underlineLeft,
+            underlineWidth,
+        });
+    };
+
     componentWillReceiveProps(nextProps) {
-        if (nextProps.activeTab !== this.props.activeTab) {
+        if (nextProps.activeTabId !== this.props.activeTabId) {
             this.setState({
-                activeTab: nextProps.activeTab
-            })
+                activeTabId: nextProps.activeTabId,
+            });
         }
     }
+
+    setActiveTabRef = (tab, isActive) => {
+        const that = this;
+        if (isActive) {
+            this.activeTab = tab;
+        }
+    };
 
     renderTabs = (children = []) =>
         children.map((child, index) => <NavItem
             className={classnames({
-                [styles.active]: this.state.activeTab === child.props.id
+                [styles.active]: this.state.activeTabId === child.props.id,
             })}
-            key={`tab-pane-${child.props.id || index}`}>
+            key={`tab-pane-${child.props.id || index}`}
+        >
             <NavLink
-                onClick={() => {
-                    this.toggle(child.props.id || index);
-                }}
+                onClick={this.toggle.bind(this, child.props.id || index)}
+                innerRef={tab => this.setActiveTabRef(tab, this.state.activeTabId === child.props.id)}
             >
-                {child.props.tabTitle || index}
+                {child.props.tabtitle || index}
             </NavLink>
-        </NavItem>);
+        </NavItem>
+    );
 
     renderTabContent = (children = []) => children.map((child, index) =>
-        <TabPane
+        this.state.activeTabId === child.props.id && <TabPane
             key={`tab-pane-${child.props.id || index}`}
             tabId={child.props.id || index}
-            style={{ height: '100%' }}>
+            style={tabPaneStyle}>
             {child}
-        </TabPane>);
+        </TabPane>
+    );
 
-    toggle(tab) {
-        if (this.state.activeTab !== tab) {
+    toggle(tab, event) {
+        if (this.state.activeTabId !== tab) {
+            const underlineLeft = event.target.offsetLeft;
+            const { width: underlineWidth } = event.target.getBoundingClientRect();
             if (this.props.onTabClick) {
                 this.props.onTabClick(tab);
             }
             this.setState({
-                activeTab: tab
-            })
+                activeTabId: tab,
+                underlineLeft,
+                underlineWidth,
+            });
         }
     }
 
     render() {
         return (
             <div className={classnames(styles.tabsWrapper, this.props.className)}>
-                <Nav tabs>
-                    {this.renderTabs(this.props.children)}
-                </Nav>
-                <TabContent activeTab={this.state.activeTab} className={styles.tabContent}>
+                <div className={styles.navPanel}>
+                    <Nav style={navStyle} tabs>
+                        {this.renderTabs(this.props.children)}
+                        <div className={styles.underline} style={{ left: this.state.underlineLeft, width: this.state.underlineWidth }} />
+                    </Nav>
+                </div>
+                <TabContent activeTab={this.state.activeTabId} className={styles.tabContent}>
                     {this.renderTabContent(this.props.children)}
                 </TabContent>
             </div>

@@ -96,7 +96,7 @@ class UserEditor extends React.PureComponent {
                 const callback = userId ? this.props.onUpdateUserSuccess : this.props.onCreateUserSuccess;
                 const user = response.data;
                 callback(user);
-                this.context.history.push('/users');
+                this.context.history.push('/users-and-roles/users');
             };
 
             submit('/api/v1/user', _.omit(userData, 'confirm'))
