@@ -32,8 +32,13 @@
       }
     }
   }
-  &.active .layout {
+  .layout {
     display: flex;
-    background: rgba(0, 0, 0, 0.3);
+    background: rgb(0, 0, 0);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+  &.active .layout {
+    opacity: 0.3;
   }
 }
