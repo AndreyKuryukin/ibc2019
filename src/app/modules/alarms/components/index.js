@@ -7,7 +7,8 @@ import ls from "i18n";
 
 const cmpMap = {
     'group-policies': GroupPolicies,
-    'kqi': KQI
+    'kqi': KQI,
+    'cli': KQI // Заглушка !!!
 };
 
 class Alarms extends React.PureComponent {

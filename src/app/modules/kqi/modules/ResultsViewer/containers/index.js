@@ -43,8 +43,8 @@ class KqiResults extends React.PureComponent {
     }
 
     fetchData = (configId, projectionId, resultId) => {
-        Promise.all([this.fetchLocations(), this.fetchResult(configId, projectionId, resultId)])
-            .then(([locationsResponse, resultResponse]) => {
+        Promise.all([this.fetchLocations(), this.fetchResult(configId, projectionId, resultId), this.fetchProjection(projectionId)])
+            .then(([locationsResponse, resultResponse, projectionResponse]) => {
                 this.props.onFetchResultHistorySuccess([]);
                 const result = resultResponse.data;
                 let locations = locationsResponse.data;
@@ -53,7 +53,8 @@ class KqiResults extends React.PureComponent {
                     const { rf = [] } = mrf;
                     return resultList.concat(rf);
                 }, []);
-                this.setState({ locations }, () => {
+                const projection = projectionResponse.data;
+                this.setState({ locations, projection }, () => {
                     this.props.onFetchResultSuccess(result);
                 })
             });
@@ -66,6 +67,13 @@ class KqiResults extends React.PureComponent {
             resultId
         }
     });
+
+    fetchProjection = (projectionId) => {
+        const urlParams = {
+            projectionId,
+        };
+        return rest.get('/api/v1/kqi/projection/:projectionId', { urlParams })
+    }
 
     fetchLocations = () => rest.get('/api/v1/common/location');
 
@@ -99,6 +107,7 @@ class KqiResults extends React.PureComponent {
                 locations={this.state.locations}
                 fetchHistory={this.fetchHistory}
                 onClose={this.props.onClose}
+                projection={this.state.projection}
             />
         );
     }

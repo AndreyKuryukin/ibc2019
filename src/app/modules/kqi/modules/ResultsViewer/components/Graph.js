@@ -2,6 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Line } from 'react-chartjs-2';
 import * as _ from "lodash";
+import moment from "moment";
+import { DATE_TIME } from "../../../../../costants/date";
 
 class Graph extends React.PureComponent {
     static contextTypes = {
@@ -11,12 +13,14 @@ class Graph extends React.PureComponent {
     static propTypes = {
         active: PropTypes.bool,
         data: PropTypes.array,
+        projection: PropTypes.object,
         locations: PropTypes.array,
     };
 
     static defaultProps = {
         active: false,
         data: [],
+        projection: {},
         locations: [],
     };
 
@@ -86,7 +90,7 @@ class Graph extends React.PureComponent {
                 const label = this.composeGraphLabel(result);
                 const borderColor = this.getColorForResult(result,index);
                 const data = result.values
-                    .map(value => ({ y: (value.value).toFixed(2), t: value.date_time }))
+                    .map(value => ({ y: (value.value).toFixed(2), t: moment(value.date_time).toDate() }))
                     .sort((a,b) => new Date(a.t).getTime() - new Date(b.t).getTime());
                 return { label, data, borderColor, lineTension: 0 }
             })
@@ -94,8 +98,11 @@ class Graph extends React.PureComponent {
         return data;
     };
 
+    getUnit = (projection) => _.get(projection, 'period.regularity', 'HOUR').toLowerCase();
+
     render() {
         const data = this.mapData(this.props.data);
+        const unit = this.getUnit(this.props.projection);
         const options = {
             legend: {
                 display: true,
@@ -126,8 +133,21 @@ class Graph extends React.PureComponent {
                     distribution: 'series',
                     time: {
                         displayFormats: {
-                            millisecond: 'h:mm:ss a'
-                        }
+                            'millisecond': 'HH:mm:ss',
+                            'second': 'HH:mm:ss',
+                            'minute': 'HH:mm',
+                            'hour': 'DD:MM HH:mm',
+                            'day': 'DD:MM HH:mm',
+                            'week': 'DD MMM',
+                            'month': 'DD MMM',
+                            'quarter': 'DD MMM',
+                            'year': 'DD.MM.YYYY',
+                        },
+                        tooltipFormat: DATE_TIME,
+                        unit
+                    },
+                    tick: {
+                        source: 'labels'
                     }
                 }],
             }

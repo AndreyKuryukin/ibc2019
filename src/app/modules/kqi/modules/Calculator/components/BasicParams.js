@@ -49,6 +49,7 @@ class BasicParams extends React.PureComponent {
                             onChange={event => this.props.onChange('name', event.currentTarget.value)}
                             valid={errors && _.isEmpty(errors.name)}
                             disabled={disabled}
+                            maxLength={255}
                         />}
                 </Field>
                 <Field

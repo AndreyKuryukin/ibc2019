@@ -5,7 +5,7 @@ import moment from 'moment';
 import { createSelector } from 'reselect';
 import memoize from 'memoizejs';
 import search from '../../../util/search';
-import TreeView from '../../../components/TreeView';
+import { convertUTC0ToLocal } from '../../../util/date';
 import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 import { DATE, DATE_TIME } from '../../../costants/date';
@@ -37,11 +37,13 @@ export class ProjectionsTable extends React.PureComponent {
         name: 'name',
         searchable: true,
         sortable: true,
+        width: 350
     }, {
         title: ls('KQI_CREATED_COLUMN_TITLE', 'Дата создания'),
         name: 'creation_date',
         searchable: true,
         sortable: true,
+        width: 130
     }, {
         title: ls('KQI_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',
@@ -52,14 +54,17 @@ export class ProjectionsTable extends React.PureComponent {
         name: 'count',
         searchable: true,
         sortable: true,
+        width: 80
     }, {
         title: ls('KQI_LAST_DATE_COLUMN_TITLE', 'Дата последнего вычисления'),
         name: 'last_calc_date',
         searchable: true,
         sortable: true,
+        width: 200,
     }, {
         title: ls('KQI_STATUS_COLUMN_TITLE', 'Статус последнего вычисления'),
         name: 'status',
+        width: 200
     }, {
         title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
         name: 'auto',
@@ -82,10 +87,10 @@ export class ProjectionsTable extends React.PureComponent {
     mapProjection = projection => ({
         id: projection.id,
         name: projection.name,
-        creation_date: projection.creation_date,
+        creation_date: convertUTC0ToLocal(projection.creation_date).format(DATE_TIME) || '',
         author: projection.author,
         count: String(projection.count),
-        last_calc_date: projection.last_calc_date,
+        last_calc_date: convertUTC0ToLocal(projection.last_calc_date).format(DATE_TIME) || '',
         result_id: projection.result_id,
         status: projection.status,
         auto: _.get(projection, 'auto', false),
@@ -143,7 +148,7 @@ export class ProjectionsTable extends React.PureComponent {
             case 'last_calc_date':
                 return (
                     <DefaultCell
-                        content={node[column.name] ? moment(node[column.name]).format(DATE_TIME) : ''}
+                        content={node[column.name]}
                     />
                 );
             case 'graph':

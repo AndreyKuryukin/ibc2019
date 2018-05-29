@@ -144,7 +144,7 @@ class Manufacture extends React.PureComponent {
                         id="manufacture-grouping"
                         checked={this.props.isGroupingChecked}
                         onChange={this.props.onGroupingChange}
-                        disabled={disabled || this.state.checked.length !== 0}
+                        disabled={disabled || this.state.checked.length === 1}
                     />
                 </Field>
             </Panel>

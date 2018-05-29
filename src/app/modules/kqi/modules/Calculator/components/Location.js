@@ -104,7 +104,7 @@ class Location extends React.PureComponent {
                     <Select
                         id="location-grouping"
                         disabled={!this.state.isGroupingChecked || disabled}
-                        options={this.props.groupingOptions}
+                        options={_.get(config, 'location') ? [this.props.groupingOptions[0]] : this.props.groupingOptions}
                         value={_.get(config, 'location_grouping')}
                         onChange={this.onGroupingTypeChange}
                         style={selectStyle}
