@@ -39,6 +39,10 @@ class Login extends React.PureComponent {
         this.state = {};
     }
 
+    onInput = () => {
+        this.context.notifications.close('login-failed');
+    };
+
     onSubmit = (login, password) => {
         const loginForm = { login, password };
         const errors = validateForm(loginForm, this.validationConfig);
@@ -75,6 +79,7 @@ class Login extends React.PureComponent {
     render() {
         return (<LoginComponent
             onSubmit={this.onSubmit}
+            onInput={this.onInput}
             loading={this.state.loading}
             errors={this.state.errors}
         />);

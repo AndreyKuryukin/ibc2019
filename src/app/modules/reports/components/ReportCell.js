@@ -22,9 +22,12 @@ class ReportCell extends React.PureComponent {
         onRebuildIconClick: () => null,
     };
 
-    getReportFile = (url) => {
+    getReportFile = (href) => {
         const fakeLink = document.createElement('a');
-        fakeLink.setAttribute('download', 'url');
+        const { origin } = window;
+        const url =  `${origin}${href}`;
+        console.log(url);
+        fakeLink.setAttribute('download', url);
         fakeLink.setAttribute('href', url);
         fakeLink.click();
     };

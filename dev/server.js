@@ -96,6 +96,7 @@ if (PROXY_HOST) {
         plugIn(app, plugins);
     }
     app.use('/api/*', proxy(target, config));
+    app.use('/data/*', proxy(target, config));
     useStatic();
     console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);
 
