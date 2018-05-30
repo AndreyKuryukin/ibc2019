@@ -1,6 +1,7 @@
 import React from 'react';
 import GroupPolicies from '../modules/GroupPolicies/containers';
-import KQI from "../modules/KQI/containers/index";
+import KQI from "../modules/KQI/containers";
+import CI from '../modules/CI/containers';
 import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
@@ -8,7 +9,7 @@ import ls from "i18n";
 const cmpMap = {
     'group-policies': GroupPolicies,
     'kqi': KQI,
-    'cli': KQI // Заглушка !!!
+    'cli': CI,
 };
 
 const tabStyle = {
