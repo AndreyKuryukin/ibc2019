@@ -199,9 +199,13 @@ class App extends React.Component {
         this.setToken(token);
     };
 
+    saveState = () => {
+        //todo: Сделать сохранение стейта, при протухании токена
+    };
+
     navigateLogin = () => {
-        const history = this.props.history;
-        history && history.push('/login')
+        this.saveState();
+        this.onLogOut()
     };
 
     getCommonRoutes = () => [
