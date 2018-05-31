@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Input, Modal, ModalBody, ModalFooter, ModalHeader, Button } from 'reactstrap';
 import ls from 'i18n';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 import ResultsTable from './ResultsTable';
@@ -97,7 +97,13 @@ class ResultsViewer extends React.PureComponent {
                             </div>
                         </div>
                     </ModalBody>
-                    <ModalFooter/>
+                    <ModalFooter>
+                        <Button outline
+                                color="action"
+                                onClick={() => this.props.onClose()}
+                        >{ls('KQI_RESULT_CLOSE_BTN_TITLE', 'Закрыть')}
+                        </Button>
+                    </ModalFooter>
                 </Modal>
             </DraggableWrapper>
         );

@@ -3,25 +3,9 @@ import { FETCH_ACTIVE_USER_SUCCESS, RESET_ACTIVE_USER_SUCCESS } from "../actions
 const initialState = {
     userName: '',
     login: '',
-    menu: [
+    subjects: [
         {
-            title: 'Роли',
-            link: '/roles'
-        },
-        {
-            title: 'Пользователи',
-            link: '/users'
-        },
-        {
-            title: 'Политики',
-            link: '/policies'
-        },
-        {
-            title: 'KPI/KQI',
-            link: '/kqi'
-        },
-        {
-            title: 'Выход',
+            name: 'LOGIN',
             link: '/login'
         }
     ]

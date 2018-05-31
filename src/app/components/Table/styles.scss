@@ -8,7 +8,7 @@
   .tableHeader {
     display: flex;
     font-weight: $table-thead-font-weight;
-    height: $table-cell-height;
+    min-height: $table-cell-height;
     color: $white;
     background: #232323; /* Old browsers */
     background: -moz-linear-gradient(top, #232323 0%, #404040 33%); /* FF3.6-15 */
