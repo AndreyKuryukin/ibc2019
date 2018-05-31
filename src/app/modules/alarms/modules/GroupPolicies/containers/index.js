@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import rest from '../../../../../rest';
 import GroupPoliciesComponent from '../components/index';
-import { fetchAlarmsSuccess, fetchRegionsSuccess, fetchLocationsSuccess } from '../actions';
+import { fetchAlarmsSuccess, fetchRegionsSuccess, fetchLocationsSuccess, setFilterProperty } from '../actions';
 import ls from "i18n";
 import moment from "moment";
 
@@ -18,6 +18,7 @@ class GroupPolicies extends React.PureComponent {
         alarmsList: PropTypes.array,
         rfOptions: PropTypes.array,
         mrfOptions: PropTypes.array,
+        filter: PropTypes.object,
         onFetchAlarmsSuccess: PropTypes.func,
         onFetchRegionsSuccess: PropTypes.func,
         onFetchLocationsSuccess: PropTypes.func,
@@ -28,6 +29,7 @@ class GroupPolicies extends React.PureComponent {
         alarmsList: [],
         rfOptions: [],
         mrfOptions: [],
+        filter: null,
         onFetchAlarmsSuccess: () => null,
         onFetchRegionsSuccess: () => null,
         onFetchLocationsSuccess: () => null,
@@ -38,10 +40,6 @@ class GroupPolicies extends React.PureComponent {
 
         this.state = {
             isLoading: false,
-            appliedFilter: {
-                mrf: '',
-                rf: '',
-            },
         };
     }
 
@@ -52,15 +50,15 @@ class GroupPolicies extends React.PureComponent {
     onFetchAlarms = (filter, isLoaderHidden) => {
         if (!isLoaderHidden) this.setState({ isLoading: true });
         //todo: Переделать на реальные фильтры
-        const start_ent_stab = {
-            start: moment().subtract(1, 'weeks').unix() * 1000,
-            end: moment().unix() * 1000
+        const queryParams = {
+            ...filter,
+            start: filter.start.getTime(),
+            end: filter.end.getTime(),
         };
-        const alarmsPromise = rest.get('/api/v1/alerts', {}, { queryParams: {...filter, ...start_ent_stab }})
+        const alarmsPromise = rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);
-                this.setState({ appliedFilter: filter });
                 if (!isLoaderHidden) this.setState({ isLoading: false });
             });
 
@@ -97,10 +95,11 @@ class GroupPolicies extends React.PureComponent {
                 state={this.props.state}
                 params={this.props.params}
                 alarmsList={this.props.alarmsList}
-                filter={this.state.appliedFilter}
+                filter={this.props.filter}
                 onMount={this.onMount}
                 isLoading={this.state.isLoading}
-                onApplyFilter={this.onFetchAlarms}
+                onChangeFilterProperty={this.props.onChangeFilterProperty}
+                onFetchAlarms={this.onFetchAlarms}
                 rfOptions={this.props.rfOptions}
                 mrfOptions={this.props.mrfOptions}
             />
@@ -112,12 +111,14 @@ const mapStateToProps = state => ({
     alarmsList: state.alarms.groupPolicies.alarms.alarms,
     rfOptions: state.alarms.groupPolicies.alarms.regions,
     mrfOptions: state.alarms.groupPolicies.alarms.locations,
+    filter: state.alarms.groupPolicies.alarms.filter,
 });
 
 const mapDispatchToProps = dispatch => ({
     onFetchAlarmsSuccess: alarms => dispatch(fetchAlarmsSuccess(alarms)),
     onFetchRegionsSuccess: regions => dispatch(fetchRegionsSuccess(regions)),
     onFetchLocationsSuccess: locations => dispatch(fetchLocationsSuccess(locations)),
+    onChangeFilterProperty: (property, value) => dispatch(setFilterProperty(property, value)),
 });
 
 export default connect(

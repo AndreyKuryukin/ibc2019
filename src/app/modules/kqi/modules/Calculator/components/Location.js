@@ -18,9 +18,11 @@ class Location extends React.PureComponent {
         groupingOptions: PropTypes.array,
         onLocationChange: PropTypes.func,
         onGroupingTypeChange: PropTypes.func,
+        isKgs: PropTypes.bool,
     };
 
     static defaultProps = {
+        isKgs: false,
         locationOptions: [],
         groupingOptions: [],
         onLocationChange: () => null,
@@ -63,13 +65,14 @@ class Location extends React.PureComponent {
     };
 
     render() {
-        const { config, disabled } = this.props;
+        const { config, disabled, isKgs } = this.props;
+        const locationGrouping= _.get(config, 'location_grouping');
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_LOCATION_TITLE', 'Расположение')}
                 horizontal
             >
-                <Field
+                {!isKgs && <Field
                     id="location"
                     labelText={ls('KQI_CALCULATOR_LOCATION_FIELD_LABEL', 'МРФ')}
                     labelWidth="32%"
@@ -84,7 +87,7 @@ class Location extends React.PureComponent {
                         placeholder={ls('KQI_CALCULATOR_LOCATION_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                         disabled={disabled}
                     />
-                </Field>
+                </Field>}
                 <div className={styles.groupingBlock}>
                     <Field
                         id="location-grouping-check"
@@ -96,7 +99,7 @@ class Location extends React.PureComponent {
                     >
                         <Checkbox
                             id="location-grouping-check"
-                            checked={this.state.isGroupingChecked || _.get(config, 'location_grouping')}
+                            checked={this.state.isGroupingChecked || locationGrouping && locationGrouping !== 'NONE'}
                             onChange={this.onGroupingCheck}
                             disabled={disabled}
                         />

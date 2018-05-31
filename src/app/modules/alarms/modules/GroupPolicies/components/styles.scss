@@ -1,33 +1,5 @@
-@import '../../../../../scss/vars';
-
 .groupPoliciesWrapper {
   display: flex;
   flex-grow: 1;
   flex-direction: column;
-  .groupPoliciesControls {
-    padding: 7px 18px;
-    height: 36px;
-    display: flex;
-    flex-grow: 0;
-    flex-shrink: 0;
-    align-items: center;
-    justify-content: space-between;
-    background: $white;
-    .filterGroup {
-      display: flex;
-      width: 650px;
-      .filterControl {
-        width: 50%;
-      }
-      .applyButton {
-        font-size: 12px;
-        margin-left: 10px;
-        line-height: 0;
-        height: $input-height;
-      }
-    }
-    .search {
-      width: 20em;
-    }
-  }
 }

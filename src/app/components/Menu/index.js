@@ -37,7 +37,7 @@ class Menu extends React.Component {
 
     mapIconClass = (name, active) => `menu-icon-${name}${active ? '-active' : ''}`;
 
-    getFeature = (path) => path.split('/')[1];
+    getFeature = (path) => path.split('/')[1] || 'landing';
 
     renderTile = (item, index, feature) => {
         const clearLink = this.getFeature(item.link);

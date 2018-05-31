@@ -4,13 +4,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Navbar } from 'reactstrap';
 import _ from 'lodash';
-import { Link } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import styles from './styles.scss';
-import { withRouter } from "react-router-dom";
 import Menu from "../Menu/index";
 import Icon from '../Icon/Icon';
-import rest from '../../rest';
-import { resetActiveUserSuccess } from '../../actions';
 
 const logoutIconStyle = { marginLeft: 20 };
 
@@ -26,17 +23,15 @@ class PageWrapper extends React.Component {
             setPageTitle: this.setPageTitle,
             hide: this.hide,
         },
-        pageBlur: this.pageBlur
+        pageBlur: this.pageBlur,
     });
 
     static propTypes = {
         user: PropTypes.object,
-        onLogOut: PropTypes.func,
     };
 
     static defaultProps = {
         user: null,
-        onLogOut: () => null,
     };
 
     constructor(props) {
@@ -67,17 +62,6 @@ class PageWrapper extends React.Component {
         this.props.history.push(item.link)
     };
 
-    onLogOut = () => {
-        rest.post('api/v1/auth/logout')
-            .then(() => {
-                this.props.onLogOut();
-                this.props.history.push('/login');
-            })
-            .catch((e) => {
-                this.props.history.push('/login');
-            });
-    };
-
     setPageTitle = (title) => this.setState({ pageTitle: title, hidden: false });
 
     pageBlur = (blur) => {
@@ -100,6 +84,10 @@ class PageWrapper extends React.Component {
 
     getUserName = user => `${_.get(user, 'first_name', '')} ${_.get(user, 'last_name', '')}`;
 
+    onUserNameClick = () => {
+        this.props.history.push('/');
+    };
+
     render() {
         return <div className={classNames(styles.pageWrapper, { [styles.blur]: this.state.blur })}>
             <Menu menuItems={this.props.user.menu}
@@ -119,10 +107,12 @@ class PageWrapper extends React.Component {
                         {this.renderTitle(this.state.pageTitle)}
                     </div>
                     <div className={styles.rightPanel}>
-                        <a href="/">{this.getUserName(this.props.user)}</a>
+                        <span className={styles.userlink}
+                              onClick={this.onUserNameClick}
+                        >{this.getUserName(this.props.user)}</span>
                         <Icon
                             icon="logout-icon"
-                            onClick={this.onLogOut}
+                            onClick={this.props.onLogOut}
                             style={logoutIconStyle}
                         />
                     </div>
@@ -139,8 +129,4 @@ const mapStateToProps = state => ({
     user: state.user,
 });
 
-const mapDispatchToProps = (dispatch, props) => ({
-    onLogOut: () => dispatch(resetActiveUserSuccess()),
-});
-
-export default withRouter(connect(mapStateToProps, mapDispatchToProps)(PageWrapper));
+export default withRouter(connect(mapStateToProps, null)(PageWrapper));
