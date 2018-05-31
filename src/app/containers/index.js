@@ -210,6 +210,21 @@ class App extends React.Component {
 
     getCommonRoutes = () => [
         {
+            id: 'users-page',
+            name: 'USERS',
+            link: '/users-and-roles/users'
+        },
+        {
+            id: 'reports-page',
+            name: 'REPORTS',
+            link: '/reports'
+        },
+        {
+            id: 'alarms',
+            name: 'ALARMS',
+            link: '/alarms/group-policies/current'
+        },
+        {
             id: 'login-page',
             name: 'LOGIN',
             link: '/login'
@@ -218,6 +233,11 @@ class App extends React.Component {
             id: 'landing-page',
             name: 'LANDING',
             link: '/'
+        },
+        {
+            id: 'sources-page',
+            name: 'SOURCES',
+            link: '/sources'
         },
     ];
 

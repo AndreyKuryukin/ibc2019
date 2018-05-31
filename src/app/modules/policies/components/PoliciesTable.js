@@ -151,7 +151,7 @@ class PoliciesTable extends React.PureComponent {
                 return result || isValid;
             }, false)
         );
-    }
+    };
 
     render() {
         const columns = PoliciesTable.getColumns();
