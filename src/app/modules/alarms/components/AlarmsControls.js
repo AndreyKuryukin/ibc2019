@@ -17,7 +17,6 @@ const filterControlStyle = {
 
 class AlarmsControls extends React.PureComponent {
     static propTypes = {
-        onSearchTextChange: PropTypes.func,
         onChangeFilterProperty: PropTypes.func,
         onApplyFilter: PropTypes.func,
         rfOptions: PropTypes.array,
@@ -33,7 +32,6 @@ class AlarmsControls extends React.PureComponent {
     };
 
     static defaultProps = {
-        onSearchTextChange: () => null,
         onChangeFilterProperty: () => null,
         onApplyFilter: () => null,
         rfOptions: [],
@@ -41,21 +39,30 @@ class AlarmsControls extends React.PureComponent {
         filter: null,
     };
 
-    onSearchTextChange = (event) => {
-        this.props.onSearchTextChange(_.get(event, 'currentTarget.value', ''));
-    };
-
-    onApplyFilter = () => {
-        this.props.onApplyFilter(this.props.filter);
-    };
+    static mapOptions = memoize(opts => opts.map(opt => ({ value: opt.id, title: opt.name })));
 
     getFilterProperty = (key, defaultValue) => _.get(this.props.filter, key, defaultValue);
     setFilterProperty = (property, value) => {
         this.props.onChangeFilterProperty(property, value);
     };
 
+    getRfOptions = () => {
+        const selectedMrfId = this.getFilterProperty('mrf', '');
+        const selectedMrf = this.props.mrfOptions.find(mrf => mrf.id === selectedMrfId);
+
+        return selectedMrf ? AlarmsControls.mapOptions(selectedMrf.rf) : [];
+    };
+
+    onApplyFilter = () => {
+        this.props.onApplyFilter(this.props.filter);
+    };
+
+    onSearchTextChange = (event) => {
+        this.setFilterProperty('searchText', _.get(event, 'currentTarget.value', ''));
+    };
+
     render() {
-        const { rfOptions, mrfOptions } = this.props;
+        const { mrfOptions } = this.props;
 
         return (
             <div className={styles.alarmsControls}>
@@ -85,7 +92,7 @@ class AlarmsControls extends React.PureComponent {
                         >
                             <Select
                                 id="mrf-filter"
-                                options={mrfOptions}
+                                options={AlarmsControls.mapOptions(mrfOptions)}
                                 value={this.getFilterProperty('mrf', '')}
                                 onChange={value => this.setFilterProperty('mrf', value)}
                             />
@@ -99,7 +106,7 @@ class AlarmsControls extends React.PureComponent {
                         >
                             <Select
                                 id="region-filter"
-                                options={rfOptions}
+                                options={this.getRfOptions()}
                                 value={this.getFilterProperty('rf', '')}
                                 onChange={value => this.setFilterProperty('rf', value)}
                             />

@@ -3,20 +3,18 @@ import PropTypes from 'prop-types';
 import memoize from 'memoizejs';
 import moment from 'moment';
 import ls from 'i18n';
-import AlarmsViewer from '../modules/Viewer/containers';
+import _ from 'lodash';
 import styles from './styles.scss';
 import AlarmsTable from '../../../components/AlarmsTable';
 import AlarmsControls from '../../../components/AlarmsControls';
 import { convertUTC0ToLocal } from '../../../../../util/date';
 
-class GroupPolicies extends React.PureComponent {
+class AlarmsContent extends React.PureComponent {
     static propTypes = {
-        state: PropTypes.oneOf(['current', 'history']).isRequired,
         params: PropTypes.object,
-        alarmsList: PropTypes.array,
-        rfOptions: PropTypes.array,
-        mrfOptions: PropTypes.array,
         filter: PropTypes.object,
+        alarms: PropTypes.array,
+        mrfOptions: PropTypes.array,
         onMount: PropTypes.func,
         onChangeFilterProperty: PropTypes.func,
         onFetchAlarms: PropTypes.func,
@@ -24,10 +22,9 @@ class GroupPolicies extends React.PureComponent {
     };
 
     static defaultProps = {
-        filter: null,
         params: null,
-        alarmsList: [],
-        rfOptions: [],
+        filter: null,
+        alarms: [],
         mrfOptions: [],
         onMount: () => null,
         onChangeFilterProperty: () => null,
@@ -35,21 +32,13 @@ class GroupPolicies extends React.PureComponent {
         isLoading: false,
     };
 
-    static mapOptions = memoize(opts => opts.map(opt => ({ value: opt.id, title: opt.name })));
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            searchText: '',
-        };
-    }
-
     componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
-            this.props.onMount(this.props.filter);
-        }
+        this.props.onFetchAlarms(this.props.filter);
     }
+
+    onApplyFilter = () => {
+        this.props.onFetchAlarms(this.props.filter);
+    };
 
     getReadableDuration = (milliseconds = 0) =>
         ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
@@ -70,46 +59,30 @@ class GroupPolicies extends React.PureComponent {
         object: node.object,
     })));
 
-    onApplyFilter = () => {
-        this.props.onFetchAlarms(this.props.filter);
-    };
-
-    onSearchTextChange = (searchText) => {
-        this.setState({ searchText });
-    };
-
     render() {
         const {
-            params = {},
             filter,
-            isLoading,
-            alarmsList,
-            onChangeFilterProperty,
-            rfOptions,
+            alarms: data,
             mrfOptions,
+            onChangeFilterProperty,
+            isLoading,
         } = this.props;
-        const { id: alarmId } = params;
-        const isAlarmsViewerActive = !!alarmId;
-
         return (
-            <div className={styles.groupPoliciesWrapper}>
+            <div className={styles.alarmsContentWrapper}>
                 <AlarmsControls
                     filter={filter}
                     onChangeFilterProperty={onChangeFilterProperty}
-                    onSearchTextChange={this.onSearchTextChange}
                     onApplyFilter={this.onApplyFilter}
-                    rfOptions={GroupPolicies.mapOptions(rfOptions)}
-                    mrfOptions={GroupPolicies.mapOptions(mrfOptions)}
+                    mrfOptions={mrfOptions}
                 />
                 <AlarmsTable
-                    data={this.mapData(alarmsList)}
+                    data={this.mapData(data)}
                     preloader={isLoading}
-                    searchText={this.state.searchText}
+                    searchText={_.get(filter, 'searchText', '')}
                 />
-                {isAlarmsViewerActive && <AlarmsViewer alarmId={alarmId} active={isAlarmsViewerActive} />}
             </div>
         );
     }
 }
 
-export default GroupPolicies;
+export default AlarmsContent;

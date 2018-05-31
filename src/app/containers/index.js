@@ -67,8 +67,8 @@ class App extends React.Component {
             },
             'ALARMS': {
                 title: 'Аварии',
-                link: '/alarms/group-policies/current',
-                path: "/alarms/:subject/:state/:id?",
+                link: '/alarms/gp',
+                path: "/alarms/:type/:id?",
                 component: Alarms
             },
             'REPORTS': {
@@ -191,7 +191,7 @@ class App extends React.Component {
         {
             id: 'alarms',
             name: 'ALARMS',
-            link: '/alarms/group-policies/current'
+            link: '/alarms/gp'
         },
         {
             id: 'login-page',
