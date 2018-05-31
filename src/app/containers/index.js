@@ -4,9 +4,10 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
+
+import Preloader from '../components/Preloader';
 import Login from '../modules/login/containers';
 import Dasboard from '../modules/dashboard/containers';
-import Users from '../modules/users/container';
 import Policies from '../modules/policies/containers';
 import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
@@ -20,7 +21,6 @@ import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
 import _ from "lodash";
 import momentTz from 'moment-timezone';
-import Roles from "../modules/roles/containers/index";
 
 const noMatchStyle = {
     display: 'flex',
@@ -119,7 +119,7 @@ class App extends React.Component {
         const token = localStorage.getItem('jwtToken');
         rest.setCommonHeader('Authorization', token);
 
-        this.state = { token };
+        this.state = { token, loading: true };
     }
 
     menuSorter = (subjA, subjB, menuOrder) => {
@@ -127,20 +127,23 @@ class App extends React.Component {
     };
 
     componentDidMount() {
+        this.setState({ loading: true });
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data || {};
-                this.onFetchUserSuccess(user);
                 if (user.time_zone) {
                     setGlobalTimezone(user.time_zone);
                 } else {
                     setGlobalTimezone(momentTz.tz.guess());
                 }
+                this.onFetchUserSuccess(user);
+                this.setState({ loading: false });
             })
             .catch(() => {
                 this.props.onFetchUserSuccess({
                     subjects: this.getCommonRoutes(),
                 });
+                this.setState({ loading: false });
             });
     }
 
@@ -224,10 +227,12 @@ class App extends React.Component {
 
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
-                <Switch>
-                    {routes}
-                    <Route component={NoMatch}/>
-                </Switch>
+                <Preloader active={this.state.loading}>
+                    <Switch>
+                        {routes}
+                        <Route component={NoMatch}/>
+                    </Switch>
+                </Preloader>
             </div>
         );
     }

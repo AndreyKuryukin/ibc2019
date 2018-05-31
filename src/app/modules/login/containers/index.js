@@ -62,7 +62,7 @@ class Login extends React.PureComponent {
                     this.setState({ loading: false });
                     const user = userResp.data;
                     this.context.fetchUserSuccess(user);
-                    this.props.history.push('/users-and-roles/users');
+                    this.props.history.push('/landing');
                 })
                 .catch((error) => {
                     this.context.notifications.notify({
