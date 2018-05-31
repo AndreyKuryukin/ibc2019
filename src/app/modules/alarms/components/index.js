@@ -1,15 +1,10 @@
 import React from 'react';
-import GroupPolicies from '../modules/GroupPolicies/containers';
-import KQI from "../modules/KQI/containers/index";
+import PropTypes from 'prop-types';
+import AlarmsContent from '../modules/AlarmsContent/containers';
 import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
-
-const cmpMap = {
-    'group-policies': GroupPolicies,
-    'kqi': KQI,
-    'cli': KQI // Заглушка !!!
-};
+import { GROUP_POLICIES_ALARMS, CLIENTS_INCIDENTS_ALARMS, KQI_ALARMS } from '../modules/AlarmsContent/constants';
 
 const tabStyle = {
     display: 'flex',
@@ -17,40 +12,70 @@ const tabStyle = {
 };
 
 class Alarms extends React.PureComponent {
+    static childContextTypes = {
+        history: PropTypes.object.isRequired,
+    };
+
+    static propTypes = {
+        match: PropTypes.object.isRequired,
+        history: PropTypes.object.isRequired,
+    };
+
+    getChildContext() {
+        return {
+            history: this.props.history,
+        };
+    }
+
+    onTabClick = (tabId) => {
+        this.props.history.push(`/alarms/${tabId}`);
+    };
 
     render() {
-        const { history, match } = this.props;
+        const { match } = this.props;
         const { params = {} } = match;
-        const { subject = 'group-policies', state = 'current' } = params;
-        const Component = cmpMap[subject];
-        const rendered = <Component history={history}
-                                    match={match}
-                                    state={state}
-                                    params={params}
-        />;
+        const { type = GROUP_POLICIES_ALARMS } = params;
 
         return <div className={styles.alarmsWrapper}>
-            <TabPanel onTabClick={(tabId) => history && history.push(`${tabId}`)}
-                      activeTabId={`/alarms/${subject}/${state}`}
+            <TabPanel
+                onTabClick={this.onTabClick}
+                activeTabId={type}
             >
-                <div id="/alarms/group-policies/current"
-                     tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'Групповые политики')}
-                     style={tabStyle}
+                <div
+                    id={GROUP_POLICIES_ALARMS}
+                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'Групповые политики')}
+                    style={tabStyle}
                 >
-                    {subject === 'group-policies' && rendered}
+                    {type === GROUP_POLICIES_ALARMS && (
+                        <AlarmsContent
+                            type={type}
+                            params={params}
+                        />
+                    )}
                 </div>
-                <div id="/alarms/cli/current"
-                     tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
-                     style={tabStyle}
+                <div
+                    id={CLIENTS_INCIDENTS_ALARMS}
+                    tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
+                    style={tabStyle}
                 >
-                    {subject === 'cli' && rendered}
-
+                    {type === CLIENTS_INCIDENTS_ALARMS && (
+                        <AlarmsContent
+                            type={type}
+                            params={params}
+                        />
+                    )}
                 </div>
-                <div id="/alarms/kqi/history"
-                     tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
-                     style={tabStyle}
+                <div
+                    id={KQI_ALARMS}
+                    tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
+                    style={tabStyle}
                 >
-                    {subject === 'kqi' && rendered}
+                    {type === KQI_ALARMS && (
+                        <AlarmsContent
+                            type={type}
+                            params={params}
+                        />
+                    )}
                 </div>
             </TabPanel>
         </div>

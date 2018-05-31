@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
-
+import { fetchMrfSuccess } from '../actions';
+import rest from '../../../rest';
 import AlarmsCmp from "../components/index";
 
 class Alarms extends React.PureComponent {
@@ -19,6 +20,17 @@ class Alarms extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        rest.get('/api/v1/common/location')
+            .then((response) => {
+                const mrf = response.data;
+                this.props.onFetchLocationsSuccess(mrf);
+            })
+            .catch((e) => {
+                console.error(e);
+            });
+    }
+
     render () {
         return (
             <AlarmsCmp
@@ -33,6 +45,8 @@ const mapStateToProps = state => {
     return {};
 };
 
-const mapDispatchToProps = dispatch => ({});
+const mapDispatchToProps = dispatch => ({
+    onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alarms);

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import KqiCmp from "../components/index";
 import rest from "../../../../../rest/index";
 import _ from "lodash";
-import { fetchHistorySuccess } from "../actions/index";
+import { fetchHistorySuccess, setFilterProperty } from "../actions";
 import ls from "i18n";
 
 class KQI extends React.PureComponent {
@@ -17,13 +17,17 @@ class KQI extends React.PureComponent {
     static propTypes = {
         history: PropTypes.object,
         match: PropTypes.object,
+        filter: PropTypes.object,
         historyList: PropTypes.array,
+        onChangeFilterProperty: PropTypes.func,
     };
 
     static defaultProps = {
         history: {},
         match: {},
+        filter: null,
         historyList: [],
+        onChangeFilterProperty: () => null,
     };
 
     componentDidMount() {
@@ -31,7 +35,7 @@ class KQI extends React.PureComponent {
         const state = _.get(this.props, 'match.params.state', 'history');
         const id = _.get(this.props, 'match.params.id');
         if (state === 'history') {
-            this.fetchHistory();
+            this.fetchHistory(this.props.filter);
         }
         if (!_.isUndefined(id)) {
             this.context.pageBlur(true);
@@ -54,9 +58,14 @@ class KQI extends React.PureComponent {
         }
     }
 
-    fetchHistory = () => {
+    fetchHistory = (filter) => {
         this.setState({ dataLoading: true });
-        rest.get('/api/v1/alarms/kqi/history')
+        const queryParams = {
+            ...filter,
+            start: filter.start.getTime(),
+            end: filter.end.getTime(),
+        };
+        rest.get('/api/v1/alarms/kqi/history', {}, { queryParams })
             .then((response) => {
                 const history = response.data;
                 if (history) {
@@ -66,7 +75,7 @@ class KQI extends React.PureComponent {
             })
             .catch(() => {
                 this.setState({ dataLoading: false });
-            })
+            });
     };
 
     fetchDetail = (id) => {
@@ -80,28 +89,34 @@ class KQI extends React.PureComponent {
             })
             .catch(() => {
                 this.setState({ detailLoading: false });
-            })
+            });
     };
 
     render() {
-        return <KqiCmp history={this.props.history}
-                       match={this.props.match}
-                       data={this.props.historyList}
-                       dataLoading={_.get(this.state, 'dataLoading')}
-                       detail={_.get(this.state, 'detail')}
-                       detailLoading={_.get(this.state, 'detailLoading')}
-        />
+        return (
+            <KqiCmp
+                history={this.props.history}
+                match={this.props.match}
+                filter={this.props.filter}
+                data={this.props.historyList}
+                dataLoading={_.get(this.state, 'dataLoading')}
+                detail={_.get(this.state, 'detail')}
+                detailLoading={_.get(this.state, 'detailLoading')}
+                onChangeFilterProperty={this.props.onChangeFilterProperty}
+                onFetchAlarms={this.fetchHistory}
+            />
+        );
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        historyList: _.get(state, 'alarms.kqi.history')
-    };
-};
+const mapStateToProps = state => ({
+    historyList: _.get(state, 'alarms.kqi.history.history'),
+    filter: _.get(state, 'alarms.kqi.history.filter'),
+});
 
 const mapDispatchToProps = dispatch => ({
     onFetchHistorySuccess: (history) => dispatch(fetchHistorySuccess(history)),
+    onChangeFilterProperty: (property, value) => dispatch(setFilterProperty(property, value)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(KQI);

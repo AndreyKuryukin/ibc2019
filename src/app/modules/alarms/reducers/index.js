@@ -1,8 +1,14 @@
 import { combineReducers } from 'redux';
-import groupPolicies from '../modules/GroupPolicies/reducers';
-import kqi from '../modules/KQI/reducers';
+import gp from '../modules/AlarmsContent/reducers/gp';
+import kqi from '../modules/AlarmsContent/reducers/kqi';
+import ci from '../modules/AlarmsContent/reducers/ci';
+import alarms from '../modules/AlarmsContent/reducers/alarms';
+import mrf from './mrf';
 
 export default combineReducers({
-    groupPolicies,
-    kqi
+    gp,
+    kqi,
+    ci,
+    alarms,
+    mrf,
 });
