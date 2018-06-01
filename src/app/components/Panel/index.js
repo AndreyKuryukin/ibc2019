@@ -6,7 +6,7 @@ import styles from './styles.scss';
 
 class Panel extends React.PureComponent {
     static propTypes = {
-        title: PropTypes.string,
+        title: PropTypes.oneOfType([PropTypes.string, PropTypes.node]),
         className: PropTypes.string,
         style: PropTypes.object,
         bodyStyle: PropTypes.object,
