@@ -31,6 +31,7 @@ const NAME_PATTERNS = {
     ['TEMPLATE_ID']: ls('REPORT_TEMPLATE_PATTERN', '<Имя_шаблона>'),
     ['PERIOD.REGULARITY']: ls('REPORT_REGULARITY_PATTERN', '<Период_построения>'),
     ['TYPE']: ls('REPORT_TYPE_PATTERN', '<Формат>'),
+    ['MRF']: ls('REPORT_MRF_PATTERN', '<МРФ>')
 };
 
 class ConfigEditor extends React.PureComponent {
@@ -63,7 +64,7 @@ class ConfigEditor extends React.PureComponent {
 
         this.state = {
             config: {
-                name: '<Имя_шаблона>_Еженедельный_PDF',
+                name: '<Имя_шаблона>_Еженедельный_<МРФ>_PDF',
                 template_id: null,
                 type: 'XLS',
                 period: {
@@ -95,11 +96,11 @@ class ConfigEditor extends React.PureComponent {
         }
     }
 
-    mapLocationOptions = (locations) => locations.map((location) => ({title: location.name, value: location.id}));
+    mapLocationOptions = (locations) => locations.map(location => ({ title: location.name, value: location.id }));
 
     getConfigProperty = (key, defaultValue) => _.get(this.state.config, key, defaultValue);
 
-    composeConfigName = (templateId, regularity, type) => {
+    composeConfigName = (templateId, regularity, type, mrfId) => {
         const name = [];
         const template = _.find(this.state.templates, tpl => tpl.id === templateId);
         if (template) {
@@ -112,6 +113,13 @@ class ConfigEditor extends React.PureComponent {
             name.push(REGULARITY_MAP[regularity]);
         } else {
             name.push(NAME_PATTERNS['period.regularity'.toUpperCase()]);
+        }
+
+        const mrf = mrfId ? this.props.locations.find(location => location.id === mrfId) : null;
+        if (mrf) {
+            name.push(mrf.name);
+        } else {
+            name.push(NAME_PATTERNS['mrf'.toUpperCase()]);
         }
         name.push(`${type|| NAME_PATTERNS['type'.toUpperCase()]}`);
         return name.join('_');
@@ -130,6 +138,7 @@ class ConfigEditor extends React.PureComponent {
                 _.get(config, 'template_id', null),
                 _.get(config, 'period.regularity', null),
                 _.get(config, 'type', null),
+                _.get(config, 'mrf', null),
             ));
             errors = _.get(errors, 'name') ? _.omit(errors, 'name') : errors;
         }
@@ -163,6 +172,7 @@ class ConfigEditor extends React.PureComponent {
                     _.get(this.state.config, 'template_id', null),
                     updatedRegularity,
                     _.get(this.state.config, 'type', null),
+                    _.get(this.state.config, 'mrf', null),
                 ),
                 notify_users: auto ? _.get('notify_users', []) : [],
                 period: {
