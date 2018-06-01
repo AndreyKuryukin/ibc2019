@@ -9,13 +9,13 @@ import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
 
 class AlarmsTable extends React.PureComponent {
     static propTypes = {
-        date: PropTypes.array,
+        data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
     };
 
     static defaultProps = {
-        date: [],
+        data: [],
         searchText: '',
         preloader: false,
     };
@@ -84,7 +84,6 @@ class AlarmsTable extends React.PureComponent {
         const { data, searchText, preloader } = this.props;
         const columns = AlarmsTable.getColumns();
         const filteredData = searchText ? this.filter(data, columns.filter(col => col.searchable), searchText) : data;
-
         return (
             <Table
                 data={filteredData}

@@ -82,7 +82,7 @@ class AlarmsContent extends React.PureComponent {
 }
 
 const mapStateToProps = (state, props) => ({
-    alarms: _.get(state, 'alarms.alarms.alarms', []),
+    alarms: _.get(state, 'alarms.alarms', []),
     mrfOptions: _.get(state, 'alarms.mrf', []),
     filter: _.get(state, `alarms.${props.type}.filter`, null),
 });
