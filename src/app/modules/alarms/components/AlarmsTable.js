@@ -3,9 +3,11 @@ import PropTypes from 'prop-types';
 import memoize from 'memoizejs';
 import moment from 'moment';
 import ls from 'i18n';
+import _ from 'lodash';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { convertUTC0ToLocal } from '../../../util/date';
+import { naturalSort } from '../../../util/sort';
 import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import { ALARMS_TYPES } from '../constants';
 
@@ -98,10 +100,13 @@ class AlarmsTable extends React.PureComponent {
         raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD:MM:YYYY'),
         duration: this.getReadableDuration(node.duration),
         object: node.object,
+        timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
     })));
 
     customSortFunction = (data, columnName, direction) => {
+        const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
 
+        return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
     };
 
     filter = (data, searchableColumns, searchText) => data.filter(node => searchableColumns.find(column => search(node[column.name], searchText)));
