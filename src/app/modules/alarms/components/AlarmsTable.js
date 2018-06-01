@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import memoize from 'memoizejs';
-import ls from 'i18n';
 import moment from 'moment';
+import ls from 'i18n';
+import _ from 'lodash';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
+import { convertUTC0ToLocal } from '../../../util/date';
+import { naturalSort } from '../../../util/sort';
 import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
+import { ALARMS_TYPES } from '../constants';
 
 class AlarmsTable extends React.PureComponent {
     static propTypes = {
+        type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
@@ -65,7 +70,7 @@ class AlarmsTable extends React.PureComponent {
             case 'id':
                 return (
                     <LinkCell
-                        href={`/alarms/group-policies/current/${node.id}`}
+                        href={`/alarms/${this.props.type}/${node.id}`}
                         content={node[column.name]}
                     />
                 );
@@ -78,16 +83,44 @@ class AlarmsTable extends React.PureComponent {
         }
     };
 
+    getReadableDuration = (milliseconds = 0) =>
+        ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
+            const duration = moment.duration(milliseconds, 'milliseconds');
+            const method = duration[key];
+            const units = method.call(duration).toString();
+            const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
+            const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
+
+            return `${result}${nextPart}`;
+        }, '');
+
+    mapData = memoize(data => data.map(node => ({
+        id: node.id.toString(),
+        policy_name: node.policy_name,
+        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD:MM:YYYY'),
+        duration: this.getReadableDuration(node.duration),
+        object: node.object,
+        timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
+    })));
+
+    customSortFunction = (data, columnName, direction) => {
+        const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
+
+        return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
+    };
+
     filter = (data, searchableColumns, searchText) => data.filter(node => searchableColumns.find(column => search(node[column.name], searchText)));
 
     render() {
         const { data, searchText, preloader } = this.props;
         const columns = AlarmsTable.getColumns();
-        const filteredData = searchText ? this.filter(data, columns.filter(col => col.searchable), searchText) : data;
+        const mappedData = this.mapData(data);
+        const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
         return (
             <Table
                 data={filteredData}
                 columns={columns}
+                customSortFunction={this.customSortFunction}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={preloader}
