@@ -66,7 +66,7 @@ class Alarms extends React.PureComponent {
             >
                 <div
                     id={GROUP_POLICIES_ALARMS}
-                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'Групповые политики')}
+                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
                     style={tabStyle}
                 >
                     {type === GROUP_POLICIES_ALARMS && (

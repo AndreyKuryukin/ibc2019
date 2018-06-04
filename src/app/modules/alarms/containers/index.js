@@ -5,8 +5,13 @@ import _ from 'lodash';
 import { fetchMrfSuccess, fetchAlarmsSuccess, FILTER_ACTIONS } from '../actions';
 import rest from '../../../rest';
 import AlarmsComponent from '../components';
+import ls from "i18n";
 
 class Alarms extends React.PureComponent {
+    static contextTypes = {
+        navBar: PropTypes.object.isRequired,
+    };
+
     static childContextTypes = {
         history: PropTypes.object.isRequired,
         match: PropTypes.object.isRequired,
@@ -56,6 +61,15 @@ class Alarms extends React.PureComponent {
             .catch((e) => {
                 console.error(e);
             });
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const type = _.get(this.state, 'type');
+        const nextType = _.get(nextProps, 'match.params.type', type);
+        if (nextType && type !== nextType) {
+            this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, '')]);
+            this.setState({type: nextType})
+        }
     }
 
     onFetchAlarms = (filter) => {

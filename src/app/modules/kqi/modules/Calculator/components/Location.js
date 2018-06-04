@@ -95,7 +95,6 @@ class Location extends React.PureComponent {
                         inputWidth={25}
                         labelWidth={115}
                         labelAlign="right"
-                        style={fieldStyle}
                     >
                         <Checkbox
                             id="location-grouping-check"
