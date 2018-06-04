@@ -22,10 +22,13 @@ class ReportCell extends React.PureComponent {
         onRebuildIconClick: () => null,
     };
 
-    getReportFile = (href) => {
+    getReportFile = (href, text) => {
         const fakeLink = document.createElement('a');
-        fakeLink.setAttribute('download', href);
-        fakeLink.setAttribute('href', href);
+        const { origin } = window;
+        const url =  `${origin}${href}`;
+        const type = href.split('.').pop();
+        fakeLink.setAttribute('download', `${text}.${type}`);
+        fakeLink.setAttribute('href', url);
         const e = document.createEvent('MouseEvents');
         e.initEvent('click', true, true);
         fakeLink.dispatchEvent(e);
@@ -47,7 +50,7 @@ class ReportCell extends React.PureComponent {
         };
         if (href) {
             linkProps.onClick = () => {
-                this.getReportFile(href);
+                this.getReportFile(href, text);
             };
             linkProps.style.textDecoration = 'underline';
             linkProps.style.cursor = 'pointer';
