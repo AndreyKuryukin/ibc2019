@@ -4,7 +4,11 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
+import _ from "lodash";
+import momentTz from 'moment-timezone';
 
+import { resetActiveUserSuccess } from '../actions';
+import PageWrapper from '../components/PageWrapper';
 import Preloader from '../components/Preloader';
 import Login from '../modules/login/containers';
 import Dasboard from '../modules/dashboard/containers';
@@ -19,8 +23,7 @@ import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
-import _ from "lodash";
-import momentTz from 'moment-timezone';
+
 
 const noMatchStyle = {
     display: 'flex',
@@ -37,6 +40,16 @@ const NoMatch = () => (
 
 class App extends React.Component {
 
+    static propTypes = {
+        onFetchUserSuccess: PropTypes.func,
+        onLogOut: PropTypes.func,
+    };
+
+    static defaultProps = {
+        onFetchUserSuccess: () => null,
+        onLogOut: () => null,
+    };
+
     getMapedSubjects = () => {
         return {
             'LOGIN': {
@@ -48,8 +61,8 @@ class App extends React.Component {
             },
             'LANDING': {
                 title: 'Рабочий стол',
-                path: '/landing',
-                link: '/landing',
+                path: '/',
+                link: '/',
                 component: Dasboard,
                 exact: true
             },
@@ -67,8 +80,8 @@ class App extends React.Component {
             },
             'ALARMS': {
                 title: 'Аварии',
-                link: '/alarms/group-policies/current',
-                path: "/alarms/:subject/:state/:id?",
+                link: '/alarms/gp',
+                path: "/alarms/:type/:id?",
                 component: Alarms
             },
             'REPORTS': {
@@ -115,12 +128,30 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         rest.onResponseCode('401', this.navigateLogin);
+        rest.onResponseCode('403', this.navigateLogin); //todo: Должен быть 401
         rest.onResponseCode('200', this.refreshToken);
-        const token = localStorage.getItem('jwtToken');
-        rest.setCommonHeader('Authorization', token);
-
-        this.state = { token, loading: true };
+        this.setToken();
+        this.state = { loading: true, loggedIn: false };
     }
+
+    onLogOut = () => {
+        this.dropToken();
+        this.props.history.push('/login');
+        this.setState({ loggedIn: false }, () => this.props.onLogOut())
+    };
+
+    setToken = (token) => {
+        const localToken = localStorage.getItem('jwtToken');
+        if (token !== localToken) {
+            localStorage.setItem('jwtToken', token || localToken);
+            rest.setCommonHeader('Authorization', token || localToken);
+        }
+    };
+
+    dropToken = () => {
+        localStorage.removeItem('jwtToken');
+        rest.setCommonHeader('Authorization', null);
+    };
 
     menuSorter = (subjA, subjB, menuOrder) => {
         return menuOrder.findIndex(item => item === subjA) - menuOrder.findIndex(item => item === subjB);
@@ -137,13 +168,13 @@ class App extends React.Component {
                     setGlobalTimezone(momentTz.tz.guess());
                 }
                 this.onFetchUserSuccess(user);
-                this.setState({ loading: false });
+                this.setState({ loading: false, loggedIn: true });
             })
             .catch(() => {
                 this.props.onFetchUserSuccess({
                     subjects: this.getCommonRoutes(),
                 });
-                this.setState({ loading: false });
+                this.setState({ loading: false, loggedIn: false });
             });
     }
 
@@ -165,16 +196,16 @@ class App extends React.Component {
 
     refreshToken = (response) => {
         const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];
-        const localToken = localStorage.getItem('jwtToken');
-        if (token && token !== localToken) {
-            localStorage.setItem('jwtToken', token);
-            rest.setCommonHeader('Authorization', token);
-        }
+        this.setToken(token);
+    };
+
+    saveState = () => {
+        //todo: Сделать сохранение стейта, при протухании токена
     };
 
     navigateLogin = () => {
-        const history = this.props.history;
-        history && history.push('/login')
+        this.saveState();
+        this.onLogOut()
     };
 
     getCommonRoutes = () => [
@@ -191,7 +222,7 @@ class App extends React.Component {
         {
             id: 'alarms',
             name: 'ALARMS',
-            link: '/alarms/group-policies/current'
+            link: '/alarms/gp'
         },
         {
             id: 'login-page',
@@ -201,7 +232,7 @@ class App extends React.Component {
         {
             id: 'landing-page',
             name: 'LANDING',
-            link: '/landing'
+            link: '/'
         },
         {
             id: 'sources-page',
@@ -212,7 +243,6 @@ class App extends React.Component {
 
     renderRoutes = (subjects = []) => {
         const subjectMap = this.getMapedSubjects() || {};
-
         return subjects.map(subject => {
             const config = subjectMap[subject.name.toUpperCase()];
             return config ? <Route
@@ -220,18 +250,25 @@ class App extends React.Component {
         });
     };
 
+    loginRedirect = () => <Route render={() => {
+        this.props.history.push('/login');
+        return null
+    }}/>;
+
     render() {
         const { user = {} } = this.props;
         const { subjects } = user;
+        const { loading, loggedIn } = this.state;
         const routes = this.renderRoutes(subjects);
-
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
                 <Preloader active={this.state.loading}>
-                    <Switch>
-                        {routes}
-                        <Route component={NoMatch}/>
-                    </Switch>
+                    {!loading && <PageWrapper onLogOut={this.onLogOut}>
+                        <Switch>
+                            {routes}
+                            {loggedIn ? <Route component={NoMatch}/> : this.loginRedirect()}
+                        </Switch>
+                    </PageWrapper>}
                 </Preloader>
             </div>
         );
@@ -246,6 +283,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => ({
     onFetchUserSuccess: user => dispatch(fetchActiveUserSuccess(user)),
+    onLogOut: () => dispatch(resetActiveUserSuccess()),
 });
 
 export default withRouter(connect(

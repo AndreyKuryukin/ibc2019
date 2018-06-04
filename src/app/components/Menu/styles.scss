@@ -34,7 +34,6 @@ $tile-height: 104px;
     &:not(.activeTile):hover {
       //background-color: $menu-grey;
       cursor: pointer;
-      filter: grayscale(1);
       .iconBlock, .tileTitle
       {
         opacity: 0.5;

@@ -9,7 +9,6 @@ stages:
 variables:
   DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: dev
-  REPOSITORY_URL: 730874227725.dkr.ecr.us-east-1.amazonaws.com/sqm/frontend
 
 node-build:
   image: node:8.9.4 
@@ -34,13 +33,11 @@ docker-package:
   - web
   stage: package
   script:
-  - apk add --no-cache curl jq python py-pip
-  - pip install awscli
-  - $(aws ecr get-login --no-include-email --region us-east-1)
+  - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
   - export FRONTEND_VERSION=$(cat ./package.json | grep version | sed 's/.*\([0-9]\{1,2\}\.[0-9]\{1,2\}\.[0-9]\{1,2\}.*\)",/\1/')
   - ls -la ./build
-  - docker build -t $REPOSITORY_URL:$FRONTEND_VERSION .
-  - docker push $REPOSITORY_URL
+  - docker build -t $CI_REGISTRY_IMAGE:$FRONTEND_VERSION .
+  - docker push $CI_REGISTRY_IMAGE
   cache:
     key: js_html_css
     paths:

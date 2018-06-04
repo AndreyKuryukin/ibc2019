@@ -21,7 +21,7 @@ import Location from './Location';
 import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
-import { convertUTC0ToLocal, convertDateToUTC0 } from '../../../../../util/date';
+import { convertDateToUTC0, convertUTC0ToLocal } from '../../../../../util/date';
 
 const NAME_PATTERN_SEQUENCE = [
     'period.regularity',
@@ -215,12 +215,19 @@ class Calculator extends React.PureComponent {
 
 
     setConfigProperty = (key, value, callback) => {
-        const config = _.set({
+        let config = _.set({
             ...this.state.config,
         }, key, value);
 
         if (key === 'manufacturer') {
             config['manufacturer_grouping'] = value.length === 0 && _.get(config, 'manufacturer_grouping', false);
+        }
+
+        if (key === 'kqi_id' && this.isKgs(value)) {
+            config = _.pick(config, ['name', 'service_type', 'kqi_id', 'period', 'location_grouping', 'auto_gen']);
+            if (config['location_grouping']) {
+                config['location_grouping'] = 'RF'
+            }
         }
 
         if (key === 'abonent_group' && !!value) {
@@ -284,7 +291,7 @@ class Calculator extends React.PureComponent {
     };
 
     onSubmit = () => {
-        const { config } = this.state;
+        const { config, isKgs } = this.state;
         const preparedConfig = {
             ...config,
             // date_time_grouping: _.get(config, 'date_time_grouping') ? _.get(config, 'date_time_grouping') : GROUPING_TYPES.NONE,
@@ -314,9 +321,11 @@ class Calculator extends React.PureComponent {
             []);
         let selectedEquipment = _.get(this.state, 'config.equipment_type', '');
         selectedEquipment = equipmentsList.find(equip => equip === selectedEquipment) || '';
-        this.setState({equipmentsList}, () => {
+        this.setState({ equipmentsList }, () => {
             this.setConfigProperty('manufacturer', manufacturer, () => {
-                this.setConfigProperty('equipment_type', selectedEquipment, () => {})
+                this.setConfigProperty('equipment_type', selectedEquipment, () => {
+                });
+
                 if (manufactures.length === 1) {
                     this.setConfigProperty('equipment_type_grouping', null)
                 }
@@ -324,10 +333,17 @@ class Calculator extends React.PureComponent {
         })
     };
 
+    isKgs = (kqi_id) => {
+        const kqi = _.find(this.props.kqiList, { id: kqi_id });
+        const type = _.get(kqi, 'config_type');
+        return type === 'KGS'
+    };
+
     render() {
         const disableForm = !!this.props.config;
         const { manufactureList } = this.props;
         const { config } = this.state;
+        const isKgs = this.isKgs(config.kqi_id);
         return (
             <Modal
                 isOpen={this.props.active}
@@ -360,13 +376,14 @@ class Calculator extends React.PureComponent {
                         />
                         <Location
                             locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}
-                            groupingOptions={Calculator.mapObjectToOptions(LOCATION_GROUPING)}
+                            groupingOptions={Calculator.mapObjectToOptions(isKgs ? {RF: LOCATION_GROUPING.RF} : LOCATION_GROUPING)}
                             onLocationChange={value => this.setConfigProperty('location', value)}
                             onGroupingTypeChange={value => this.setConfigProperty('location_grouping', value)}
                             config={this.state.config}
                             disabled={disableForm}
+                            isKgs={isKgs}
                         />
-                        <Technology
+                        {!isKgs && <Technology
                             id="last-mile-technology"
                             title={ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии последней мили')}
                             label={`${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}`}
@@ -376,7 +393,7 @@ class Calculator extends React.PureComponent {
                             disabled={disableForm}
                             value={_.get(this.state.config, 'last_mile_technology')}
                             groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
-                        />
+                        />}
                         {/*<Technology*/}
                         {/*id="last-inch-technology"*/}
                         {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
@@ -388,7 +405,7 @@ class Calculator extends React.PureComponent {
                         {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
                         {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
                         {/*/>*/}
-                        <div className={styles.bottomContent}>
+                        {!isKgs && <div className={styles.bottomContent}>
                             <Manufacture
                                 isGroupingChecked={_.get(this.state.config, 'manufacturer_grouping', false)}
                                 manufactureList={manufactureList}
@@ -415,7 +432,7 @@ class Calculator extends React.PureComponent {
                                 {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
                                 {/*/>*/}
                             </div>
-                        </div>
+                        </div>}
                     </div>
                 </ModalBody>
                 <ModalFooter>
