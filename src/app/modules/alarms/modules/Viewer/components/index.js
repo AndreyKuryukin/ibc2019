@@ -5,8 +5,9 @@ import ls from 'i18n';
 import moment from 'moment';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from './styles.scss';
-import DraggableWrapper from '../../../../../../../components/DraggableWrapper';
-import Icon from '../../../../../../../components/Icon/Icon';
+import DraggableWrapper from '../../../../../components/DraggableWrapper';
+import Icon from '../../../../../components/Icon/Icon';
+import { ALARMS_TYPES } from '../../../constants';
 
 const infoScheme = [
     'raise_time',
@@ -24,6 +25,7 @@ class AlarmsViewer extends React.PureComponent {
     };
 
     static propTypes = {
+        type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
         alarm: PropTypes.object,
         active: PropTypes.bool,
     };
@@ -40,7 +42,7 @@ class AlarmsViewer extends React.PureComponent {
     }
 
     onClose = () => {
-        this.context.history.push(`/alarms/group-policies/current${this.context.location.search}`);
+        this.context.history.push(`/alarms/${this.props.type}/${this.context.location.search}`);
     };
 
     getReadableDuration = (seconds = 0) =>

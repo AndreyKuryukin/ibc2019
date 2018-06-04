@@ -87,10 +87,10 @@ export class ProjectionsTable extends React.PureComponent {
     mapProjection = projection => ({
         id: projection.id,
         name: projection.name,
-        creation_date: convertUTC0ToLocal(projection.creation_date).format(DATE_TIME) || '',
+        creation_date: projection.creation_date && convertUTC0ToLocal(projection.creation_date).format(DATE_TIME),
         author: projection.author,
         count: String(projection.count),
-        last_calc_date: convertUTC0ToLocal(projection.last_calc_date).format(DATE_TIME) || '',
+        last_calc_date: projection.last_calc_date && convertUTC0ToLocal(projection.last_calc_date).format(DATE_TIME),
         result_id: projection.result_id,
         status: projection.status,
         auto: _.get(projection, 'auto', false),

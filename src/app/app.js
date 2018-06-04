@@ -10,7 +10,6 @@ import 'react-widgets/dist/css/react-widgets.css';
 import './scss/style.scss';
 
 import rootReducer from './reducers';
-import PageWrapper from './components/PageWrapper';
 import Notification from './components/Notification';
 import App from './containers';
 
@@ -24,9 +23,7 @@ const renderRootComponent = () => {
         <Notification>
             <Provider store={store}>
                 <BrowserRouter>
-                    <PageWrapper>
-                        <App/>
-                    </PageWrapper>
+                    <App/>
                 </BrowserRouter>
             </Provider>
         </Notification>,
