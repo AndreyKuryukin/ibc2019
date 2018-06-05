@@ -5,6 +5,7 @@ import styles from './styles.scss';
 import PoliciesTable from './PoliciesTable';
 import PoliciesControls from './PoliciesControls';
 import PolicyEditor from '../modules/PolicyEditor/containers';
+import NotificationConfigurator from '../modules/NotificationConfigurator/components';
 
 class Policies extends React.Component {
     static childContextTypes = {
@@ -57,6 +58,7 @@ class Policies extends React.Component {
 
         const { params } = match;
         const isEditorActive = params.action === 'edit' || params.action === 'add';
+        const isConfiguratorActive = params.action === 'cofigure';
         const policyId = params.id ? params.id : null;
 
         return (
@@ -70,9 +72,13 @@ class Policies extends React.Component {
                     preloader={isLoading}
                 />
                 {isEditorActive && <PolicyEditor
-                    active={true}
+                    active={isEditorActive}
                     policyId={policyId}
                     policies={data}
+                />}
+                {isConfiguratorActive && <NotificationConfigurator
+                    active={isConfiguratorActive}
+                    policyId={policyId}
                 />}
             </div>
         );

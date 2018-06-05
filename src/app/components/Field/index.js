@@ -54,11 +54,11 @@ class Field extends React.PureComponent {
                 style={style}
                 title={title || null}
             >
-                <label
+                {labelText && <label
                     htmlFor={id}
                     className={styles.fieldLabel}
                     style={{ width: labelWidth }}
-                >{`${labelText}${splitter}`}</label>
+                >{`${labelText}${splitter}`}</label>}
                 <div
                     className={styles.fieldInput}
                     style={{ width: inputWidth }}

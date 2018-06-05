@@ -74,7 +74,7 @@ class Conjunction extends React.PureComponent {
                     <div style={{ width: '60%' }}>
                         <Field
                             id="parameter"
-                            labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Параметр')}:`}
+                            labelText={ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Параметр')}
                             labelWidth="50%"
                             inputWidth="50%"
                         >

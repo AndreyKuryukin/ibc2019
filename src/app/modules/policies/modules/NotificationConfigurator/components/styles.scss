@@ -1,0 +1,70 @@
+@import "../../../../../scss/vars";
+
+.notificationConfigurator {
+  width: 500px !important;
+  max-width: 500px !important;
+  .notificationConfiguratorContent {
+    display: flex;
+    background: $white;
+    padding: 10px;
+    flex-direction: column;
+    .configsWrapper {
+      display: flex;
+      flex-grow: 1;
+      flex-direction: column;
+      margin-top: 10px;
+      height: 300px;
+      .configsControls {
+        display: flex;
+        align-items: center;
+        padding: 5px 5px 5px 0;
+      }
+      .configs {
+        display: flex;
+        flex: 1 1 0;
+        flex-direction: column;
+        border: 1px solid #ced4da;
+        box-shadow: inset 0px 5px 5px 0px rgba(191,191,191,1);
+        padding: .5em;
+        overflow-y: auto;
+        overflow-x: hidden;
+        .configBlock {
+          background: $smooth-grey;
+          border: 1px solid #ced4da;
+          border-radius: 0.25rem;
+          padding: 5px;
+          flex-direction: row;
+          .configContentRow {
+            display: flex;
+          }
+          .configContentColumn {
+            display: flex;
+            flex-direction: column;
+          }
+          .configBlockContent {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            & > div + div {
+              margin-top: 10px;
+            }
+            .adapterName {
+              display: flex;
+              flex-grow: 1;
+              align-items: center;
+            }
+          }
+          .configBlockRemove {
+            width: 22px;
+            margin-left: 10px;
+            cursor: pointer;
+            text-align: right;
+          }
+        }
+        .configBlock + .configBlock {
+          margin-top: 5px;
+        }
+      }
+    }
+  }
+}
