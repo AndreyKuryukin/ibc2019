@@ -10,7 +10,7 @@ import search from '../../util/search';
 import styles from './styles.scss';
 import HeaderCell from './HeaderCell';
 
-const SCROLL_WIDTH = 0;
+const SCROLL_WIDTH = 17;
 
 class Table extends React.Component {
     static childContextTypes = {
@@ -124,7 +124,7 @@ class Table extends React.Component {
         const { by, direction } = this.state.sort;
         const nextDirection = (direction === 'asc' && by === columnName) ? 'desc' : 'asc';
 
-        const sortedData = this.getSortedData(this.props.data, columnName, nextDirection)
+        const sortedData = this.getSortedData(this.props.data, columnName, nextDirection);
 
         this.setState({
             sort: {
