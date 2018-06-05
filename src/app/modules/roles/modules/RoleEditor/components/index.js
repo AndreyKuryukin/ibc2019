@@ -47,7 +47,7 @@ class RoleEditor extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            role: props.roleId ? props.role : {},
+            role: props.role,
             errors: props.errors,
         };
     }
