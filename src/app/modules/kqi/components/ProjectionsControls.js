@@ -31,7 +31,11 @@ class ProjectionsControls extends React.PureComponent {
         return (
             <div className={styles.kqiControls}>
                 <div className={styles.buttonsGroup}>
-                    <Icon icon="addIcon" onClick={this.onCalculate} />
+                    <Icon
+                        icon="addIcon"
+                        onClick={this.onCalculate}
+                        title={ls('ADD_KQI_PROJECTION_TITLE', 'Добавить проекцию KQI')}
+                    />
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
