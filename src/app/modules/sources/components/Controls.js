@@ -32,7 +32,11 @@ class SourcesControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.controls}>
-                <Icon icon="refresh-icon" onClick={this.onRefresh}/>
+                <Icon
+                    icon="refresh-icon"
+                    onClick={this.onRefresh}
+                    title={ls('REFRESH_SOURCES_TITLE', 'Обновить источники')}
+                />
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}

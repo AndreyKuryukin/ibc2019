@@ -176,7 +176,11 @@ class Condition extends React.PureComponent {
                     />
                 </Field>
                 <div className={styles.conditionsWrapper}>
-                    <Icon icon="addIcon" onClick={this.addConjunction}/>
+                    <Icon
+                        icon="addIcon"
+                        onClick={this.addConjunction}
+                        title={ls('ADD_POLICY_CONDITION_TITLE', 'Добавить условие')}
+                    />
                     <div className={classnames(styles.conditions, { [styles.invalidBorder]: showListError})}>
                         {showListError ? conjError.title : this.renderConjunctions(conjList)}
                     </div>
