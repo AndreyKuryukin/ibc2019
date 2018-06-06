@@ -1,0 +1,252 @@
+@import "../../../../scss/vars";
+
+$region-initial-color: #02486E;
+$region-active-color: #063D5C;
+
+$animation-duration: 0.15s;
+
+@mixin region-initial {
+  fill: $region-initial-color;
+  //transform: scale(1);
+}
+@mixin region-active {
+  fill: $region-active-color;
+  //transform: scale(1.03);
+}
+
+@mixin tooltip-initial {
+  display: none;
+}
+@mixin tooltip-active {
+  display: block;
+}
+
+@mixin stroke($color: #000, $size: 1px) {
+  text-shadow:
+          -#{$size} -#{$size} 0 $color,
+          0        -#{$size} 0 $color,
+          #{$size} -#{$size} 0 $color,
+          #{$size}  0        0 $color,
+          #{$size}  #{$size} 0 $color,
+          0         #{$size} 0 $color,
+          -#{$size}  #{$size} 0 $color,
+          -#{$size}  0        0 $color;
+}
+
+
+.russianMap {
+  color: white;
+  display: flex;
+  justify-content: stretch;
+  flex-basis: 100%;
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+
+  .wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    &.macro {
+      flex-basis: 100%;
+    }
+    &.micro {
+      flex-basis: 70%;
+    }
+
+    svg {
+      font-family: Tahoma;
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      left: 0;
+      max-width: 100%;
+      max-height: 100%;
+      margin: auto;
+
+      path {
+        @include region-initial;
+
+        stroke: white;
+        transition: fill $animation-duration, transform $animation-duration;
+        transform-origin: center;
+
+        &.active {
+          @include region-active;
+
+          animation-name: region-up;
+          animation-duration: $animation-duration;
+          animation-direction: normal;
+        }
+      }
+      a path {
+        cursor: pointer;
+      }
+    }
+
+    .mrfinfo {
+      position: absolute;
+      transform-origin: center;
+      //transform: scale(1);
+      transition: transform $animation-duration;
+
+      span {
+        @include stroke($region-initial-color);
+        transition: text-shadow $animation-duration;
+
+        &.name {
+          display: block;
+          font-size: 14px;
+          fill: #fff;
+        }
+        &.value {
+          display: block;
+          font-size: 20px;
+          color: $dashboard-expected-color;
+
+          span {
+            font-size: 14px;
+          }
+        }
+      }
+      &.positive span.value {
+        color: $dashboard-positive-color;
+      }
+      &.negative span.value {
+        color: $dashboard-negative-color;
+      }
+    }
+    a.active div {
+      //transform: scale(1.5);
+
+      span {
+        @include stroke($region-active-color);
+      }
+    }
+
+    .info {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: $dashboard-expected-color;
+
+      &.positive {
+        background-color: $dashboard-positive-color;
+      }
+      &.negative {
+        background-color: $dashboard-negative-color;
+      }
+
+      & > .inner {
+        position: relative;
+
+        & > .mapTooltip {
+          $width: 106px;
+          $cornerSize: 6px;
+          $offset: 11px;
+
+          @include tooltip-initial;
+
+          position: absolute;
+          bottom: $cornerSize + $offset;
+          left: 50%;
+
+          & > .inner {
+            position: relative;
+            color: $dark-blue;
+            width: $width;
+            margin-left: -$width / 2;
+            opacity: 0.95;
+            background-color: #ffffff;
+            box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.2);
+            padding: 8px 10px;
+            border-radius: 5px;
+
+            &::after {
+              display: block;
+              content: '';
+              width: 0;
+              height: 0;
+              border: $cornerSize solid transparent;
+              border-bottom: none;
+              border-top-color: #fff;
+              position: absolute;
+              bottom: -$cornerSize;
+              left: 0;
+              right: 0;
+              margin: auto;
+            }
+
+            & > .title {
+              font-size: 12px;
+              margin-bottom: 10px;
+            }
+            & > .KQI {
+              font-size: 14px;
+
+              .index {
+                font-size: 0.7em;
+              }
+            }
+          }
+        }
+      }
+
+      &.active > .inner > .mapTooltip {
+        @include tooltip-active;
+
+        z-index: 1;
+      }
+    }
+  }
+
+  .list {
+    color: $dark-blue;
+    flex-basis: 30%;
+    list-style: none;
+    padding: 0;
+    font-size: 1.35em;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 6px 26px 7px;
+      line-height: 1.2em;
+
+      &.selected {
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+
+      .kqi {
+        flex-shrink: 0;
+      }
+
+      &.positive {
+        .kqi {
+          color: $dashboard-positive-color;
+        }
+      }
+      &.negative {
+        .kqi {
+          color: $dashboard-negative-color;
+        }
+      }
+    }
+  }
+}
+@keyframes region-up {
+  from {
+    @include region-initial;
+  }
+  to {
+    @include region-active;
+  }
+}

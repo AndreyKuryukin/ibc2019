@@ -3,6 +3,8 @@ $orange: #ff8000;
 $placeholder: #aaa;
 $grey: #aaa;
 $white: #fff;
+$green: #7bc031;
+$red: #f64646;
 $light-grey: #ccc;
 $smooth-grey: #f2f2f2;
 $menu-grey: #9b9b9b;
@@ -115,6 +117,16 @@ $dropdown-bg: $border-blue;
 $dropdown-padding-y: 8px;
 
 //MENU
+
+//DASHBOARD
+$dashboard-tabs-separator-color: #0d3f63;
+$dashboard-positive-color: #7cc032;
+$dashboard-negative-color: #fc3737;
+$dashboard-expected-color: #9ab5c4;
+
+//FILTERS PANE
+$filters-pane-background-color: #0c3d5b;
+$filters-pane-separator-color: #0a3755;
 
 
 @import "~bootstrap/scss/functions";

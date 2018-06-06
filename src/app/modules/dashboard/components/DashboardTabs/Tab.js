@@ -1,0 +1,68 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import cn from 'classnames';
+import styles from './styles.scss';
+import ls from '../../../../../i18n';
+import KQI from '../KQI';
+
+class Tab extends React.PureComponent {
+    static propTypes = {
+        type: PropTypes.string.isRequired,
+        href: PropTypes.string.isRequired,
+        value: PropTypes.number,
+        previous: PropTypes.number,
+        expected: PropTypes.number,
+    };
+
+    renderDynamic(label, absoluteValue) {
+        if (absoluteValue === undefined || this.props.value === undefined) {
+            return (
+                <span>
+                    {label}&nbsp;
+                    <span>N/A</span>
+                </span>
+            );
+        }
+
+        const value = this.props.value - absoluteValue;
+        const className = cn({
+            [styles.positive]: value > 0,
+            [styles.negative]: value < 0,
+        });
+
+        const sign = ['-', '', '+'][Math.sign(value) + 1];
+        const number = Math.abs(value).toFixed(1);
+
+        return (
+            <span className={className}>
+                {label}&nbsp;
+                <span>{sign}{number}%</span>
+            </span>
+        );
+    }
+
+    render() {
+        const { previous, expected, href } = this.props;
+
+        const hasPrev = previous !== undefined;
+        const hasExpected = expected !== undefined;
+
+        return (
+            <Link to={href} className={styles.tab}>
+                <KQI
+                    type={this.props.type}
+                    value={this.props.value}
+                    positive={expected > 0}
+                    negative={expected < 0}
+                />
+                <div className={styles.dynamics}>
+                    {this.renderDynamic(ls('DASHBOARD_PREV_PERIOD', 'Прошлый период:'), previous)}
+                    {this.renderDynamic(ls('DASHBOARD_EXPECTED', 'План:'), expected)}
+                </div>
+            </Link>
+        );
+    }
+}
+
+export default Tab;

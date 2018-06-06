@@ -1,33 +1,96 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { connect } from "react-redux";
-import ls from "i18n";
+import {connect} from 'react-redux';
+import ls from 'i18n';
+import DashboardCmp from '../components/index';
+import {REGULARITIES, VIEW_MODE} from '../constants';
+import rest from '../../../rest';
 
-import DasboardCmp from "../components/index";
-
-class Dasboard extends React.PureComponent {
+class Dashboard extends React.PureComponent {
+    static propTypes = {
+        match: PropTypes.shape({
+            params: PropTypes.shape({
+                mode: PropTypes.string,
+                regularity: PropTypes.string,
+                type: PropTypes.string,
+                mrfId: PropTypes.string,
+            }).isRequired,
+        }).isRequired,
+    };
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
     };
 
+    state = {
+        aggregated: null,
+    };
+
     componentDidMount() {
         this.context.navBar.setPageTitle([ls('DASHBOARD_PAGE_TITLE', 'Рабочий стол')]);
+        this.fetchAggregated();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        const actualRegularity = this.getRegularity();
+        const nextRegularity = this.getRegularity(nextProps);
+
+        if (actualRegularity !== nextRegularity) {
+            this.fetchAggregated(nextRegularity);
+        }
+    }
+
+    getRegularity(props = this.props) {
+        return props.match.params.regularity || REGULARITIES.HOUR;
+    }
+    getMode(props = this.props) {
+        return props.match.params.mode || VIEW_MODE.MAP;
+    }
+    getType(props = this.props) {
+        if (props.match.params.type !== undefined) return props.match.params.type;
+
+        const { aggregated } = this.state;
+        if (aggregated === null) return undefined;
+
+        const keys = Object.keys(aggregated);
+
+        if (keys.length === 0) return undefined;
+
+        return keys[0];
+    }
+    getMRF(props = this.props) {
+        return props.match.params.mrfId;
+    }
+
+    fetchAggregated(regularity = this.getRegularity()) {
+        const queryParams = { regularity };
+
+        rest.get('/api/v1/dashboard/head', {}, { queryParams })
+            .then(({ data }) => {
+                this.setState({
+                    aggregated: data,
+                });
+            })
+            .catch((error) => {
+                console.error(error);
+            });
     }
 
     render () {
         return (
-            <DasboardCmp
+            <DashboardCmp
                 history={this.props.history}
                 match={this.props.match}
+                regularity={this.getRegularity()}
+                mode={this.getMode()}
+                type={this.getType()}
+                mrfId={this.getMRF()}
+                aggregated={this.state.aggregated}
             />
         );
     }
 }
 
-const mapStateToProps = state => {
-    return {};
-};
+const mapStateToProps = () => ({});
+const mapDispatchToProps = () => ({});
 
-const mapDispatchToProps = dispatch => ({});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Dasboard);
+export default connect(mapStateToProps, mapDispatchToProps)(Dashboard);
