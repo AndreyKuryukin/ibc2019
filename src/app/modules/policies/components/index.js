@@ -5,7 +5,7 @@ import styles from './styles.scss';
 import PoliciesTable from './PoliciesTable';
 import PoliciesControls from './PoliciesControls';
 import PolicyEditor from '../modules/PolicyEditor/containers';
-import NotificationConfigurator from '../modules/NotificationConfigurator/components';
+import NotificationConfigurator from '../modules/NotificationConfigurator/containers';
 
 class Policies extends React.Component {
     static childContextTypes = {

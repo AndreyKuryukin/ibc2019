@@ -9,6 +9,7 @@ import ls from 'i18n';
 import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 import ConfigBlock from './ConfigBlock';
+import Controls from './Controls';
 
 const controlFieldStyle = { flexGrow: 1 };
 const adapterFieldStyle = { ...controlFieldStyle, marginLeft: 10 };
@@ -21,27 +22,127 @@ class NotificationConfigurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        adapters: PropTypes.array,
+        notifications: PropTypes.array,
         onClose: PropTypes.func,
         onSubmit: PropTypes.func,
+        onMount: PropTypes.func,
     };
 
     static defaultProps = {
         active: false,
+        adapters: [],
+        notifications: [],
         onClose: () => null,
         onSubmit: () => null,
+        onMount: () => null,
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            configs: null,
+        };
+    }
+
+    componentDidMount() {
+        this.props.onMount();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.notifications !== nextProps.notifications) {
+            const configs = nextProps.notifications.reduce((result, cfg) => {
+                const adapterConfig = nextProps.adapters.find(adapter => adapter.adapter_id === cfg.adapter_id);
+
+                return adapterConfig ? {
+                    ...result,
+                    [`${_.get(adapterConfig, 'adapter_id', '')}_${_.get(cfg, 'instance_id', '')}`]: {
+                        ...adapterConfig,
+                        instance_id: cfg.instance_id,
+                        parameters: adapterConfig.parameters.map(param => {
+                            const parameter = cfg.parameters.find(p => p.uid === param.uid);
+
+                            return {
+                                ...param,
+                                value: parameter ? parameter.value : '',
+                            };
+                        }),
+                    },
+                } : result;
+            }, {});
+
+            this.setState({
+                configs: {
+                    ...this.state.configs,
+                    ...configs,
+                },
+            });
+        }
+    }
+
+    onAddConfig = (config) => {
+        this.setState({
+            configs: {
+                ...this.state.configs,
+                [`${_.get(config, 'adapter_id', '')}_${_.get(config, 'instance_id', '')}`]: config,
+            },
+        });
+    };
+
+    onChangeConfigInstance = (configId, instanceId) => {
+        const config = _.get(this.state.configs, `${configId}`);
+
+        if (config) {
+            const configs = {
+                ..._.omit({...this.state.configs}, `${configId}`),
+                [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: {
+                    ...config,
+                    instance_id: instanceId,
+                },
+            }
+            this.setState({
+                configs,
+            });
+        }
+    }
+
+    onChangeConfigParameter = () => {
+
+    }
 
     onClose = () => {
         this.context.history.push('/policies');
         this.props.onClose();
     };
 
+    onConfigRemove = (configId) => {
+        this.setState({
+            configs: _.omit(this.state.configs, configId),
+        });
+    }
+
     onSubmit = () => {
+        const notificationsConfigs =
+            _.chain(this.state.configs)
+                .values()
+                .map(cfg => ({
+                    adapter_id: cfg.adapter_id,
+                    instance_id: cfg.instance_id,
+                    parameters: cfg.parameters.map(param => ({
+                        uid: param.uid,
+                        value: param.value,
+                    })),
+                }))
+                .value();
+        console.log(notificationsConfigs);
         this.props.onSubmit();
     };
 
     render() {
-        const { active } = this.props;
+        const { active, adapters } = this.props;
+        const selectedConfigsKeys = _.keys(this.state.configs);
+        console.log(selectedConfigsKeys);
         return (
             <DraggableWrapper>
                 <Modal
@@ -55,118 +156,22 @@ class NotificationConfigurator extends React.PureComponent {
                         <div className={styles.notificationConfiguratorContent}>
                             <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${'ALARM_STB_MLR'}`}</div>
                             <div className={styles.configsWrapper}>
-                                <div className={styles.configsControls}>
-                                    <Icon icon="addIcon" onClick={() => null} />
-                                    <Field
-                                        id="adapter"
-                                        inputWidth="100%"
-                                        style={adapterFieldStyle}
-                                        splitter=""
-                                    >
-                                        <Select
-                                            id="adapter"
-                                            options={[]}
-                                            value={''}
-                                            onChange={() => null}
-                                        />
-                                    </Field>
-                                    <Field
-                                        id="instance"
-                                        labelText={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_LABEL', 'Инстанс')}
-                                        labelWidth="30%"
-                                        inputWidth={115}
-                                        style={instanceFieldStyle}
-                                    >
-                                        <Select
-                                            id="instance"
-                                            options={[]}
-                                            value={''}
-                                            onChange={() => null}
-                                        />
-                                    </Field>
-                                </div>
+                                <Controls
+                                    adapters={adapters}
+                                    onAddConfig={this.onAddConfig}
+                                    selectedConfigsKeys={selectedConfigsKeys}
+                                />
                                 <div className={styles.configs}>
-                                    <ConfigBlock>
-                                        <div className={styles.adapterName}>{`${ls('POLICIES_CONFIGURATOR_ADAPTER_FIELD_LABEL', 'Адаптер')}: ${'Аудио-визуальный'}`}</div>
-                                    </ConfigBlock>
-                                    <ConfigBlock>
-                                        <div className={styles.configContentRow}>
-                                            <div className={styles.adapterName}>
-                                                {`${ls('POLICIES_CONFIGURATOR_ADAPTER_FIELD_LABEL', 'Адаптер')}: ${'CRM'}`}
-                                            </div>
-                                            <Field
-                                                id="instance"
-                                                labelText={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_LABEL', 'Инстанс')}
-                                                inputWidth={115}
-                                                style={instanceFieldStyle}
-                                            >
-                                                <Select
-                                                    id="instance"
-                                                    options={[]}
-                                                    value={''}
-                                                    onChange={() => null}
-                                                />
-                                            </Field>
-                                        </div>
-                                        <div className={styles.configContentColumn}>
-                                            <Field
-                                                id="Type1ID"
-                                                labelText="Type1ID"
-                                                inputWidth="50%"
-                                            >
-                                                <Select
-                                                    id="Type1ID"
-                                                    options={[]}
-                                                    value={''}
-                                                    onChange={() => null}
-                                                />
-                                            </Field>
-                                            <Field
-                                                id="Type2ID"
-                                                labelText="Type2ID"
-                                                inputWidth="50%"
-                                            >
-                                                <Select
-                                                    id="Type2ID"
-                                                    options={[]}
-                                                    value={''}
-                                                    onChange={() => null}
-                                                />
-                                            </Field>
-                                            <Field
-                                                id="Type3ID"
-                                                labelText="Type3ID"
-                                                inputWidth="50%"
-                                            >
-                                                <Select
-                                                    id="Type3ID"
-                                                    options={[]}
-                                                    value={''}
-                                                    onChange={() => null}
-                                                />
-                                            </Field>
-                                        </div>
-                                    </ConfigBlock>
-                                    <ConfigBlock>
-                                        <div className={styles.configContentRow}>
-                                            <div className={styles.adapterName}>
-                                                {`${ls('POLICIES_CONFIGURATOR_ADAPTER_FIELD_LABEL', 'Адаптер')}: ${''}`}
-                                            </div>
-                                            <Field
-                                                id="instance"
-                                                labelText={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_LABEL', 'Инстанс')}
-                                                inputWidth={115}
-                                                style={instanceFieldStyle}
-                                            >
-                                                <Select
-                                                    id="instance"
-                                                    options={[]}
-                                                    value={''}
-                                                    onChange={() => null}
-                                                />
-                                            </Field>
-                                        </div>
-                                    </ConfigBlock>
+                                    {_.map(this.state.configs, (config, key) => (
+                                        config && <ConfigBlock
+                                            key={key}
+                                            id={key}
+                                            config={config}
+                                            onChangeInstance={this.onChangeConfigInstance}
+                                            onChangeParameter={this.onChangeConfigParameter}
+                                            onRemove={this.onConfigRemove}
+                                        />
+                                    ))}
                                 </div>
                             </div>
                         </div>

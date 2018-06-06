@@ -20,10 +20,14 @@ class Icon extends React.PureComponent {
     };
 
     render() {
-        const {icon, ...rest} = this.props;
+        const {icon, disabled, ...rest} = this.props;
         return (
             <div
-                className={classnames(styles.iconBlock, icon)}
+                className={classnames(
+                    styles.iconBlock,
+                    { [styles.iconDisabled]: disabled },
+                    icon
+                )}
                 {...rest}
             />
         );
