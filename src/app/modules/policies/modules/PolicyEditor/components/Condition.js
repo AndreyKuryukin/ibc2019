@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
@@ -42,7 +44,7 @@ class Condition extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.condition && nextProps.condition !== this.props.condition) {
+        if (_.isObject(_.get(nextProps, 'condition.condition')) ) {
             this.setState({ condition: {...nextProps.condition.condition }});
         }
 
@@ -85,8 +87,6 @@ class Condition extends React.PureComponent {
         this.setConditionProperty('conjunction.conjunctionList', conjunctionList, false)
     };
 
-    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
-
     removeConjunction = index => {
         const conjList = this.getConditionProperty('conjunction.conjunctionList', []);
         conjList.splice(index, 1);
@@ -109,6 +109,14 @@ class Condition extends React.PureComponent {
         if (!_.isArray(conjunctionError) && _.isObject(conjunctionError)) {
             return conjunctionError;
         }
+    };
+
+    getSeconds = (mills) => {
+        return moment.duration(mills, 'milliseconds').asSeconds() || '';
+    };
+
+    getMilliSeconds = (secs) => {
+        return moment.duration(Number(secs), 'seconds').asMilliseconds() || '';
     };
 
     render() {
@@ -144,19 +152,21 @@ class Condition extends React.PureComponent {
                     labelWidth="50%"
                     inputWidth="50%"
                     required
+                    className={styles.fieldWithUnit}
                 >
                     <Input
                         id="maxInterval"
                         name="maxInterval"
                         type="number"
-                        value={this.getConditionProperty('conditionDuration')}
-                        onChange={event => this.setConditionProperty('conditionDuration', _.get(event, 'target.value', ''), true)}
+                        value={this.getSeconds(this.getConditionProperty('conditionDuration'))}
+                        onChange={event => this.setConditionProperty('conditionDuration', this.getMilliSeconds(_.get(event, 'target.value', '')), true)}
                         valid={errors && _.isEmpty(errors.conditionDuration)}
                     />
+                    <span style={{ margin: '2px' }}>{ls('SECOND_UNIT', 'сек.')}</span>
                 </Field>
                 <div className={styles.conditionsWrapper}>
                     <Icon icon="addIcon" onClick={this.addConjunction}/>
-                    <div className={classnames(styles.conditions, { [styles.invalidBorder]: showListError})}>
+                    <div className={classnames(styles.conditions, { [styles.invalidBorder]: showListError })}>
                         {showListError ? conjError.title : this.renderConjunctions(conjList, parameters)}
                     </div>
                 </div>

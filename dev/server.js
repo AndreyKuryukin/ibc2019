@@ -34,7 +34,7 @@ const plugins = [
     // './login',
     // './roles',
     // './users',
-    './policies',
+    //'./policies',
     // './kqi',
     // './reports',
     './sources',

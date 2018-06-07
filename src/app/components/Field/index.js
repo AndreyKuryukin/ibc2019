@@ -38,7 +38,7 @@ class Field extends React.PureComponent {
     };
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, splitter, disabled, inputWidth, required, children, style, title } = this.props;
+        const { id, labelText, labelWidth, labelAlign, splitter, disabled, inputWidth, required, children, style, title, className } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
             {
@@ -47,6 +47,7 @@ class Field extends React.PureComponent {
                 [styles.disabled]: disabled,
 
             },
+            className
         );
         return (
             <div

@@ -81,28 +81,19 @@ module.exports = (app) => {
 
         res.send({
             "name": "Test",
-            "notification_template": null,
+            "objectType": "VB",
+            "policy_type": "VB_MULTICAST_SIMPLE",
+            "condition": {
+                "condition": "%7B%22conjunction%22%3A%7B%22conjunctionList%22%3A%5B%7B%22value%22%3A%22type%20!%3D%20bitrate%22%7D%5D%2C%22type%22%3A%22OR%22%7D%2C%22conditionDuration%22%3A%223%22%7D"
+            },
             "threshold": {
                 "rise_value": 1000,
-                "rise_duration": 1000,
                 "cease_value": 1000,
                 "cease_duration": 1000,
-                "id": "354623693906935809"
+                "rise_duration": 1000
             },
-            "scope": [],
-            "policy_type": "VB_UNICAST_SIMPLE",
-            "scope_type": null,
-            "channel_suppression": true,
-            "parent_policy": null,
-            "suppression_timeout": 0,
-            "objectType": "STB",
-            "condition": {
-                "condition": "%7B%22conjunction%22%3A%7B%22conjunctionList%22%3A%5B%7B%22value%22%3A%22aid%20!%3D%201%22%7D%2C%7B%22value%22%3A%22aid%20%3D%208%22%7D%5D%2C%22type%22%3A%22OR%22%7D%2C%22conditionDuration%22%3A%226%22%7D",
-                "id": "354623693847166977"
-            },
-            "id": "354591424089292801",
-            "allow_accident": true,
-            "waiting_time": "3"
+            "exclude_tv": true,
+            "id": "354591424089292801"
         });
 
     });

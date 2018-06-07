@@ -69,3 +69,13 @@
     }
   }
 }
+
+.fieldWithUnit {
+  .fieldInput {
+    flex-direction: row;
+    display: flex;
+    input {
+      text-align: right;
+    }
+  }
+}

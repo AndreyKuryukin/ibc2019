@@ -36,6 +36,7 @@ class PolicyEditor extends React.PureComponent {
         onSubmit: PropTypes.func,
         onClose: PropTypes.func,
         onMount: PropTypes.func,
+        updatePolicy: PropTypes.func,
         fetchObjectTypes: PropTypes.func,
         fetchPolicyTypes: PropTypes.func,
         fetchMetaData: PropTypes.func,
@@ -54,6 +55,7 @@ class PolicyEditor extends React.PureComponent {
         onSubmit: () => null,
         onClose: () => null,
         onMount: () => null,
+        updatePolicy: () => null,
         fetchObjectTypes: () => null,
         fetchPolicyTypes: () => null,
         fetchMetaData: () => null
@@ -92,7 +94,7 @@ class PolicyEditor extends React.PureComponent {
     handleObjectTypeChange = (prevPolicy, objectType) => {
         const policy = _.pick(prevPolicy, ['name', 'objectType']);
         policy['objectType'] = objectType;
-        policy['condition'] = {};
+        policy['condition'] = {condition: {}};
         this.setState({ metaData: {} }, () => {
             this.props.fetchPolicyTypes(policy.objectType);
         });
@@ -100,11 +102,11 @@ class PolicyEditor extends React.PureComponent {
     };
 
     handlePolicyTypeChange = (prevPolicy, policy_type) => {
-        const policy = _.pick(prevPolicy, ['name', 'objectType', 'policy_type']);
+        const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type']);
         policy['policy_type'] = policy_type;
-        policy['condition'] = {};
+        policy['condition'] = {condition: {}};
         this.setState({ metaData: {} }, () => {
-            this.props.fetchMetaData(policy.objectType, policy.policy_type);
+            this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
         return policy
     };
@@ -114,7 +116,7 @@ class PolicyEditor extends React.PureComponent {
     setPolicyProperty = (key, value) => {
         const policyValues = _.set({}, key, value);
         let prevPolicy = this.state.policy;
-        if (key === 'objectType') {
+        if (key === 'object_type') {
             prevPolicy = this.handleObjectTypeChange(prevPolicy, value)
         }
         if (key === 'policy_type') {
@@ -127,8 +129,9 @@ class PolicyEditor extends React.PureComponent {
         );
 
         this.setState({
-            policy,
             errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : this.state.errors,
+        }, () => {
+            this.props.updatePolicy(policy)
         });
     };
 
@@ -163,7 +166,7 @@ class PolicyEditor extends React.PureComponent {
 
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
-        const { policy, errors } = this.state;
+        const { policy, errors, metaData } = this.state;
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
@@ -184,6 +187,7 @@ class PolicyEditor extends React.PureComponent {
                                         setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
                                         policyTypes={policyTypes}
                                         objectTypes={objectTypes}
+                                        metaData={metaData}
                                         policy={policy}
                                         errors={errors}
                                     />
@@ -242,7 +246,7 @@ class PolicyEditor extends React.PureComponent {
                                                 </Field>
                                             </div>
                                             <div style={{ flex: 2 }}>
-                                                <Field
+                                                {_.get(metaData, 'group') !== 'SIMPLE' && <Field
                                                     id="cease_value"
                                                     labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}`}
                                                     labelWidth="50%"
@@ -256,12 +260,12 @@ class PolicyEditor extends React.PureComponent {
                                                             type="number"
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
-                                                            onChange={event => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                            onChange={event => this.setPolicyProperty('threshold.cease_value',this.getMilliSeconds( _.get(event, 'target.value')))}
                                                         />
                                                         <span
-                                                            style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                                            style={{ margin: '2px' }}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
                                                     </div>
-                                                </Field>
+                                                </Field>}
                                             </div>
                                         </div>
                                     </Panel>

@@ -15,6 +15,7 @@ class Configuration extends React.PureComponent {
         policyTypes: PropTypes.array,
         objectTypes: PropTypes.array,
         errors: PropTypes.object,
+        metaData: PropTypes.object,
     };
 
     static defaultProps = {
@@ -23,6 +24,7 @@ class Configuration extends React.PureComponent {
         policyTypes: [],
         objectTypes: [],
         errors: PropTypes.object,
+        metaData: PropTypes.object,
     };
 
     mapTypes = (types) => {
@@ -40,7 +42,7 @@ class Configuration extends React.PureComponent {
     mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
 
     render() {
-        const { getPolicyProperty, setPolicyProperty, policyTypes, objectTypes, errors } = this.props;
+        const { getPolicyProperty, setPolicyProperty, policyTypes, objectTypes, errors, metaData } = this.props;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -70,9 +72,9 @@ class Configuration extends React.PureComponent {
                     <Select
                         id="object"
                         type="select"
-                        value={getPolicyProperty('objectType')}
+                        value={getPolicyProperty('object_type') || undefined}
                         options={this.mapObjectTypes(objectTypes)}
-                        onChange={value => setPolicyProperty('objectType', value, true)}
+                        onChange={value => setPolicyProperty('object_type', value, true)}
                         valid={errors && _.isEmpty(errors.objectType)}
                     />
                 </Field>
@@ -87,7 +89,7 @@ class Configuration extends React.PureComponent {
                         id="aggregation"
                         type="select"
                         options={this.mapTypes(policyTypes)}
-                        value={getPolicyProperty('policy_type')}
+                        value={getPolicyProperty('policy_type') || undefined}
                         onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
                         valid={errors && _.isEmpty(errors.policy_type)}
                     />
@@ -115,7 +117,7 @@ class Configuration extends React.PureComponent {
                         </Field>
                     </div>
                     <div style={{ flex: 2 }}>
-                        <Field
+                        {_.get(metaData, 'group') !== 'SIMPLE' && <Field
                             id="rise_value"
                             required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}`}
@@ -131,9 +133,9 @@ class Configuration extends React.PureComponent {
                                     value={this.getSeconds(getPolicyProperty('threshold.rise_value'))}
                                     onChange={event => setPolicyProperty('threshold.rise_value', this.getMilliSeconds(_.get(event, 'currentTarget.value')))}
                                 />
-                                <span style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                <span style={{ margin: '2px' }}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
                             </div>
-                        </Field>
+                        </Field>}
                     </div>
                 </div>
                 <Field
