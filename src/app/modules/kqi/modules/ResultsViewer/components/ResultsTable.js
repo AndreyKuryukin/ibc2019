@@ -87,7 +87,7 @@ class ResultsTable extends React.PureComponent {
 
     composeResultId = (result, index) => `${JSON.stringify(result)}-${index}`;
 
-    isWholeCountryCase = (result) => _.values(_.omit(result, ['value', 'weight'])).findIndex(value => !!value) === -1;
+    isWholeCountryCase = (result) => _.values(_.omit(result, ['value', 'weight', 'id'])).findIndex(value => !!value) === -1;
 
     mapData = data => {
         const nodeIds = [];

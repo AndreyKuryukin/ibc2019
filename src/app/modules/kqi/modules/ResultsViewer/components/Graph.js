@@ -98,7 +98,10 @@ class Graph extends React.PureComponent {
         return data;
     };
 
-    getUnit = (projection) => _.get(projection, 'period.regularity', 'HOUR').toLowerCase();
+    getUnit = (projection) => {
+        const unit = _.get(projection, 'period.regularity', 'HOUR').toLowerCase();
+        return unit === 'other' ? 'hour' : unit;
+    }
 
     render() {
         const data = this.mapData(this.props.data);

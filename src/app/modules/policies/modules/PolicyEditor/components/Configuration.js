@@ -12,14 +12,16 @@ class Configuration extends React.PureComponent {
     static propTypes = {
         getPolicyProperty: PropTypes.func,
         setPolicyProperty: PropTypes.func,
-        types: PropTypes.array,
+        policyTypes: PropTypes.array,
+        objectTypes: PropTypes.array,
         errors: PropTypes.object,
     };
 
     static defaultProps = {
         getPolicyProperty: () => null,
         setPolicyProperty: () => null,
-        types: [],
+        policyTypes: [],
+        objectTypes: [],
         errors: PropTypes.object,
     };
 
@@ -35,9 +37,10 @@ class Configuration extends React.PureComponent {
         return moment.duration(Number(secs), 'seconds').asMilliseconds();
     };
 
+    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
 
     render() {
-        const { getPolicyProperty, setPolicyProperty, types, errors } = this.props;
+        const { getPolicyProperty, setPolicyProperty, policyTypes, objectTypes, errors } = this.props;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -58,6 +61,22 @@ class Configuration extends React.PureComponent {
                     />
                 </Field>
                 <Field
+                    id="object"
+                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}`}
+                    labelWidth="50%"
+                    inputWidth="50%"
+                    required
+                >
+                    <Select
+                        id="object"
+                        type="select"
+                        value={getPolicyProperty('objectType')}
+                        options={this.mapObjectTypes(objectTypes)}
+                        onChange={value => setPolicyProperty('objectType', value, true)}
+                        valid={errors && _.isEmpty(errors.objectType)}
+                    />
+                </Field>
+                <Field
                     id="aggregation"
                     required
                     labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}`}
@@ -67,7 +86,7 @@ class Configuration extends React.PureComponent {
                     <Select
                         id="aggregation"
                         type="select"
-                        options={this.mapTypes(types)}
+                        options={this.mapTypes(policyTypes)}
                         value={getPolicyProperty('policy_type')}
                         onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
                         valid={errors && _.isEmpty(errors.policy_type)}
