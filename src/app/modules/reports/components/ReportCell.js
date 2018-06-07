@@ -27,7 +27,6 @@ class ReportCell extends React.PureComponent {
         const { origin } = window;
         const url = href;
         const type = href.split('.').pop();
-        debugger;
         fakeLink.setAttribute('download', `${text}.${type}`);
         fakeLink.setAttribute('href', url);
         const e = document.createEvent('MouseEvents');
