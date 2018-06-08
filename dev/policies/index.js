@@ -8,8 +8,8 @@ const META_DATA = {
         'STB_SIMPLE': {
             "function_name": "SMART_SPY_SIMPLE",
             "group": "SIMPLE",
-            "channel_suppression": "true",
-            "hierarchy_suppression": "true",
+            "channel_suppression": true,
+            "hierarchy_suppression": true,
             "parameters": [
                 {
                     "name": "linkFaults",
@@ -43,8 +43,8 @@ const META_DATA = {
         'STB_GROUP': {
             "function_name": "SMART_SPY_GROUP",
             "group": "SIMPLE",
-            "channel_suppression": "false",
-            "hierarchy_suppression": "false",
+            "channel_suppression": false,
+            "hierarchy_suppression": false,
             "parameters": [
                 {
                     "name": "linkFaults",
@@ -80,8 +80,8 @@ const META_DATA = {
         'VB_MULTICAST_SIMPLE': {
             "function_name": "VB_MULTICAST_SIMPLE",
             "group": "GROUP_AGGREGATION",
-            "channel_suppression": "false",
-            "hierarchy_suppression": "true",
+            "channel_suppression": false,
+            "hierarchy_suppression": true,
             "parameters": [
                 {
                     "name": "type",
@@ -100,8 +100,8 @@ const META_DATA = {
         'VB_UNICAST_GROUP': {
             "function_name": "VB_UNICAST_GROUP",
             "group": "SIMPLE",
-            "channel_suppression": "true",
-            "hierarchy_suppression": "true",
+            "channel_suppression": true,
+            "hierarchy_suppression": true,
             "parameters": [
                 {
                     "name": "type",
