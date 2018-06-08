@@ -11,9 +11,8 @@
 
 .nameCell {
   display: flex;
-  &:last-child {
-    
-  }
+  flex-grow: 1;
+  justify-content: space-between;
 }
 
 .policiesControls {

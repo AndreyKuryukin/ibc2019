@@ -145,6 +145,7 @@ module.exports = (app) => {
 
     app.get('/api/v1/policy', (req, res) => {
         const policies = readPoliciesFile();
+        console.log(policies);
         res.send(policies);
     });
 
@@ -155,7 +156,21 @@ module.exports = (app) => {
             {},
             req.body,
             {
-                id: policies.length
+                id: policies.length,
+                notifications_configs: [{
+                    adapter_id: 'CRM',
+                    instance_id: 'prod',
+                    parameters: [{
+                        uid: 'Type1Id',
+                        value: 'TechSupport1',
+                    }, {
+                        uid: 'Type2Id',
+                        value: 'Security cam',
+                    }, {
+                        uid: 'Type3Id',
+                        value: 'Cant update PO',
+                    }]
+                }]
             }
         );
         policies.push(policy);
@@ -177,7 +192,7 @@ module.exports = (app) => {
     //     proxyReqPathResolver: (req) => {
     //         console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
     //         return target + require('url').parse(req.originalUrl).path;
-    app.get('/api/v1/policies/notification/metadata/1', (req, res) => {
+    app.get('/api/v1/policies/notification/metadata/:id', (req, res) => {
         res.send([{
             adapter_id: 'CRM',
             name: 'CRM',
@@ -234,23 +249,18 @@ module.exports = (app) => {
         }]);
     });
     app.get('/api/v1/policies/:id/notifications', (req, res) => {
-        res.send([{
-            adapter_id: 'CRM',
-            instance_id: 'prod',
-            parameters: [{
-                uid: 'Type1Id',
-                value: 'TechSupport1',
-            }, {
-                uid: 'Type2Id',
-                value: 'Security cam',
-            }, {
-                uid: 'Type3Id',
-                value: 'Cant update PO',
-            }]
-        }]);
+        const policies = readPoliciesFile();
+        console.log(req.params.id);
+        res.send(policies[req.params.id].notifications_configs);
     });
-    app.put('/api/v1/policies/1/notifications', (req, res) => {
-        res.end();
+    app.put('/api/v1/policies/:id/notifications', (req, res) => {
+        const policies = readPoliciesFile();
+        const policy = policies[req.params.id];
+
+        policy.notifications_configs = req.body;
+        writePoliciesToFile(policies);
+
+        res.send(req.body);
     });
 
     // const policiesById = {
@@ -301,6 +311,6 @@ const readPoliciesFile = () => {
 };
 
 const writePoliciesToFile = (policies) => {
-    fs.writeFileSync('policies.json', JSON.stringify(policies, undefined, 2));
+    fs.writeFileSync('dev/policies/policies.json', JSON.stringify(policies, undefined, 2));
 };
 

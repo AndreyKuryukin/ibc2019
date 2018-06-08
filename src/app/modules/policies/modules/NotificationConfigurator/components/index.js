@@ -182,7 +182,7 @@ class NotificationConfigurator extends React.PureComponent {
                                             config={config}
                                             onChangeInstance={this.onChangeConfigInstance.bind(this, key)}
                                             onChangeParameters={this.onChangeConfigParameters.bind(this, key)}
-                                            onRemove={this.onConfigRemove}
+                                            onRemove={this.onConfigRemove.bind(this, key)}
                                         />
                                     ))}
                                 </div>

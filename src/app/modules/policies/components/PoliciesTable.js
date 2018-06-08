@@ -124,7 +124,7 @@ class PoliciesTable extends React.PureComponent {
                             href={`/policies/edit/${node.id}`}
                             content={node[column.name]}
                         />
-                        <IconCell icon="icon-state-success"
+                        <IconCell icon="edit-icon"
                                   onIconClick={() => {
                                       this.props.notificationClick(node.id)
                                   }}
