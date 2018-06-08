@@ -106,12 +106,7 @@ class AlarmsViewer extends React.PureComponent {
                             ))}
                         </div>
                     </ModalBody>
-                    <ModalFooter>
-                        <Button outline color="action"
-                                onClick={this.onClose}>{ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_CANCEL', 'Отмена')}</Button>
-                        <Button color="action"
-                                onClick={this.onClose}>{ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_OK', 'Ок')}</Button>
-                    </ModalFooter>
+                    <ModalFooter/>
                 </Modal>
             </DraggableWrapper>
         );
