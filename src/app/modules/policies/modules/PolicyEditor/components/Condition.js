@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
@@ -17,12 +19,14 @@ class Condition extends React.PureComponent {
         condition: PropTypes.object,
         onChange: PropTypes.func,
         errors: PropTypes.object,
+        parameters: PropTypes.array,
     };
 
     static defaultProps = {
         getPolicyProperty: () => null,
         setPolicyProperty: () => null,
         errors: null,
+        parameters: [],
     };
 
     constructor(props) {
@@ -39,13 +43,9 @@ class Condition extends React.PureComponent {
         }
     }
 
-    componentDidMount() {
-        this.props.onChange(this.state);
-    }
-
     componentWillReceiveProps(nextProps) {
-        if (nextProps.condition !== this.props.condition) {
-            this.setState({ condition: nextProps.condition.condition });
+        if (_.isObject(_.get(nextProps, 'condition.condition')) ) {
+            this.setState({ condition: {...nextProps.condition.condition }});
         }
 
         if (!_.isEqual(this.props.errors, nextProps.errors)) {
@@ -87,23 +87,17 @@ class Condition extends React.PureComponent {
         this.setConditionProperty('conjunction.conjunctionList', conjunctionList, false)
     };
 
-    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
-
     removeConjunction = index => {
         const conjList = this.getConditionProperty('conjunction.conjunctionList', []);
         conjList.splice(index, 1);
         this.setConditionProperty('conjunction.conjunctionList', conjList, false);
     };
 
-    renderConjunctions = (conjunctionList = []) => {
+    renderConjunctions = (conjunctionList = [], parameters) => {
         return conjunctionList.map((conj, index) => <Conjunction
             key={`conjunction-${index}`}
             conjunction={conj}
-            parameterList={['received',
-                'linkFaults',
-                'lostOverflow',
-                'lost']}
-            operatorList={['>', '<', '=']}
+            parameters={parameters}
             onChange={conjunction => this.setConditionProperty(`conjunction.conjunctionList.${index}`, conjunction, false)}
             onRemove={() => this.removeConjunction(index)}
             errors={_.get(this.props.errors, `conjunction.conjunctionList.${index}.value`, null)}
@@ -117,8 +111,17 @@ class Condition extends React.PureComponent {
         }
     };
 
+    getSeconds = (mills) => {
+        return moment.duration(mills, 'milliseconds').asSeconds() || '';
+    };
+
+    getMilliSeconds = (secs) => {
+        return moment.duration(Number(secs), 'seconds').asMilliseconds() || '';
+    };
+
     render() {
         const { errors } = this.state;
+        const { parameters } = this.props;
         const conjError = this.getConjunctionListError(errors);
         const conjList = this.getConditionProperty('conjunction.conjunctionList');
         const showListError = _.isEmpty(conjList) && !_.isEmpty(conjError);
@@ -149,31 +152,17 @@ class Condition extends React.PureComponent {
                     labelWidth="50%"
                     inputWidth="50%"
                     required
+                    className={styles.fieldWithUnit}
                 >
                     <Input
                         id="maxInterval"
                         name="maxInterval"
                         type="number"
-                        value={this.getConditionProperty('conditionDuration')}
-                        onChange={event => this.setConditionProperty('conditionDuration', _.get(event, 'target.value', ''), true)}
+                        value={this.getSeconds(this.getConditionProperty('conditionDuration'))}
+                        onChange={event => this.setConditionProperty('conditionDuration', this.getMilliSeconds(_.get(event, 'target.value', '')), true)}
                         valid={errors && _.isEmpty(errors.conditionDuration)}
                     />
-                </Field>
-                <Field
-                    id="object"
-                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}`}
-                    labelWidth="50%"
-                    inputWidth="50%"
-                    required
-                >
-                    <Select
-                        id="object"
-                        type="select"
-                        value={this.getConditionProperty('objectType', 'STB')}
-                        options={this.mapObjectTypes(['STB', 'TEST'])}
-                        onChange={value => this.setConditionProperty('objectType', value, true)}
-                        valid={errors && _.isEmpty(errors.objectType)}
-                    />
+                    <span style={{ margin: '2px' }}>{ls('SECOND_UNIT', 'сек.')}</span>
                 </Field>
                 <div className={styles.conditionsWrapper}>
                     <Icon
@@ -181,8 +170,8 @@ class Condition extends React.PureComponent {
                         onClick={this.addConjunction}
                         title={ls('ADD_POLICY_CONDITION_TITLE', 'Добавить условие')}
                     />
-                    <div className={classnames(styles.conditions, { [styles.invalidBorder]: showListError})}>
-                        {showListError ? conjError.title : this.renderConjunctions(conjList)}
+                    <div className={classnames(styles.conditions, { [styles.invalidBorder]: showListError })}>
+                        {showListError ? conjError.title : this.renderConjunctions(conjList, parameters)}
                     </div>
                 </div>
             </Panel>
