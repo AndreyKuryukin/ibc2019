@@ -87,8 +87,19 @@ class NotificationConfigurator extends React.PureComponent {
     };
 
     onMount = () => {
-        this.props.onFetchAdaptersSuccess(adapters);
-        this.props.onFetchNotificationsSuccess(notifications);
+        this.fetchMetaData();
+        // this.props.onFetchNotificationsSuccess(notifications);
+    };
+
+    fetchMetaData = () => {
+        rest.get('/api/v1/policy/notifacation/metadata')
+            .then((response) => {
+                const metaData = response.data;
+                this.props.onFetchAdaptersSuccess(metaData)
+            })
+            .catch(() => {
+
+            })
     };
 
     render() {

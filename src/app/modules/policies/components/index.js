@@ -52,6 +52,10 @@ class Policies extends React.Component {
         });
     };
 
+    navigateNotificationConfig = (policyId) => {
+        this.props.history.push(`/policies/cofigure/${policyId}`)
+    };
+
     render() {
         const { policiesData: data, isLoading, match } = this.props;
         const { searchText } = this.state;
@@ -70,6 +74,7 @@ class Policies extends React.Component {
                     data={data}
                     searchText={searchText}
                     preloader={isLoading}
+                    notificationClick={this.navigateNotificationConfig}
                 />
                 {isEditorActive && <PolicyEditor
                     active={isEditorActive}

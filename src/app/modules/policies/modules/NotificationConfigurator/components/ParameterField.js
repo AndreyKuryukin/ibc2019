@@ -47,7 +47,8 @@ class ParameterField extends React.PureComponent {
             <Field
                 id={id}
                 labelText={name}
-                inputWidth="50%"
+                inputWidth="70%"
+                labelWidth="30%"
                 required={required}
             >
                 {type === 'integer' && <Input
