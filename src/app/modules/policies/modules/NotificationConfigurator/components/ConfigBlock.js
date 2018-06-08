@@ -17,6 +17,7 @@ class ConfigBlock extends React.PureComponent {
         config: PropTypes.object,
         onRemove: PropTypes.func,
         onChangeInstance: PropTypes.func,
+        onChangeParameters: PropTypes.func,
     };
 
     static defaultProps = {
@@ -24,6 +25,7 @@ class ConfigBlock extends React.PureComponent {
         config: null,
         onRemove: () => null,
         onChangeInstance: () => null,
+        onChangeParameters: () => null,
     };
 
     static mapOptions = memoize(opts => opts.map(opt => ({
@@ -32,12 +34,22 @@ class ConfigBlock extends React.PureComponent {
     })));
 
     onChangeInstance = (instanceId) => {
-        this.props.onChangeInstance(this.props.id, instanceId);
-    }
+        this.props.onChangeInstance(instanceId);
+    };
+
+    onChangeParameter = (index, value) => {
+        const parameters = [..._.get(this.props.config, 'parameters', [])];
+        const param = {
+            ..._.get(parameters, `${index}`),
+            value: value || '',
+        };
+        _.set(parameters, `${index}`, param);
+        this.props.onChangeParameters(parameters);
+    };
 
     onRemove = () => {
         this.props.onRemove(this.props.id);
-    }
+    };
 
     render() {
         const { config } = this.props;
@@ -73,7 +85,7 @@ class ConfigBlock extends React.PureComponent {
                                     value={param.value}
                                     values={param.values}
                                     required={param.required}
-                                    onChange={this.on}
+                                    onChange={this.onChangeParameter.bind(this, index)}
                                 />
                             ))}
                         </div>

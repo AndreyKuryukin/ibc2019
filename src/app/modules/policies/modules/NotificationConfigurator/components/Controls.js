@@ -57,7 +57,10 @@ class Controls extends React.PureComponent {
     };
 
     onChangeAdapter = (adapter) => {
-        this.setState({ selectedAdapter: adapter || '' });
+        this.setState({
+            selectedAdapter: adapter || '',
+            selectedInstance: '',
+        });
     };
 
     onChangeInstance = (instance) => {

@@ -72,6 +72,7 @@ const notifications = [{
 class NotificationConfigurator extends React.PureComponent {
     static propTypes = {
         active: PropTypes.bool,
+        policyId: PropTypes.string,
         adapters: PropTypes.array,
         notifications: PropTypes.array,
         onFetchAdaptersSuccess: PropTypes.func,
@@ -80,6 +81,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static defaultProps = {
         active: false,
+        policyId: '',
         adapters: [],
         notifications: [],
         onFetchAdaptersSuccess: () => null,
@@ -87,20 +89,35 @@ class NotificationConfigurator extends React.PureComponent {
     };
 
     onMount = () => {
-        this.fetchMetaData();
-        // this.props.onFetchNotificationsSuccess(notifications);
+        if (this.props.policyId) {
+            Promise.all([
+                rest.get('/api/v1/policy/notification/metadata/:id', { urlParams: { id: this.props.policyId } }),
+                rest.get(`/api/v1/policies/${this.props.policyId}/notifications`)
+            ])
+                .then((metadataResponse, notificationsResponse) => {
+                    this.props.onFetchAdaptersSuccess(metadataResponse.data);
+                    this.props.onFetchNotificationsSuccess(notificationsResponse.data);
+                })
+                .catch((e) => {
+                    console.error(e);
+
+                    this.props.onFetchAdaptersSuccess(adapters);
+                    this.props.onFetchNotificationsSuccess(notifications);
+                });
+        }
     };
 
-    fetchMetaData = () => {
-        rest.get('/api/v1/policy/notifacation/metadata')
-            .then((response) => {
-                const metaData = response.data;
-                this.props.onFetchAdaptersSuccess(metaData)
-            })
-            .catch(() => {
-
-            })
-    };
+    onSubmit = (notifications) => {
+        if (this.props.policyId) {
+            rest.put(`/api/v1/policies/${this.props.policyId}/notifications`, notifications)
+                .then(() => {
+                    console.log('Success');
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
+    }
 
     render() {
         return (
@@ -108,6 +125,7 @@ class NotificationConfigurator extends React.PureComponent {
                 active={this.props.active}
                 adapters={this.props.adapters}
                 notifications={this.props.notifications}
+                onSubmit={this.onSubmit}
                 onMount={this.onMount}
             />
         );
