@@ -24,8 +24,9 @@ class ReportCell extends React.PureComponent {
 
     getReportFile = (href) => {
         const fakeLink = document.createElement('a');
-        fakeLink.setAttribute('download', href);
-        fakeLink.setAttribute('href', href);
+        const url = href;
+        fakeLink.setAttribute('download', url);
+        fakeLink.setAttribute('href', url);
         const e = document.createEvent('MouseEvents');
         e.initEvent('click', true, true);
         fakeLink.dispatchEvent(e);

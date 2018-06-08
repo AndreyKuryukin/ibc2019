@@ -181,26 +181,12 @@ class UserEditor extends React.Component {
                             title={ls('USER_AUTHENTICATION_MODE_PANEL_TITLE', 'Способ аутентификации')}
                         >
                             <Field
-                                id="ldap"
-                                labelText={ls('USER_LDAP_MODE_FIELD_TITLE', 'LDAP')}
-                                labelAlign="right"
-                                labelWidth="95%"
-                                inputWidth="5%"
-                            >
-                                <Radio
-                                    id="ldap"
-                                    type="radio"
-                                    name="authentication-mode"
-                                    checked={this.getUserProperty('ldap_auth')}
-                                    onChange={value => this.setUserProperty('ldap_auth', true)}
-                                />
-                            </Field>
-                            <Field
                                 id="custom"
                                 labelText={ls('USER_CUSTOM_MODE_FIELD_TITLE', 'Внутренний')}
                                 labelAlign="right"
                                 labelWidth="95%"
                                 inputWidth="5%"
+                                splitter=""
                             >
                                 <Radio
                                     id="custom"
@@ -208,6 +194,22 @@ class UserEditor extends React.Component {
                                     name="authentication-mode"
                                     checked={!this.getUserProperty('ldap_auth')}
                                     onChange={value => this.setUserProperty('ldap_auth', false)}
+                                />
+                            </Field>
+                            <Field
+                                id="ldap"
+                                labelText={ls('USER_LDAP_MODE_FIELD_TITLE', 'LDAP')}
+                                labelAlign="right"
+                                labelWidth="95%"
+                                inputWidth="5%"
+                                splitter=""
+                            >
+                                <Radio
+                                    id="ldap"
+                                    type="radio"
+                                    name="authentication-mode"
+                                    checked={this.getUserProperty('ldap_auth')}
+                                    onChange={value => this.setUserProperty('ldap_auth', true)}
                                 />
                             </Field>
                         </Panel>

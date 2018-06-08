@@ -13,6 +13,15 @@ import { DATE_TIME } from '../../../costants/date';
 import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 
+const retryIconProps = {
+    title: ls(`REPORTS_REGENERATE`, 'Перестроить')
+};
+const iconCellStyle = {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center'
+};
+
 class ReportsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
@@ -176,15 +185,9 @@ class ReportsTable extends React.PureComponent {
                 return state === 'failed' || (node.isLastSuccess && node.isLastSuccess() && state !== 'running') ?
                     <IconCell
                         icon={`icon-retry`}
-                        iconProps={{
-                            title: ls(`REPORTS_REGENERATE`, 'Перестроить')
-                        }}
+                        iconProps={retryIconProps}
                         onIconClick={() => this.props.onResultRetry(node.id)}
-                        cellStyle={{
-                            display: 'flex',
-                            width: '100%',
-                            justifyContent: 'center'
-                        }}
+                        cellStyle={iconCellStyle}
                     /> : ''
             }
             case 'type': {
@@ -200,11 +203,7 @@ class ReportsTable extends React.PureComponent {
                     iconProps={{
                         title: `${ls(`REPORTS_STATUS_${state.toUpperCase()}`, 'Статус')} ${state ? this.getReportTimeStatus(node) : ''}`
                     }}
-                    cellStyle={{
-                        display: 'flex',
-                        width: '100%',
-                        justifyContent: 'center'
-                    }}
+                    cellStyle={iconCellStyle}
                 />;
             }
             case 'delete': {

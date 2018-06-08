@@ -48,16 +48,17 @@ class TreeView extends React.Component {
         }
     }
 
-    sort = memoize((data, columnName, direction) =>
+    sort = memoize((data, columnName, direction, parents = []) =>
         naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')])
             .reduce((result, nextNode, index, array) => {
                 const node = {
                     ...nextNode,
+                    parents,
                     isLast: (index + 1) === array.length,
                 };
 
                 return !_.isEmpty(node.children) && this.isExpanded(node.id)
-                    ? [...result, node].concat(this.sort(node.children, columnName, direction))
+                    ? [...result, node].concat(this.sort(node.children, columnName, direction, [...parents, node]))
                     : [...result, node];
                 },
             []));
