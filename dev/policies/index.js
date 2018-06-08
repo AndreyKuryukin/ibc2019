@@ -108,6 +108,82 @@ module.exports = (app) => {
     console.log(`Specific proxy for /api/v1/policy  ->  http://192.168.192.209:8010`);
     app.use('/api/v1/policy', proxy(target, config));
 
+    app.get('/api/v1/policies/notification/metadata/1', (req, res) => {
+        res.send([{
+            adapter_id: 'CRM',
+            name: 'CRM',
+            instances: [
+                { instance_id: 'prod', name: 'Prod'},
+                { instance_id: 'test', name: 'Test'}
+            ],
+            parameters: [{
+                type: 'enum',
+                uid: 'Type1Id',
+                name: 'Type1Id',
+                required: true,
+                values: [{ name: 'Техподдержка', value: 'TechSupport1' }]
+            }, {
+                type: 'enum',
+                uid: 'Type2Id',
+                name: 'Type2Id',
+                required: true,
+                values: [{
+                    name: 'SMS',
+                    value: 'Messaging Service',
+                }, {
+                    name: 'Антивирус и родительский контроль',
+                    value: 'Antivirus and parent control',
+                }, {
+                    name: 'ВЗ/МГ/МН связь',
+                    value: 'OT international destination',
+                }, {
+                    name: 'Видеонаблюдение',
+                    value: 'Security cam',
+                }, {
+                    name: 'Голосовая связь',
+                    value: 'Voice connection',
+                }]
+            }, {
+                type: 'enum',
+                uid: 'Type3Id',
+                name: 'Type3Id',
+                required: true,
+                values: [{
+                    name: 'Задержка доставки сообщений',
+                    value: 'Delay delivery of messages',
+                }, {
+                    name: 'Многократная доставка сообщений',
+                    value: 'Многократная доставка сообщений',
+                }, {
+                    name: 'Не обновляется ПО',
+                    value: 'Cant update PO',
+                }, {
+                    name: 'Прослушивается автоинформатор',
+                    value: 'Listening autoinformer',
+                }]
+            }],
+        }]);
+    });
+    app.get('/api/v1/policies/:id/notifications', (req, res) => {
+        res.send([{
+            adapter_id: 'CRM',
+            instance_id: 'prod',
+            parameters: [{
+                uid: 'Type1Id',
+                value: 'TechSupport1',
+            }, {
+                uid: 'Type2Id',
+                value: 'Security cam',
+            }, {
+                uid: 'Type3Id',
+                value: 'Cant update PO',
+            }]
+        }]);
+    });
+    app.put('/api/v1/policies/1/notifications', (req, res) => {
+        res.end();
+    });
+
     // const policiesById = {
     //     1: {
     //         id: 1,

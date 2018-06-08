@@ -70,6 +70,10 @@ const notifications = [{
 }];
 
 class NotificationConfigurator extends React.PureComponent {
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         active: PropTypes.bool,
         policyId: PropTypes.string,
@@ -91,18 +95,15 @@ class NotificationConfigurator extends React.PureComponent {
     onMount = () => {
         if (this.props.policyId) {
             Promise.all([
-                rest.get('/api/v1/policy/notification/metadata/:id', { urlParams: { id: this.props.policyId } }),
+                rest.get('/api/v1/policies/notification/metadata/:id', { urlParams: { id: this.props.policyId } }),
                 rest.get(`/api/v1/policies/${this.props.policyId}/notifications`)
             ])
-                .then((metadataResponse, notificationsResponse) => {
+                .then(([metadataResponse, notificationsResponse]) => {
                     this.props.onFetchAdaptersSuccess(metadataResponse.data);
                     this.props.onFetchNotificationsSuccess(notificationsResponse.data);
                 })
                 .catch((e) => {
                     console.error(e);
-
-                    this.props.onFetchAdaptersSuccess(adapters);
-                    this.props.onFetchNotificationsSuccess(notifications);
                 });
         }
     };
@@ -112,12 +113,13 @@ class NotificationConfigurator extends React.PureComponent {
             rest.put(`/api/v1/policies/${this.props.policyId}/notifications`, notifications)
                 .then(() => {
                     console.log('Success');
+                    this.context.history.push('/policies');
                 })
                 .catch((e) => {
                     console.error(e);
                 });
         }
-    }
+    };
 
     render() {
         return (
