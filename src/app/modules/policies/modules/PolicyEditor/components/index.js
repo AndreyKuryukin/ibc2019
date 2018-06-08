@@ -94,7 +94,7 @@ class PolicyEditor extends React.PureComponent {
     handleObjectTypeChange = (prevPolicy, objectType) => {
         const policy = _.pick(prevPolicy, ['name', 'objectType']);
         policy['objectType'] = objectType;
-        policy['condition'] = {condition: {}};
+        policy['condition'] = { condition: {} };
         this.setState({ metaData: {} }, () => {
             this.props.fetchPolicyTypes(policy.objectType);
         });
@@ -104,7 +104,7 @@ class PolicyEditor extends React.PureComponent {
     handlePolicyTypeChange = (prevPolicy, policy_type) => {
         const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type']);
         policy['policy_type'] = policy_type;
-        policy['condition'] = {condition: {}};
+        policy['condition'] = { condition: {} };
         this.setState({ metaData: {} }, () => {
             this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
@@ -260,7 +260,7 @@ class PolicyEditor extends React.PureComponent {
                                                             type="number"
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
-                                                            onChange={event => this.setPolicyProperty('threshold.cease_value',this.getMilliSeconds( _.get(event, 'target.value')))}
+                                                            onChange={event => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(_.get(event, 'target.value')))}
                                                         />
                                                         <span
                                                             style={{ margin: '2px' }}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
@@ -278,12 +278,16 @@ class PolicyEditor extends React.PureComponent {
                                         errors={errors && _.get(errors, 'condition.condition')}
                                     />
                                 </div>
-                                {!_.isEmpty(this.state.metaData) && <Panel
+                                {!_.isEmpty(this.state.metaData) &&
+                                    (_.get(this.props, 'metaData.channel_suppression', false) ||
+                                    _.get(this.props, 'metaData.hierarchy_suppression', false)) &&
+                                <Panel
                                     title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     className={styles.accidentsPanel}
                                 >
 
-                                    {_.get(this.props, 'metaData.channel_suppression', false) && <Field
+                                    {_.get(this.props, 'metaData.channel_suppression', false) &&
+                                    <Field
                                         id="exclude-tv"
                                         labelText={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
                                         labelWidth="97%"
@@ -298,8 +302,9 @@ class PolicyEditor extends React.PureComponent {
                                             onChange={value => this.setPolicyProperty('exclude_tv', value)}
                                         />
                                     </Field>}
-                                    {_.get(this.props, 'metaData.hierarchy_suppression', false) && <div>
-                                        <Field
+                                    {
+                                        _.get(this.props, 'metaData.hierarchy_suppression', false) &&
+                                        < Field
                                             id="allow-accident"
                                             labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}`}
                                             labelWidth="97%"
@@ -313,8 +318,10 @@ class PolicyEditor extends React.PureComponent {
                                                 checked={this.getPolicyProperty('allow_accident')}
                                                 onChange={value => this.setPolicyProperty('allow_accident', value)}
                                             />
-                                        </Field>
-                                        <Field
+                                        </Field>}
+                                    {
+                                        _.get(this.props, 'metaData.hierarchy_suppression', false) &&
+                                        < Field
                                             id="not-allowed-accident"
                                             inputWidth="100%"
                                             splitter=""
@@ -327,7 +334,9 @@ class PolicyEditor extends React.PureComponent {
                                                 value={this.getPolicyProperty('accident')}
                                                 onChange={value => this.setPolicyProperty('accident', value)}
                                             />
-                                        </Field>
+                                        </Field>}
+                                    {
+                                        _.get(this.props, 'metaData.hierarchy_suppression', false) &&
                                         <Field
                                             id="waiting-time"
                                             labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
@@ -343,8 +352,9 @@ class PolicyEditor extends React.PureComponent {
                                                 onChange={event => this.setPolicyProperty('waiting_time', _.get(event, 'target.value'))}
                                             />
                                         </Field>
-                                    </div>}
-                                </Panel>}
+                                    }
+                                </Panel>
+                                }
                             </div>
                         </Preloader>
                     </ModalBody>

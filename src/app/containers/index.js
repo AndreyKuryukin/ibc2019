@@ -119,11 +119,21 @@ class App extends React.Component {
 
     static childContextTypes = {
         fetchUserSuccess: PropTypes.func.isRequired,
+        hasAccess: PropTypes.func.isRequired,
     };
 
     getChildContext = () => ({
         fetchUserSuccess: this.onFetchUserSuccess,
+        hasAccess: this.hasAccess,
     });
+
+    hasAccess = (subjectName, level) => {
+        // hasAccess('USERS', 'EDIT||VIEW')
+       const userSubjects =  _.get(this.props, 'user.subjects', []);
+       const subject = _.find(userSubjects, (sbj) => sbj.name.toUpperCase() === subjectName.toUpperCase());
+       const accessLevel = _.get(subject, 'access_level', []);
+       return !!_.find(accessLevel, lvl => lvl.toUpperCase() === level.toUpperCase())
+    };
 
     constructor(props) {
         super(props);
