@@ -87,6 +87,8 @@ class ResultsTable extends React.PureComponent {
 
     composeResultId = (result, index) => `${JSON.stringify(result)}-${index}`;
 
+    isWholeCountryCase = (result) => _.values(_.omit(result, ['value', 'weight', 'id'])).findIndex(value => !!value) === -1;
+
     mapData = data => {
         const nodeIds = [];
         const mapedData = _.reduce(data, (final, result) => {
@@ -110,7 +112,7 @@ class ResultsTable extends React.PureComponent {
                 nodeIds.push(id);
                 if (nextName === 'value' || !nextName) {
                     children.push({
-                        name: displayName,
+                        name: this.isWholeCountryCase(result) ? ls('RUSSIAN_FEDERATION', 'Российская Федерация') : displayName,
                         id,
                         result: `${Math.floor((result.value * 100)) / 100}%`,
                         weight: result.weight,

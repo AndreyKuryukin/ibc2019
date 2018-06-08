@@ -14,8 +14,7 @@ class Conjunction extends React.PureComponent {
         conjunction: PropTypes.shape({
             value: PropTypes.string
         }),
-        parameterList: PropTypes.array,
-        operatorList: PropTypes.array,
+        parameters: PropTypes.array,
         onChange: PropTypes.func,
         onRemove: PropTypes.func,
         errors: PropTypes.object,
@@ -25,8 +24,7 @@ class Conjunction extends React.PureComponent {
         conjunction: {
             value: {}
         },
-        parameterList: [],
-        operatorList: [],
+        parameters: [],
         onChange: () => null,
         onRemove: () => null,
         errors: null,
@@ -61,13 +59,56 @@ class Conjunction extends React.PureComponent {
         this.props.onChange({ value: newValue });
     };
 
-    mapParameters = parameters => parameters.map(param => ({ title: param, value: param }));
+    mapParameters = parameters => parameters.map(param => ({ title: param.name, value: param.name }));
 
-    mapOperators = operators => operators.map(operator => ({ title: operator, value: operator }));
+    mapOperators = (parameters, parameter) => {
+        const paramCfg = _.find(parameters, { name: parameter });
+        if (paramCfg && _.isArray(paramCfg.operators)) {
+            return paramCfg.operators.map(operator => ({ title: operator, value: operator }))
+        }
+        return []
+    };
+
+    getParamCfgByName = (parameters, parameterName) => {
+        const defaultCfg = {};
+        return _.find(parameters, { name: parameterName }) || defaultCfg;
+    };
+
+    renderValueControl = (paramCfg, value, errors) => {
+        const Component = paramCfg.type === 'enum' ? Select : Input;
+        const typeMap = {
+            'integer': 'number',
+            'string': 'text',
+        };
+        const params = {};
+        if (paramCfg.type === 'enum' && _.isArray(paramCfg.values)) {
+            params.options = paramCfg.values.map(v => ({ title: v, value: v }));
+            params.onChange = (value) => this.setConjunctionProperty('value', value)
+        } else {
+            params.type = typeMap[paramCfg.type];
+            params.onChange = (event) => this.setConjunctionProperty('value', _.get(event, 'currentTarget.value'));
+        }
+        return <Component
+            name="value"
+            value={_.get(value, 'value')}
+            valid={errors && _.isEmpty(_.get(errors, 'value', null))}
+            {...params}
+        />
+    };
+
+    setParameter = (value) => {
+        this.setState({ operator: null, value: null }, () => {
+            this.setConjunctionProperty('parameterType', value)
+        })
+    };
 
     render() {
         const { value, errors } = this.state;
-        const { parameterList, operatorList } = this.props;
+        const { parameters } = this.props;
+
+        const parameter = _.get(value, 'parameterType');
+        const paramCfg = this.getParamCfgByName(parameters, parameter);
+
         return <div className={styles.conditionBlock}>
             <div className={styles.parameters}>
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -81,9 +122,9 @@ class Conjunction extends React.PureComponent {
                             <Select
                                 id="parameter"
                                 type="select"
-                                value={_.get(value, 'parameterType')}
-                                options={this.mapParameters(parameterList)}
-                                onChange={(value) => this.setConjunctionProperty('parameterType', value)}
+                                value={parameter}
+                                options={this.mapParameters(parameters)}
+                                onChange={(value) => this.setParameter(value)}
                                 valid={errors && _.isEmpty(_.get(errors, 'parameterType', null))}
                             />
                         </Field>
@@ -93,19 +134,13 @@ class Conjunction extends React.PureComponent {
                             type="select"
                             placeholder={''}
                             value={_.get(value, 'operator')}
-                            options={this.mapOperators(operatorList)}
+                            options={this.mapOperators(parameters, parameter)}
                             onChange={(value) => this.setConjunctionProperty('operator', value)}
                             valid={errors && _.isEmpty(_.get(errors, 'operator', null))}
                         />
                     </div>
                     <div style={{ width: '20%', paddingLeft: 5 }}>
-                        <Input
-                            name="value"
-                            value={_.get(value, 'value')}
-                            type="number"
-                            onChange={(event) => this.setConjunctionProperty('value', _.get(event, 'currentTarget.value'))}
-                            valid={errors && _.isEmpty(_.get(errors, 'value', null))}
-                        />
+                        {this.renderValueControl(paramCfg, value, errors)}
                     </div>
                 </div>
             </div>

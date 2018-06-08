@@ -12,15 +12,19 @@ class Configuration extends React.PureComponent {
     static propTypes = {
         getPolicyProperty: PropTypes.func,
         setPolicyProperty: PropTypes.func,
-        types: PropTypes.array,
+        policyTypes: PropTypes.array,
+        objectTypes: PropTypes.array,
         errors: PropTypes.object,
+        metaData: PropTypes.object,
     };
 
     static defaultProps = {
         getPolicyProperty: () => null,
         setPolicyProperty: () => null,
-        types: [],
+        policyTypes: [],
+        objectTypes: [],
         errors: PropTypes.object,
+        metaData: PropTypes.object,
     };
 
     mapTypes = (types) => {
@@ -35,9 +39,10 @@ class Configuration extends React.PureComponent {
         return moment.duration(Number(secs), 'seconds').asMilliseconds();
     };
 
+    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
 
     render() {
-        const { getPolicyProperty, setPolicyProperty, types, errors } = this.props;
+        const { getPolicyProperty, setPolicyProperty, policyTypes, objectTypes, errors, metaData } = this.props;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -58,6 +63,22 @@ class Configuration extends React.PureComponent {
                     />
                 </Field>
                 <Field
+                    id="object"
+                    labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}`}
+                    labelWidth="50%"
+                    inputWidth="50%"
+                    required
+                >
+                    <Select
+                        id="object"
+                        type="select"
+                        value={getPolicyProperty('object_type') || undefined}
+                        options={this.mapObjectTypes(objectTypes)}
+                        onChange={value => setPolicyProperty('object_type', value, true)}
+                        valid={errors && _.isEmpty(errors.objectType)}
+                    />
+                </Field>
+                <Field
                     id="aggregation"
                     required
                     labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}`}
@@ -67,8 +88,8 @@ class Configuration extends React.PureComponent {
                     <Select
                         id="aggregation"
                         type="select"
-                        options={this.mapTypes(types)}
-                        value={getPolicyProperty('policy_type')}
+                        options={this.mapTypes(policyTypes)}
+                        value={getPolicyProperty('policy_type') || undefined}
                         onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
                         valid={errors && _.isEmpty(errors.policy_type)}
                     />
@@ -96,7 +117,7 @@ class Configuration extends React.PureComponent {
                         </Field>
                     </div>
                     <div style={{ flex: 2 }}>
-                        <Field
+                        {_.get(metaData, 'group') !== 'SIMPLE' && <Field
                             id="rise_value"
                             required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}`}
@@ -112,9 +133,9 @@ class Configuration extends React.PureComponent {
                                     value={this.getSeconds(getPolicyProperty('threshold.rise_value'))}
                                     onChange={event => setPolicyProperty('threshold.rise_value', this.getMilliSeconds(_.get(event, 'currentTarget.value')))}
                                 />
-                                <span style={{ margin: '2px' }}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                <span style={{ margin: '2px' }}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
                             </div>
-                        </Field>
+                        </Field>}
                     </div>
                 </div>
                 <Field
