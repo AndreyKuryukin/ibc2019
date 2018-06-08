@@ -101,14 +101,29 @@ class NotificationConfigurator extends React.PureComponent {
                     instance_id: instanceId,
                 },
             }
+
             this.setState({
                 configs,
             });
         }
     }
 
-    onChangeConfigParameter = () => {
+    onChangeConfigParameters = (configId, parameters) => {
+        const config = _.get(this.state.configs, `${configId}`);
 
+        if (config) {
+            const configs = {
+                ...this.state.configs,
+                [configId]: {
+                    ...config,
+                    parameters,
+                },
+            }
+
+            this.setState({
+                configs,
+            });
+        }
     }
 
     onClose = () => {
@@ -135,14 +150,13 @@ class NotificationConfigurator extends React.PureComponent {
                     })),
                 }))
                 .value();
-        console.log(notificationsConfigs);
-        this.props.onSubmit();
+
+        this.props.onSubmit(notificationsConfigs);
     };
 
     render() {
         const { active, adapters } = this.props;
         const selectedConfigsKeys = _.keys(this.state.configs);
-        console.log(selectedConfigsKeys);
         return (
             <DraggableWrapper>
                 <Modal
@@ -165,10 +179,9 @@ class NotificationConfigurator extends React.PureComponent {
                                     {_.map(this.state.configs, (config, key) => (
                                         config && <ConfigBlock
                                             key={key}
-                                            id={key}
                                             config={config}
-                                            onChangeInstance={this.onChangeConfigInstance}
-                                            onChangeParameter={this.onChangeConfigParameter}
+                                            onChangeInstance={this.onChangeConfigInstance.bind(this, key)}
+                                            onChangeParameters={this.onChangeConfigParameters.bind(this, key)}
                                             onRemove={this.onConfigRemove}
                                         />
                                     ))}

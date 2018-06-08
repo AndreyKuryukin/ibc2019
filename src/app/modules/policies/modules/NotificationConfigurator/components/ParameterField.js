@@ -32,6 +32,10 @@ class ParameterField extends React.PureComponent {
         title: name,
     })));
 
+    onChangeInput = (e) => {
+        this.props.onChange(_.get(e, 'target.value', ''));
+    }
+
     render() {
         const {
             id,
@@ -53,12 +57,12 @@ class ParameterField extends React.PureComponent {
                 {type === 'integer' && <Input
                     id={id}
                     value={value}
-                    onChange={onChange}
+                    onChange={this.onChangeInput}
                 />}
                 {type === 'string' && <Input
                     id={id}
                     value={value}
-                    onChange={onChange}
+                    onChange={this.onChangeInput}
                 />}
                 {type === 'enum' && <Select
                     id={id}
