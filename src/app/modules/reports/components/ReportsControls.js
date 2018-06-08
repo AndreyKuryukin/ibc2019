@@ -10,6 +10,7 @@ import styles from './styles.scss';
 class ReportsControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
@@ -31,7 +32,7 @@ class ReportsControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.reportControls}>
-                <Icon icon="addIcon" onClick={this.onAdd}/>
+                {this.context.hasAccess('REPORTS', 'EDIT') && <Icon icon="addIcon" onClick={this.onAdd}/>}
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}

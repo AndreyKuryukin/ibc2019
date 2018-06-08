@@ -10,6 +10,10 @@ import search from '../../../util/search';
 import styles from './styles.scss';
 
 class PoliciesTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired
+    };
+
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -115,9 +119,13 @@ class PoliciesTable extends React.PureComponent {
     bodyRowRender = (column, node) => {
         switch(column.name) {
             case 'name':
-                return (
+                return this.context.hasAccess('POLICY', 'EDIT') ? (
                     <LinkCell
                         href={`/policies/edit/${node.id}`}
+                        content={node[column.name]}
+                    />
+                ) : (
+                    <DefaultCell
                         content={node[column.name]}
                     />
                 );

@@ -14,6 +14,10 @@ import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 
 class ReportsTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -30,7 +34,7 @@ class ReportsTable extends React.PureComponent {
         onResultRetry: () => null,
     };
 
-    static getColumns = memoize(() => [{
+    static getColumns = memoize(hasEditAccess => [{
         title: ls('REPORTS_NAME_COLUMN_TITLE', 'Название отчёта'),
         name: 'name',
         sortable: true,
@@ -72,11 +76,11 @@ class ReportsTable extends React.PureComponent {
         sortable: true,
         searchable: true,
         width: 200
-    }, {
+    }, ...(hasEditAccess ? [{
         title: '',
         name: 'delete',
         width: 25
-    }]);
+    }] : [])]);
 
     getReportTimeStatus = (report) => {
         switch(report.state) {
@@ -229,7 +233,7 @@ class ReportsTable extends React.PureComponent {
     render() {
         const mappedData = this.mapData(this.props);
         const { searchText } = this.props;
-        const columns = ReportsTable.getColumns();
+        const columns = ReportsTable.getColumns(this.context.hasAccess('REPORTS', 'EDIT'));
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
 
         return (

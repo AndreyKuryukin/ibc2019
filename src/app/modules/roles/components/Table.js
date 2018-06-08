@@ -8,6 +8,10 @@ import { CheckedCell, DefaultCell, LinkCell } from '../../../components/Table/Ce
 import ls from "i18n";
 
 class RolesTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         data: PropTypes.array,
         checked: PropTypes.array,
@@ -39,31 +43,34 @@ class RolesTable extends React.PureComponent {
         this.props.onCheck(checked);
     };
 
-    static getColumns = memoize(() => ([{
-        name: 'checked',
-        width: 28,
-    }, {
-        title: ls('ROLES_NAME', 'Имя роли'),
-        name: 'name',
-        searchable: true,
-        sortable: true,
-        filter: {
-            type: 'text',
+    static getColumns = memoize(hasEditAccess => ([
+        ...(hasEditAccess ? [{
+            name: 'checked',
+            width: 28,
+        }] : []),
+        {
+            title: ls('ROLES_NAME', 'Имя роли'),
+            name: 'name',
+            searchable: true,
+            sortable: true,
+            filter: {
+                type: 'text',
+            },
         },
-    },
-    // {
-    //     title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
-    //     name: 'number',
-    //     searchable: true,
-    //     width: 200,
-    //     sortable: true,
-    // },
-    {
-        title: ls('ROLES_DESCRIPTION', 'Описание'),
-        name: 'description',
-        searchable: true,
-        sortable: true,
-    }]));
+        // {
+        //     title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
+        //     name: 'number',
+        //     searchable: true,
+        //     width: 200,
+        //     sortable: true,
+        // },
+        {
+            title: ls('ROLES_DESCRIPTION', 'Описание'),
+            name: 'description',
+            searchable: true,
+            sortable: true,
+        }
+    ]));
 
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
@@ -106,9 +113,13 @@ class RolesTable extends React.PureComponent {
                 );
             }
             case 'name':
-                return (
+                return this.context.hasAccess('ROLES', 'EDIT') ? (
                     <LinkCell
                         href={`/users-and-roles/roles/edit/${node.id}`}
+                        content={text}
+                    />
+                ) : (
+                    <DefaultCell
                         content={text}
                     />
                 );
@@ -129,7 +140,8 @@ class RolesTable extends React.PureComponent {
 
     render() {
         const { data, searchText, preloader } = this.props;
-        const columns = RolesTable.getColumns();
+        const hasEditAccess = this.context.hasAccess('ROLES', 'EDIT');
+        const columns = RolesTable.getColumns(hasEditAccess);
         const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table headerRowRender={this.headerRowRender}

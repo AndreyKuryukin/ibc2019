@@ -49,14 +49,13 @@ export default class TabPanel extends React.Component {
     }
 
     setActiveTabRef = (tab, isActive) => {
-        const that = this;
         if (isActive) {
             this.activeTab = tab;
         }
     };
 
     renderTabs = (children = []) =>
-        children.map((child, index) => <NavItem
+        children.map((child, index) => child && <NavItem
             className={classnames({
                 [styles.active]: this.state.activeTabId === child.props.id,
             })}
@@ -72,7 +71,7 @@ export default class TabPanel extends React.Component {
     );
 
     renderTabContent = (children = []) => children.map((child, index) =>
-        this.state.activeTabId === child.props.id && <TabPane
+        child && this.state.activeTabId === child.props.id && <TabPane
             key={`tab-pane-${child.props.id || index}`}
             tabId={child.props.id || index}
             style={tabPaneStyle}>
