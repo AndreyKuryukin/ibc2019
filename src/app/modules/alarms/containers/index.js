@@ -6,6 +6,7 @@ import { fetchMrfSuccess, fetchAlarmsSuccess, FILTER_ACTIONS } from '../actions'
 import rest from '../../../rest';
 import AlarmsComponent from '../components';
 import ls from "i18n";
+import { SENDING_ALARM_TYPES } from '../constants';
 
 class Alarms extends React.PureComponent {
     static contextTypes = {
@@ -76,7 +77,7 @@ class Alarms extends React.PureComponent {
         this.setState({ isLoading: true });
         const queryParams = {
             ...filter,
-            type: this.props.match.params.type,
+            type: SENDING_ALARM_TYPES[this.props.match.params.type],
             start: filter.start.getTime(),
             end: filter.end.getTime(),
         };
