@@ -17,10 +17,9 @@ const filterControlStyle = {
 
 class AlarmsControls extends React.PureComponent {
     static propTypes = {
-        onChangeFilterProperty: PropTypes.func,
+        onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
-        rfOptions: PropTypes.array,
-        mrfOptions: PropTypes.array,
+        locations: PropTypes.array,
         filter: PropTypes.shape({
             start: PropTypes.instanceOf(Date),
             end: PropTypes.instanceOf(Date),
@@ -32,10 +31,9 @@ class AlarmsControls extends React.PureComponent {
     };
 
     static defaultProps = {
-        onChangeFilterProperty: () => null,
+        onChangeFilter: () => null,
         onApplyFilter: () => null,
-        rfOptions: [],
-        mrfOptions: [],
+        locations: [],
         filter: null,
     };
 
@@ -43,12 +41,17 @@ class AlarmsControls extends React.PureComponent {
 
     getFilterProperty = (key, defaultValue) => _.get(this.props.filter, key, defaultValue);
     setFilterProperty = (property, value) => {
-        this.props.onChangeFilterProperty(property, value);
+        const { filter } = this.props;
+        const newFilter = {
+            ...filter,
+            [property]: value,
+        };
+        this.props.onChangeFilter(newFilter);
     };
 
     getRfOptions = () => {
         const selectedMrfId = this.getFilterProperty('mrf', '');
-        const selectedMrf = this.props.mrfOptions.find(mrf => mrf.id === selectedMrfId);
+        const selectedMrf = this.props.locations.find(mrf => mrf.id === selectedMrfId);
 
         return selectedMrf ? AlarmsControls.mapOptions(selectedMrf.rf) : [];
     };
@@ -62,7 +65,7 @@ class AlarmsControls extends React.PureComponent {
     };
 
     render() {
-        const { mrfOptions } = this.props;
+        const { locations } = this.props;
 
         return (
             <div className={styles.alarmsControls}>
@@ -92,7 +95,7 @@ class AlarmsControls extends React.PureComponent {
                         >
                             <Select
                                 id="mrf-filter"
-                                options={AlarmsControls.mapOptions(mrfOptions)}
+                                options={AlarmsControls.mapOptions(locations)}
                                 value={this.getFilterProperty('mrf', '')}
                                 onChange={value => this.setFilterProperty('mrf', value)}
                             />

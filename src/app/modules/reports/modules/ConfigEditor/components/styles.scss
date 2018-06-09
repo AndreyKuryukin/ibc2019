@@ -7,7 +7,7 @@
     display: flex;
     .configEditorColumn {
       display: flex;
-      flex: 1;
+      width: 50%;
       flex-direction: column;
       > div + div {
         margin-top: 1px;

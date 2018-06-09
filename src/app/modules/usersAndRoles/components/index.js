@@ -8,6 +8,10 @@ import Roles from '../../roles/containers';
 import styles from './styles.scss';
 
 class UsersAndRoles extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired
+    }
+
     static childContextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -21,19 +25,19 @@ class UsersAndRoles extends React.PureComponent {
     render() {
         const { match, history } = this.props;
         const { params } = match;
-
+        const { hasAccess } = this.context;
         return (
             <TabPanel
                 onTabClick={(tabId) => history && history.push(`/users-and-roles${tabId}`)}
                 activeTabId={`/${params.page}`}
                 className={styles.usersAndRolesContainer}
             >
-                <Users
+                {hasAccess('USERS', 'ALL') && <Users
                     id="/users"
                     tabtitle={ls('USERS_TAB_TITLE', 'Пользователи')}
                     history={this.props.history}
                     match={this.props.match}
-                />
+                />}
                 <Roles
                     id="/roles"
                     tabtitle={ls('ROLES_TAB_TITLE', 'Роли')}

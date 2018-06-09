@@ -32,7 +32,11 @@ class PoliciesControls extends React.PureComponent {
         return (
             <div className={styles.policiesControls}>
                 <div className={styles.buttonGroup}>
-                    <Icon icon="addIcon" onClick={this.onAdd}/>
+                    <Icon
+                        icon="addIcon"
+                        onClick={this.onAdd}
+                        title={ls('ADD_POLICY_TITLE', 'Добавить политику')}
+                    />
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
@@ -45,3 +49,7 @@ class PoliciesControls extends React.PureComponent {
 }
 
 export default PoliciesControls;
+
+
+
+

@@ -1,4 +1,7 @@
 .iconBlock {
     display: inline-block;
     cursor: pointer;
+    &.iconDisabled {
+        pointer-events: none;
+    }
 }

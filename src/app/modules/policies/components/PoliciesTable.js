@@ -8,18 +8,21 @@ import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import PolicyCell from './PolicyCell';
 import search from '../../../util/search';
 import styles from './styles.scss';
+import IconCell from "../../../components/Table/Cells/IconCell";
 
 class PoliciesTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        notificationClick: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
+        notificationClick: () => null
     };
 
     static getColumns = memoize(() => [{
@@ -28,51 +31,51 @@ class PoliciesTable extends React.PureComponent {
         sortable: true,
         searchable: true,
     },
-    // {
-    //     title: ls('POLICIES_CONDITION_COLUMN_TITLE', 'Условие'),
-    //     name: 'condition',
-    //     sortable: true,
-    //     searchable: true,
-    // }, {
-    //     title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
-    //     name: 'agregation',
-    //     sortable: true,
-    //     searchable: true,
-    //     filter: {
-    //         type: 'text',
-    //     },
-    // },
-    {
-        title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
-        name: 'aggregation_interval',
-        sortable: true,
-        searchable: true,
-        columns: [{
-            title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
-            name: 'rise_duration',
+        // {
+        //     title: ls('POLICIES_CONDITION_COLUMN_TITLE', 'Условие'),
+        //     name: 'condition',
+        //     sortable: true,
+        //     searchable: true,
+        // }, {
+        //     title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
+        //     name: 'agregation',
+        //     sortable: true,
+        //     searchable: true,
+        //     filter: {
+        //         type: 'text',
+        //     },
+        // },
+        {
+            title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
+            name: 'aggregation_interval',
+            sortable: true,
+            searchable: true,
+            columns: [{
+                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
+                name: 'rise_duration',
+            }, {
+                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
+                name: 'cease_duration',
+            }],
         }, {
-            title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
-            name: 'cease_duration',
-        }],
-    }, {
-        title: ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
-        name: 'threshold',
-        sortable: true,
-        searchable: true,
-        columns: [{
-            title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
-            name: 'rise_value',
-        }, {
-            title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
-            name: 'cease_value',
-        }],
-    },
-    // {
-    //     title: ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
-    //     name: 'scope',
-    //     sortable: true,
-    //     searchable: true,
-    // }
+            title: ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
+            name: 'threshold',
+            sortable: true,
+            searchable: true,
+            columns: [{
+                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
+                name: 'rise_value',
+            }, {
+                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
+                name: 'cease_value',
+            }],
+        },
+        // {
+        //     title: ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
+        //     name: 'scope',
+        //     sortable: true,
+        //     searchable: true,
+        // }
     ]);
 
     static mapPolicies = memoize(policies => policies.map(policy => ({
@@ -90,7 +93,7 @@ class PoliciesTable extends React.PureComponent {
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
 
-        switch(column.name) {
+        switch (column.name) {
             case 'aggregation_interval':
             case 'threshold':
                 return (
@@ -113,19 +116,29 @@ class PoliciesTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        switch(column.name) {
+        switch (column.name) {
             case 'name':
                 return (
-                    <LinkCell
-                        href={`/policies/edit/${node.id}`}
-                        content={node[column.name]}
-                    />
+                    <div className={styles.nameCell}>
+                        <LinkCell
+                            href={`/policies/edit/${node.id}`}
+                            content={node[column.name]}
+                        />
+                        <IconCell icon="edit-icon"
+                                  onIconClick={() => {
+                                      this.props.notificationClick(node.id)
+                                  }}
+                        />
+                    </div>
                 );
             case 'aggregation_interval':
             case 'threshold':
                 return (
                     <PolicyCell
-                        columns={column.columns.map(col => ({ title: _.get(node, `threshold.${col.name}`, ''), name: col.name }))}
+                        columns={column.columns.map(col => ({
+                            title: _.get(node, `threshold.${col.name}`, ''),
+                            name: col.name
+                        }))}
                     />
                 );
             default:

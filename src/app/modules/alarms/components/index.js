@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AlarmsContent from '../modules/AlarmsContent/containers';
+import AlarmsContent from './AlarmsContent';
 import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
-import { GROUP_POLICIES_ALARMS, CLIENTS_INCIDENTS_ALARMS, KQI_ALARMS } from '../modules/AlarmsContent/constants';
+import { GROUP_POLICIES_ALARMS, CLIENTS_INCIDENTS_ALARMS, KQI_ALARMS } from '../constants';
 
 const tabStyle = {
     display: 'flex',
@@ -19,6 +19,21 @@ class Alarms extends React.PureComponent {
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
+        filter: PropTypes.object,
+        alarms: PropTypes.array,
+        locations: PropTypes.array,
+        onChangeFilter: PropTypes.func,
+        onFetchAlarms: PropTypes.func,
+        isLoading: PropTypes.bool,
+    };
+
+    static defaultProps = {
+        filter: null,
+        alarms: [],
+        locations: [],
+        onChangeFilter: () => null,
+        onFetchAlarms: () => null,
+        isLoading: false,
     };
 
     getChildContext() {
@@ -32,7 +47,15 @@ class Alarms extends React.PureComponent {
     };
 
     render() {
-        const { match } = this.props;
+        const {
+            match,
+            filter,
+            alarms,
+            locations,
+            onChangeFilter,
+            onFetchAlarms,
+            isLoading,
+        } = this.props;
         const { params = {} } = match;
         const { type = GROUP_POLICIES_ALARMS } = params;
 
@@ -43,13 +66,19 @@ class Alarms extends React.PureComponent {
             >
                 <div
                     id={GROUP_POLICIES_ALARMS}
-                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'Групповые политики')}
+                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
                     style={tabStyle}
                 >
                     {type === GROUP_POLICIES_ALARMS && (
                         <AlarmsContent
                             type={type}
                             params={params}
+                            filter={filter}
+                            alarms={alarms}
+                            locations={locations}
+                            onChangeFilter={onChangeFilter}
+                            onFetchAlarms={onFetchAlarms}
+                            isLoading={isLoading}
                         />
                     )}
                 </div>
@@ -62,6 +91,12 @@ class Alarms extends React.PureComponent {
                         <AlarmsContent
                             type={type}
                             params={params}
+                            filter={filter}
+                            alarms={alarms}
+                            locations={locations}
+                            onChangeFilter={onChangeFilter}
+                            onFetchAlarms={onFetchAlarms}
+                            isLoading={isLoading}
                         />
                     )}
                 </div>
@@ -74,6 +109,12 @@ class Alarms extends React.PureComponent {
                         <AlarmsContent
                             type={type}
                             params={params}
+                            filter={filter}
+                            alarms={alarms}
+                            locations={locations}
+                            onChangeFilter={onChangeFilter}
+                            onFetchAlarms={onFetchAlarms}
+                            isLoading={isLoading}
                         />
                     )}
                 </div>

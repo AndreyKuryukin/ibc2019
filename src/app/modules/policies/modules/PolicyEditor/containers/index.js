@@ -36,67 +36,96 @@ class PolicyEditor extends React.PureComponent {
         this.context.pageBlur && this.context.pageBlur(true);
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.policy !== this.props.policy) {
+            this.setState({ loading: true });
+            Promise.all([
+                this.fetchPolicyTypes(nextProps.policy.object_type),
+                this.fetchMetaData(nextProps.policy.object_type, nextProps.policy.policy_type)])
+                .then(([policyTypes, metaData]) => {
+                    this.setState({
+                        policy: this.decodeConditions(nextProps.policy),
+                        policyTypes,
+                        metaData,
+                        loading: false
+                    })
+                })
+                .catch((e) => {
+                    console.log(e)
+                })
+        }
+    }
+
     state = {
         errors: null,
     };
 
-    validationConfig = {
-        name: {
-            required: true
-        },
-        policy_type: {
-            required: true,
-        },
-        threshold: () => ({
-            cease_duration: {
+
+    getValidationConfig = (metaData) => {
+        return {
+            name: {
+                required: true
+            },
+            object_type: {
                 required: true,
             },
-            cease_value: {
+            policy_type: {
                 required: true,
             },
-            rise_duration: {
-                required: true,
-            },
-            rise_value: {
-                required: true,
-            }
-        }),
-        condition: () => ({
+            threshold: () => ({
+                cease_duration: {
+                    required: true,
+                },
+                cease_value: {
+                    required: _.get(metaData, 'group') !== 'SIMPLE',
+                },
+                rise_duration: {
+                    required: true,
+                },
+                rise_value: {
+                    required: _.get(metaData, 'group') !== 'SIMPLE',
+                }
+            }),
             condition: () => ({
-                conditionDuration: {
-                    required: true,
-                    min: 0,
-                },
-                objectType: {
-                    required: true,
-                },
-                conjunction: () => ({
-                    type: {
+                condition: () => ({
+                    conditionDuration: {
                         required: true,
+                        min: 0,
                     },
-                    conjunctionList: [{
-                        notEmpty: true,
-                    },
-                        {
-                            value: () => ({
-                                parameterType: {
-                                    required: true,
-                                },
-                                operator: {
-                                    required: true,
-                                },
-                                value: {
-                                    required: true,
-                                },
-                            }),
-                        }],
+                    conjunction: () => ({
+                        type: {
+                            required: true,
+                        },
+                        conjunctionList: [{
+                            notEmpty: true,
+                        },
+                            {
+                                value: () => ({
+                                    parameterType: {
+                                        required: true,
+                                    },
+                                    operator: {
+                                        required: true,
+                                    },
+                                    value: {
+                                        required: true,
+                                    },
+                                }),
+                            }],
+                    }),
                 }),
             }),
-        }),
+        }
     };
 
+    constructor() {
+        super();
+        this.state = {};
+    }
+
     composeConjunctionString = (object) => {
-        const { parameterType = '', operator = '', value = '' } = object;
+        let { parameterType = '', operator = '', value = '' } = object;
+        value = isNaN(Number(value)) ? `'${value}'` : Number(value);
         const conjString = `${parameterType} ${operator} ${value}`;
         return conjString.trim();
     };
@@ -113,28 +142,96 @@ class PolicyEditor extends React.PureComponent {
 
     onChildMount = () => {
         const requests = [];
-        requests.push(rest.get('/api/v1/policy/policyTypes'));
         requests.push(rest.get('/api/v1/policy/scopeTypes'));
+        requests.push(rest.get('/api/v1/policy/objectTypes'));
         if (this.props.policyId) {
             const urlParams = {
                 policyId: this.props.policyId,
             };
             requests.push(rest.get('/api/v1/policy/:policyId', { urlParams }))
         }
+        this.setState({ loading: true });
         Promise.all(requests)
-            .then(([typesResp, scopeResp, policyResp]) => {
-                const types = typesResp.data;
+            .then(([scopeResp, objectTypesResp, policyResp]) => {
                 const scopes = scopeResp.data;
-
-                this.props.onFetchTypesSuccess(types);
-                this.props.onFetchScopesSuccess(scopes);
-                if (policyResp) {
-                    this.props.onFetchPolicySuccess(policyResp.data);
-                }
+                const objectTypes = objectTypesResp.data;
+                const policy = _.get(policyResp, 'data');
+                this.setState({ objectTypes, loading: false, policy }, () => {
+                    this.props.onFetchScopesSuccess(scopes);
+                    if (policyResp) {
+                        this.props.onFetchPolicySuccess(policy);
+                    }
+                });
             })
             .catch((e) => {
                 console.error(e);
             });
+    };
+
+    makePolicyTypeRequest = (objectType) => {
+        this.setState({ loading: true });
+        this.fetchPolicyTypes(objectType)
+            .then((policyTypes) => {
+                this.setState({ loading: false, policyTypes })
+            });
+    };
+
+    fetchPolicyTypes = (objectType) => {
+        if (objectType) {
+            return rest.get('/api/v1/policy/policyTypes/:objectType', { urlParams: { objectType } })
+                .then((response) => {
+                    return response.data;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    return {};
+                })
+        } else {
+            return Promise.resolve([])
+        }
+    };
+
+    updatePolicy = (policy) => {
+        this.setState({ policy });
+    };
+
+    applyMetaDataToPolicy = (metaData, policy) => {
+        if (_.get(metaData, 'group') === 'SIMPLE') {
+            let threshold = _.get(policy, 'threshold', {});
+            threshold = { ...threshold, cease_value: 0, rise_value: 0 };
+            policy.threshold = threshold;
+        }
+        return policy;
+    };
+
+    makeMetaDataRequest = (objectType, policyType) => {
+        this.setState({ loading: true });
+        this.fetchMetaData(objectType, policyType)
+            .then((metaData) => {
+                const policy = this.applyMetaDataToPolicy(metaData, this.state.policy);
+                this.setState({ policy, metaData, loading: false });
+            });
+    };
+
+    fetchMetaData = (objectType, policyType) => {
+        if (policyType && objectType) {
+            return rest.get('/api/v1/policy/function/:objectType/:policyType', {
+                urlParams: {
+                    objectType,
+                    policyType
+                }
+            })
+                .then((response) => {
+                    return response.data;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    return {}
+                })
+        } else {
+            return Promise.resolve({});
+        }
+
     };
 
     encodeConditions = (policyData) => {
@@ -143,13 +240,13 @@ class PolicyEditor extends React.PureComponent {
         const conjunctionList = _.get(conditionObject, 'conjunction.conjunctionList', []).map(conj => ({ value: this.composeConjunctionString(conj.value) }));
         _.set(conditionObject, 'conjunction.conjunctionList', conjunctionList);
         const conditionJson = JSON.stringify(conditionObject) || '';
-        const conditionString = encodeURIComponent(conditionJson);
+        const conditionString = conditionJson //encodeURIComponent(conditionJson);
         return { ...condition, condition: conditionString };
     };
 
     decodeConditions = (policy) => {
         const conditionString = _.get(_.cloneDeep(policy), 'condition.condition', '');
-        const conditionJson = decodeURIComponent(conditionString);
+        const conditionJson = conditionString; //decodeURIComponent(conditionString);
         if (conditionJson) {
             try {
                 const condition = JSON.parse(conditionJson);
@@ -157,15 +254,15 @@ class PolicyEditor extends React.PureComponent {
                 _.set(condition, 'conjunction.conjunctionList', conjunctionList);
                 _.set(policy, 'condition.condition', condition);
             } catch (e) {
-                _.set(policy, 'condition.condition')
+                console.log(e)
             }
         }
         return policy;
     };
 
     onSubmit = (policyId, policyData) => {
-        const errors = validateForm(policyData, this.validationConfig);
-
+        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData));
+        console.log(this.getValidationConfig(this.state.metaData));
         if (_.isEmpty(errors)) {
             const submit = policyId ? rest.put : rest.post;
             const success = (response) => {
@@ -185,14 +282,23 @@ class PolicyEditor extends React.PureComponent {
     };
 
     render() {
+        const props = _.omit(this.props, ['policy']);
         return (
             <PolicyEditorComponent
                 onSubmit={this.onSubmit}
                 onMount={this.onChildMount}
                 onClose={this.props.onReset}
-                policy={this.decodeConditions(this.props.policy)}
+                policy={this.state.policy}
                 errors={this.state.errors}
-                {...this.props}
+                objectTypes={this.state.objectTypes}
+                policyTypes={this.state.policyTypes}
+                metaData={this.state.metaData}
+                loading={this.state.loading}
+                fetchObjectTypes={this.fetchObjectTypes}
+                fetchPolicyTypes={this.makePolicyTypeRequest}
+                fetchMetaData={this.makeMetaDataRequest}
+                updatePolicy={this.updatePolicy}
+                {...props}
             />
         );
     }
