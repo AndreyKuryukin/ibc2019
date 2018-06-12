@@ -148,7 +148,7 @@ class Users extends React.Component {
                     preloader={this.props.isLoading}
                 />
 
-                {isEditorActive && <UserEditor
+                {this.context.hasAccess('USERS', 'EDIT') && isEditorActive && <UserEditor
                     active={isEditorActive}
                     userId={userId}
                 />}
