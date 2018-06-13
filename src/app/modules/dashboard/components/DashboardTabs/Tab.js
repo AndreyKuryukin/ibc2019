@@ -9,7 +9,7 @@ import KQI from '../KQI';
 class Tab extends React.PureComponent {
     static propTypes = {
         type: PropTypes.string.isRequired,
-        href: PropTypes.string.isRequired,
+        href: PropTypes.string,
         value: PropTypes.number,
         previous: PropTypes.number,
         expected: PropTypes.number,
@@ -42,14 +42,14 @@ class Tab extends React.PureComponent {
         );
     }
 
-    render() {
+    renderContent() {
         const { previous, expected, href } = this.props;
 
         const hasPrev = previous !== undefined;
         const hasExpected = expected !== undefined;
 
         return (
-            <Link to={href} className={styles.tab}>
+            <div className={styles.tab}>
                 <KQI
                     type={this.props.type}
                     value={this.props.value}
@@ -60,7 +60,19 @@ class Tab extends React.PureComponent {
                     {this.renderDynamic(ls('DASHBOARD_PREV_PERIOD', 'Прошлый период:'), previous)}
                     {this.renderDynamic(ls('DASHBOARD_EXPECTED', 'План:'), expected)}
                 </div>
-            </Link>
+            </div>
+        );
+    }
+
+    render() {
+        const { href } = this.props;
+
+        if (href === null) {
+            return this.renderContent();
+        }
+
+        return (
+            <Link to={href} className={styles.tabLink}>{this.renderContent()}</Link>
         );
     }
 }

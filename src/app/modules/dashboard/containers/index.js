@@ -23,11 +23,13 @@ class Dashboard extends React.PureComponent {
 
     state = {
         aggregated: null,
+        locations: [],
     };
 
     componentDidMount() {
         this.context.navBar.setPageTitle([ls('DASHBOARD_PAGE_TITLE', 'Рабочий стол')]);
         this.fetchAggregated();
+        this.fetchLocations();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -75,6 +77,16 @@ class Dashboard extends React.PureComponent {
             });
     }
 
+    fetchLocations() {
+        rest.get('/api/v1/common/location')
+            .then(({ data }) => {
+                this.setState({
+                    locations: data,
+                });
+            })
+            .catch(console.error);
+    }
+
     render () {
         return (
             <DashboardCmp
@@ -85,6 +97,7 @@ class Dashboard extends React.PureComponent {
                 type={this.getType()}
                 mrfId={this.getMRF()}
                 aggregated={this.state.aggregated}
+                locations={this.state.locations}
             />
         );
     }

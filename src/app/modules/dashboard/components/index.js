@@ -34,6 +34,7 @@ class Dashboard extends React.PureComponent {
             KGS: aggregatedItemPT,
             KSPD: aggregatedItemPT,
         }),
+        locations: PropTypes.array,
     };
 
     state = {
@@ -41,7 +42,7 @@ class Dashboard extends React.PureComponent {
         isFiltersExpanded: false,
         filter: FILTERS.reduce((result, filter) => ({
             ...result,
-            [filter.id]: [],
+            [filter.id]: filter.options.filter(option => option.enabled).map(option => option.value),
         }), {}),
     };
 
@@ -85,7 +86,7 @@ class Dashboard extends React.PureComponent {
     }
 
     render() {
-        const { history, match } = this.props;
+        const { match, locations } = this.props;
         const { aggregated } = this.props;
         const { params = {} } = match;
 
@@ -111,11 +112,13 @@ class Dashboard extends React.PureComponent {
         return <div className={styles.dashboardPage}>
             <DashboardHead
                 viewMode={mode}
+                mrfId={mrfId}
                 className={styles.head}
                 regularity={regularity}
                 isFiltersExpanded={this.state.isFiltersExpanded}
                 filters={FILTERS}
                 filterValues={this.state.filter}
+                locations={locations}
                 buildLink={this.buildLink}
                 onFiltersButtonClick={this.onFiltersButtonClick}
                 onFilterChange={this.onFilterChange}
@@ -124,10 +127,14 @@ class Dashboard extends React.PureComponent {
                 className={styles.tabs}
                 tabs={this.mapAggregatedToTabs()}
                 selectedTabId={type}
+                enableLinks={mode === VIEW_MODE.MAP}
             />
             <div className={styles.widgets}>
                 {mode === VIEW_MODE.GRAPH ? (
-                    <Graph />
+                    <Graph
+                        regularity={regularity}
+                        mrfId={mrfId}
+                    />
                 ) : (
                     <Map
                         mrfId={mrfId}

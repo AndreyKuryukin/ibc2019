@@ -19,12 +19,12 @@ export const FILTERS = [
             {
                 value: 'IPTV',
                 label: ls('IPTV_OTT', 'IPTV/OTT'),
-            }, {
-                value: 'INTERNET',
-                label: ls('INTERNET', 'INTERNET'),
-            }, {
-                value: 'VOIP',
-                label: ls('VOIP', 'VoIP'),
+            // }, {
+            //     value: 'INTERNET',
+            //     label: ls('INTERNET', 'INTERNET'),
+            // }, {
+            //     value: 'VOIP',
+            //     label: ls('VOIP', 'VoIP'),
             },
         ],
     }, {
@@ -46,12 +46,13 @@ export const FILTERS = [
             {
                 value: 'LIVE',
                 label: ls('LIVE', 'LIVE'),
-            }, {
-                value: 'PVR',
-                label: ls('PVR', 'PVR'),
-            }, {
-                value: 'VOD',
-                label: ls('VOD', 'VOD'),
+                enabled: true,
+            // }, {
+            //     value: 'PVR',
+            //     label: ls('PVR', 'PVR'),
+            // }, {
+            //     value: 'VOD',
+            //     label: ls('VOD', 'VOD'),
             },
         ],
     }, {

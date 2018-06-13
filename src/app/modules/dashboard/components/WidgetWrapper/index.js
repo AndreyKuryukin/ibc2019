@@ -9,20 +9,23 @@ class WidgetWrapper extends React.Component {
         className: PropTypes.string,
         title: PropTypes.node,
         backLink: PropTypes.string,
+        style: PropTypes.object,
         children: PropTypes.node,
     };
 
     render() {
-        const { className, title, backLink, children } = this.props;
+        const { className, title, backLink, style, children } = this.props;
 
         return (
-            <div className={cn(styles.widgetWrapper, className)}>
-                <div className={styles.head}>
-                    <h3 className={styles.title}>
-                        {backLink !== undefined && <BackLink to={backLink} className={styles.backLink} />}
-                        {title}
-                    </h3>
-                </div>
+            <div className={cn(styles.widgetWrapper, className)} style={style}>
+                {(title !== undefined || backLink !== undefined) && (
+                    <div className={styles.head}>
+                        <h3 className={styles.title}>
+                            {backLink !== undefined && <BackLink to={backLink} className={styles.backLink} />}
+                            {title}
+                        </h3>
+                    </div>
+                )}
                 <div className={styles.body}>{children}</div>
             </div>
         )

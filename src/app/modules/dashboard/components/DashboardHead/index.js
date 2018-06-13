@@ -1,21 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import { Button } from 'reactstrap';
+import {Button} from 'reactstrap';
 import styles from './styles.scss';
 import ButtonGroup from './ButtonGroup';
 import Filters from './Filters';
 import ls from '../../../../../i18n';
 import {REGULARITIES, VIEW_MODE} from '../../constants';
+import LocationDropdown from './LocationDropdown';
 
 class DashboardHead extends React.Component {
     static propTypes = {
         viewMode: PropTypes.string,
+        mrfId: PropTypes.string,
         className: PropTypes.string,
         regularity: PropTypes.string.isRequired,
         isFiltersExpanded: PropTypes.bool,
         filters: PropTypes.array,
         filterValues: PropTypes.object,
+        locations: PropTypes.array.isRequired,
         buildLink: PropTypes.func.isRequired,
         onFiltersButtonClick: PropTypes.func.isRequired,
         onFilterChange: PropTypes.func.isRequired,
@@ -53,7 +56,9 @@ class DashboardHead extends React.Component {
             id: mode,
             text: DashboardHead.localizeViewMode(mode),
             value: mode,
-            href: this.props.buildLink({ mode }),
+            href: this.props.buildLink(
+                mode === VIEW_MODE.MAP ? { mode } : { mode, type: null }
+            ),
         }));
     }
     getRegularityOptions() {
@@ -73,6 +78,14 @@ class DashboardHead extends React.Component {
                     value={this.props.viewMode}
                     options={this.getModeSwitcherOptions()}
                 />
+                {this.props.viewMode !== VIEW_MODE.MAP && (
+                    <LocationDropdown
+                        className={styles.locationDropdown}
+                        mrfId={this.props.mrfId}
+                        locations={this.props.locations}
+                        buildLink={this.props.buildLink}
+                    />
+                )}
                 <ButtonGroup
                     className={styles.regularitySwitcher}
                     value={this.props.regularity}

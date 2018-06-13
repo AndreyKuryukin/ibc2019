@@ -17,10 +17,11 @@ class DashboardTabs extends React.PureComponent {
             expected: PropTypes.number,
         })),
         selectedTabId: PropTypes.string,
+        enableLinks: PropTypes.bool,
     };
 
     render() {
-        const { className, tabs, selectedTabId } = this.props;
+        const { className, tabs, selectedTabId, enableLinks } = this.props;
         const selectedTabIndex = this.props.tabs.findIndex(tab => tab.id === selectedTabId);
 
         return (
@@ -40,7 +41,7 @@ class DashboardTabs extends React.PureComponent {
                             <Tab
                                 key={tab.id}
                                 type={tab.type}
-                                href={tab.href}
+                                href={enableLinks ? tab.href : null}
                                 value={tab.value}
                                 previous={tab.previous}
                                 expected={tab.expected}
@@ -50,7 +51,7 @@ class DashboardTabs extends React.PureComponent {
                         return result;
                     }, [])}
                 </div>
-                {selectedTabIndex !== -1 && (
+                {selectedTabIndex !== -1 && enableLinks && (
                     <Indicator
                         current={selectedTabIndex}
                         total={tabs.length}
