@@ -121,7 +121,10 @@ class PolicyEditor extends React.PureComponent {
             prevPolicy = this.handleObjectTypeChange(prevPolicy, value)
         }
         if (key === 'policy_type') {
-            prevPolicy = this.handlePolicyTypeChange(prevPolicy, value)
+            prevPolicy = this.handlePolicyTypeChange(prevPolicy, value);
+        }
+        if (key === 'scope_type') {
+            prevPolicy.scope_list = [];
         }
         const policy = _.mergeWith(
             prevPolicy,
@@ -221,8 +224,7 @@ class PolicyEditor extends React.PureComponent {
                                                 onChange={scope_type => this.setPolicyProperty('scope_type', scope_type)}
                                             />
                                         </Field>
-                                        {
-                                            <MacList
+                                        {this.getPolicyProperty('scope_type') === 'MAC' && <MacList
                                                 macs={this.getPolicyProperty('scope_list')}
                                                 onChange={macs => this.setPolicyProperty('scope_list', macs)}>
                                             </MacList>

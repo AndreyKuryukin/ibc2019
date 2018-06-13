@@ -126,6 +126,9 @@ module.exports = (app) => {
         res.send(Object.keys(META_DATA[objectType]));
     });
 
+    app.get('/api/v1/policy/scopeTypes', (req, res) => {
+        res.send(['NETWORK', 'NODE', 'ACCESS_NODE', 'PRIMARY_EDGE_NODE', 'MAC']);
+    });
 
     app.get('/api/v1/policy/objectTypes', (req, res) => {
         res.send(Object.keys(META_DATA));
@@ -197,8 +200,8 @@ module.exports = (app) => {
             adapter_id: 'CRM',
             name: 'CRM',
             instances: [
-                { instance_id: 'prod', name: 'Prod'},
-                { instance_id: 'test', name: 'Test'}
+                { instance_id: 'prod', name: 'Prod' },
+                { instance_id: 'test', name: 'Test' }
             ],
             parameters: [{
                 type: 'enum',
