@@ -128,7 +128,6 @@ class App extends React.Component {
     });
 
     hasAccess = (subjectName, level) => {
-        // hasAccess('USERS', 'EDIT||VIEW')
        const userSubjects =  _.get(this.props, 'user.subjects', []);
        const subject = _.find(userSubjects, (sbj) => sbj.name.toUpperCase() === subjectName.toUpperCase());
        const accessLevel = _.get(subject, 'access_level', []);

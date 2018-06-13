@@ -15,6 +15,7 @@ import Condition from './Condition';
 import styles from './styles.scss';
 import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 import Preloader from "../../../../../components/Preloader";
+import MacList from "./MacList";
 
 const notAllowedAccidentStyle = { width: '60%' };
 
@@ -122,10 +123,18 @@ class PolicyEditor extends React.PureComponent {
         if (key === 'policy_type') {
             prevPolicy = this.handlePolicyTypeChange(prevPolicy, value)
         }
-        const policy = _.merge(
-            {},
+        const policy = _.mergeWith(
             prevPolicy,
             policyValues,
+            (objValue, srcValue) => {
+                if (_.isArray(srcValue)) {
+                    return srcValue;
+                } else if (_.isObject(srcValue)) {
+                    return _.merge(objValue, srcValue)
+                }  else {
+                    return srcValue
+                }
+            }
         );
 
         this.setState({
@@ -162,6 +171,11 @@ class PolicyEditor extends React.PureComponent {
 
     getMilliSeconds = (secs) => {
         return moment.duration(Number(secs), 'seconds').asMilliseconds();
+    };
+
+    addMac = (mac) => {
+        const scope_list = this.getPolicyProperty('scope_list') || [];
+        this.setPolicyProperty('scope_list', [...scope_list, mac])
     };
 
     render() {
@@ -207,18 +221,12 @@ class PolicyEditor extends React.PureComponent {
                                                 onChange={scope_type => this.setPolicyProperty('scope_type', scope_type)}
                                             />
                                         </Field>
-                                        <Field
-                                            id="scope"
-                                            inputWidth="100%"
-                                            splitter=""
-                                        >
-                                            <Select
-                                                id="scope"
-                                                type="select"
-                                                options={[]}
-                                                onChange={() => null}
-                                            />
-                                        </Field>
+                                        {
+                                            <MacList
+                                                macs={this.getPolicyProperty('scope_list')}
+                                                onChange={macs => this.setPolicyProperty('scope_list', macs)}>
+                                            </MacList>
+                                        }
                                     </Panel>
                                     <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
@@ -279,7 +287,7 @@ class PolicyEditor extends React.PureComponent {
                                     />
                                 </div>
                                 {!_.isEmpty(this.state.metaData) &&
-                                    (_.get(this.props, 'metaData.channel_suppression', false) ||
+                                (_.get(this.props, 'metaData.channel_suppression', false) ||
                                     _.get(this.props, 'metaData.hierarchy_suppression', false)) &&
                                 <Panel
                                     title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
