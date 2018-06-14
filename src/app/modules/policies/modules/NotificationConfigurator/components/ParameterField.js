@@ -6,6 +6,7 @@ import memoize from 'memoizejs';
 import Select from '../../../../../components/Select';
 import Input from '../../../../../components/Input';
 import Field from '../../../../../components/Field';
+import MultiselectGrid from './MultiselectGrid';
 import styles from './styles.scss';
 
 class ParameterField extends React.PureComponent {
@@ -13,9 +14,10 @@ class ParameterField extends React.PureComponent {
         id: PropTypes.string.isRequired,
         type: PropTypes.oneOf(['string', 'integer', 'enum']).isRequired,
         name: PropTypes.string,
-        value: PropTypes.string,
+        value: PropTypes.oneOfType([PropTypes.string, PropTypes.array]),
         values: PropTypes.array,
         required: PropTypes.bool,
+        multiple: PropTypes.bool,
         onChange: PropTypes.func,
     };
 
@@ -24,6 +26,7 @@ class ParameterField extends React.PureComponent {
         value: '',
         values: [],
         required: false,
+        multiple: false,
         onChange: () => null,
     };
 
@@ -34,7 +37,7 @@ class ParameterField extends React.PureComponent {
 
     onChangeInput = (e) => {
         this.props.onChange(_.get(e, 'target.value', ''));
-    }
+    };
 
     render() {
         const {
@@ -44,6 +47,7 @@ class ParameterField extends React.PureComponent {
             value,
             values,
             required,
+            multiple,
             onChange,
         } = this.props;
 
@@ -65,12 +69,21 @@ class ParameterField extends React.PureComponent {
                     value={value}
                     onChange={this.onChangeInput}
                 />}
-                {type === 'enum' && <Select
-                    id={id}
-                    options={ParameterField.mapOptions(values)}
-                    value={value}
-                    onChange={onChange}
-                />}
+                {type === 'enum' && (multiple ? (
+                    <MultiselectGrid
+                        id={id}
+                        values={values}
+                        checked={value}
+                        onChange={onChange}
+                    />
+                ) : (
+                    <Select
+                        id={id}
+                        options={ParameterField.mapOptions(values)}
+                        value={value[0] || ''}
+                        onChange={onChange}
+                    />
+                ))}
             </Field>
         );
     }

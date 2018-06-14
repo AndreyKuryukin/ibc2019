@@ -47,12 +47,8 @@ class ConfigBlock extends React.PureComponent {
         this.props.onChangeParameters(parameters);
     };
 
-    onRemove = () => {
-        this.props.onRemove(this.props.id);
-    };
-
     render() {
-        const { config } = this.props;
+        const { config, onRemove } = this.props;
         return (
             <div className={styles.configBlock}>
                 <div className={styles.configContentRow}>
@@ -62,13 +58,13 @@ class ConfigBlock extends React.PureComponent {
                                 {`${ls('POLICIES_CONFIGURATOR_ADAPTER_FIELD_LABEL', 'Адаптер')}: ${_.get(config, 'name', '')}`}
                             </div>
                             {_.get(config, 'instances', []).length > 0 && <Field
-                                id="instance"
+                                id={`${this.props.id}_instance`}
                                 labelText={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_LABEL', 'Инстанс')}
                                 inputWidth={115}
                                 style={instanceFieldStyle}
                             >
                                 <Select
-                                    id="instance"
+                                    id={`${this.props.id}_instance`}
                                     options={ConfigBlock.mapOptions(_.get(config, 'instances', []))}
                                     value={_.get(config, 'instance_id', '')}
                                     onChange={this.onChangeInstance}
@@ -79,12 +75,13 @@ class ConfigBlock extends React.PureComponent {
                             {_.get(config, 'parameters', []).map((param, index) => (
                                 <ParameterField
                                     key={this.props.id + `_${param.uid}`}
-                                    id={param.uid}
+                                    id={this.props.id + `_${param.uid}`}
                                     type={param.type}
                                     name={param.name}
                                     value={param.value}
                                     values={param.values}
                                     required={param.required}
+                                    multiple={param.multiple}
                                     onChange={this.onChangeParameter.bind(this, index)}
                                 />
                             ))}
@@ -92,7 +89,7 @@ class ConfigBlock extends React.PureComponent {
                     </div>
                     <span
                         className={styles.configBlockRemove}
-                        onClick={this.onRemove}
+                        onClick={onRemove}
                     >×</span>
                 </div>
             </div>

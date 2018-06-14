@@ -146,7 +146,7 @@ class NotificationConfigurator extends React.PureComponent {
                     instance_id: cfg.instance_id,
                     parameters: cfg.parameters.map(param => ({
                         uid: param.uid,
-                        value: param.value,
+                        value: _.isArray(param.value) ? param.value : [param.value],
                     })),
                 }))
                 .value();
@@ -178,6 +178,7 @@ class NotificationConfigurator extends React.PureComponent {
                                 <div className={styles.configs}>
                                     {_.map(this.state.configs, (config, key) => (
                                         config && <ConfigBlock
+                                            id={key}
                                             key={key}
                                             config={config}
                                             onChangeInstance={this.onChangeConfigInstance.bind(this, key)}

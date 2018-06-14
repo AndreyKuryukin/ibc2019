@@ -95,8 +95,8 @@ class NotificationConfigurator extends React.PureComponent {
     onMount = () => {
         if (this.props.policyId) {
             Promise.all([
-                rest.get('/api/v1/policies/notification/metadata/:id', { urlParams: { id: this.props.policyId } }),
-                rest.get(`/api/v1/policies/${this.props.policyId}/notifications`)
+                rest.get('/api/v1/policy/notifacation/metadata'),
+                rest.get(`/api/v1/policy/${this.props.policyId}/notifications`)
             ])
                 .then(([metadataResponse, notificationsResponse]) => {
                     this.props.onFetchAdaptersSuccess(metadataResponse.data);
@@ -110,7 +110,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     onSubmit = (notifications) => {
         if (this.props.policyId) {
-            rest.put(`/api/v1/policies/${this.props.policyId}/notifications`, notifications)
+            rest.post(`/api/v1/policy/${this.props.policyId}/notifications`, notifications)
                 .then(() => {
                     console.log('Success');
                     this.context.history.push('/policies');

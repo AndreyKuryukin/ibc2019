@@ -246,11 +246,40 @@ module.exports = (app) => {
                     value: 'Listening autoinformer',
                 }]
             }],
+        }, {
+            adapter_id: 'EMAIL',
+            name: 'EMAIL',
+            instances: [
+                { instance_id: 'prod', name: 'Prod'},
+                { instance_id: 'test', name: 'Test'}
+            ],
+            parameters: [{
+                type: 'enum',
+                uid: 'group',
+                name: 'Группы',
+                multiple: true,
+                values: [
+                    { name: 'UserGroup 1', value: 'UserGroup1' },
+                    { name: 'UserGroup 2', value: 'UserGroup2' },
+                    { name: 'UserGroup 3', value: 'UserGroup3' },
+                    { name: 'UserGroup 4', value: 'UserGroup4' },
+                    { name: 'UserGroup 5', value: 'UserGroup5' },
+                    { name: 'UserGroup 6', value: 'UserGroup6' }
+                ]
+            }, {
+                type: 'enum',
+                uid: 'users',
+                name: 'Пользователи',
+                multiple: true,
+                values: [
+                    { name: 'TestUser 1', value: 'TestUser1' },
+                    { name: 'TestUser 2', value: 'TestUser2' }
+                ]
+            }]
         }]);
     });
     app.get('/api/v1/policies/:id/notifications', (req, res) => {
         const policies = readPoliciesFile();
-        console.log(req.params.id);
         res.send(policies[req.params.id].notifications_configs);
     });
     app.put('/api/v1/policies/:id/notifications', (req, res) => {
