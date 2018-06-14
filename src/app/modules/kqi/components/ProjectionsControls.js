@@ -9,6 +9,7 @@ import Icon from "../../../components/Icon/Icon";
 class ProjectionsControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
@@ -30,13 +31,13 @@ class ProjectionsControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.kqiControls}>
-                <div className={styles.buttonsGroup}>
+                {this.context.hasAccess('KQI', 'EDIT') && <div className={styles.buttonsGroup}>
                     <Icon
                         icon="addIcon"
                         onClick={this.onCalculate}
                         title={ls('ADD_KQI_PROJECTION_TITLE', 'Добавить проекцию KQI')}
                     />
-                </div>
+                </div>}
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}

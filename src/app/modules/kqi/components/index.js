@@ -21,6 +21,10 @@ class KQI extends React.PureComponent {
         history: PropTypes.object.isRequired,
     };
 
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -104,8 +108,8 @@ class KQI extends React.PureComponent {
         const { params = {} } = this.props.match;
         const { action, resultId, projectionId, configId: urlKqiId } = params;
         const configId = urlKqiId || this.state.selectedKQIConfigId;
-        const isConfiguratorActive = action === 'configure';
-        const isCalculatorActive = action === 'calculate';
+        const isConfiguratorActive = this.context.hasAccess('KQI', 'EDIT') ? action === 'configure' : (action === 'configure' && urlKqiId);
+        const isCalculatorActive = this.context.hasAccess('KQI', 'EDIT') && action === 'calculate';
         const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
         const cfgName = configId ? _.get(this.getConfigsByIdFromProps(this.props), `${configId}.name`, '') : '';
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styles from './styles.scss';
@@ -9,10 +9,14 @@ import UsersTable from './UsersTable';
 import Icon from '../../../components/Icon/Icon';
 import Input from '../../../components/Input/index';
 
-const iconStyle = { marginLeft: 10 };
+const iconStyle = { marginRight: 10 };
 const groupIconStyle = { marginLeft: 20 };
 
 class Users extends React.Component {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -99,21 +103,23 @@ class Users extends React.Component {
         return (
             <div className={styles.usersWrapper}>
                 <div className={styles.controlsWrapper}>
-                    <Icon
-                        icon="addIcon"
-                        onClick={this.onAdd}
-                        title={ls('ADD_USER_TITLE', 'Добавить пользователя')}
-                    />
-                    <Icon
-                        icon="deleteIcon"
-                        onClick={this.onDelete}
-                        style={iconStyle}
-                        title={ls('DELETE_USER_TITLE', 'Удалить пользователя')}
-                    />
+                    {this.context.hasAccess('USERS', 'EDIT') && <Fragment>
+                        <Icon
+                            icon="addIcon"
+                            onClick={this.onAdd}
+                            style={iconStyle}
+                            title={ls('ADD_USER_TITLE', 'Добавить пользователя')}
+                        />
+                        <Icon
+                            icon="deleteIcon"
+                            onClick={this.onDelete}
+                            style={iconStyle}
+                            title={ls('DELETE_USER_TITLE', 'Удалить пользователя')}
+                        />
+                    </Fragment>}
                     <Icon
                         icon="lockIcon"
                         onClick={this.onLock}
-                        style={iconStyle}
                         title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
                     />
                     <Icon
@@ -142,7 +148,7 @@ class Users extends React.Component {
                     preloader={this.props.isLoading}
                 />
 
-                {isEditorActive && <UserEditor
+                {this.context.hasAccess('USERS', 'EDIT') && isEditorActive && <UserEditor
                     active={isEditorActive}
                     userId={userId}
                 />}

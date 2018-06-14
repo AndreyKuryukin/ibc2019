@@ -92,8 +92,17 @@ class NotificationConfigurator extends React.PureComponent {
         onFetchNotificationsSuccess: () => null,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: false,
+        };
+    }
+
     onMount = () => {
         if (this.props.policyId) {
+            this.setState({ isLoading: true });
             Promise.all([
                 rest.get('/api/v1/policy/notification/metadata'),
                 rest.get(`/api/v1/policy/${this.props.policyId}/notifications`)
@@ -101,9 +110,11 @@ class NotificationConfigurator extends React.PureComponent {
                 .then(([metadataResponse, notificationsResponse]) => {
                     this.props.onFetchAdaptersSuccess(metadataResponse.data);
                     this.props.onFetchNotificationsSuccess(notificationsResponse.data);
+                    this.setState({ isLoading: false });
                 })
                 .catch((e) => {
                     console.error(e);
+                    this.setState({ isLoading: false });
                 });
         }
     };
@@ -129,6 +140,7 @@ class NotificationConfigurator extends React.PureComponent {
                 notifications={this.props.notifications}
                 onSubmit={this.onSubmit}
                 onMount={this.onMount}
+                isLoading={this.state.isLoading}
             />
         );
     }

@@ -12,6 +12,10 @@ class Policies extends React.Component {
         history: PropTypes.object.isRequired,
     };
 
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -61,7 +65,7 @@ class Policies extends React.Component {
         const { searchText } = this.state;
 
         const { params } = match;
-        const isEditorActive = params.action === 'edit' || params.action === 'add';
+        const isEditorActive = this.context.hasAccess('POLICY', 'EDIT') && (params.action === 'edit' || params.action === 'add');
         const isConfiguratorActive = params.action === 'cofigure';
         const policyId = params.id ? params.id : null;
 

@@ -11,6 +11,10 @@ import styles from './styles.scss';
 import IconCell from "../../../components/Table/Cells/IconCell";
 
 class PoliciesTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired
+    };
+
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -93,7 +97,7 @@ class PoliciesTable extends React.PureComponent {
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
 
-        switch (column.name) {
+        switch(column.name) {
             case 'aggregation_interval':
             case 'threshold':
                 return (
@@ -116,9 +120,9 @@ class PoliciesTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        switch (column.name) {
+        switch(column.name) {
             case 'name':
-                return (
+                return this.context.hasAccess('POLICY', 'EDIT') ? (
                     <div className={styles.nameCell}>
                         <LinkCell
                             href={`/policies/edit/${node.id}`}
@@ -130,6 +134,10 @@ class PoliciesTable extends React.PureComponent {
                                   }}
                         />
                     </div>
+                ) : (
+                    <DefaultCell
+                        content={node[column.name]}
+                    />
                 );
             case 'aggregation_interval':
             case 'threshold':

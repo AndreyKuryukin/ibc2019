@@ -10,6 +10,10 @@ import RolesControls from './Controls';
 import ls from "i18n";
 
 class Roles extends React.Component {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
@@ -67,7 +71,7 @@ class Roles extends React.Component {
 
         const { match, rolesData, isLoading } = this.props;
         const { params } = match;
-        const isEditorActive = params.action === 'edit' || params.action === 'add';
+        const isEditorActive = this.context.hasAccess('ROLES', 'EDIT') && (params.action === 'edit' || params.action === 'add');
         const roleId = params.id ? params.id : null;
 
         return (

@@ -10,6 +10,7 @@ import ls from "i18n";
 class PoliciesControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
@@ -31,13 +32,13 @@ class PoliciesControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.policiesControls}>
-                <div className={styles.buttonGroup}>
+                {this.context.hasAccess('POLICY', 'EDIT') && <div className={styles.buttonGroup}>
                     <Icon
                         icon="addIcon"
                         onClick={this.onAdd}
                         title={ls('ADD_POLICY_TITLE', 'Добавить политику')}
                     />
-                </div>
+                </div>}
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}
@@ -49,7 +50,3 @@ class PoliciesControls extends React.PureComponent {
 }
 
 export default PoliciesControls;
-
-
-
-
