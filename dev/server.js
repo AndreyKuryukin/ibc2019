@@ -39,7 +39,7 @@ const plugins = [
     // './reports',
     './sources',
     // './alarms',
-    './common',
+    //'./common',
     // './user'
 ];
 
