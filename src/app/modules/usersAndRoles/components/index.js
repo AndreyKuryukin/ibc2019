@@ -32,7 +32,7 @@ class UsersAndRoles extends React.PureComponent {
                 activeTabId={`/${params.page}`}
                 className={styles.usersAndRolesContainer}
             >
-                {hasAccess('USERS', 'ALL') && <Users
+                {(hasAccess('USERS', 'EDIT') || hasAccess('USERS', 'VIEW')) && <Users
                     id="/users"
                     tabtitle={ls('USERS_TAB_TITLE', 'Пользователи')}
                     history={this.props.history}
