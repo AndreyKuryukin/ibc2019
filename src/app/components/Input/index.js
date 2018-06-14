@@ -23,6 +23,10 @@ const defaultProps = {
     type: 'text',
 };
 
+const style = {
+    position: 'relative',
+};
+
 class Input extends React.Component {
     render() {
         let {
@@ -90,7 +94,7 @@ class Input extends React.Component {
         }
 
         return (
-            <div className={className}>
+            <div style={style} className={className}>
                 {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}
             <Tag {...attributes} ref={innerRef} className={classes} />
             </div>

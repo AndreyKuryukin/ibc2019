@@ -18,6 +18,10 @@ const NODE_TYPES = {
 };
 
 export class ProjectionsTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -32,7 +36,7 @@ export class ProjectionsTable extends React.PureComponent {
         configId: null,
     };
 
-    static getColumns = memoize(() => [{
+    static getColumns = memoize(hasEditAccess => [{
         title: ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции'),
         name: 'name',
         searchable: true,
@@ -73,7 +77,7 @@ export class ProjectionsTable extends React.PureComponent {
         title: ls('KQI_GRAPH_COLUMN_TITLE', 'График'),
         name: 'graph',
         width: 60,
-    }, {
+    }, ...(hasEditAccess ? [{
         title: '',
         name: 'edit',
         width: 40,
@@ -81,7 +85,7 @@ export class ProjectionsTable extends React.PureComponent {
         title: '',
         name: 'delete',
         width: 25,
-    }]);
+    }] : [])]);
 
 
     mapProjection = projection => ({
@@ -183,7 +187,8 @@ export class ProjectionsTable extends React.PureComponent {
     render() {
         const { searchText } = this.props;
         const mappedData = this.getMappedDataFromProps(this.props);
-        const columns = ProjectionsTable.getColumns();
+        const hasEditAccess = this.context.hasAccess('KQI', 'EDIT');
+        const columns = ProjectionsTable.getColumns(hasEditAccess);
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
 
         return (

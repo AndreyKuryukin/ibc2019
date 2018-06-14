@@ -1,10 +1,9 @@
 @import "../../../../../scss/vars";
 
 .notificationConfigurator {
-  width: 500px !important;
-  max-width: 500px !important;
   .notificationConfiguratorContent {
     display: flex;
+    flex-grow: 1;
     background: $white;
     padding: 10px;
     flex-direction: column;
@@ -13,7 +12,7 @@
       flex-grow: 1;
       flex-direction: column;
       margin-top: 10px;
-      height: 300px;
+      height: 400px;
       .configsControls {
         display: flex;
         align-items: center;
@@ -68,4 +67,7 @@
       }
     }
   }
+}
+.policyNotificationParam .fieldInput {
+  background: none;
 }

@@ -8,6 +8,10 @@ import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells
 import styles from './styles.scss';
 
 class ConfigsTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
@@ -26,7 +30,7 @@ class ConfigsTable extends React.PureComponent {
         onDeleteConfig: () => null,
     };
 
-    static getColumns = memoize(() => [{
+    static getColumns = memoize(hasEditAccess => [{
         title: ls('KQI_NAME_COLUMN_TITLE', 'Название'),
         name: 'name',
         searchable: true,
@@ -44,11 +48,11 @@ class ConfigsTable extends React.PureComponent {
         title: '',
         name: 'edit',
         width: 40,
-    }, {
+    }, ...(hasEditAccess ? [{
         title: '',
         name: 'delete',
         width: 25,
-    }]);
+    }] : [])]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell
@@ -109,7 +113,8 @@ class ConfigsTable extends React.PureComponent {
 
     render() {
         const { data, searchText } = this.props;
-        const columns = ConfigsTable.getColumns();
+        const hasEditAccess = this.context.hasAccess('KQI', 'EDIT');
+        const columns = ConfigsTable.getColumns(hasEditAccess);
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
 
         return (

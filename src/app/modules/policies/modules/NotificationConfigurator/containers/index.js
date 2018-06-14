@@ -92,25 +92,36 @@ class NotificationConfigurator extends React.PureComponent {
         onFetchNotificationsSuccess: () => null,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isLoading: false,
+        };
+    }
+
     onMount = () => {
         if (this.props.policyId) {
+            this.setState({ isLoading: true });
             Promise.all([
-                rest.get('/api/v1/policies/notification/metadata/:id', { urlParams: { id: this.props.policyId } }),
-                rest.get(`/api/v1/policies/${this.props.policyId}/notifications`)
+                rest.get('/api/v1/policy/notification/metadata'),
+                rest.get(`/api/v1/policy/${this.props.policyId}/notifications`)
             ])
                 .then(([metadataResponse, notificationsResponse]) => {
                     this.props.onFetchAdaptersSuccess(metadataResponse.data);
                     this.props.onFetchNotificationsSuccess(notificationsResponse.data);
+                    this.setState({ isLoading: false });
                 })
                 .catch((e) => {
                     console.error(e);
+                    this.setState({ isLoading: false });
                 });
         }
     };
 
     onSubmit = (notifications) => {
         if (this.props.policyId) {
-            rest.put(`/api/v1/policies/${this.props.policyId}/notifications`, notifications)
+            rest.post(`/api/v1/policy/${this.props.policyId}/notifications`, notifications)
                 .then(() => {
                     console.log('Success');
                     this.context.history.push('/policies');
@@ -129,6 +140,7 @@ class NotificationConfigurator extends React.PureComponent {
                 notifications={this.props.notifications}
                 onSubmit={this.onSubmit}
                 onMount={this.onMount}
+                isLoading={this.state.isLoading}
             />
         );
     }

@@ -8,6 +8,7 @@ import Icon from '../../../../../components/Icon/Icon';
 import ls from 'i18n';
 import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
+import Preloader from '../../../../../components/Preloader';
 import ConfigBlock from './ConfigBlock';
 import Controls from './Controls';
 
@@ -27,6 +28,7 @@ class NotificationConfigurator extends React.PureComponent {
         onClose: PropTypes.func,
         onSubmit: PropTypes.func,
         onMount: PropTypes.func,
+        isLoading: PropTypes.bool,
     };
 
     static defaultProps = {
@@ -36,6 +38,7 @@ class NotificationConfigurator extends React.PureComponent {
         onClose: () => null,
         onSubmit: () => null,
         onMount: () => null,
+        isLoading: false,
     };
 
     constructor(props) {
@@ -146,7 +149,7 @@ class NotificationConfigurator extends React.PureComponent {
                     instance_id: cfg.instance_id,
                     parameters: cfg.parameters.map(param => ({
                         uid: param.uid,
-                        value: param.value,
+                        value: _.isArray(param.value) ? param.value : [param.value],
                     })),
                 }))
                 .value();
@@ -155,7 +158,7 @@ class NotificationConfigurator extends React.PureComponent {
     };
 
     render() {
-        const { active, adapters } = this.props;
+        const { active, adapters, isLoading } = this.props;
         const selectedConfigsKeys = _.keys(this.state.configs);
         return (
             <DraggableWrapper>
@@ -167,27 +170,30 @@ class NotificationConfigurator extends React.PureComponent {
                         {ls('POLICIES_NOTIFICATION_CONFIGURATOR_TITLE', 'Конфигурация нотификатора')}
                     </ModalHeader>
                     <ModalBody>
-                        <div className={styles.notificationConfiguratorContent}>
-                            <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${'ALARM_STB_MLR'}`}</div>
-                            <div className={styles.configsWrapper}>
-                                <Controls
-                                    adapters={adapters}
-                                    onAddConfig={this.onAddConfig}
-                                    selectedConfigsKeys={selectedConfigsKeys}
-                                />
-                                <div className={styles.configs}>
-                                    {_.map(this.state.configs, (config, key) => (
-                                        config && <ConfigBlock
-                                            key={key}
-                                            config={config}
-                                            onChangeInstance={this.onChangeConfigInstance.bind(this, key)}
-                                            onChangeParameters={this.onChangeConfigParameters.bind(this, key)}
-                                            onRemove={this.onConfigRemove.bind(this, key)}
-                                        />
-                                    ))}
+                        <Preloader active={isLoading}>
+                            <div className={styles.notificationConfiguratorContent}>
+                                <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${'ALARM_STB_MLR'}`}</div>
+                                <div className={styles.configsWrapper}>
+                                    <Controls
+                                        adapters={adapters}
+                                        onAddConfig={this.onAddConfig}
+                                        selectedConfigsKeys={selectedConfigsKeys}
+                                    />
+                                    <div className={styles.configs}>
+                                        {_.map(this.state.configs, (config, key) => (
+                                            config && <ConfigBlock
+                                                id={key}
+                                                key={key}
+                                                config={config}
+                                                onChangeInstance={this.onChangeConfigInstance.bind(this, key)}
+                                                onChangeParameters={this.onChangeConfigParameters.bind(this, key)}
+                                                onRemove={this.onConfigRemove.bind(this, key)}
+                                            />
+                                        ))}
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </Preloader>
                     </ModalBody>
                     <ModalFooter>
                         <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>

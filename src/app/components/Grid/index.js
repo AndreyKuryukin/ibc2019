@@ -20,6 +20,7 @@ class Grid extends React.PureComponent {
         noCheckAll: PropTypes.bool,
         noSearch: PropTypes.bool,
         disabled: PropTypes.bool,
+        style: PropTypes.object,
         headerRowRender: PropTypes.func,
         bodyRowRender: PropTypes.func,
         onCheckAll: PropTypes.func,
@@ -35,6 +36,7 @@ class Grid extends React.PureComponent {
         noCheckAll: false,
         noSearch: false,
         disabled: false,
+        style: null,
         headerRowRender: null,
         bodyRowRender: () => null,
         onCheckAll: () => null,
@@ -52,14 +54,18 @@ class Grid extends React.PureComponent {
             noCheckAll,
             noSearch,
             disabled,
+            style,
             ...rest
         } = this.props;
 
         return (
-            <div className={classNames({
-                [styles.gridWrapper]: true,
-                [styles.disabled]: disabled
-            })}>
+            <div
+                className={classNames({
+                    [styles.gridWrapper]: true,
+                    [styles.disabled]: disabled
+                })}
+                style={style}
+            >
                 <div className={styles.gridControls}>
                     {!noCheckAll && <Checkbox
                         id={`${id}-all`}
