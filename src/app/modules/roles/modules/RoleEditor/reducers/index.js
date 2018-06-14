@@ -1,12 +1,13 @@
-import { FETCH_ROLE_SUCCESS, FETCH_SUBJECTS_SUCCESS, RESET_ROLES_EDITOR } from '../actions';
+import { FETCH_ROLE_SUCCESS, FETCH_SUBJECTS_SUCCESS, RESET_ROLES_EDITOR, FETCH_ACCESS_LEVEL_TYPES_SUCCESS } from '../actions';
 
 const initialState = {
     role: {
         name: '',
         description: '',
-        subjects: [],
+        access_level: [],
     },
     subjects: [],
+    access_level_types: [],
 };
 
 export default (state = initialState, action) => {
@@ -24,6 +25,12 @@ export default (state = initialState, action) => {
                 ...state,
                 subjects: action.payload.subjects,
             };
+        case FETCH_ACCESS_LEVEL_TYPES_SUCCESS: {
+            return {
+                ...state,
+                access_level_types: action.payload.types,
+            };
+        }
         case RESET_ROLES_EDITOR:
             return {
                 ...state,
