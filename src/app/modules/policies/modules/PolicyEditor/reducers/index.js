@@ -10,7 +10,7 @@ const initialState = {
             rise_duration: '',
             rise_value: '',
         },
-        scope: ['j1Yqi-scope', 'FXc6A-scope', 'BEOic-scope'],
+        scope: [],
     },
 };
 

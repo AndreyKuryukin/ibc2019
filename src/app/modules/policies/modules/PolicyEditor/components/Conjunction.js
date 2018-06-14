@@ -42,7 +42,7 @@ class Conjunction extends React.PureComponent {
         if (this.props.conjunction !== nextProps.conjunction) {
             const conjunction = { ..._.get(nextProps, 'conjunction', {}) };
 
-            this.setState(conjunction)
+            this.setState({ value: conjunction.value });
         }
         if (this.props.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
