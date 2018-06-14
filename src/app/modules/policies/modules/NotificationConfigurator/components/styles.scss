@@ -3,6 +3,7 @@
 .notificationConfigurator {
   .notificationConfiguratorContent {
     display: flex;
+    flex-grow: 1;
     background: $white;
     padding: 10px;
     flex-direction: column;
