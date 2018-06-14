@@ -7,8 +7,9 @@ import styles from './styles.scss';
 import ConfigEditor from '../modules/ConfigEditor/containers';
 
 class Reports extends React.PureComponent {
-    static childContextTypes = {
+    static contextTypes = {
         history: PropTypes.object.isRequired,
+        hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
@@ -62,7 +63,7 @@ class Reports extends React.PureComponent {
     render() {
         const { match } = this.props;
         const { params } = match;
-        const isEditorActive = params.action === 'add';
+        const isEditorActive = this.context.hasAccess('REPORTS', 'EDIT') && params.action === 'add';
 
         return (
             <div className={styles.reportsWrapper}>

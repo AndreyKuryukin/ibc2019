@@ -10,6 +10,7 @@ import Dropdown from "../../../components/Dropdown";
 class RolesControls extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
+        hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
@@ -49,7 +50,7 @@ class RolesControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.rolesControls}>
-                <div className={styles.buttonGroup}>
+                {this.context.hasAccess('ROLES', 'EDIT') && <div className={styles.buttonGroup}>
                     <Icon
                         icon="addIcon"
                         onClick={this.onAdd}
@@ -80,8 +81,7 @@ class RolesControls extends React.PureComponent {
                             </Button>
                         </div>
                     </Dropdown>
-                    {/*<Icon icon="deleteIcon" onClick={this.props.onRemove}/>*/}
-                </div>
+                </div>}
                 <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
                        className={styles.rolesSearch}
                        onChange={this.onSearchTextChange}

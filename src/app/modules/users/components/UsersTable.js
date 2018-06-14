@@ -11,6 +11,10 @@ import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 
 class UsersTable extends React.PureComponent {
+    static contextTypes = {
+        hasAccess: PropTypes.func.isRequired,
+    };
+
     static propTypes = {
         data: PropTypes.array,
         checked: PropTypes.array,
@@ -55,70 +59,72 @@ class UsersTable extends React.PureComponent {
         })),
     );
 
-    static getColumns = memoize(() => [{
-        name: 'checked',
-        width: 28,
-    }, {
-        title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Логин'),
-        name: 'login',
-        searchable: true,
-        sortable: true,
-        width: 110,
-    }, {
-        title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
-        name: 'name',
-        searchable: true,
-        sortable: true,
-        width: 140,
-    }, {
-        title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
-        name: 'email',
-        searchable: true,
-        sortable: true,
-        width: 120,
-    }, {
-        title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
-        name: 'phone',
-        searchable: true,
-        sortable: true,
-        width: 110,
-    }, {
-        title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
-        name: 'roles',
-        searchable: true,
-        sortable: true,
-        width: 110,
-    }, {
-        title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
-        name: 'division',
-        searchable: true,
-        sortable: true,
-        width: 110,
-    }, {
-        title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
-        name: 'groups',
-        searchable: true,
-        sortable: true,
-        width: 170,
-    }, {
-        title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
-        name: 'created',
-        searchable: true,
-        sortable: true,
-        width: 130,
-    }, {
-        title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
-        name: 'last_connection',
-        searchable: true,
-        sortable: true,
-        width: 130,
-    }, {
-        title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
-        name: 'disabled',
-        searchable: true,
-        sortable: true,
-        width: 70
-    }]);
+    static getColumns = memoize(hasEditAccess => [
+        ...(hasEditAccess ? [{
+            name: 'checked',
+            width: 28,
+        }] : []), {
+            title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Логин'),
+            name: 'login',
+            searchable: true,
+            sortable: true,
+            width: 110,
+        }, {
+            title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
+            name: 'name',
+            searchable: true,
+            sortable: true,
+            width: 140,
+        }, {
+            title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
+            name: 'email',
+            searchable: true,
+            sortable: true,
+            width: 120,
+        }, {
+            title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
+            name: 'phone',
+            searchable: true,
+            sortable: true,
+            width: 110,
+        }, {
+            title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
+            name: 'roles',
+            searchable: true,
+            sortable: true,
+            width: 110,
+        }, {
+            title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
+            name: 'division',
+            searchable: true,
+            sortable: true,
+            width: 110,
+        }, {
+            title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
+            name: 'groups',
+            searchable: true,
+            sortable: true,
+            width: 170,
+        }, {
+            title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
+            name: 'created',
+            searchable: true,
+            sortable: true,
+            width: 130,
+        }, {
+            title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
+            name: 'last_connection',
+            searchable: true,
+            sortable: true,
+            width: 130,
+        }, {
+            title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
+            name: 'disabled',
+            searchable: true,
+            sortable: true,
+            width: 70
+        }
+    ]);
 
     onCheck = (value, node) => {
         let checked = [];
@@ -209,7 +215,8 @@ class UsersTable extends React.PureComponent {
     render() {
         const { searchText } = this.props;
         const data = UsersTable.mapUsersFromProps(this.props);
-        const columns = UsersTable.getColumns();
+        const hasEditAccess = this.context.hasAccess('USERS', 'EDIT');
+        const columns = UsersTable.getColumns(hasEditAccess);
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table data={filteredData}
