@@ -19,6 +19,7 @@ class ParameterField extends React.Component {
         values: PropTypes.array,
         required: PropTypes.bool,
         multiple: PropTypes.bool,
+        matcher: PropTypes.object,
         onChange: PropTypes.func,
     };
 
@@ -28,6 +29,7 @@ class ParameterField extends React.Component {
         values: [],
         required: false,
         multiple: false,
+        matcher: null,
         onChange: () => null,
     };
 
@@ -40,44 +42,46 @@ class ParameterField extends React.Component {
         super(props);
 
         this.state = {
-            email: '',
-            emailError: null,
+            value: '',
+            error: null,
         };
     }
 
     shouldComponentUpdate(nextProps, nextState) {
-        const isValueChanged = this.props.value !== nextProps.value || this.state.email !== nextState.email;
-        const isEmailErrorChange = this.state.emailError !== nextState.emailError;
+        const isValueChanged = this.props.value !== nextProps.value || this.state.value !== nextState.value;
+        const isErrorChange = this.state.error !== nextState.error;
 
-        return isValueChanged || isEmailErrorChange;
+        return isValueChanged || isErrorChange;
     }
 
     onChangeInput = (e) => {
         this.props.onChange(_.get(e, 'target.value', ''));
     };
 
-    onChangeEmailValue = (email) => {
-        this.setState({ email });
+    onChangeValue = (value) => {
+        this.setState({ value });
     };
 
-    onAddEmail = (email) => {
-        const reg = new RegExp(
-            /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
-        );
+    onAddValue = (value) => {
+        if (this.props.matcher) {
+            const reg = new RegExp(
+                this.props.matcher
+            );
 
-        if (!reg.test(email)) {
-            this.setState({ emailError: ls('POLICY_NOTIFICATIONS_INCORRECT_EMAIL', 'Некорректный e-mail') });
-        } else if(this.props.value.includes(email)) {
-            this.setState({ emailError: ls('POLICY_NOTIFICATIONS_DUPLICATE_EMAIL', 'E-mail уже добавлен') });
-        } else {
-            this.setState({ emailError: null }, () => {
-                this.props.onChange([...this.props.value, email]);
-            });
+            if (!reg.test(value)) {
+                this.setState({ error: ls('POLICY_NOTIFICATIONS_INCORRECT_VALUE', 'Некорректное значение') });
+            } else if(this.props.value.includes(value)) {
+                this.setState({ error: ls('POLICY_NOTIFICATIONS_DUPLICATE_VALUE', 'Такое значение уже добавлено') });
+            } else {
+                this.setState({ error: null }, () => {
+                    this.props.onChange([...this.props.value, value]);
+                });
+            }
         }
     };
 
-    onRemoveEmail = (email) => {
-        this.props.onChange(_.without(this.props.value, email));
+    onRemoveValue = (value) => {
+        this.props.onChange(_.without(this.props.value, value));
     };
 
     onSelectChange = (value) => {
@@ -112,17 +116,18 @@ class ParameterField extends React.Component {
                 />}
                 {type === 'string' && (multiple ? (
                     <ChipList
-                        onChange={this.onChangeEmailValue}
-                        onAdd={this.onAddEmail}
-                        value={this.state.email}
-                        valid={!this.state.emailError}
-                        error={this.state.emailError}
+                        id={id}
+                        onChange={this.onChangeValue}
+                        onAdd={this.onAddValue}
+                        value={this.state.value}
+                        valid={!this.state.error}
+                        error={this.state.error}
                     >
-                        {value.map(email => (
+                        {value.map(val => (
                             <Chip
-                                title={email}
-                                key={email}
-                                onRemove={this.onRemoveEmail.bind(this, email)}
+                                title={val}
+                                key={val}
+                                onRemove={this.onRemoveValue.bind(this, val)}
                             />
                         ))}
                     </ChipList>

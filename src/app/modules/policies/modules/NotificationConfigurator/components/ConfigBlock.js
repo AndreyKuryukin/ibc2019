@@ -9,6 +9,10 @@ import ParameterField from './ParameterField';
 import styles from './styles.scss';
 
 const instanceFieldStyle = { flexGrow: 1, marginTop: 0 };
+const MATCHERS_BY_UID = {
+    numbers: /^([0-9]){0,11}$/,
+    emails: /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+};
 
 class ConfigBlock extends React.PureComponent {
     static propTypes = {
@@ -82,6 +86,7 @@ class ConfigBlock extends React.PureComponent {
                                     values={param.values}
                                     required={param.required}
                                     multiple={param.multiple}
+                                    matcher={MATCHERS_BY_UID[param.uid]}
                                     onChange={this.onChangeParameter.bind(this, index)}
                                 />
                             ))}

@@ -8,6 +8,7 @@ import styles from './styles.scss';
 
 class ChipList extends React.PureComponent {
     static propTypes = {
+        id: PropTypes.string.isRequired,
         addTitle: PropTypes.string,
         inputPlaceholder: PropTypes.string,
         onChange: PropTypes.func,
@@ -57,6 +58,7 @@ class ChipList extends React.PureComponent {
         return <div className={styles.chipListContainer}>
             <div style={{ display: 'flex', position: 'relative' }}>
                 <Input
+                    id={this.props.id}
                     valid={this.props.valid}
                     errorMessage={this.props.error}
                     value={this.formatValue(this.state.value)}
