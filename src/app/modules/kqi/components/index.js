@@ -117,7 +117,7 @@ class KQI extends React.PureComponent {
             <div className={styles.kqiWrapper}>
                 <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
                     <Panel
-                        title={ls('KQI_SYSTEM_TITLE', 'Система')}
+                        title={ls('KQI_CONFIGS_TITLE', 'Конфигурации KQI')}
                         bodyStyle={panelBodyStyle}
                     >
                         <ConfigsControls onSearchTextChange={this.onConfigsSearchTextChange}/>
@@ -134,7 +134,7 @@ class KQI extends React.PureComponent {
                 <div className={classnames(styles.kqiColumn, styles.calculationsTableContainer)}>
                     <Panel
                         title={`${ls('KQI_PROJECTIONS_TITLE', 'Проекции')} ${cfgName}`}
-                        bodyStyle={{ padding: 0 }}
+                        bodyStyle={panelBodyStyle}
                     >
                         <ProjectionsControls onSearchTextChange={this.onCalculationsSearchTextChange}/>
                         <ProjectionsTable
