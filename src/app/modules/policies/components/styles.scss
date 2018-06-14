@@ -9,6 +9,12 @@
   padding: 0 9px 0 0;
 }
 
+.nameCell {
+  display: flex;
+  flex-grow: 1;
+  justify-content: space-between;
+}
+
 .policiesControls {
   padding: 7px 18px;
   height: 36px;
@@ -28,7 +34,7 @@
 }
 
 .policyTable .tableHeader {
-  height: 44px;
+  height: 44px !important;
 }
 
 %child {

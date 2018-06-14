@@ -32,7 +32,11 @@ class ReportsControls extends React.PureComponent {
     render() {
         return (
             <div className={styles.reportControls}>
-                {this.context.hasAccess('REPORTS', 'EDIT') && <Icon icon="addIcon" onClick={this.onAdd}/>}
+                {this.context.hasAccess('REPORTS', 'EDIT') && <Icon
+                    icon="addIcon"
+                    onClick={this.onAdd}
+                    title={ls('ADD_REPORT_TITLE', 'Добавить отчёт')}
+                />}
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}

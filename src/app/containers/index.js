@@ -249,6 +249,11 @@ class App extends React.Component {
             name: 'SOURCES',
             link: '/sources'
         },
+        {
+            id: 'policies-page',
+            name: 'POLICY',
+            link: '/policies'
+        },
     ];
 
     renderRoutes = (subjects = []) => {

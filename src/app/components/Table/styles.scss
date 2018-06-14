@@ -18,7 +18,7 @@
   .tableBody {
     display: flex;
     flex: 1 1 0;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
     flex-direction: column;
     background: repeating-linear-gradient(180deg, $smooth-grey, $smooth-grey $table-cell-height, $white $table-cell-height, $white $table-cell-height*2);

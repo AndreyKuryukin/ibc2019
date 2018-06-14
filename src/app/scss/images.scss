@@ -13,6 +13,12 @@
     @include imgByPath('add_new_hover.png');
   }
 }
+.addIcon.iconDisabled {
+  @include iconBuilder(22px, 22px, 'add_new_disabled.png');
+  &:hover {
+    @include imgByPath('add_new_disabled.png');
+  }
+}
 .deleteIcon {
   @include iconBuilder(22px, 22px, 'delete.png');
   &:hover {

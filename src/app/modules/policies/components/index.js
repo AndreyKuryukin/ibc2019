@@ -5,6 +5,7 @@ import styles from './styles.scss';
 import PoliciesTable from './PoliciesTable';
 import PoliciesControls from './PoliciesControls';
 import PolicyEditor from '../modules/PolicyEditor/containers';
+import NotificationConfigurator from '../modules/NotificationConfigurator/containers';
 
 class Policies extends React.Component {
     static childContextTypes = {
@@ -55,12 +56,17 @@ class Policies extends React.Component {
         });
     };
 
+    navigateNotificationConfig = (policyId) => {
+        this.props.history.push(`/policies/cofigure/${policyId}`)
+    };
+
     render() {
         const { policiesData: data, isLoading, match } = this.props;
         const { searchText } = this.state;
 
         const { params } = match;
         const isEditorActive = this.context.hasAccess('POLICY', 'EDIT') && (params.action === 'edit' || params.action === 'add');
+        const isConfiguratorActive = params.action === 'cofigure';
         const policyId = params.id ? params.id : null;
 
         return (
@@ -72,11 +78,16 @@ class Policies extends React.Component {
                     data={data}
                     searchText={searchText}
                     preloader={isLoading}
+                    notificationClick={this.navigateNotificationConfig}
                 />
                 {isEditorActive && <PolicyEditor
-                    active={true}
+                    active={isEditorActive}
                     policyId={policyId}
                     policies={data}
+                />}
+                {isConfiguratorActive && <NotificationConfigurator
+                    active={isConfiguratorActive}
+                    policyId={policyId}
                 />}
             </div>
         );
