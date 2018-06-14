@@ -1,0 +1,32 @@
+@import "../../scss/vars";
+
+.closeButton {
+  cursor: pointer;
+  &:hover {
+    color: $orange;
+    background-color: $darkest-blue;
+  }
+}
+
+.chipContainer {
+  display: flex;
+  flex-direction: row;
+  background-color: $dark-blue;
+  color: $white;
+  > * {
+    padding: 4px 8px 4px 8px;
+  }
+}
+
+.chipList {
+  padding-top: 4px;
+  display: flex;
+  flex-wrap: wrap;
+  > * {
+    margin: 2px 2px 0 0;
+  }
+}
+
+.chipListContainer {
+  padding: 4px 8px 8px 0;
+}

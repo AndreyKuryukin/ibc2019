@@ -29,10 +29,10 @@ class UsersAndRoles extends React.PureComponent {
         return (
             <TabPanel
                 onTabClick={(tabId) => history && history.push(`/users-and-roles${tabId}`)}
-                activeTabId={hasAccess('USERS', 'VIEW') ? `/${params.page}` : '/roles'}
+                activeTabId={(hasAccess('USERS', 'EDIT') || hasAccess('USERS', 'VIEW')) ? `/${params.page}` : '/roles'}
                 className={styles.usersAndRolesContainer}
             >
-                {hasAccess('USERS', 'VIEW') && <Users
+                {(hasAccess('USERS', 'EDIT') || hasAccess('USERS', 'VIEW')) && <Users
                     id="/users"
                     tabtitle={ls('USERS_TAB_TITLE', 'Пользователи')}
                     history={this.props.history}
