@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import styles from './styles.scss';
 
 
-class ChipList extends React.PureComponent {
+class Chip extends React.PureComponent {
     static propTypes = {
         title: PropTypes.string,
         onRemove: PropTypes.func,
@@ -30,4 +30,4 @@ class ChipList extends React.PureComponent {
     }
 }
 
-export default ChipList;
+export default Chip;

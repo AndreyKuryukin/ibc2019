@@ -55,26 +55,19 @@ class ChipList extends React.PureComponent {
 
     render() {
         return <div className={styles.chipListContainer}>
-            <Field
-                id="title"
-                labelText={this.props.title}
-                labelWidth="50%"
-                inputWidth="50%"
-            >
-                <div style={{ display: 'flex' }}>
-                    <Input
-                        valid={this.props.valid}
-                        errorMessage={this.props.error}
-                        value={this.formatValue(this.state.value)}
-                        onChange={event => this.onChange(event.target.value)}
-                    />
-                    <Icon
-                        icon="addIcon"
-                        onClick={() => this.onAdd(this.state.value)}
-                        title={this.props.addTitle}
-                    />
-                </div>
-            </Field>
+            <div style={{ display: 'flex', position: 'relative' }}>
+                <Input
+                    valid={this.props.valid}
+                    errorMessage={this.props.error}
+                    value={this.formatValue(this.state.value)}
+                    onChange={event => this.onChange(event.target.value)}
+                />
+                <Icon
+                    icon="addIcon"
+                    onClick={() => this.onAdd(this.state.value)}
+                    title={this.props.addTitle}
+                />
+            </div>
             <div className={styles.chipList}>
                 {this.props.children}
             </div>

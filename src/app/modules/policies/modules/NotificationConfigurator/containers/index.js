@@ -95,7 +95,7 @@ class NotificationConfigurator extends React.PureComponent {
     onMount = () => {
         if (this.props.policyId) {
             Promise.all([
-                rest.get('/api/v1/policy/notifacation/metadata'),
+                rest.get('/api/v1/policy/notification/metadata'),
                 rest.get(`/api/v1/policy/${this.props.policyId}/notifications`)
             ])
                 .then(([metadataResponse, notificationsResponse]) => {
