@@ -43,13 +43,10 @@ class RolesListGrid extends React.PureComponent {
         }
     }
 
-    mapData = subjects => subjects.map(subj => {
-        const levels = _.get(subj, 'access_level');
-        if (!_.isEmpty(levels)) {
-            subj.children = levels.map(lvl => ({ id: `${subj.id}.${lvl}`, name: ls(lvl, lvl) }))
-        }
-        return subj
-    });
+    mapData = subjects => subjects.map(subj => ({
+        ...subj,
+        children: ['EDIT', 'VIEW'].map(lvl => ({ id: `${subj.name}.${lvl}`, name: lvl })),
+    }));
 
     onCheckAll = (value) => {
         const allIds = value ?

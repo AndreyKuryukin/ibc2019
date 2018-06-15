@@ -41,6 +41,45 @@ class RoleEditor extends React.PureComponent {
         },
     };
 
+    mapLevels = (level = '') => {
+        switch (level.toUpperCase()) {
+            case 'EDIT':
+            case 'ALL': {
+                return ['EDIT', 'VIEW']
+            }
+            case 'VIEW': {
+                return ['VIEW']
+            }
+            default:
+                return []
+        }
+    };
+
+    mapAccessLevel = (accessLevel) => {
+        const subject = _.get(accessLevel, 'subject', []);
+        return {
+            name: subject.name.toUpperCase(),
+            access_level: this.mapLevels(_.get(accessLevel, 'access_level_type', ''))
+        }
+    };
+
+    mapRoleToSubjects = (role) => _.get(role, 'access_level', []).map(this.mapAccessLevel);
+
+    mapRoleSubjects = (role) => {
+        const roleSubjects = this.mapRoleToSubjects(role);
+        const subjectMap = _.reduce(roleSubjects, (subjects, subject) => {
+            if (_.isEmpty(subjects[subject.name])) {
+                subjects[subject.name] = []
+            }
+            subjects[subject.name] = _.uniq(subjects[subject.name].concat(subject.access_level));
+            return subjects
+        }, {});
+        return _.reduce(subjectMap, (userSubjects, access_level, name) => {
+            userSubjects.push({ name, access_level });
+            return userSubjects
+        }, []);
+    };
+
     componentDidMount() {
         if (this.props.roleId) {
             const urlParams = {
@@ -49,7 +88,11 @@ class RoleEditor extends React.PureComponent {
             this.setState({ isLoading: true });
             Promise.all([rest.get('/api/v1/role/:roleId', { urlParams }), rest.get('/api/v1/subject')])
                 .then(([roleResponse, subjectResponse]) => {
-                    const role = roleResponse.data;
+                    const role = {
+                        ...roleResponse.data,
+                        subjects: this.mapRoleSubjects(roleResponse.data),
+                    };
+                    console.log(role);
                     const subjects = subjectResponse.data;
                     this.props.onFetchSubjectsSuccess(subjects);
                     this.props.onFetchRoleSuccess(role);
