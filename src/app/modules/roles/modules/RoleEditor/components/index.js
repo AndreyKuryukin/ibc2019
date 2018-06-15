@@ -99,26 +99,9 @@ class RoleEditor extends React.PureComponent {
         }
     };
 
-    permissionsToSubjects = (subjects) => {
-        const resultSubjects = _.reduce(subjects, (result, id) => {
-            const ids = id.split('.');
-            if (ids.length > 1) {
-                const subject = this.props.subjectsData.find(subj => subj.id === ids[0]);
-                if (!result[subject.id]) {
-                    subject['access_level'] = [];
-                    result[subject.id] = _.omit(subject, ['isLast', 'children']);
-                }
-                result[subject.id]['access_level'].push(ids[1]);
-                return result
-            }
-            return result;
-        }, {});
-        return _.values(resultSubjects);
-    };
-
     onSubmit = () => {
         const role = this.state.role;
-        this.props.onSubmit(this.props.roleId, {...role, subjects: this.permissionsToSubjects(role.subjects)});
+        this.props.onSubmit(this.props.roleId, role);
     };
 
     onClose = () => {

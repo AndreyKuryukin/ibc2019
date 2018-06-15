@@ -36,7 +36,7 @@ class RolesListGrid extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (this.props.checked !== nextProps.checked) {
             this.setState({
-                checked: this.mapAccessLevels(nextProps.checked),
+                checked: this.accessLevelsToIds(nextProps.checked),
             });
         }
     }
@@ -47,27 +47,34 @@ class RolesListGrid extends React.PureComponent {
             children: levelTypes.map(lvl => ({ id: `${subj.name}.${lvl}`, name: lvl })),
         })) : []);
 
-    mapAccessLevels = access_levels => access_levels.map(level => {
+    accessLevelsToIds = access_levels => access_levels.map(level => {
         const { subject, access_level_type } = level;
 
         return `${subject.name}.${access_level_type}`;
     });
 
+    idsToAccessLevels = ids => ids.reduce((result, nextId) => {
+        const [name, access_level_type] = nextId.split('.');
+        const subject = this.props.subjectsData.find(subj => subj.name === name);
+
+        return subject ? [...result, {
+            access_level_type,
+            subject,
+        }] : result;
+    }, []);
+
     onCheckAll = (value, data) => {
         const allIds = value ?
             data.reduce((result, next) => result.concat([next.id, ...getChildrenIds(next)]), [])
             : [];
-        this.setState({
-            checked: allIds,
-        });
 
-        this.props.onCheck(allIds);
+        this.props.onCheck(this.idsToAccessLevels(allIds));
     };
 
     onCheck = (value, node) => {
         const checked = checkNodeAndGetCheckedIds(this.state.checked, node, value);
-        this.setState({ checked });
-        this.props.onCheck(checked);
+
+        this.props.onCheck(this.idsToAccessLevels(checked));
     };
 
     bodyRowRender = (column, node) => {
@@ -102,7 +109,7 @@ class RolesListGrid extends React.PureComponent {
     render() {
         const { subjectsData, accessLevelTypes } = this.props;
         const data = this.mapData(subjectsData, accessLevelTypes);
-        const isAllChecked = data.every(node => this.state.checked.includes(node.id));
+        const isAllChecked = data.every(node => node.children.every(child => this.state.checked.includes(child.id)));
         const checkedPartially = !isAllChecked && this.state.checked.length > 0;
         const filteredData = this.state.searchText ? this.filter(data, this.state.searchText) : data;
 
