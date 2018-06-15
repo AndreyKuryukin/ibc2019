@@ -10,5 +10,11 @@ export const fetchSubjectsSuccess = subjects => ({
     payload: { subjects },
 });
 
+export const FETCH_ACCESS_LEVEL_TYPES_SUCCESS = 'roles/FETCH_ACCESS_LEVEL_TYPES_SUCCESS';
+export const fetchAccessLevelTypesSuccess = types => ({
+    type: FETCH_ACCESS_LEVEL_TYPES_SUCCESS,
+    payload: { types },
+});
+
 export const RESET_ROLES_EDITOR = 'roles/RESET_ROLES_EDITOR';
 export const resetRolesEditor = () => ({ type: RESET_ROLES_EDITOR });

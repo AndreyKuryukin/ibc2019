@@ -9,6 +9,7 @@
 
 .roleEditorContent {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   .panel + .panel {
     margin-top: 1px;

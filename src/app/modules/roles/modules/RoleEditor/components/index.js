@@ -6,6 +6,7 @@ import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Panel from '../../../../../components/Panel';
+import Preloader from '../../../../../components/Preloader';
 import PermissionList from './PermissionList'
 
 import styles from './styles.scss';
@@ -28,6 +29,7 @@ class RoleEditor extends React.PureComponent {
         onClose: PropTypes.func,
         sourceOptions: PropTypes.array,
         subjectsData: PropTypes.array,
+        accessLevelTypes: PropTypes.array,
         subjectsByRole: PropTypes.object,
         errors: PropTypes.object,
     };
@@ -40,6 +42,7 @@ class RoleEditor extends React.PureComponent {
         onClose: () => null,
         sourceOptions: [],
         subjectsData: [],
+        accessLevelTypes: [],
         subjectsByRole: {},
         errors: null,
     };
@@ -56,7 +59,6 @@ class RoleEditor extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (this.props.role !== nextProps.role) {
             const role = this.props.roleId ? nextProps.role : this.state.role;
-            role.subjects = this.subjectsToPermissions(role.subjects);
             this.setState({
                 role,
                 selectedRoleId: '',
@@ -79,48 +81,27 @@ class RoleEditor extends React.PureComponent {
         });
     };
 
-    copySubjectsFromRole = (roleId) => {
+    copyAccessLevelsFromRole = (roleId) => {
         if (!_.isUndefined(roleId)) {
-            let subjects = this.props.subjectsByRole[roleId];
-            if (!_.isArray(subjects)) {
-                subjects = [];
+            let accessLevels = this.props.subjectsByRole[roleId];
+            if (!_.isArray(accessLevels)) {
+                accessLevels = [];
             }
-            this.setState({ selectedRoleId: roleId }, () => {
-                this.setRoleProperty('subjects', this.subjectsToPermissions(subjects))
+            this.setState({
+                role: {
+                    ...this.state.role,
+                    access_level: accessLevels,
+                },
+                selectedRoleId: roleId
             });
         } else {
-            this.setRoleProperty('subjects', [])
+            this.setRoleProperty('access_level', [])
         }
     };
-
-    permissionsToSubjects = (subjects) => {
-        const resultSubjects = _.reduce(subjects, (result, id) => {
-            const ids = id.split('.');
-            if (ids.length > 1) {
-                const subject = this.props.subjectsData.find(subj => subj.id === ids[0]);
-                if (!result[subject.id]) {
-                    subject['access_level'] = [];
-                    result[subject.id] = _.omit(subject, ['isLast', 'children']);
-                }
-                result[subject.id]['access_level'].push(ids[1]);
-                return result
-            }
-            return result;
-        }, {});
-        return _.values(resultSubjects);
-    };
-
-    subjectsToPermissions = subjects => _.reduce(subjects, (result, subj) => {
-        if (!_.isEmpty(subj.access_level)) {
-            const levelIds = subj.access_level.map(lvl => `${subj.id}.${lvl}`);
-            return result.concat(levelIds);
-        }
-        return result;
-    }, []);
 
     onSubmit = () => {
         const role = this.state.role;
-        this.props.onSubmit(this.props.roleId, {...role, subjects: this.permissionsToSubjects(role.subjects)});
+        this.props.onSubmit(this.props.roleId, role);
     };
 
     onClose = () => {
@@ -128,18 +109,24 @@ class RoleEditor extends React.PureComponent {
         this.props.onClose();
     };
 
-    onCheck = (checkedIds) => {
+    onCheck = (checked) => {
         this.setState({
             selectedRoleId: '',
         }, () => {
-            this.setRoleProperty('subjects', checkedIds);
+            this.setRoleProperty('access_level', checked);
         });
     };
 
     getSourceOptions = sourceOptions => sourceOptions.map(opt => ({ value: opt[0], title: opt[1] }));
 
     render() {
-        const { roleId, subjectsData, sourceOptions } = this.props;
+        const {
+            roleId,
+            subjectsData,
+            sourceOptions,
+            accessLevelTypes,
+            isLoading,
+        } = this.props;
         const { role, errors } = this.state;
         const filteredSourceOptions = roleId ? sourceOptions.filter(opt => opt[0] !== roleId) : sourceOptions;
 
@@ -151,61 +138,65 @@ class RoleEditor extends React.PureComponent {
                 <ModalHeader
                     toggle={this.onClose}>{roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') : ls('NEW_ROLE_ADD', 'Создание новой роли')}</ModalHeader>
                 <ModalBody className={styles.modalBody}>
-                    <div className={styles.roleEditorContent}>
-                        <Panel
-                            title={ls('ROLE_MAIN_INFO_PANEL_TITLE', 'Главная информация')}
-                        >
-                            <Field
-                                id="name"
-                                labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
-                                labelWidth="50%"
-                                inputWidth="50%"
-                                required
+                    <Preloader active={isLoading}>
+                        <div className={styles.roleEditorContent}>
+                            <Panel
+                                title={ls('ROLE_MAIN_INFO_PANEL_TITLE', 'Главная информация')}
                             >
-                                <Input
+                                <Field
                                     id="name"
-                                    value={role.name || ''}
-                                    onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
-                                    valid={errors && _.isEmpty(errors.name)}
-                                    errorMessage={_.get(errors, 'name.title')}
-                                />
-                            </Field>
+                                    labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                    required
+                                >
+                                    <Input
+                                        id="name"
+                                        value={role.name || ''}
+                                        onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                                        valid={errors && _.isEmpty(errors.name)}
+                                        errorMessage={_.get(errors, 'name.title')}
+                                    />
+                                </Field>
 
-                            <Field
-                                id="permissions-source"
-                                labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
-                                labelWidth="50%"
-                                inputWidth="50%"
-                            >
-                                <Select
+                                <Field
                                     id="permissions-source"
-                                    type="select"
-                                    value={this.state.selectedRoleId}
-                                    options={this.getSourceOptions(filteredSourceOptions)}
-                                    onChange={this.copySubjectsFromRole}
+                                    labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                >
+                                    <Select
+                                        id="permissions-source"
+                                        type="select"
+                                        value={this.state.selectedRoleId}
+                                        options={this.getSourceOptions(filteredSourceOptions)}
+                                        onChange={this.copyAccessLevelsFromRole}
+                                    />
+                                </Field>
+                            </Panel>
+                            <Panel
+                                title={ls('ROLE_PERMISSIONS_PANEL_TITLE', 'Разрешения')}
+                                style={permissionsTableStyle}
+                                bodyStyle={permissionsTableBodyStyle}
+                            >
+                                <PermissionList
+                                    subjectsData={subjectsData}
+                                    accessLevelTypes={accessLevelTypes}
+                                    onCheck={this.onCheck}
+                                    checked={role.access_level || []}
                                 />
-                            </Field>
-                        </Panel>
-                        <Panel
-                            title={ls('ROLE_PERMISSIONS_PANEL_TITLE', 'Разрешения')}
-                            style={permissionsTableStyle}
-                            bodyStyle={permissionsTableBodyStyle}
-                        >
-                            <PermissionList subjectsData={subjectsData}
-                                            onCheck={this.onCheck}
-                                            checked={role.subjects || []}
-                            />
-                        </Panel>
-                        <Panel
-                            title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
-                        >
-                            <Input type="textarea"
-                                   value={role.description || ''}
-                                   onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
-                                   rows={6}
-                            />
-                        </Panel>
-                    </div>
+                            </Panel>
+                            <Panel
+                                title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
+                            >
+                                <Input type="textarea"
+                                       value={role.description || ''}
+                                       onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
+                                       rows={6}
+                                />
+                            </Panel>
+                        </div>
+                    </Preloader>
                 </ModalBody>
                 <ModalFooter>
                     <Button outline color="action" onClick={this.onClose}>

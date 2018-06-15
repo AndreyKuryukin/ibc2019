@@ -128,10 +128,10 @@ class App extends React.Component {
     });
 
     hasAccess = (subjectName, level) => {
-       const userSubjects =  _.get(this.props, 'user.subjects', []);
-       const subject = _.find(userSubjects, (sbj) => sbj.name.toUpperCase() === subjectName.toUpperCase());
-       const accessLevel = _.get(subject, 'access_level', []);
-       return !!_.find(accessLevel, lvl => lvl.toUpperCase() === level.toUpperCase())
+        const userSubjects = _.get(this.props, 'user.subjects', []);
+        const subject = _.find(userSubjects, (sbj) => sbj.name.toUpperCase() === subjectName.toUpperCase());
+        const accessLevel = _.get(subject, 'access_level', []);
+        return !!_.find(accessLevel, lvl => lvl.toUpperCase() === level.toUpperCase())
     };
 
     constructor(props) {
@@ -181,16 +181,56 @@ class App extends React.Component {
             })
             .catch(() => {
                 this.props.onFetchUserSuccess({
-                    subjects: this.getCommonRoutes(),
+                    subjects: this.getCommonSubjects(),
                 });
                 this.setState({ loading: false, loggedIn: false });
             });
     }
 
+    mapLevels = (level = '') => {
+        switch (level.toUpperCase()) {
+            case 'EDIT':
+            case 'ALL': {
+                return ['EDIT', 'VIEW']
+            }
+            case 'VIEW': {
+                return ['VIEW']
+            }
+            default:
+                return []
+        }
+    };
+
+    mapAccessLevel = (accessLevel) => {
+        const subject = _.get(accessLevel, 'subject', []);
+        return {
+            name: subject.name.toUpperCase(),
+            access_level: this.mapLevels(_.get(accessLevel, 'access_level_type', ''))
+        }
+    };
+
+    mapRoleToSubjects = (role) => _.get(role, 'access_level', []).map(this.mapAccessLevel);
+
+    mapUserSubjects = (user) => {
+        const roles = _.get(user, 'roles', []);
+        const rolesSubjects = _.reduce(roles, (subjects, role) => subjects.concat(this.mapRoleToSubjects(role)), []);
+        const subjectMap = _.reduce(rolesSubjects, (subjects, subject) => {
+            if (_.isEmpty(subjects[subject.name])) {
+                subjects[subject.name] = []
+            }
+            subjects[subject.name] = _.uniq(subjects[subject.name].concat(subject.access_level));
+            return subjects
+        }, {});
+        return _.reduce(subjectMap, (userSubjects, access_level, name) => {
+            userSubjects.push({ name, access_level });
+            return userSubjects
+        }, []);
+    };
+
     onFetchUserSuccess = (user) => {
         const subjectMap = this.getMapedSubjects() || {};
-        const commonSubjects = this.getCommonRoutes();
-        const totalSubjects = user.subjects.concat(commonSubjects);
+        const commonSubjects = this.getCommonSubjects();
+        const totalSubjects = this.mapUserSubjects(user).concat(commonSubjects);
         const menuOrder = Object.keys(subjectMap);
         user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
         user.menu = user.subjects
@@ -217,41 +257,14 @@ class App extends React.Component {
         this.onLogOut()
     };
 
-    getCommonRoutes = () => [
+    getCommonSubjects = () => [
         {
-            id: 'users-page',
-            name: 'USERS',
-            link: '/users-and-roles/users'
-        },
-        {
-            id: 'reports-page',
-            name: 'REPORTS',
-            link: '/reports'
-        },
-        {
-            id: 'alarms',
-            name: 'ALARMS',
-            link: '/alarms/gp'
-        },
-        {
-            id: 'login-page',
             name: 'LOGIN',
-            link: '/login'
+            access_level: ['EDIT', 'VIEW']
         },
         {
-            id: 'landing-page',
             name: 'LANDING',
-            link: '/'
-        },
-        {
-            id: 'sources-page',
-            name: 'SOURCES',
-            link: '/sources'
-        },
-        {
-            id: 'policies-page',
-            name: 'POLICY',
-            link: '/policies'
+            access_level: ['EDIT', 'VIEW']
         },
     ];
 
