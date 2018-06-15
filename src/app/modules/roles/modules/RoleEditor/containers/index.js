@@ -92,7 +92,7 @@ class RoleEditor extends React.PureComponent {
                         ...roleResponse.data,
                         subjects: this.mapRoleSubjects(roleResponse.data),
                     };
-                    console.log(role);
+
                     const subjects = subjectResponse.data;
                     this.props.onFetchSubjectsSuccess(subjects);
                     this.props.onFetchRoleSuccess(role);

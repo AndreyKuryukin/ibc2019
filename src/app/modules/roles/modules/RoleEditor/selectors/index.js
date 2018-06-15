@@ -23,6 +23,11 @@ export const selectSourceOptions = createSelector(
 
 export const selectSubjectsByRole = createSelector(
     selectRolesData,
-    roles => roles.reduce((result, { id, subjects }) => ({ ...result, [id]: subjects }), {})
+    roles => roles.reduce((result, { id, access_level }) => ({
+        ...result,
+        [id]: [
+            ...access_level,
+        ],
+    }), {})
 );
 

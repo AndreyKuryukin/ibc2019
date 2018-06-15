@@ -79,7 +79,22 @@ class RoleEditor extends React.PureComponent {
         });
     };
 
+    mapLevels = (level = '') => {
+        switch (level.toUpperCase()) {
+            case 'EDIT':
+            case 'ALL': {
+                return ['EDIT', 'VIEW'];
+            }
+            case 'VIEW': {
+                return ['VIEW'];
+            }
+            default:
+                return [];
+        }
+    };
+
     copySubjectsFromRole = (roleId) => {
+        const that = this;
         if (!_.isUndefined(roleId)) {
             let subjects = this.props.subjectsByRole[roleId];
             if (!_.isArray(subjects)) {
@@ -110,17 +125,53 @@ class RoleEditor extends React.PureComponent {
         return _.values(resultSubjects);
     };
 
-    subjectsToPermissions = subjects => _.reduce(subjects, (result, subj) => {
-        if (!_.isEmpty(subj.access_level)) {
-            const levelIds = subj.access_level.map(lvl => `${subj.id}.${lvl}`);
-            return result.concat(levelIds);
-        }
-        return result;
-    }, []);
+    permissionsToAccessLevel = ids =>
+        _.chain(ids)
+            .groupBy(id => id.split('.')[0])
+            .reduce((result, ids, name) => {
+                const access_levels = ids.map(id => id.split('.')[1]); // => ['EDIT', 'VIEW']
+                const subject = this.props.subjectsData.find(subj => subj.name === name);
+                let access_level_type;
+                switch(access_levels.length) {
+                    case 1: {
+                        access_level_type = access_levels[0];
+                        break;
+                    }
+                    case 2: {
+                        access_level_type = 'ALL';
+                        break;
+                    }
+                    default: {
+                        access_level_type = 'NONE';
+                    }
+                }
+
+                return subject ? [...result, {
+                    access_level_type,
+                    subject,
+                }] : result;
+            }, [])
+            .value();
+
+    subjectsToPermissions = subjects => {
+        console.log(subjects);
+        _.reduce(subjects, (result, subj) => {
+            const { subject, access_level_type } = subj;
+            const levels = this.mapLevels(access_level_type);
+
+            return result.concat(subj.access_level.map(lvl => `${subject.name}.${lvl}`));
+        }, []);
+    }
 
     onSubmit = () => {
         const role = this.state.role;
-        this.props.onSubmit(this.props.roleId, {...role, subjects: this.permissionsToSubjects(role.subjects)});
+
+        this.props.onSubmit(this.props.roleId, {
+            id: role.id,
+            description: role.description,
+            name: role.name,
+            access_level: this.permissionsToAccessLevel(role.subjects)
+        });
     };
 
     onClose = () => {
