@@ -150,7 +150,6 @@ class RoleEditor extends React.PureComponent {
                 ..._.pick(roleData, ['id', 'name', 'description']),
                 access_level: this.mapSubjectsToAccesslevel(roleData.subjects)
             };
-            debugger;
             submit('/api/v1/role', role)
                 .then(success)
                 .catch((e) => {
