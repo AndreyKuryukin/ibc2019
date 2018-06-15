@@ -21,13 +21,4 @@ export const selectSourceOptions = createSelector(
     roles => roles.map(role => [role.id, role.name]),
 );
 
-export const selectSubjectsByRole = createSelector(
-    selectRolesData,
-    roles => roles.reduce((result, { id, access_level }) => ({
-        ...result,
-        [id]: [
-            ...access_level,
-        ],
-    }), {})
-);
 

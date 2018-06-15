@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import RoleEditorComponent from '../components';
-import { selectSelectedRole, selectSourceOptions, selectSubjects, selectSubjectsByRole } from '../selectors';
+import { selectSelectedRole, selectSourceOptions } from '../selectors';
+import { selectRolesData } from '../../../selectors';
 import { createRole, updateRole } from '../../../actions';
 import { fetchRoleSuccess, fetchSubjectsSuccess, resetRolesEditor } from '../actions';
 import rest from '../../../../../rest';
@@ -43,7 +44,9 @@ class RoleEditor extends React.PureComponent {
 
     mapLevels = (level = '') => {
         switch (level.toUpperCase()) {
-            case 'EDIT':
+            case 'EDIT': {
+                return ['EDIT']
+            }
             case 'ALL': {
                 return ['EDIT', 'VIEW']
             }
@@ -80,6 +83,8 @@ class RoleEditor extends React.PureComponent {
         }, []);
     };
 
+    mapSubjects = (subjects) => subjects.map(subj => ({ ...subj, access_level: ['EDIT', 'VIEW'] }));
+
     componentDidMount() {
         if (this.props.roleId) {
             const urlParams = {
@@ -93,7 +98,7 @@ class RoleEditor extends React.PureComponent {
                         subjects: this.mapRoleSubjects(roleResponse.data),
                     };
 
-                    const subjects = subjectResponse.data;
+                    const subjects = this.mapSubjects(subjectResponse.data);
                     this.props.onFetchSubjectsSuccess(subjects);
                     this.props.onFetchRoleSuccess(role);
                     this.setState({ isLoading: false });
@@ -112,6 +117,22 @@ class RoleEditor extends React.PureComponent {
         this.context.pageBlur && this.context.pageBlur(true);
     }
 
+    mapAccessLevels = (access_level = []) => {
+        if (access_level.length === 0) {
+            return 'NONE'
+        } else if (access_level.length === 1) {
+            return access_level[0];
+        } else {
+            return 'ALL'
+        }
+    };
+
+    mapSubjectsToAccesslevel = subjects => subjects.map(subj => ({
+        access_level_type: this.mapAccessLevels(subj.access_level),
+        subject: _.omit(subj, 'access_level')
+    }));
+
+
     onSubmit = (roleId, roleData) => {
         const errors = validateForm({
             ...roleData,
@@ -125,8 +146,12 @@ class RoleEditor extends React.PureComponent {
                 callback(role);
                 this.context.history.push('/users-and-roles/roles');
             };
-
-            submit('/api/v1/role', roleData)
+            const role = {
+                ..._.pick(roleData, ['id', 'name', 'description']),
+                access_level: this.mapSubjectsToAccesslevel(roleData.subjects)
+            };
+            debugger;
+            submit('/api/v1/role', role)
                 .then(success)
                 .catch((e) => {
                     console.error(e);
@@ -136,13 +161,29 @@ class RoleEditor extends React.PureComponent {
         }
     };
 
+    mapRoles = (roles) => {
+        return _.reduce(roles, (rolesObj, role) => {
+            rolesObj[role.id] = this.mapRoleSubjects(role);
+            return rolesObj
+        }, {})
+    };
+
     render() {
+        const { resetRolesEditor, subjectsByRole = [], ...rest } = this.props;
+        if (subjectsByRole) {
+            console.log(subjectsByRole);
+        }
+        const allRoles = this.mapRoles(subjectsByRole);
+        if (allRoles) {
+            console.log(allRoles);
+        }
         return (
             <RoleEditorComponent
                 onSubmit={this.onSubmit}
                 errors={this.state.errors}
-                onClose={this.props.resetRolesEditor}
-                {...this.props}
+                onClose={resetRolesEditor}
+                subjectsByRole={allRoles}
+                {...rest}
             />
         );
     }
@@ -151,7 +192,7 @@ class RoleEditor extends React.PureComponent {
 const mapStateToProps = state => ({
     role: selectSelectedRole(state),
     sourceOptions: selectSourceOptions(state),
-    subjectsByRole: selectSubjectsByRole(state),
+    subjectsByRole: selectRolesData(state),
     subjectsData: _.get(state, 'roles.editor.subjects', []),
 });
 
