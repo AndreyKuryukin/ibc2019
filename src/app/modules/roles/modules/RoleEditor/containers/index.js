@@ -170,13 +170,7 @@ class RoleEditor extends React.PureComponent {
 
     render() {
         const { resetRolesEditor, subjectsByRole = [], ...rest } = this.props;
-        if (subjectsByRole) {
-            console.log(subjectsByRole);
-        }
         const allRoles = this.mapRoles(subjectsByRole);
-        if (allRoles) {
-            console.log(allRoles);
-        }
         return (
             <RoleEditorComponent
                 onSubmit={this.onSubmit}
