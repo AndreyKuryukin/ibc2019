@@ -90,7 +90,7 @@ class Drilldown extends React.Component {
     fetchChartData(props = this.props) {
         const queryParams = {
             regularity: props.regularity,
-            mrfId: props.mrfId,
+            mrf: props.mrfId,
         };
 
         return rest.get('/api/v1/dashboard/barchart/kab', {}, { queryParams })
@@ -103,7 +103,7 @@ class Drilldown extends React.Component {
 
         return [
             {
-                name: 'Прошлогодний',
+                name: 'Предыдущий',
                 data: previous,
             }, {
                 name: 'Нормальный',

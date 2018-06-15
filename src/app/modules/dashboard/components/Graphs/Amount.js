@@ -92,7 +92,7 @@ class Amount extends React.Component {
     fetchChartData(props = this.props) {
         const queryParams = {
             regularity: props.regularity,
-            mrfId: props.mrfId,
+            mrf: props.mrfId,
         };
 
         return rest.get('/api/v1/dashboard/abonents', {}, { queryParams })

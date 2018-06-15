@@ -41,7 +41,7 @@ const plugins = [
     // './alarms',
     //'./common',
     // './user'
-    './dashboard',
+    // './dashboard',
 ];
 
 app.use((req, res, next) => {

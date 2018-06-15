@@ -88,8 +88,6 @@ class KICount extends React.Component {
             series,
         };
 
-        console.log(options);
-
         this.chart = new Highcharts.Chart(
             this.container,
             options
