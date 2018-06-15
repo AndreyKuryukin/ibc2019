@@ -33,7 +33,6 @@ class Condition extends React.PureComponent {
         super(props);
         this.state = {
             condition: {
-                conditionDuration: 0,
                 conjunction: {
                     type: 'AND',
                     conjunctionList: []
@@ -41,6 +40,10 @@ class Condition extends React.PureComponent {
             },
             errors: null,
         }
+    }
+
+    componentDidMount() {
+        this.props.onChange({ condition: this.state.condition });
     }
 
     componentWillReceiveProps(nextProps) {
