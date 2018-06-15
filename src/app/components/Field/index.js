@@ -12,6 +12,7 @@ class Field extends React.PureComponent {
             PropTypes.string,
             PropTypes.number,
         ]),
+        labelStyle: PropTypes.object,
         inputWidth: PropTypes.oneOfType([
             PropTypes.string,
             PropTypes.number,
@@ -28,6 +29,7 @@ class Field extends React.PureComponent {
         id: '',
         labelText: '',
         labelWidth: null,
+        labelStyle: {},
         inputWidth: null,
         labelAlign: 'left',
         required: false,
@@ -38,7 +40,7 @@ class Field extends React.PureComponent {
     };
 
     render() {
-        const { id, labelText, labelWidth, labelAlign, splitter, disabled, inputWidth, required, children, style, title, className } = this.props;
+        const { id, labelText, labelWidth, labelAlign, labelStyle, splitter, disabled, inputWidth, required, children, style, title, className } = this.props;
         const classes = classNames(
             styles.fieldWrapper,
             {
@@ -58,7 +60,7 @@ class Field extends React.PureComponent {
                 {labelText && <label
                     htmlFor={id}
                     className={styles.fieldLabel}
-                    style={{ width: labelWidth }}
+                    style={{ ...labelStyle, width: labelWidth }}
                 >{`${labelText}${splitter}`}</label>}
                 <div
                     className={styles.fieldInput}

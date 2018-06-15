@@ -1,9 +1,36 @@
 @import "../../../scss/vars";
 
-.dasboardPage {
+.dashboardPage {
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
+  flex-direction: column;
   width: 100%;
-  align-items: center;
+  align-items: stretch;
   color: $white;
+  padding: 19px 30px 0;
+
+  & > .head {
+    flex-shrink: 0;
+    flex-grow: 0;
+  }
+  & > .tabs {
+    flex-shrink: 0;
+    flex-grow: 0;
+    position: relative;
+    z-index: 1;
+  }
+  & > .widgets {
+    flex-grow: 1;
+    margin-bottom: 30px;
+
+    & > .map {
+      .mapTitleKQI {
+        display: inline;
+
+        .value {
+          display: none;
+        }
+      }
+    }
+  }
 }

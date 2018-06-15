@@ -1,0 +1,24 @@
+@import "../../../../../scss/vars";
+
+.dashboardFiltersWrapper {
+  background-color: $filters-pane-background-color;
+  display: flex;
+  justify-content: stretch;
+  padding: 18px 30px;
+  border-radius: 3px;
+}
+.dashboardFiltersGroup {
+  flex-grow: 0;
+}
+.dashboardFiltersSeparator {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+
+  &::before {
+    display: block;
+    content: '';
+    width: 2px;
+    background-color: $filters-pane-separator-color;
+  }
+}
