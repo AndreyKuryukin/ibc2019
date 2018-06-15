@@ -266,26 +266,6 @@ class App extends React.Component {
             name: 'LANDING',
             access_level: ['EDIT', 'VIEW']
         },
-        {
-            name: 'USERS',
-            access_level: ['EDIT', 'VIEW']
-        },
-        {
-            name: 'REPORTS',
-            access_level: ['EDIT', 'VIEW']
-        },
-        {
-            name: 'ALARMS',
-            access_level: ['EDIT', 'VIEW']
-        },
-        {
-            name: 'SOURCES',
-            access_level: ['EDIT', 'VIEW']
-        },
-        {
-            name: 'POLICY',
-            access_level: ['EDIT', 'VIEW']
-        },
     ];
 
     renderRoutes = (subjects = []) => {
