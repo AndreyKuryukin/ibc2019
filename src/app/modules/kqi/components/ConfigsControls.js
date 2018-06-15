@@ -35,7 +35,7 @@ class ConfigsControls extends React.PureComponent {
                     <Icon
                         icon="kqiAdd"
                         onClick={this.onConfigure}
-                        title={ls('ADD_KQI_CALCULATION_TITLE', 'Добавить вычисление KQI')}
+                        title={ls('ADD_KQI_CALCULATION_TITLE', 'Добавить KQI')}
                     />
                 </div>}
                 <Input
