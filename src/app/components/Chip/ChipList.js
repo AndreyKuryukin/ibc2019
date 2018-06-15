@@ -16,7 +16,8 @@ class ChipList extends React.PureComponent {
         formatValue: PropTypes.func,
         error: PropTypes.string,
         valid: PropTypes.bool,
-        value: PropTypes.string
+        value: PropTypes.string,
+        placeholder: PropTypes.string,
     };
 
     static defaultProps = {
@@ -24,6 +25,7 @@ class ChipList extends React.PureComponent {
         value: '',
         inputPlaceholder: '',
         separator: ':',
+        placeholder: '',
         onAdd: () => null,
     };
 
@@ -59,6 +61,7 @@ class ChipList extends React.PureComponent {
             <div style={{ display: 'flex', position: 'relative' }}>
                 <Input
                     id={this.props.id}
+                    placeholder={this.props.placeholder}
                     valid={this.props.valid}
                     errorMessage={this.props.error}
                     value={this.formatValue(this.state.value)}

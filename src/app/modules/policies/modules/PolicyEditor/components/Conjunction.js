@@ -80,7 +80,9 @@ class Conjunction extends React.PureComponent {
             'integer': 'number',
             'string': 'text',
         };
-        const params = {};
+        const params = {
+            placeholder: ls('POLICY_CONJUNCTION_VALUE_PLACEHOLDER', 'Значение'),
+        };
         if (paramCfg.type === 'enum' && _.isArray(paramCfg.values)) {
             params.options = paramCfg.values.map(v => ({ title: v, value: v }));
             params.onChange = (value) => this.setConjunctionProperty('value', value)
@@ -122,6 +124,7 @@ class Conjunction extends React.PureComponent {
                             <Select
                                 id="parameter"
                                 type="select"
+                                placeholder={ls('POLICY_CONJUNCTION_PARAMETER_PLACEHOLDER', 'Параметр')}
                                 value={parameter}
                                 options={this.mapParameters(parameters)}
                                 onChange={(value) => this.setParameter(value)}
@@ -132,7 +135,7 @@ class Conjunction extends React.PureComponent {
                     <div style={{ width: '20%', paddingLeft: 5 }}>
                         <Select
                             type="select"
-                            placeholder={''}
+                            placeholder={ls('POLICY_CONJUNCTION_OPERATOR_PLACEHOLDER', 'Оператор')}
                             value={_.get(value, 'operator')}
                             options={this.mapOperators(parameters, parameter)}
                             onChange={(value) => this.setConjunctionProperty('operator', value)}

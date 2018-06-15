@@ -14,6 +14,8 @@ import _ from 'lodash';
 import Conjunction from "./Conjunction";
 import classnames from "classnames";
 
+const unitStyle = { margin: '3px 0px 3px 2px' };
+
 class Condition extends React.PureComponent {
     static propTypes = {
         condition: PropTypes.object,
@@ -143,6 +145,7 @@ class Condition extends React.PureComponent {
                         id="operator"
                         required
                         type="select"
+                        placeholder={ls('POLICY_OPERATOR_PLACEHOLDER', 'Оператор')}
                         value={this.getConditionProperty('conjunction.type', 'AND')}
                         options={this.getOperators()}
                         onChange={value => this.setConditionProperty('conjunction.type', value, true)}
@@ -161,11 +164,12 @@ class Condition extends React.PureComponent {
                         id="maxInterval"
                         name="maxInterval"
                         type="number"
+                        placeholder="0"
                         value={this.getSeconds(this.getConditionProperty('conditionDuration'))}
                         onChange={event => this.setConditionProperty('conditionDuration', this.getMilliSeconds(_.get(event, 'target.value', '')), true)}
                         valid={errors && _.isEmpty(errors.conditionDuration)}
                     />
-                    <span style={{ margin: '2px' }}>{ls('SECOND_UNIT', 'сек.')}</span>
+                    <span style={unitStyle}>{ls('SECOND_UNIT', 'сек.')}</span>
                 </Field>
                 <div className={styles.conditionsWrapper}>
                     <Icon

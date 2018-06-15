@@ -73,6 +73,7 @@ class MacList extends React.PureComponent {
             valid={!this.state.error}
             error={this.state.error}
             value={this.state.mac}
+            placeholder={ls('POLICY_MAC_ADDRESSES_PLACEHOLDER', 'MAC-адрес')}
         >
             {this.props.macs.map(mac => <Chip title={this.composeDisplayString(mac)}
                                               key={mac}
