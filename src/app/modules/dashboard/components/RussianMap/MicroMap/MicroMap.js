@@ -25,6 +25,47 @@ class MicroMap extends React.PureComponent {
 
     active = null;
 
+    componentDidMount() {
+        this.onResize();
+        window.addEventListener('resize', this.onResize);
+    }
+    componentWillUnmount() {
+        window.removeEventListener('resize', this.onResize);
+    }
+
+    onResize = () => {
+        const { width, height } = this.getSize();
+
+        const mapRatio = width / height;
+        const containerRatio = this.wrapper.offsetWidth / this.wrapper.offsetHeight;
+
+        if (mapRatio === containerRatio) return;
+
+        if (mapRatio - containerRatio > 0) {
+            this.inner.style.height = 1 / mapRatio * this.wrapper.offsetWidth + 'px';
+            this.inner.style.width = '100%';
+        } else {
+            this.inner.style.width = mapRatio * this.wrapper.offsetHeight + 'px';
+            this.inner.style.height = '100%';
+        }
+    };
+
+    getMRF() {
+        return data[this.props.mrfId];
+    }
+
+    getSize() {
+        const mrf = this.getMRF();
+        const initialWidth = mrf.width;
+        const initialHeight = mrf.height;
+        const paddingH = this.props.padding;
+        const paddingV = paddingH / initialWidth * initialHeight;
+        const width = initialWidth + paddingH * 2;
+        const height = initialHeight + paddingV * 2;
+
+        return { width, height, paddingH, paddingV };
+    }
+
     onMouseEnter = (id) => {
         this.active = id;
         this.setState(state => {
@@ -40,9 +81,9 @@ class MicroMap extends React.PureComponent {
 
     render() {
         const { active } = this.state;
-        const { mrfId, plan, kqi } = this.props;
+        const { plan, kqi } = this.props;
 
-        const mrf = data[mrfId];
+        const mrf = this.getMRF();
 
         if (mrf === undefined) return null;
 
@@ -60,74 +101,53 @@ class MicroMap extends React.PureComponent {
             kqi: this.props.kqi[rf.id],
         }));
 
-        const initialWidth = mrf.width;
-        const initialHeight = mrf.height;
-        const paddingH = this.props.padding;
-        const paddingV = paddingH / initialWidth * initialHeight;
-        const width = initialWidth + paddingH * 2;
-        const height = initialHeight + paddingV * 2;
+        const { width, height, paddingH, paddingV } = this.getSize();
 
         return (
             <div className={styles.russianMap}>
                 <div className={cn(styles.wrapper, styles.micro)}>
                     <div
-                        style={{
-                            position: 'static',
-                            width: '100%',
-                        }}
+                        className={styles.container}
+                        ref={wrapper => this.wrapper = wrapper}
                     >
                         <div
-                            style={{
-                                height: 0,
-                                overflow: 'hidden',
-                                paddingTop: `calc(${height} / ${width} * 100%)`,
-                                position: 'relative',
-                            }}
+                            className={styles.inner}
+                            ref={inner => this.inner = inner}
                         >
-                            <div
-                                style={{
-                                    position: 'absolute',
-                                    top: 0,
-                                    left: 0,
-                                    width: '100%',
-                                    height: '100%',
-                                }}
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox={`${-paddingH} ${-paddingV} ${width} ${height}`}
                             >
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    viewBox={`${-paddingH} ${-paddingV} ${width} ${height}`}
-                                >
-                                    {sortedList.map(region => (
-                                        <RegionShape
-                                            key={region.id}
-                                            id={region.id}
-                                            path={region.path}
-                                            isActive={active === region.id}
-                                            onMouseEnter={this.onMouseEnter}
-                                            onMouseLeave={this.onMouseLeave}
-                                        />
-                                    ))}
-                                </svg>
-                                {list.map(region => {
-                                    const left = region.pointCoords[0] / width * 100 + '%';
-                                    const top = region.pointCoords[1] / height * 100 + '%';
+                                {sortedList.map(region => (
+                                    <RegionShape
+                                        key={region.id}
+                                        id={region.id}
+                                        path={region.path}
+                                        isActive={active === region.id}
+                                        onMouseEnter={this.onMouseEnter}
+                                        onMouseLeave={this.onMouseLeave}
+                                    />
+                                ))}
+                            </svg>
+                            {list.map(region => {
+                                const left = region.pointCoords[0] / width * 100 + '%';
+                                const top = region.pointCoords[1] / height * 100 + '%';
 
-                                    return (
-                                        <RegionInfo
-                                            key={region.id}
-                                            id={region.id}
-                                            coords={{ left, top }}
-                                            type={this.props.type}
-                                            name={region.name}
-                                            plan={plan}
-                                            kqi={kqi[region.id]}
-                                            isActive={active === region.id}
-                                            onMouseEnter={this.onMouseEnter}
-                                            onMouseLeave={this.onMouseLeave}
-                                        />
-                                    );
-                                })}
-                            </div>
+                                return (
+                                    <RegionInfo
+                                        key={region.id}
+                                        id={region.id}
+                                        coords={{ left, top }}
+                                        type={this.props.type}
+                                        name={region.name}
+                                        plan={plan}
+                                        kqi={kqi[region.id]}
+                                        isActive={active === region.id}
+                                        onMouseEnter={this.onMouseEnter}
+                                        onMouseLeave={this.onMouseLeave}
+                                    />
+                                );
+                            })}
                         </div>
                     </div>
                 </div>
