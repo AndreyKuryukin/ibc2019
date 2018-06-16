@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -11,7 +11,7 @@ import { resetActiveUserSuccess } from '../actions';
 import PageWrapper from '../components/PageWrapper';
 import Preloader from '../components/Preloader';
 import Login from '../modules/login/containers';
-import Dasboard from '../modules/dashboard/containers';
+import Dashboard from '../modules/dashboard/containers';
 import Policies from '../modules/policies/containers';
 import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
@@ -61,9 +61,9 @@ class App extends React.Component {
             },
             'LANDING': {
                 title: 'Рабочий стол',
-                path: '/',
-                link: '/',
-                component: Dasboard,
+                link: '/dashboard',
+                path: '/dashboard/:regularity?/:mode?/:type?/:mrfId?',
+                component: Dashboard,
                 exact: true
             },
             'KQI': {
@@ -316,6 +316,7 @@ class App extends React.Component {
                 <Preloader active={this.state.loading}>
                     {!loading && <PageWrapper onLogOut={this.onLogOut}>
                         <Switch>
+                            <Redirect from="/" exact to="/dashboard" />
                             {routes}
                             {loggedIn ? <Route component={NoMatch}/> : this.loginRedirect()}
                         </Switch>

@@ -1,0 +1,22 @@
+.dashboardHead {
+  display: flex;
+  justify-content: stretch;
+  flex-wrap: wrap;
+
+  & > .modeSwitcher {
+    flex-grow: 1;
+  }
+
+  & > .locationDropdown {
+    margin-right: 10px;
+  }
+
+  & > .regularitySwitcher {
+    flex-grow: 0;
+  }
+
+  & > .filters {
+    flex-basis: 100%;
+    margin-top: 23px;
+  }
+}

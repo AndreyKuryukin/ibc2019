@@ -6,3 +6,4 @@ package-lock.json
 yarn.lock
 coverage
 nginx/
+.DS_Store

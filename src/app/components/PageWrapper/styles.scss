@@ -62,7 +62,8 @@
     .pageContent {
       display: flex;
       flex-grow: 1;
-      height: 100%;
+      height: calc(100% - 40px);
+      overflow: auto;
       z-index: 1;
     }
   }

@@ -168,10 +168,10 @@
   @include iconBuilder(40px, 40px, 'menu/policies-active.svg');
 }
 
-.menu-icon-landing {
+.menu-icon-dashboard {
   @include iconBuilder(40px, 40px, 'menu/workspace.svg');
 }
-.menu-icon-landing-active {
+.menu-icon-dashboard-active {
   @include iconBuilder(40px, 40px, 'menu/workspace-active.svg');
 }
 
