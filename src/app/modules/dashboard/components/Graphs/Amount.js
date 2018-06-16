@@ -45,6 +45,32 @@ class Amount extends React.Component {
     }
 
     initChart = () => {
+        const instance = this;
+
+        const hoverTextOptions = [
+            {
+                getter: data => data.name,
+                offset: -67,
+                fill: '#02486e',
+                size: 14,
+            }, {
+                getter: data => data.totalPart + '%',
+                offset: -35,
+                fill: '#7cc032',
+                size: 34,
+            }, {
+                getter: () => 'Аварийные',
+                offset: -12,
+                fill: '#02486e',
+                size: 14,
+            }, {
+                getter: data => data.broken + '%',
+                offset: 22,
+                fill: '#e43f3f',
+                size: 34,
+            }
+        ];
+
         const options = {
             chart: {
                 type: 'pie',
@@ -55,14 +81,7 @@ class Amount extends React.Component {
                 align: 'left',
             },
             tooltip: {
-                shared: true,
-                backgroundColor: '#082545',
-                borderRadius: 7,
-                borderWidth: 0,
-                style: {
-                    color: 'white',
-                },
-                useHTML: true,
+                enabled: false,
             },
             plotOptions: {
                 pie: {
@@ -72,7 +91,36 @@ class Amount extends React.Component {
                     },
                     showInLegend: true,
                     center: ['50%', '50%'],
-                }
+                },
+                series: {
+                    point: {
+                        events: {
+                            mouseOver: function() {
+                                const { renderer, chartWidth, chartHeight } = instance.chart;
+                                const { hoverData } = this;
+
+                                const cx = chartWidth / 2;
+                                const cy = chartHeight / 2;
+
+                                instance.texts = hoverTextOptions.map(options => renderer.text(
+                                    options.getter(hoverData),
+                                    cx,
+                                    cy + options.offset,
+                                ).attr({
+                                    fill: options.fill,
+                                    'font-size': options.size,
+                                    align: 'center',
+                                }).add());
+                            },
+                            mouseOut: function() {
+                                if (Array.isArray(instance.texts)) {
+                                    instance.texts.forEach(text => text.destroy());
+                                    delete instance.texts;
+                                }
+                            },
+                        },
+                    },
+                },
             },
             series: [{
                 name: 'Amount',
@@ -101,17 +149,27 @@ class Amount extends React.Component {
     }
 
     getSeries() {
+        const sum = Object.values(this.state.data).reduce((result, item) => result + item.total, 0);
+
         return Object.entries(this.state.data).reduce((result, [key, { total, broken }], i, ar) => {
+            const hoverData = {
+                name: key,
+                totalPart: parseFloat((total / sum).toFixed(2)),
+                broken: parseFloat((broken / total).toFixed(2)),
+            };
+
             result.push({
                 name: key,
                 y: total,
                 color: colors[key],
+                hoverData,
             });
             result.push({
                 name: `Аварийные ${key}`,
                 y: total,
                 color: colors[`${key}_broken`],
                 legendIndex: i + ar.length,
+                hoverData,
             });
             return result;
         }, []);
