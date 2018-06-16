@@ -58,6 +58,7 @@ class Drilldown extends React.Component {
                 },
                 yAxis: {
                     max: 100,
+                    min: this.getMin(),
                     title: {
                         text: '%',
                         align: 'high',
@@ -121,7 +122,9 @@ class Drilldown extends React.Component {
         return this.state.data.map(item => item.name);
     }
     getMin() {
+        const min = Math.min(...this.state.data.reduce((acc, item) => [...acc, item.current, item.previous], []));
 
+        return Math.max(0, min - (100 - min) * 0.1);
     }
 
     render() {
