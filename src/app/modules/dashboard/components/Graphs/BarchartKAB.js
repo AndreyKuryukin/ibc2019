@@ -42,6 +42,10 @@ class Drilldown extends React.Component {
                 },
                 title: {
                     text: 'Каб по РФ',
+                    style: {
+                        color: '#02486e',
+                        fontSize: 18,
+                    },
                     align: 'left',
                 },
                 xAxis: {

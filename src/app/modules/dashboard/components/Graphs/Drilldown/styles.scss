@@ -1,0 +1,75 @@
+.drilldownChart.tableContainer {
+  margin-top: 15px;
+
+  .tableHeader {
+    background: none;
+
+    .headerCell {
+      padding: 0 10px 10px;
+      color: rgba(0, 0, 0, 0.5);
+      font-size: 12px;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+      margin-bottom: 9px;
+
+      & + .headerCell {
+        border-left-color: rgba(0, 0, 0, 0.05);
+      }
+    }
+  }
+
+  .tableBody {
+    background: none;
+
+    .bodyRow {
+      height: auto;
+      min-height: auto;
+      max-height: none;
+      flex-shrink: 0;
+      flex-grow: 0;
+
+      &:nth-of-type(odd) {
+        background-color: transparent;
+      }
+
+      &.selected {
+        background-color: transparent !important;
+      }
+      &:hover,
+      &.selected:hover {
+        background-color: rgba(240, 240, 240, 0.7) !important;
+      }
+
+      .bodyCell {
+        padding: 0;
+
+        .cell {
+          &.name {
+            color: #000 !important;
+          }
+          &.itv1 {
+            color: #377dc4 !important;
+          }
+          &.itv2 {
+            color: #fc3737 !important;
+          }
+
+          & sub {
+            color: inherit !important;
+          }
+
+          & > .parentCell {
+            color: inherit !important;
+            font-size: 16px;
+            padding: 7px 10px;
+          }
+
+          & > .childCell {
+            color: inherit !important;
+            font-size: 14px;
+            padding: 7px 0 6px 20px;
+          }
+        }
+      }
+    }
+  }
+}

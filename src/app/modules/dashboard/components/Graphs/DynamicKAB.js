@@ -44,6 +44,10 @@ class DynamicKAB extends React.Component {
                 },
                 title: {
                     text: 'Динамика Каб',
+                    style: {
+                        color: '#02486e',
+                        fontSize: 18,
+                    },
                     align: 'left',
                 },
                 colors: [

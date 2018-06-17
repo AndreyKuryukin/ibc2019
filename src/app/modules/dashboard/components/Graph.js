@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import WidgetWrapper from './WidgetWrapper';
 import DynamicKAB from './Graphs/DynamicKAB';
-// import Drilldown from './Graphs/Drilldown';
+import Drilldown from './Graphs/Drilldown';
 import BarchartKAB from './Graphs/BarchartKAB';
 import Amount from './Graphs/Amount';
-// import KI from './Graphs/KI';
+import KI from './Graphs/KI';
 
 class Graph extends React.Component {
     static propTypes = {
@@ -28,11 +28,18 @@ class Graph extends React.Component {
                 }}>
                     <DynamicKAB regularity={regularity} />
                 </WidgetWrapper>
-                {/* <WidgetWrapper style={{
-                    gridColumn: '1 / 3',
-                }}>
-                    <Drilldown />
-                </WidgetWrapper> */}
+                <WidgetWrapper
+                    title="KQI МРФ Волга"
+                    style={{
+                        gridColumn: '1 / 3',
+                        height: 400,
+                    }}
+                >
+                    <Drilldown
+                        regularity={regularity}
+                        mrfId={mrfId}
+                    />
+                </WidgetWrapper>
                 <WidgetWrapper style={{
                     gridColumn: '1 / 2',
                 }}>
@@ -49,11 +56,14 @@ class Graph extends React.Component {
                         mrfId={mrfId}
                     />
                 </WidgetWrapper>
-                {/* <WidgetWrapper style={{
+                <WidgetWrapper style={{
                     gridColumn: '1 / 2',
                 }}>
-                    <KI />
-                </WidgetWrapper> */}
+                    <KI
+                        regularity={regularity}
+                        mrfId={mrfId}
+                    />
+                </WidgetWrapper>
             </div>
         );
     }

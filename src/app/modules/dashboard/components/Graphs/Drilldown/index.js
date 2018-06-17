@@ -1,0 +1,110 @@
+import React from 'react';
+import PropTypes from 'prop-types';
+import styles from './styles.scss';
+import BodyCell from './DrilldownBodyCell';
+import HeadCell from './DrilldownHeadCell';
+import Table from '../../../../../components/Table/index';
+import rest from '../../../../../rest/index';
+import KQI from '../../KQI';
+
+class Drilldown extends React.Component {
+    static propTypes = {
+        regularity: PropTypes.string.isRequired,
+        mrfId: PropTypes.string,
+    };
+
+    state = {
+        data: {},
+        expanded: [],
+    };
+
+    componentDidMount() {
+        this.fetchChartData();
+    }
+    componentWillUpdate(nextProps) {
+        if (this.props.regularity !== nextProps.regularity || this.props.mrfId !== nextProps.mrfId) {
+            this.fetchChartData(nextProps).then(this.initChart);
+        }
+    }
+    fetchChartData(props = this.props) {
+        const queryParams = {
+            regularity: props.regularity,
+            mrf: props.mrfId,
+        };
+
+        return rest.get('/api/v1/dashboard/drilldown', {}, { queryParams })
+            .then(({ data }) => this.setState({ data }))
+            .catch(console.error);
+    }
+
+    onRowClick = (rowId) => {
+        const set = new Set(this.state.expanded);
+
+        if (!set.delete(rowId)) {
+            set.add(rowId);
+        }
+
+        this.setState({
+            expanded: Array.from(set),
+        });
+    };
+
+    mapDataToRows() {
+        const format = number => parseFloat(number.toFixed(2)) + '%';
+
+        return Object.entries(this.state.data)
+            .filter(([type, value]) => value !== null)
+            .map(([type, value]) => {
+                const [parameter, index] = KQI.parseType(type);
+
+                return {
+                    id: type,
+                    name: '',
+                    parameter,
+                    index,
+                    itv1: format(value.itv1),
+                    itv2: format(value.itv2),
+                    items: value.rf.map(rf => ({
+                        id: `${type}_${rf.id}`,
+                        name: rf.name,
+                        parameter,
+                        index,
+                        itv1: format(rf.itv1),
+                        itv2: format(rf.itv2),
+                    })),
+                };
+            });
+    }
+
+    render() {
+        return (
+            <Table
+                className={styles.drilldownChart}
+                columns={[
+                    {
+                        title: 'Показатель',
+                        name: 'name',
+                    }, {
+                        title: 'ИТВ',
+                        name: 'itv1',
+                    }, {
+                        title: 'ИТВ 2.0',
+                        name: 'itv2',
+                    }
+                ]}
+                data={this.mapDataToRows()}
+                bodyRowRender={(column, row) => (
+                    <BodyCell
+                        column={column}
+                        row={row}
+                        expanded={new Set(this.state.expanded)}
+                    />
+                )}
+                headerRowRender={column => <HeadCell column={column} />}
+                onSelectRow={this.onRowClick}
+            />
+        );
+    }
+}
+
+export default Drilldown;

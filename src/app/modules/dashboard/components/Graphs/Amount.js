@@ -78,6 +78,10 @@ class Amount extends React.Component {
             },
             title: {
                 text: 'Количество STB ИТВ МРФ Волга',
+                style: {
+                    color: '#02486e',
+                    fontSize: 18,
+                },
                 align: 'left',
             },
             tooltip: {
