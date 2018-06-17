@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 
-class KICount extends React.Component {
+class KIDuration extends React.Component {
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -16,7 +16,7 @@ class KICount extends React.Component {
     componentDidMount() {
         this.initChart();
 
-        const getOppositeChart = () => Highcharts.charts.find(chart => chart !== undefined && chart.options.id === 'KIDuration');
+        const getOppositeChart = () => Highcharts.charts.find(chart => chart !== undefined && chart.options.id === 'KICount');
 
         this.container.addEventListener('mousemove', (e) => {
             const chart = getOppositeChart();
@@ -47,22 +47,16 @@ class KICount extends React.Component {
         const categories = this.getCategories(props);
 
         const options = {
-            id: 'KICount',
+            id: 'KIDuration',
             chart: {
-                type: 'spline',
+                type: 'column',
                 width: this.container.offsetWidth,
-                height: 162,
             },
             title: {
-                text: 'Суммарная длительность Ки МРФ Волга по РФ',
-                style: {
-                    color: '#02486e',
-                    fontSize: 18,
-                },
-                align: 'left',
+                text: '',
             },
             colors: [
-                '#fc3737',
+                '#377dc4',
             ],
             tooltip: {
                 shared: true,
@@ -78,14 +72,10 @@ class KICount extends React.Component {
                 enabled: false,
             },
             plotOptions: {
-                spline: {
-                    marker: {
-                        enabled: true,
-                        radius: 4,
-                        symbol: 'circle',
-                        lineColor: null,
-                        lineWidth: 2,
-                        fillColor: 'white',
+                plotOptions: {
+                    column: {
+                        pointPadding: 0,
+                        borderWidth: 0,
                     },
                 },
             },
@@ -100,9 +90,6 @@ class KICount extends React.Component {
                 gridLineColor: 'rgba(0, 0, 0, 0.05)',
                 tickWidth: 0,
                 labelColor: 'rgba(0, 0, 0, 0.5)',
-                labels: {
-                    enabled: false,
-                },
             },
             yAxis: {
                 title: {
@@ -133,8 +120,8 @@ class KICount extends React.Component {
 
     getSeries(props) {
         return [{
-            name: 'Количество',
-            data: props.data.map(city => city.count),
+            name: 'Длительность',
+            data: props.data.map(city => city.duration),
         }];
     }
     getCategories(props) {
@@ -155,4 +142,4 @@ class KICount extends React.Component {
     }
 }
 
-export default KICount;
+export default KIDuration;
