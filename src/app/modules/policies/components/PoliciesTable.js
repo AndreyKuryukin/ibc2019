@@ -10,6 +10,8 @@ import search from '../../../util/search';
 import styles from './styles.scss';
 import IconCell from "../../../components/Table/Cells/IconCell";
 
+const editIconStyle = { flexShrink: 0 };
+
 class PoliciesTable extends React.PureComponent {
     static contextTypes = {
         hasAccess: PropTypes.func.isRequired
@@ -55,10 +57,10 @@ class PoliciesTable extends React.PureComponent {
             sortable: true,
             searchable: true,
             columns: [{
-                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
+                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
                 name: 'rise_duration',
             }, {
-                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
+                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
                 name: 'cease_duration',
             }],
         }, {
@@ -67,10 +69,10 @@ class PoliciesTable extends React.PureComponent {
             sortable: true,
             searchable: true,
             columns: [{
-                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов'),
+                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
                 name: 'rise_value',
             }, {
-                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание'),
+                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
                 name: 'cease_value',
             }],
         },
@@ -87,10 +89,10 @@ class PoliciesTable extends React.PureComponent {
         name: policy.name,
         threshold: {
             id: _.get(policy, 'threshold.id', ''),
-            cease_duration: _.get(policy, 'threshold.cease_duration', '').toString(),
-            cease_value: _.get(policy, 'threshold.cease_value', '').toString(),
-            rise_duration: _.get(policy, 'threshold.rise_duration', '').toString(),
-            rise_value: _.get(policy, 'threshold.rise_value', '').toString(),
+            cease_duration: _.get(policy, 'threshold.cease_duration', '').toString() / 1000,
+            cease_value: _.get(policy, 'threshold.cease_value', '').toString() / 1000,
+            rise_duration: _.get(policy, 'threshold.rise_duration', '').toString() / 1000,
+            rise_value: _.get(policy, 'threshold.rise_value', '').toString() / 1000,
         },
     })));
 
@@ -129,6 +131,7 @@ class PoliciesTable extends React.PureComponent {
                             content={node[column.name]}
                         />
                         <IconCell icon="edit-icon"
+                                  cellStyle={editIconStyle}
                                   onIconClick={() => {
                                       this.props.notificationClick(node.id)
                                   }}
