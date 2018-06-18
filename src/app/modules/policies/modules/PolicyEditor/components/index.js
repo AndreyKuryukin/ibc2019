@@ -21,6 +21,13 @@ const notAllowedAccidentStyle = { width: '60%' };
 const unitStyle = { margin: '3px 0px 3px 2px' };
 const thresholdFieldStyle = { flexGrow: 1, justifyContent: 'flex-end' };
 
+const defaultCondition = {
+    conjunction: {
+        type: 'AND',
+        conjunctionList: [],
+    },
+};
+
 class PolicyEditor extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -97,17 +104,17 @@ class PolicyEditor extends React.PureComponent {
     handleObjectTypeChange = (prevPolicy, objectType) => {
         const policy = _.pick(prevPolicy, ['name', 'objectType']);
         policy['objectType'] = objectType;
-        policy['condition'] = { condition: {} };
+        policy['condition'] = { condition: defaultCondition };
         this.setState({ metaData: {} }, () => {
             this.props.fetchPolicyTypes(policy.objectType);
         });
-        return policy
+        return policy;
     };
 
     handlePolicyTypeChange = (prevPolicy, policy_type) => {
         const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type']);
         policy['policy_type'] = policy_type;
-        policy['condition'] = { condition: {} };
+        policy['condition'] = { condition: defaultCondition };
         this.setState({ metaData: {} }, () => {
             this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
@@ -117,9 +124,8 @@ class PolicyEditor extends React.PureComponent {
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
 
     setPolicyProperty = (key, value) => {
-        console.log(value.length);
         const policyValues = _.set({}, key, value);
-        let prevPolicy = this.state.policy;
+        let prevPolicy = _.cloneDeep(this.state.policy);
         if (key === 'object_type') {
             prevPolicy = this.handleObjectTypeChange(prevPolicy, value)
         }
@@ -128,6 +134,10 @@ class PolicyEditor extends React.PureComponent {
         }
         if (key === 'scope_type') {
             prevPolicy.scope_list = [];
+        }
+        if (key === 'allow_accident' && value === false) {
+            _.set(policyValues, 'accident', '');
+            _.set(policyValues, 'waiting_time', '');
         }
         const policy = _.mergeWith(
             prevPolicy,
@@ -359,10 +369,11 @@ class PolicyEditor extends React.PureComponent {
                                             <Select
                                                 id="not-allowed-accident"
                                                 type="select"
-                                                placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Какие-то аварии')}
+                                                placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
                                                 options={this.mapPolicies(policies, policyId)}
                                                 value={this.getPolicyProperty('accident')}
                                                 onChange={value => this.setPolicyProperty('accident', value)}
+                                                disabled={!this.getPolicyProperty('allow_accident')}
                                             />
                                         </Field>}
                                     {
@@ -370,18 +381,24 @@ class PolicyEditor extends React.PureComponent {
                                         <Field
                                             id="waiting-time"
                                             labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
-                                            labelWidth="66%"
-                                            inputWidth="34%"
+                                            labelWidth="81%"
+                                            inputWidth="85px"
                                             style={notAllowedAccidentStyle}
                                         >
-                                            <Input
-                                                id="waiting-time"
-                                                name="waiting-time"
-                                                type="number"
-                                                placeholder="0"
-                                                value={this.getPolicyProperty('waiting_time')}
-                                                onChange={event => this.setPolicyProperty('waiting_time', _.get(event, 'target.value'))}
-                                            />
+                                            <div style={{ display: 'flex' }}>
+                                                <Input
+                                                    id="waiting-time"
+                                                    name="waiting-time"
+                                                    placeholder="0"
+                                                    value={this.getPolicyProperty('waiting_time')}
+                                                    onChange={event => this.setPolicyProperty('waiting_time', _.get(event, 'target.value'))}
+                                                    disabled={!this.getPolicyProperty('allow_accident')}
+                                                    onKeyPress={this.validateNumKey}
+                                                    maxLength={6}
+                                                />
+                                                <span
+                                                    style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                            </div>
                                         </Field>
                                     }
                                 </Panel>

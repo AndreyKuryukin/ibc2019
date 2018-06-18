@@ -33,8 +33,12 @@ body {
 @import 'fields.scss';
 @import 'rwidgets.scss';
 
-input:not([type=checkbox]), input:not([type=radio]), select, textarea {
+input:not([type=checkbox]), input:not([type=radio]), select {
   height: $input-height;
+  font-size: $default-font-size !important;
+}
+
+textarea {
   font-size: $default-font-size !important;
 }
 

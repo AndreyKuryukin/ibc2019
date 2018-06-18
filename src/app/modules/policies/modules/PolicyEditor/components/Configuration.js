@@ -176,6 +176,7 @@ class Configuration extends React.PureComponent {
                         onChange={(event) => {
                             setPolicyProperty('notification_template', _.get(event, 'target.value'))
                         }}
+                        rows={5}
                     />
                 </Field>
             </Panel>
