@@ -211,7 +211,7 @@ class ReportsTable extends React.PureComponent {
                 />;
             }
             case 'delete': {
-                return (node.type === 'PDF' || node.type === 'XLS') &&
+                return (node.nodeType === 'report') &&
                     <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
             }
             default:
