@@ -33,7 +33,7 @@ body {
 @import 'fields.scss';
 @import 'rwidgets.scss';
 
-input:not([type=checkbox]), input:not([type=radio]), select {
+input:not([type=checkbox]), input:not([type=radio]), select, textarea {
   height: $input-height;
   font-size: $default-font-size !important;
 }
@@ -53,15 +53,15 @@ input[type=number]::-webkit-outer-spin-button {
 input[type='number'] {
   -moz-appearance:textfield;
 }
-input::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+input::placeholder, textarea::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
   color: $placeholder !important;
   font-style: italic;
 }
-input:-ms-input-placeholder { /* Internet Explorer 10-11 */
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* Internet Explorer 10-11 */
   color: $placeholder !important;
   font-style: italic;
 }
-input:-ms-input-placeholder { /* Microsoft Edge */
+input:-ms-input-placeholder, textarea:-ms-input-placeholder { /* Microsoft Edge */
   color: $placeholder !important;
   font-style: italic;
 }

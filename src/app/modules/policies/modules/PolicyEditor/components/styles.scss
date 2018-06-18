@@ -4,6 +4,7 @@
   max-width: 800px !important;
   .policyEditorContent {
     display: flex;
+    flex-grow: 1;
     flex-wrap: wrap;
     .policyEditorColumn {
       display: flex;

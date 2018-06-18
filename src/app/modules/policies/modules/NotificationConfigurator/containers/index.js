@@ -59,7 +59,6 @@ class NotificationConfigurator extends React.PureComponent {
         if (this.props.policyId) {
             rest.post(`/api/v1/policy/${this.props.policyId}/notifications`, notifications)
                 .then(() => {
-                    console.log('Success');
                     this.context.history.push('/policies');
                 })
                 .catch((e) => {

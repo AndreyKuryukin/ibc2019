@@ -1,12 +1,12 @@
 {
   "name": "js",
-  "version": "0.2.8-SNAPSHOT",
+  "version": "0.2.10-SNAPSHOT",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --config=./jest.config.json",
     "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack --watch\" \"cross-env nodemon dev/server.js\"",
-    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8088 nodemon dev/server.js --intercept\"",
+    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.204 PROXY_PORT=8010 nodemon dev/server.js --intercept\"",
     "build": "cross-env NODE_ENV=production webpack --bail",
     "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept\"",
     "proxy": "cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept"
