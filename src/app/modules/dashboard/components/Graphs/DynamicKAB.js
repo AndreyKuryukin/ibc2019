@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import rest from '../../../../rest';
+import ls from '../../../../../i18n';
 
 class DynamicKAB extends React.Component {
     static propTypes = {
@@ -43,7 +44,7 @@ class DynamicKAB extends React.Component {
                     width: this.container.offsetWidth,
                 },
                 title: {
-                    text: 'Динамика Каб',
+                    text: ls('DASHBOARD_CHART_DYNAMIC_KAB_TITLE', 'Динамика Каб'),
                     style: {
                         color: '#02486e',
                         fontSize: 18,
@@ -119,8 +120,8 @@ class DynamicKAB extends React.Component {
 
     getSeries() {
         const names = {
-            itv1: 'ИТВ',
-            itv2: 'ИТВ 2.0',
+            itv1: ls('DASHBOARD_ITV', 'ИТВ'),
+            itv2: ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
         };
 
         return Object.entries(this.state.data).map(([key, values], i) => ({

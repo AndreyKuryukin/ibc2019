@@ -6,6 +6,7 @@ import HeadCell from './DrilldownHeadCell';
 import Table from '../../../../../components/Table/index';
 import rest from '../../../../../rest/index';
 import KQI from '../../KQI';
+import ls from '../../../../../../i18n';
 
 class Drilldown extends React.Component {
     static propTypes = {
@@ -82,13 +83,13 @@ class Drilldown extends React.Component {
                 className={styles.drilldownChart}
                 columns={[
                     {
-                        title: 'Показатель',
+                        title: ls('DASHBOARD_CHART_DRILLDOWN_COLUMN_NAME_TITLE', 'Показатель'),
                         name: 'name',
                     }, {
-                        title: 'ИТВ',
+                        title: ls('DASHBOARD_ITV', 'ИТВ'),
                         name: 'itv1',
                     }, {
-                        title: 'ИТВ 2.0',
+                        title: ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
                         name: 'itv2',
                     }
                 ]}

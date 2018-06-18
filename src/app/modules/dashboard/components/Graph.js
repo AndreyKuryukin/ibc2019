@@ -6,6 +6,7 @@ import Drilldown from './Graphs/Drilldown';
 import BarchartKAB from './Graphs/BarchartKAB';
 import Amount from './Graphs/Amount';
 import KI from './Graphs/KI';
+import ls from '../../../../i18n';
 
 class Graph extends React.Component {
     static propTypes = {
@@ -23,13 +24,11 @@ class Graph extends React.Component {
                 gridColumnGap: 30,
                 gridRowGap: 30,
             }}>
-                <WidgetWrapper style={{
-                    gridColumn: '1 / 3',
-                }}>
+                <WidgetWrapper style={{ gridColumn: '1 / 3' }}>
                     <DynamicKAB regularity={regularity} />
                 </WidgetWrapper>
                 <WidgetWrapper
-                    title="KQI МРФ Волга"
+                    title={ls('DASHBOARD_CHART_DRILLDOWN_TITLE', 'KQI МРФ Волга')}
                     style={{
                         gridColumn: '1 / 3',
                         height: 400,
@@ -40,25 +39,19 @@ class Graph extends React.Component {
                         mrfId={mrfId}
                     />
                 </WidgetWrapper>
-                <WidgetWrapper style={{
-                    gridColumn: '1 / 2',
-                }}>
+                <WidgetWrapper style={{ gridColumn: '1 / 2' }}>
                     <BarchartKAB
                         regularity={regularity}
                         mrfId={mrfId}
                     />
                 </WidgetWrapper>
-                <WidgetWrapper style={{
-                    gridColumn: '2 / 3',
-                }}>
+                <WidgetWrapper style={{ gridColumn: '2 / 3' }}>
                     <Amount
                         regularity={regularity}
                         mrfId={mrfId}
                     />
                 </WidgetWrapper>
-                <WidgetWrapper style={{
-                    gridColumn: '1 / 2',
-                }}>
+                <WidgetWrapper style={{ gridColumn: '1 / 2' }}>
                     <KI
                         regularity={regularity}
                         mrfId={mrfId}

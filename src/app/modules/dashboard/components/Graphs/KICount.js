@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
+import ls from '../../../../../i18n';
 
 class KICount extends React.Component {
     static propTypes = {
@@ -54,7 +55,7 @@ class KICount extends React.Component {
                 height: 162,
             },
             title: {
-                text: 'Суммарная длительность Ки МРФ Волга по РФ',
+                text: ls('DASHBOARD_CHART_KI_TITLE', 'Суммарная длительность Ки МРФ Волга по РФ'),
                 style: {
                     color: '#02486e',
                     fontSize: 18,
@@ -133,7 +134,7 @@ class KICount extends React.Component {
 
     getSeries(props) {
         return [{
-            name: 'Количество',
+            name: ls('DASHBOARD_CHART_KI_SERIES_COUNT', 'Количество'),
             data: props.data.map(city => city.count),
         }];
     }

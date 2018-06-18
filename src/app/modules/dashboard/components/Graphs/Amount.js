@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import Drilldown from 'highcharts/modules/drilldown';
 import rest from '../../../../rest';
+import ls from '../../../../../i18n';
 
 Drilldown(Highcharts);
 
@@ -59,7 +60,7 @@ class Amount extends React.Component {
                 fill: '#7cc032',
                 size: 34,
             }, {
-                getter: () => 'Аварийные',
+                getter: () => ls('DASHBOARD_CHART_AMOUNT_LABEL_BROKEN', 'Аварийные'),
                 offset: -12,
                 fill: '#02486e',
                 size: 14,
@@ -77,7 +78,7 @@ class Amount extends React.Component {
                 width: this.container.offsetWidth,
             },
             title: {
-                text: 'Количество STB ИТВ МРФ Волга',
+                text: ls('DASHBOARD_CHART_AMOUNT_TITLE', 'Количество STB ИТВ МРФ Волга'),
                 style: {
                     color: '#02486e',
                     fontSize: 18,
@@ -169,7 +170,7 @@ class Amount extends React.Component {
                 hoverData,
             });
             result.push({
-                name: `Аварийные ${key}`,
+                name: `${ls('DASHBOARD_CHART_AMOUNT_LABEL_BROKEN', 'Аварийные')} ${key}`,
                 y: total,
                 color: colors[`${key}_broken`],
                 legendIndex: i + ar.length,

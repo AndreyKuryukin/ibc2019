@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
+import ls from '../../../../../i18n';
 
 class KIDuration extends React.Component {
     static propTypes = {
@@ -120,7 +121,7 @@ class KIDuration extends React.Component {
 
     getSeries(props) {
         return [{
-            name: 'Длительность',
+            name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
             data: props.data.map(city => city.duration),
         }];
     }
