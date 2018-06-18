@@ -57,7 +57,9 @@ class DashboardHead extends React.Component {
             text: DashboardHead.localizeViewMode(mode),
             value: mode,
             href: this.props.buildLink(
-                mode === VIEW_MODE.MAP ? { mode } : { mode, type: null }
+                mode === VIEW_MODE.MAP
+                    ? { mode, mrfId: null }
+                    : { mode, type: null }
             ),
         }));
     }
