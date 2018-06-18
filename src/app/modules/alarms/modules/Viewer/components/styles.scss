@@ -26,6 +26,10 @@
         display: flex;
         align-items: center;
       }
+      .attributesList li {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }

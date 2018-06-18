@@ -45,12 +45,12 @@ class AlarmsViewer extends React.PureComponent {
         this.context.history.push(`/alarms/${this.props.type}/${this.context.location.search}`);
     };
 
-    getReadableDuration = (seconds = 0) =>
-        ['days', 'hours', 'minutes'].reduce((result, key) => {
-            const duration = moment.duration(seconds, 'seconds');
+    getReadableDuration = (milliseconds = 0) =>
+        ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
+            const duration = moment.duration(milliseconds, 'milliseconds');
             const method = duration[key];
             const units = method.call(duration).toString();
-            const readableUnits = (key === 'hours' || key === 'minutes') && units.length === 1 ? '0' + units : units;
+            const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
             const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
 
             return `${result}${nextPart}`;
@@ -58,6 +58,8 @@ class AlarmsViewer extends React.PureComponent {
 
     getAlarmContent = (key) => {
         switch (key) {
+            case 'raise_time':
+                return _.get(this.props.alarm, key, null) ? moment(_.get(this.props.alarm, key)).format('DD-MM-YYYY HH:mm:ss') : '';
             case 'duration':
                 return this.getReadableDuration(_.get(this.props.alarm, key, 0));
             case 'notified': {
@@ -74,10 +76,10 @@ class AlarmsViewer extends React.PureComponent {
                 );
             }
             case 'attributes':
-                return <ul>{_.reduce(_.get(this.props.alarm, key, {}), (result, value, key) => {
+                return <ul className={styles.attributesList}>{_.reduce(_.get(this.props.alarm, key, {}), (result, value, key) => {
                     result.push(`${key}=${value}`);
                     return result;
-                }, []).map(attr => <li>{attr}</li>)}</ul>;
+                }, []).map(attr => <li title={attr}>{attr}</li>)}</ul>;
             default:
                 return _.get(this.props.alarm, key, '');
         }
@@ -94,7 +96,7 @@ class AlarmsViewer extends React.PureComponent {
                         toggle={this.onClose}
                         className="handle"
                     >
-                        {`${ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_TITLE', 'Детальная информация по ГП аварии №')}${this.getAlarmContent('id')} (${this.getAlarmContent('priority')})`}
+                        {`${ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_TITLE', 'Детальная информация аварии №')}${this.getAlarmContent('id')}`}
                     </ModalHeader>
                     <ModalBody>
                         <div className={styles.alarmsViewerContent}>
