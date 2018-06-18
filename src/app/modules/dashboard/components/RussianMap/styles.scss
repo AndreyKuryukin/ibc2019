@@ -7,11 +7,11 @@ $animation-duration: 0.15s;
 
 @mixin region-initial {
   fill: $region-initial-color;
-  //transform: scale(1);
+  transform: scale(1);
 }
 @mixin region-active {
   fill: $region-active-color;
-  //transform: scale(1.03);
+  transform: scale(1.03);
 }
 
 @mixin tooltip-initial {
@@ -114,7 +114,7 @@ $animation-duration: 0.15s;
     .mrfinfo {
       position: absolute;
       transform-origin: center;
-      //transform: scale(1);
+      transform: scale(1);
       transition: transform $animation-duration;
 
       span {
@@ -144,7 +144,7 @@ $animation-duration: 0.15s;
       }
     }
     a.active div {
-      //transform: scale(1.5);
+      transform: scale(1.5);
 
       span {
         @include stroke($region-active-color);

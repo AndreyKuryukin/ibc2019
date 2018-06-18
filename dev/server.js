@@ -31,16 +31,15 @@ app.set('etag', false);
 app.set('port', (PORT));
 
 const plugins = [
-    // './login',
-    // './roles',
-    // './users',
-    // './policies',
-    // './kqi',
-    // './reports',
-    // './sources',
-    // './alarms',
-    // './common',
-    // './user'
+    './login',
+    './roles',
+    './users',
+    './policies',
+    './kqi',
+    './reports',
+    './sources',
+    './alarms',
+    './common',
     './dashboard',
 ];
 

@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Highcharts from 'highcharts';
+import Chart from './Chart';
+import ConnectedChart from './ConnectedChart';
 import ls from '../../../../../i18n';
 
 class KICount extends React.Component {
@@ -12,135 +13,54 @@ class KICount extends React.Component {
         })).isRequired,
     };
 
-    chart = null;
+    getChartOptions() {
+        const series = this.getSeries();
+        const categories = this.getCategories();
 
-    componentDidMount() {
-        this.initChart();
-
-        const getOppositeChart = () => Highcharts.charts.find(chart => chart !== undefined && chart.options.id === 'KIDuration');
-
-        this.container.addEventListener('mousemove', (e) => {
-            const chart = getOppositeChart();
-
-            if (chart !== undefined) {
-                const event = chart.pointer.normalize(e);
-                const point = chart.series[0].searchPoint(event, true);
-
-                if (point) {
-                    point.onMouseOver();
-                    point.series.chart.xAxis[0].drawCrosshair(
-                        point.series.chart.pointer.normalize(event),
-                        point
-                    );
-                }
-            }
-        });
-    }
-    componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            this.destroyChart();
-            this.initChart(nextProps);
-        }
-    }
-
-    initChart(props = this.props) {
-        const series = this.getSeries(props);
-        const categories = this.getCategories(props);
-
-        const options = {
+        return {
             id: 'KICount',
             chart: {
                 type: 'spline',
-                width: this.container.offsetWidth,
                 height: 162,
             },
             title: {
+                ...Chart.DEFAULT_OPTIONS.title,
                 text: ls('DASHBOARD_CHART_KI_TITLE', 'Суммарная длительность Ки МРФ Волга по РФ'),
-                style: {
-                    color: '#02486e',
-                    fontSize: 18,
-                },
-                align: 'left',
             },
             colors: [
                 '#fc3737',
             ],
-            tooltip: {
-                shared: true,
-                backgroundColor: '#082545',
-                borderRadius: 7,
-                borderWidth: 0,
-                style: {
-                    color: 'white',
-                },
-                useHTML: true,
-            },
+            tooltip: Chart.DEFAULT_OPTIONS.tooltip,
             legend: {
                 enabled: false,
             },
             plotOptions: {
                 spline: {
-                    marker: {
-                        enabled: true,
-                        radius: 4,
-                        symbol: 'circle',
-                        lineColor: null,
-                        lineWidth: 2,
-                        fillColor: 'white',
-                    },
+                    marker: Chart.DEFAULT_OPTIONS.plotOptions.spline.marker,
                 },
             },
             xAxis: {
+                ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
-                crosshair: {
-                    color: 'rgba(240, 240, 240, 0.7)',
-                },
-                lineWidth: 0,
-                lineColor: 'rgba(0, 0, 0, 0.2)',
-                gridLineWidth: 1,
-                gridLineColor: 'rgba(0, 0, 0, 0.05)',
-                tickWidth: 0,
-                labelColor: 'rgba(0, 0, 0, 0.5)',
                 labels: {
                     enabled: false,
                 },
+                lineWidth: 0,
             },
-            yAxis: {
-                title: {
-                    text: '%',
-                    align: 'high',
-                    offset: 0,
-                    rotation: 0,
-                    y: -10,
-                    color: 'rgba(0, 0, 0, 0.5)',
-                },
-                gridLineWidth: 0,
-                lineWidth: 1,
-                lineColor: 'rgba(0, 0, 0, 0.2)',
-                labelColor: 'rgba(0, 0, 0, 0.5)',
-            },
+            yAxis: Chart.DEFAULT_OPTIONS.yAxis,
             series,
         };
-
-        this.chart = new Highcharts.Chart(
-            this.container,
-            options
-        );
     };
-    destroyChart() {
-        this.chart.destroy();
-        this.chart = null;
-    }
 
-    getSeries(props) {
+    getSeries() {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_COUNT', 'Количество'),
-            data: props.data.map(city => city.count),
+            data: this.props.data.map(city => city.count),
         }];
     }
-    getCategories(props) {
+    getCategories() {
         const categories = [];
-        for (const city of props.data) {
+        for (const city of this.props.data) {
             categories.push(city.name);
         }
         return categories;
@@ -148,9 +68,10 @@ class KICount extends React.Component {
 
     render() {
         return (
-            <div
-                ref={container => this.container = container}
-                style={{ width: '100%' }}
+            <ConnectedChart
+                id="KICount"
+                connectedTo="KIDuration"
+                options={this.getChartOptions()}
             />
         );
     }

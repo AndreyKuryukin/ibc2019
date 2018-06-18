@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Highcharts from 'highcharts';
+import Chart from './Chart';
+import ConnectedChart from './ConnectedChart';
 import ls from '../../../../../i18n';
 
 class KIDuration extends React.Component {
@@ -12,46 +13,13 @@ class KIDuration extends React.Component {
         })).isRequired,
     };
 
-    chart = null;
+    getChartOptions() {
+        const series = this.getSeries();
+        const categories = this.getCategories();
 
-    componentDidMount() {
-        this.initChart();
-
-        const getOppositeChart = () => Highcharts.charts.find(chart => chart !== undefined && chart.options.id === 'KICount');
-
-        this.container.addEventListener('mousemove', (e) => {
-            const chart = getOppositeChart();
-
-            if (chart !== undefined) {
-                const event = chart.pointer.normalize(e);
-                const point = chart.series[0].searchPoint(event, true);
-
-                if (point) {
-                    point.onMouseOver();
-                    point.series.chart.xAxis[0].drawCrosshair(
-                        point.series.chart.pointer.normalize(event),
-                        point
-                    );
-                }
-            }
-        });
-    }
-    componentWillReceiveProps(nextProps) {
-        if (this.props.data !== nextProps.data) {
-            this.destroyChart();
-            this.initChart(nextProps);
-        }
-    }
-
-    initChart(props = this.props) {
-        const series = this.getSeries(props);
-        const categories = this.getCategories(props);
-
-        const options = {
-            id: 'KIDuration',
+        return {
             chart: {
                 type: 'column',
-                width: this.container.offsetWidth,
             },
             title: {
                 text: '',
@@ -59,75 +27,33 @@ class KIDuration extends React.Component {
             colors: [
                 '#377dc4',
             ],
-            tooltip: {
-                shared: true,
-                backgroundColor: '#082545',
-                borderRadius: 7,
-                borderWidth: 0,
-                style: {
-                    color: 'white',
-                },
-                useHTML: true,
-            },
+            tooltip: Chart.DEFAULT_OPTIONS.tooltip,
             legend: {
                 enabled: false,
             },
             plotOptions: {
                 plotOptions: {
-                    column: {
-                        pointPadding: 0,
-                        borderWidth: 0,
-                    },
+                    column: Chart.DEFAULT_OPTIONS.plotOptions.column,
                 },
             },
             xAxis: {
+                ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
-                crosshair: {
-                    color: 'rgba(240, 240, 240, 0.7)',
-                },
-                lineWidth: 0,
-                lineColor: 'rgba(0, 0, 0, 0.2)',
-                gridLineWidth: 1,
-                gridLineColor: 'rgba(0, 0, 0, 0.05)',
-                tickWidth: 0,
-                labelColor: 'rgba(0, 0, 0, 0.5)',
             },
-            yAxis: {
-                title: {
-                    text: '%',
-                    align: 'high',
-                    offset: 0,
-                    rotation: 0,
-                    y: -10,
-                    color: 'rgba(0, 0, 0, 0.5)',
-                },
-                gridLineWidth: 0,
-                lineWidth: 1,
-                lineColor: 'rgba(0, 0, 0, 0.2)',
-                labelColor: 'rgba(0, 0, 0, 0.5)',
-            },
+            yAxis: Chart.DEFAULT_OPTIONS.yAxis,
             series,
         };
-
-        this.chart = new Highcharts.Chart(
-            this.container,
-            options
-        );
     };
-    destroyChart() {
-        this.chart.destroy();
-        this.chart = null;
-    }
 
-    getSeries(props) {
+    getSeries() {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
-            data: props.data.map(city => city.duration),
+            data: this.props.data.map(city => city.duration),
         }];
     }
-    getCategories(props) {
+    getCategories() {
         const categories = [];
-        for (const city of props.data) {
+        for (const city of this.props.data) {
             categories.push(city.name);
         }
         return categories;
@@ -135,9 +61,10 @@ class KIDuration extends React.Component {
 
     render() {
         return (
-            <div
-                ref={container => this.container = container}
-                style={{ width: '100%' }}
+            <ConnectedChart
+                id="KIDuration"
+                connectedTo="KICount"
+                options={this.getChartOptions()}
             />
         );
     }

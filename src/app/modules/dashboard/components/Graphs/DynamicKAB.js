@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
+import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
 
@@ -9,103 +10,51 @@ class DynamicKAB extends React.Component {
         regularity: PropTypes.string.isRequired,
     };
 
-    chart = null;
     state = {
-        data: {},
+        data: [],
     };
 
     componentDidMount() {
-        this.fetchChartData().then(this.initChart);
+        this.fetchChartData();
     }
-    componentWillUnmount() {
-        if (this.chart !== null) {
-            this.chart.destroy();
-        }
-    }
-
     componentWillUpdate(nextProps) {
         if (this.props.regularity !== nextProps.regularity) {
-            if (this.chart !== null) {
-                this.chart.destroy();
-            }
-            this.fetchChartData(nextProps).then(this.initChart);
+            this.fetchChartData(nextProps);
         }
     }
 
-    initChart = () => {
+    getChartOptions = () => {
         const series = this.getSeries();
         const categories = this.getCategories();
 
-        this.chart = new Highcharts.Chart(
-            this.container,
-            {
-                chart: {
-                    type: 'spline',
-                    width: this.container.offsetWidth,
+        return {
+            chart: {
+                type: 'spline',
+            },
+            title: {
+                ...Chart.DEFAULT_OPTIONS.title,
+                text: ls('DASHBOARD_CHART_DYNAMIC_KAB_TITLE', 'Динамика Каб'),
+            },
+            colors: [
+                '#377dc4',
+                '#fc3737',
+            ],
+            tooltip: {
+                ...Chart.DEFAULT_OPTIONS.tooltip,
+                shared: true,
+            },
+            plotOptions: {
+                spline: {
+                    marker: Chart.DEFAULT_OPTIONS.plotOptions.spline.marker,
                 },
-                title: {
-                    text: ls('DASHBOARD_CHART_DYNAMIC_KAB_TITLE', 'Динамика Каб'),
-                    style: {
-                        color: '#02486e',
-                        fontSize: 18,
-                    },
-                    align: 'left',
-                },
-                colors: [
-                    '#377dc4',
-                    '#fc3737',
-                ],
-                tooltip: {
-                    shared: true,
-                    backgroundColor: '#082545',
-                    borderRadius: 7,
-                    borderWidth: 0,
-                    style: {
-                        color: 'white',
-                    },
-                    useHTML: true,
-                },
-                plotOptions: {
-                    spline: {
-                        marker: {
-                            enabled: true,
-                            radius: 4,
-                            symbol: 'circle',
-                            lineColor: null,
-                            lineWidth: 2,
-                            fillColor: 'white',
-                        },
-                    },
-                },
-                xAxis: {
-                    categories,
-                    crosshair: {
-                        color: 'rgba(240, 240, 240, 0.7)',
-                    },
-                    lineWidth: 1,
-                    lineColor: 'rgba(0, 0, 0, 0.2)',
-                    gridLineWidth: 1,
-                    gridLineColor: 'rgba(0, 0, 0, 0.05)',
-                    tickWidth: 0,
-                    labelColor: 'rgba(0, 0, 0, 0.5)',
-                },
-                yAxis: {
-                    title: {
-                        text: '%',
-                        align: 'high',
-                        offset: 0,
-                        rotation: 0,
-                        y: -10,
-                        color: 'rgba(0, 0, 0, 0.5)',
-                    },
-                    gridLineWidth: 0,
-                    lineWidth: 1,
-                    lineColor: 'rgba(0, 0, 0, 0.2)',
-                    labelColor: 'rgba(0, 0, 0, 0.5)',
-                },
-                series,
-            }
-        );
+            },
+            xAxis: {
+                ...Chart.DEFAULT_OPTIONS.xAxis,
+                categories,
+            },
+            yAxis: Chart.DEFAULT_OPTIONS.yAxis,
+            series,
+        };
     };
 
     fetchChartData(props = this.props) {
@@ -153,12 +102,7 @@ class DynamicKAB extends React.Component {
     }
 
     render() {
-        return (
-            <div
-                ref={container => this.container = container}
-                style={{ width: '100%' }}
-            />
-        );
+        return <Chart options={this.getChartOptions()} />;
     }
 }
 
