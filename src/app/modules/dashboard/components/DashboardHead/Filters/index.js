@@ -51,6 +51,10 @@ class Filters extends React.Component {
                         );
                     }
 
+                    const onChangeCallback = filter.editable
+                        ? (optionId, value) => this.onChange(filter.id, optionId, value)
+                        : undefined;
+
                     result.push(
                         <Filter
                             key={filter.id}
@@ -58,7 +62,7 @@ class Filters extends React.Component {
                             title={filter.title}
                             options={filter.options}
                             values={values[filter.id] || []}
-                            onChange={(optionId, value) => this.onChange(filter.id, optionId, value)}
+                            onChange={onChangeCallback}
                         />
                     );
                     return result;

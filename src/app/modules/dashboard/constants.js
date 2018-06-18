@@ -15,10 +15,12 @@ export const FILTERS = [
     {
         id: 'service',
         title: ls('DASHBOARD_FILTERS_SERVICES_TITLE', 'Сервисы'),
+        editable: false,
         options: [
             {
                 value: 'IPTV',
                 label: ls('IPTV_OTT', 'IPTV/OTT'),
+                enabled: true,
             // }, {
             //     value: 'INTERNET',
             //     label: ls('INTERNET', 'INTERNET'),
@@ -30,6 +32,7 @@ export const FILTERS = [
     }, {
         id: 'product',
         title: ls('DASHBOARD_FILTERS_PRODUCT_TITLE', 'Продукт'),
+        editable: true,
         options: [
             {
                 value: 'ITV',
@@ -42,6 +45,7 @@ export const FILTERS = [
     }, {
         id: 'feature',
         title: ls('DASHBOARD_FILTERS_SERVICE_TITLE', 'Услуга'),
+        editable: false,
         options: [
             {
                 value: 'LIVE',
@@ -58,6 +62,7 @@ export const FILTERS = [
     }, {
         id: 'technology',
         title: ls('DASHBOARD_FILTERS_TECH_TITLE', 'Технология'),
+        editable: true,
         options: [
             {
                 value: 'FTTB',

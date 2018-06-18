@@ -59,7 +59,7 @@ class Table extends React.Component {
                 ...widths,
                 [name]: {
                     header: width || `calc((100% - ${reservedWidth + SCROLL_WIDTH}px) / ${columns.length - reservedWidths.length})`,
-                    body: width || `calc((100% - ${reservedWidth}px) / ${columns.length - reservedWidths.length})`,
+                    body: width || `calc((100% - ${reservedWidth + SCROLL_WIDTH}px) / ${columns.length - reservedWidths.length})`,
                 },
             };
         }, {});

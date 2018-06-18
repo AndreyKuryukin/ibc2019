@@ -7,11 +7,11 @@ $animation-duration: 0.15s;
 
 @mixin region-initial {
   fill: $region-initial-color;
-  //transform: scale(1);
+  transform: scale(1);
 }
 @mixin region-active {
   fill: $region-active-color;
-  //transform: scale(1.03);
+  transform: scale(1.03);
 }
 
 @mixin tooltip-initial {
@@ -39,6 +39,7 @@ $animation-duration: 0.15s;
   display: flex;
   justify-content: stretch;
   flex-basis: 100%;
+  min-height: calc(100vh - 280px);
 
   a {
     text-decoration: none;
@@ -58,6 +59,25 @@ $animation-duration: 0.15s;
     }
     &.micro {
       flex-basis: 70%;
+    }
+
+    .container {
+      overflow: hidden;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      min-height: 300px;
+
+      .inner {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        margin: auto;
+        width: 100%;
+        height: 100%;
+      }
     }
 
     svg {
@@ -94,7 +114,7 @@ $animation-duration: 0.15s;
     .mrfinfo {
       position: absolute;
       transform-origin: center;
-      //transform: scale(1);
+      transform: scale(1);
       transition: transform $animation-duration;
 
       span {
@@ -124,7 +144,7 @@ $animation-duration: 0.15s;
       }
     }
     a.active div {
-      //transform: scale(1.5);
+      transform: scale(1.5);
 
       span {
         @include stroke($region-active-color);
