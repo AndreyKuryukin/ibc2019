@@ -51,7 +51,7 @@ class Graph extends React.Component {
                         mrfId={mrfId}
                     />
                 </WidgetWrapper>
-                <WidgetWrapper style={{ gridColumn: '1 / 2' }}>
+                <WidgetWrapper style={{ gridColumn: '1 / 3' }}>
                     <KI
                         regularity={regularity}
                         mrfId={mrfId}
