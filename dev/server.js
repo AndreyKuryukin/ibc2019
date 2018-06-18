@@ -39,9 +39,9 @@ const plugins = [
     // './reports',
     // './sources',
     // './alarms',
-    //'./common',
+    // './common',
     // './user'
-    // './dashboard',
+    './dashboard',
 ];
 
 app.use((req, res, next) => {

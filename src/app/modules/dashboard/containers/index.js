@@ -97,7 +97,17 @@ class Dashboard extends React.PureComponent {
                 type={this.getType()}
                 mrfId={this.getMRF()}
                 aggregated={this.state.aggregated}
-                locations={this.state.locations}
+                locations={this.state.locations.map(location => {
+                    const matched = location.name.match(/Макрорегиональный филиал «(.*)»/);
+
+                    if (matched !== null) {
+                        return {
+                            ...location,
+                            name: matched[1],
+                        };
+                    }
+                    return location;
+                })}
             />
         );
     }

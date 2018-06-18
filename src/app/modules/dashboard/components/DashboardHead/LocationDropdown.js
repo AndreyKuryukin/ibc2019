@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import {ButtonDropdown, DropdownToggle, DropdownMenu, DropdownItem} from 'reactstrap';
+import styles from './styles.scss';
 
 const defaultMRFName = 'Россия';
 
@@ -46,12 +47,11 @@ class LocationDropdown extends React.Component {
             >
                 <DropdownToggle caret color="action">{this.getCurrentValue()}</DropdownToggle>
                 <DropdownMenu>
-                    <DropdownItem>
+                    <DropdownItem className={styles.item}>
                         <Link to={this.props.buildLink({ mrfId: null })}>{defaultMRFName}</Link>
                     </DropdownItem>
-                    <DropdownItem divider />
                     {this.getOptions().map(option => (
-                        <DropdownItem key={option.id}>
+                        <DropdownItem key={option.id} className={styles.item}>
                             <Link to={option.href}>{option.title}</Link>
                         </DropdownItem>
                     ))}
