@@ -7,12 +7,16 @@ import styles from './styles.scss';
 import ConfigEditor from '../modules/ConfigEditor/containers';
 
 class Reports extends React.PureComponent {
-    static contextTypes = {
+    static childContextTypes = {
         history: PropTypes.object.isRequired,
+    };
+
+    static contextTypes = {
         hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
+        history: PropTypes.object.isRequired,
         reportsData: PropTypes.array,
         isLoading: PropTypes.bool,
         fetchReports: PropTypes.func,
