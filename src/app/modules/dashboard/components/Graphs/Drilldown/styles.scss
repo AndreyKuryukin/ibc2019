@@ -1,19 +1,40 @@
+$padding: 30px;
+
 .drilldownChart.tableContainer {
   margin-top: 15px;
+  margin-left: -$padding;
+  margin-right: -$padding;
 
   .tableHeader {
     background: none;
+    position: relative;
+    margin-bottom: 9px;
 
     .headerCell {
       padding: 0 10px 10px;
       color: rgba(0, 0, 0, 0.5);
       font-size: 12px;
-      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-      margin-bottom: 9px;
 
       & + .headerCell {
         border-left-color: rgba(0, 0, 0, 0.05);
       }
+
+      &:nth-child(1) {
+        padding-left: $padding;
+      }
+      &:nth-last-child(1) {
+        padding-right: $padding;
+      }
+    }
+
+    &::after {
+      display: block;
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: $padding;
+      right: $padding;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.2);
     }
   }
 
@@ -42,7 +63,16 @@
       .bodyCell {
         padding: 0;
 
+        &:nth-child(1) {
+          padding-left: $padding;
+        }
+        &:nth-last-child(1) {
+          padding-right: $padding;
+        }
+
         .cell {
+          position: relative;
+
           &.name {
             color: #000 !important;
           }
@@ -51,6 +81,32 @@
           }
           &.itv2 {
             color: #fc3737 !important;
+          }
+
+          & > .expander {
+            background-color: #082545;
+            width: 16px;
+            height: 16px;
+            border-radius: 3px;
+            cursor: pointer;
+            position: absolute;
+            top: 7px;
+            left: -23px;
+
+            path {
+              stroke: #fd7f00;
+              stroke-width: 2px;
+
+              &.vertical {
+                transform: scale(1, 1);
+                transition: transform 0.25s;
+                transform-origin: center;
+              }
+            }
+          }
+
+          &.expanded > .expander path.vertical {
+            transform: scale(1, 0.125);
           }
 
           & sub {

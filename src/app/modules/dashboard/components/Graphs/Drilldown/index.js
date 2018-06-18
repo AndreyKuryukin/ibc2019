@@ -38,7 +38,7 @@ class Drilldown extends React.Component {
             .catch(console.error);
     }
 
-    onRowClick = (rowId) => {
+    onExpanderClick = (rowId) => {
         const set = new Set(this.state.expanded);
 
         if (!set.delete(rowId)) {
@@ -99,10 +99,10 @@ class Drilldown extends React.Component {
                         column={column}
                         row={row}
                         expanded={new Set(this.state.expanded)}
+                        onExpanderClick={this.onExpanderClick}
                     />
                 )}
                 headerRowRender={column => <HeadCell column={column} />}
-                onSelectRow={this.onRowClick}
             />
         );
     }
