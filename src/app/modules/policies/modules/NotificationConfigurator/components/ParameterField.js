@@ -88,6 +88,15 @@ class ParameterField extends React.Component {
         this.props.onChange([value]);
     }
 
+    validateNumKey = (e) => {
+        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
+
+        if (!isKeyAllowed) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    };
+
     render() {
         const {
             id,
@@ -113,6 +122,8 @@ class ParameterField extends React.Component {
                     id={id}
                     value={value[0] || ''}
                     onChange={this.onChangeInput}
+                    placeholder={name}
+                    onKeyPress={this.validateNumKey}
                 />}
                 {type === 'string' && (multiple ? (
                     <ChipList
@@ -122,6 +133,7 @@ class ParameterField extends React.Component {
                         value={this.state.value}
                         valid={!this.state.error}
                         error={this.state.error}
+                        placeholder={name}
                     >
                         {value.map(val => (
                             <Chip
@@ -136,6 +148,7 @@ class ParameterField extends React.Component {
                         id={id}
                         value={value[0] || ''}
                         onChange={this.onChangeInput}
+                        placeholder={name}
                     />
                 ))}
                 {type === 'enum' && (multiple ? (
@@ -151,6 +164,7 @@ class ParameterField extends React.Component {
                         options={ParameterField.mapOptions(values)}
                         value={value[0] || ''}
                         onChange={this.onSelectChange}
+                        placeholder={name}
                     />
                 ))}
             </Field>

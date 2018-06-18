@@ -93,6 +93,7 @@ class Controls extends React.PureComponent {
                         options={Controls.mapOptions(adapters)}
                         value={selectedAdapter}
                         onChange={this.onChangeAdapter}
+                        placeholder={ls('POLICIES_CONFIGURATOR_ADAPTER_FIELD_PLACEHOLDER', 'Адаптер')}
                     />
                 </Field>
                 <Field
@@ -107,6 +108,7 @@ class Controls extends React.PureComponent {
                         options={this.getInstancesOptions(this.state.selectedAdapter)}
                         value={selectedInstance}
                         onChange={this.onChangeInstance}
+                        placeholder={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_PLACEHOLDER', 'Инстанс')}
                     />
                 </Field>
             </div>
