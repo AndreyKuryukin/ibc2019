@@ -195,7 +195,7 @@ module.exports = (app) => {
     //     proxyReqPathResolver: (req) => {
     //         console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
     //         return target + require('url').parse(req.originalUrl).path;
-    app.get('/api/v1/policies/notification/metadata', (req, res) => {
+    app.get('/api/v1/policy/notification/metadata', (req, res) => {
         res.send([{
             adapter_id: 'CRM',
             name: 'CRM',
@@ -286,11 +286,11 @@ module.exports = (app) => {
             }]
         }]);
     });
-    app.get('/api/v1/policies/:id/notifications', (req, res) => {
+    app.get('/api/v1/policy/:id/notifications', (req, res) => {
         const policies = readPoliciesFile();
         res.send(policies[req.params.id].notifications_configs);
     });
-    app.post('/api/v1/policies/:id/notifications', (req, res) => {
+    app.post('/api/v1/policy/:id/notifications', (req, res) => {
         const policies = readPoliciesFile();
         const policy = policies[req.params.id];
 
