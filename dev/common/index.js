@@ -1,11 +1,11 @@
 const _ = require('lodash');
 const locations = [
     {
-        id: 1,
+        id: '1',
         name: 'МРФ Волга',
     },
     {
-        id: 2,
+        id: '2',
         name: 'МРФ Москва',
     },
 ];
@@ -59,10 +59,10 @@ const parameters = [
 
 module.exports = (app) => {
     const regions = [{
-        id: 1,
+        id: '1',
         name: 'Москва'
     }, {
-        id: 2,
+        id: '2',
         name: 'Нижегородская область',
     }];
 
@@ -70,9 +70,9 @@ module.exports = (app) => {
         res.send(regions);
     });
 
-    // app.get('/api/v1/common/location', (req, res) => {
-    //     res.send(locations);
-    // });
+    app.get('/api/v1/common/location', (req, res) => {
+        res.send(locations);
+    });
 
     // app.get('/api/v1/common/manufacture', (req, res) => {
     //     res.send(manufacturers);

@@ -25,6 +25,7 @@ class NotificationConfigurator extends React.PureComponent {
         active: PropTypes.bool,
         adapters: PropTypes.array,
         notifications: PropTypes.array,
+        policyName: PropTypes.string,
         onClose: PropTypes.func,
         onSubmit: PropTypes.func,
         onMount: PropTypes.func,
@@ -35,6 +36,7 @@ class NotificationConfigurator extends React.PureComponent {
         active: false,
         adapters: [],
         notifications: [],
+        policyName: '',
         onClose: () => null,
         onSubmit: () => null,
         onMount: () => null,
@@ -158,7 +160,7 @@ class NotificationConfigurator extends React.PureComponent {
     };
 
     render() {
-        const { active, adapters, isLoading } = this.props;
+        const { active, adapters, policyName, isLoading } = this.props;
         const selectedConfigsKeys = _.keys(this.state.configs);
         return (
             <DraggableWrapper>
@@ -172,7 +174,7 @@ class NotificationConfigurator extends React.PureComponent {
                     <ModalBody>
                         <Preloader active={isLoading}>
                             <div className={styles.notificationConfiguratorContent}>
-                                <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${'ALARM_STB_MLR'}`}</div>
+                                <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${policyName}`}</div>
                                 <div className={styles.configsWrapper}>
                                     <Controls
                                         adapters={adapters}

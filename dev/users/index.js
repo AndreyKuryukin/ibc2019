@@ -68,6 +68,16 @@ module.exports = (app) => {
         res.send(_.values(usersById));
     });
 
+    app.get('/api/v1/user/current', (req, res) => {
+        res.json({
+            id: "355136763302707201",
+            login: "admin",
+            subjects: [],
+            first_name: "Admin",
+            last_name: "Admin",
+        });
+    });
+
     app.get('/api/v1/user/:id', (req, res) => {
         if (req.params.id) {
             res.send(usersById[req.params.id]);

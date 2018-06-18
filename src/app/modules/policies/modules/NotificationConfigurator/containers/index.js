@@ -32,6 +32,7 @@ class NotificationConfigurator extends React.PureComponent {
         super(props);
 
         this.state = {
+            policyName: '',
             isLoading: false,
         };
     }
@@ -39,14 +40,20 @@ class NotificationConfigurator extends React.PureComponent {
     onMount = () => {
         if (this.props.policyId) {
             this.setState({ isLoading: true });
+
+            const urlParams = { policyId: this.props.policyId };
             Promise.all([
                 rest.get('/api/v1/policy/notification/metadata'),
-                rest.get(`/api/v1/policy/${this.props.policyId}/notifications`)
+                rest.get('/api/v1/policy/:policyId/notifications', { urlParams }),
+                rest.get('/api/v1/policy/:policyId', { urlParams })
             ])
-                .then(([metadataResponse, notificationsResponse]) => {
+                .then(([metadataResponse, notificationsResponse, policyResponse]) => {
                     this.props.onFetchAdaptersSuccess(metadataResponse.data);
                     this.props.onFetchNotificationsSuccess(notificationsResponse.data);
-                    this.setState({ isLoading: false });
+                    this.setState({
+                        policyName: _.get(policyResponse, 'data.name', ''),
+                        isLoading: false
+                    });
                 })
                 .catch((e) => {
                     console.error(e);
@@ -59,7 +66,6 @@ class NotificationConfigurator extends React.PureComponent {
         if (this.props.policyId) {
             rest.post(`/api/v1/policy/${this.props.policyId}/notifications`, notifications)
                 .then(() => {
-                    console.log('Success');
                     this.context.history.push('/policies');
                 })
                 .catch((e) => {
@@ -74,6 +80,7 @@ class NotificationConfigurator extends React.PureComponent {
                 active={this.props.active}
                 adapters={this.props.adapters}
                 notifications={this.props.notifications}
+                policyName={this.state.policyName}
                 onSubmit={this.onSubmit}
                 onMount={this.onMount}
                 isLoading={this.state.isLoading}

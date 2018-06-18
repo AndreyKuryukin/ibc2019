@@ -37,10 +37,10 @@ const plugins = [
     // './policies',
     // './kqi',
     // './reports',
-    './sources',
+    // './sources',
     // './alarms',
-    //'./common',
-    // './user'
+    // './common',
+    // './dashboard',
 ];
 
 app.use((req, res, next) => {

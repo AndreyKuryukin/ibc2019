@@ -261,7 +261,6 @@ class ConfigEditor extends React.PureComponent {
                                             {/*noEmptyOption*/}
                                         {/*/>*/}
                                     {/*</Field>*/}
-
                                 </Panel>
                                 <Panel
                                     title={ls('REPORTS_CONFIG_EDITOR_MRF_TITLE', 'МРФ')}
@@ -287,6 +286,7 @@ class ConfigEditor extends React.PureComponent {
                                 <Period
                                     onIntervalChange={this.onIntervalChange}
                                     onAutoCheck={value => this.setConfigProperty('period.auto', value)}
+                                    templateId={this.getConfigProperty('template_id')}
                                     errors={_.get(errors, 'period', null)}
                                 />
                                 <Panel

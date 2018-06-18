@@ -1,0 +1,32 @@
+@import "../../../../scss/vars";
+
+.KQI {
+  margin-bottom: 0;
+
+  & > .name {
+    & > .parameter {
+      font-size: 1em;
+    }
+    & > .index {
+      position: relative;
+      bottom: -0.2em;
+      font-size: 0.7em;
+    }
+  }
+  & > .value {
+    margin-left: 1ex;
+
+    & > .raw {
+      font-size: 1em;
+    }
+    & > .units {
+      font-size: 1em;
+    }
+  }
+  &.positive > .value {
+    color: $dashboard-positive-color;
+  }
+  &.negative > .value {
+    color: $dashboard-negative-color;
+  }
+}

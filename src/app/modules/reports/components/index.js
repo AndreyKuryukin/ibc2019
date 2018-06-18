@@ -8,16 +8,20 @@ import ConfigEditor from '../modules/ConfigEditor/containers';
 
 class Reports extends React.PureComponent {
     static contextTypes = {
-        history: PropTypes.object.isRequired,
         hasAccess: PropTypes.func.isRequired,
     };
 
     static propTypes = {
+        history: PropTypes.object.isRequired,
         reportsData: PropTypes.array,
         isLoading: PropTypes.bool,
         fetchReports: PropTypes.func,
         onRemoveResult: PropTypes.func,
         onResultRetry: PropTypes.func,
+    };
+
+    static childContextTypes = {
+        history: PropTypes.object
     };
 
     static defaultProps = {
