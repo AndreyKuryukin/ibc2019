@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import classnames from 'classnames';
-import memoize from 'memoizejs';
 import { naturalSort } from '../../util/sort';
 import Table from '../Table';
 import styles from './styles.scss';
@@ -48,20 +47,20 @@ class TreeView extends React.Component {
         }
     }
 
-    sort = memoize((data, columnName, direction, parents = []) =>
+    sort = (data, columnName, direction, parents = []) =>
         naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')])
             .reduce((result, nextNode, index, array) => {
-                const node = {
-                    ...nextNode,
-                    parents,
-                    isLast: (index + 1) === array.length,
-                };
+                    const node = {
+                        ...nextNode,
+                        parents,
+                        isLast: (index + 1) === array.length,
+                    };
 
-                return !_.isEmpty(node.children) && this.isExpanded(node.id)
-                    ? [...result, node].concat(this.sort(node.children, columnName, direction, [...parents, node]))
-                    : [...result, node];
+                    return !_.isEmpty(node.children) && this.isExpanded(node.id)
+                        ? [...result, node].concat(this.sort(node.children, columnName, direction, [...parents, node]))
+                        : [...result, node];
                 },
-            []));
+                []);
 
     mapData = (data, parents = []) =>
         data.map((originNode, index) => ({

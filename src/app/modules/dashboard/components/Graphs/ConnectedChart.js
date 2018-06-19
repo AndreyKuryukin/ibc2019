@@ -42,6 +42,10 @@ class ConnectedChart extends React.Component {
                 options={{
                     ...this.props.options,
                     id: this.props.id,
+                    chart: {
+                        ...this.props.options.chart,
+                        marginLeft: 50,
+                    },
                 }}
             />
         );

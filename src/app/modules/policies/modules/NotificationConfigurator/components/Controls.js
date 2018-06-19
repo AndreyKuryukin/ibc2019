@@ -7,8 +7,9 @@ import Field from '../../../../../components/Field';
 import Icon from '../../../../../components/Icon/Icon';
 import styles from './styles.scss';
 
-const controlFieldStyle = { flexGrow: 1 };
-const adapterFieldStyle = { ...controlFieldStyle, marginLeft: 10 };
+const marginLeft = 10;
+const controlFieldStyle = { width: `calc((100% - ${22 + marginLeft}px) / 2)` };
+const adapterFieldStyle = { ...controlFieldStyle, marginLeft };
 const instanceFieldStyle = { ...controlFieldStyle, marginTop: 0 };
 
 class Controls extends React.PureComponent {
@@ -73,7 +74,9 @@ class Controls extends React.PureComponent {
             selectedConfigsKeys,
         } = this.props;
         const { selectedAdapter, selectedInstance } = this.state;
-        const isAddButtonDisabled = selectedConfigsKeys.includes(`${selectedAdapter}_${selectedInstance}`);
+        const instanceOptions = this.getInstancesOptions(this.state.selectedAdapter);
+        const isAddButtonDisabled = selectedConfigsKeys.includes(`${selectedAdapter}_${selectedInstance}`)
+            || (instanceOptions.length > 0 && !selectedInstance);
 
         return (
             <div className={styles.configsControls}>
@@ -96,21 +99,21 @@ class Controls extends React.PureComponent {
                         placeholder={ls('POLICIES_CONFIGURATOR_ADAPTER_FIELD_PLACEHOLDER', 'Адаптер')}
                     />
                 </Field>
-                <Field
+                {instanceOptions.length > 0 && <Field
                     id="instance"
                     labelText={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_LABEL', 'Инстанс')}
                     labelWidth="30%"
-                    inputWidth={115}
+                    inputWidth="70%"
                     style={instanceFieldStyle}
                 >
                     <Select
                         id="instance"
-                        options={this.getInstancesOptions(this.state.selectedAdapter)}
+                        options={instanceOptions}
                         value={selectedInstance}
                         onChange={this.onChangeInstance}
                         placeholder={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_PLACEHOLDER', 'Инстанс')}
                     />
-                </Field>
+                </Field>}
             </div>
         );
     }

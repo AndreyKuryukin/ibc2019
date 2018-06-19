@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
@@ -11,6 +10,7 @@ import PermissionList from './PermissionList'
 import styles from './styles.scss';
 import ls from "i18n";
 import Field from "../../../../../components/Field/index";
+import Modal from "../../../../../components/Modal/index";
 
 const permissionsTableStyle = { height: 370 };
 const permissionsTableBodyStyle = { padding: 0 };
@@ -120,7 +120,7 @@ class RoleEditor extends React.PureComponent {
 
     onSubmit = () => {
         const role = this.state.role;
-        this.props.onSubmit(this.props.roleId, {...role, subjects: this.permissionsToSubjects(role.subjects)});
+        this.props.onSubmit(this.props.roleId, { ...role, subjects: this.permissionsToSubjects(role.subjects) });
     };
 
     onClose = () => {
@@ -144,78 +144,77 @@ class RoleEditor extends React.PureComponent {
         const filteredSourceOptions = roleId ? sourceOptions.filter(opt => opt[0] !== roleId) : sourceOptions;
 
         return (
-            <Modal
-                isOpen={this.props.active}
-                className={styles.roleEditor}
-            >
-                <ModalHeader
-                    toggle={this.onClose}>{roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') : ls('NEW_ROLE_ADD', 'Создание новой роли')}</ModalHeader>
-                <ModalBody className={styles.modalBody}>
-                    <div className={styles.roleEditorContent}>
-                        <Panel
-                            title={ls('ROLE_MAIN_INFO_PANEL_TITLE', 'Главная информация')}
-                        >
-                            <Field
-                                id="name"
-                                labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
-                                labelWidth="50%"
-                                inputWidth="50%"
-                                required
+                <Modal
+                    isOpen={this.props.active}
+                    className={styles.roleEditor}
+                    title={roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') : ls('NEW_ROLE_ADD', 'Создание новой роли')}
+                    submitTitle={roleId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}
+                    cancelTitle={ls('CANCEL', 'Отмена')}
+                    onClose={this.onClose}
+                    onSubmit={this.onSubmit}
+                >
+                        <div className={styles.roleEditorContent}>
+                            <Panel
+                                title={ls('ROLE_MAIN_INFO_PANEL_TITLE', 'Главная информация')}
+                            >
+                                <Field
+                                    id="name"
+                                    labelText={ls('NEW_ROLE_NAME_LABEL', 'Имя роли')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                    required
+                                >
+                                    <Input
+                                        id="name"
+                                        value={role.name || ''}
+                                        onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                                        valid={errors && _.isEmpty(errors.name)}
+                                        errorMessage={_.get(errors, 'name.title')}
+                                        placeholder={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                                        maxLength={255}
+                                    />
+                                </Field>
+
+                                <Field
+                                    id="permissions-source"
+                                    labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
+                                    labelWidth="50%"
+                                    inputWidth="50%"
+                                >
+                                    <Select
+                                        id="permissions-source"
+                                        type="select"
+                                        value={this.state.selectedRoleId}
+                                        options={this.getSourceOptions(filteredSourceOptions)}
+                                        onChange={this.copySubjectsFromRole}
+                                        placeholder={ls('NEW_ROLE_COPY_SUBJECTS_FROM_PLACEHOLDER', 'Роль')}
+                                    />
+                                </Field>
+                            </Panel>
+                            <Panel
+                                title={ls('ROLE_PERMISSIONS_PANEL_TITLE', 'Разрешения')}
+                                style={permissionsTableStyle}
+                                bodyStyle={permissionsTableBodyStyle}
+                            >
+                                <PermissionList subjectsData={subjectsData}
+                                                onCheck={this.onCheck}
+                                                checked={role.subjects || []}
+                                />
+                            </Panel>
+                            <Panel
+                                title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
                             >
                                 <Input
-                                    id="name"
-                                    value={role.name || ''}
-                                    onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
-                                    valid={errors && _.isEmpty(errors.name)}
-                                    errorMessage={_.get(errors, 'name.title')}
+                                    type="textarea"
+                                    value={role.description || ''}
+                                    onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
+                                    rows={6}
+                                    placeholder={ls('ROLE_COMMENT_PLACEHOLDER', 'Описание')}
+                                    maxLength={255}
                                 />
-                            </Field>
-
-                            <Field
-                                id="permissions-source"
-                                labelText={ls('NEW_ROLE_COPY_SUBJECTS_FROM', 'Копировать разрешения из')}
-                                labelWidth="50%"
-                                inputWidth="50%"
-                            >
-                                <Select
-                                    id="permissions-source"
-                                    type="select"
-                                    value={this.state.selectedRoleId}
-                                    options={this.getSourceOptions(filteredSourceOptions)}
-                                    onChange={this.copySubjectsFromRole}
-                                />
-                            </Field>
-                        </Panel>
-                        <Panel
-                            title={ls('ROLE_PERMISSIONS_PANEL_TITLE', 'Разрешения')}
-                            style={permissionsTableStyle}
-                            bodyStyle={permissionsTableBodyStyle}
-                        >
-                            <PermissionList subjectsData={subjectsData}
-                                            onCheck={this.onCheck}
-                                            checked={role.subjects || []}
-                            />
-                        </Panel>
-                        <Panel
-                            title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
-                        >
-                            <Input type="textarea"
-                                   value={role.description || ''}
-                                   onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
-                                   rows={6}
-                            />
-                        </Panel>
-                    </div>
-                </ModalBody>
-                <ModalFooter>
-                    <Button outline color="action" onClick={this.onClose}>
-                        {ls('NEW_ROLE_CANCEL', 'Отмена')}
-                    </Button>
-                    <Button color="action" onClick={this.onSubmit}>
-                        {roleId ? ls('NEW_ROLE_UPDATE', 'Обновить') : ls('NEW_ROLE_CREATE', 'Создать')}
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                            </Panel>
+                        </div>
+                </Modal>
         );
     }
 }

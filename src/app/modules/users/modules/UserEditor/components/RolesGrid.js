@@ -84,6 +84,7 @@ class RolesGrid extends React.PureComponent {
         return (
             <Grid
                 id={this.props.id}
+                style={{maxWidth: 200}}
                 data={filteredData}
                 columns={columns}
                 bodyRowRender={this.bodyRowRender}

@@ -12,6 +12,7 @@ class Reports extends React.PureComponent {
     };
 
     static propTypes = {
+        users: PropTypes.array,
         history: PropTypes.object.isRequired,
         reportsData: PropTypes.array,
         isLoading: PropTypes.bool,
@@ -25,6 +26,7 @@ class Reports extends React.PureComponent {
     };
 
     static defaultProps = {
+        users: [],
         reportsData: [],
         isLoading: false,
         fetchReports: () => null,
@@ -44,12 +46,6 @@ class Reports extends React.PureComponent {
         return {
             history: this.props.history,
         };
-    }
-
-    componentDidMount() {
-        if (typeof this.props.fetchReports === 'function') {
-            this.props.fetchReports();
-        }
     }
 
     onSearchTextChange = (searchText) => {
@@ -76,6 +72,7 @@ class Reports extends React.PureComponent {
                 />
                 <Table
                     data={this.props.reportsData}
+                    users={this.props.users}
                     searchText={this.state.searchText}
                     preloader={this.props.isLoading}
                     onRemoveResult={this.props.onRemoveResult}
