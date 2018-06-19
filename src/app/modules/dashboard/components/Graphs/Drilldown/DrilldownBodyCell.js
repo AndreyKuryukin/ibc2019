@@ -24,16 +24,20 @@ class DrilldownBodyCell extends React.PureComponent {
     };
 
     renderName(column, row, isExpanded) {
+        const hasItems = Array.isArray(row.items) && row.items.length !== 0;
+
         return (
             <div className={cn(styles.cell, styles.name, { [styles.expanded]: isExpanded })}>
-                <svg
-                    className={styles.expander}
-                    viewBox="0 0 16 16"
-                    onClick={this.onClick}
-                >
-                    <path d="M4,8l8,0z" />
-                    <path d="M8,4l0,8z" className={styles.vertical} />
-                </svg>
+                {hasItems && (
+                    <svg
+                        className={styles.expander}
+                        viewBox="0 0 16 16"
+                        onClick={this.onClick}
+                    >
+                        <path d="M4,8l8,0z" />
+                        <path d="M8,4l0,8z" className={styles.vertical} />
+                    </svg>
+                )}
                 <div className={styles.parentCell}>
                     {row.parameter}<sub>{row.index}</sub>
                 </div>
