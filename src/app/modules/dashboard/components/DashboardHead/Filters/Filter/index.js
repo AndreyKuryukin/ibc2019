@@ -34,7 +34,7 @@ class Filter extends React.Component {
             label: PropTypes.string.isRequired,
         })).isRequired,
         values: PropTypes.arrayOf(PropTypes.string).isRequired,
-        onChange: PropTypes.func.isRequired,
+        onChange: PropTypes.func,
     };
 
     render() {
@@ -51,7 +51,7 @@ class Filter extends React.Component {
                             key={option.value}
                             option={option}
                             values={values}
-                            onChange={(value) => onChange(option.value, value)}
+                            onChange={typeof onChange === 'function' ? (value) => onChange(option.value, value) : undefined}
                         />
                     ))}
                 </div>

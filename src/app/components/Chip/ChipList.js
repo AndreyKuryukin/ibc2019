@@ -73,9 +73,9 @@ class ChipList extends React.PureComponent {
                     title={this.props.addTitle}
                 />
             </div>
-            <div className={styles.chipList}>
+            {this.props.children.length > 0 && <div className={styles.chipList}>
                 {this.props.children}
-            </div>
+            </div>}
         </div>
     }
 }

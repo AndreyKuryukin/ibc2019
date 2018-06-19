@@ -13,6 +13,7 @@ class Reports extends React.PureComponent {
 
     static propTypes = {
         users: PropTypes.array,
+        history: PropTypes.object.isRequired,
         reportsData: PropTypes.array,
         isLoading: PropTypes.bool,
         fetchReports: PropTypes.func,

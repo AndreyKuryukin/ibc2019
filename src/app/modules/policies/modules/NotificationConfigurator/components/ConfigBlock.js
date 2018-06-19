@@ -70,8 +70,9 @@ class ConfigBlock extends React.PureComponent {
                                 <Select
                                     id={`${this.props.id}_instance`}
                                     options={ConfigBlock.mapOptions(_.get(config, 'instances', []))}
-                                    value={_.get(config, 'instance_id', '')}
+                                    value={_.get(config, 'instance_id', '') || ''}
                                     onChange={this.onChangeInstance}
+                                    placeholder={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_PLACEHOLDER', 'Инстанс')}
                                 />
                             </Field>}
                         </div>

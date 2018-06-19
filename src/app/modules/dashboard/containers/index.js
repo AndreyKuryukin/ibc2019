@@ -45,7 +45,7 @@ class Dashboard extends React.PureComponent {
         return props.match.params.regularity || REGULARITIES.HOUR;
     }
     getMode(props = this.props) {
-        return props.match.params.mode || VIEW_MODE.MAP;
+        return props.match.params.mode || VIEW_MODE.GRAPH;
     }
     getType(props = this.props) {
         if (props.match.params.type !== undefined) return props.match.params.type;
@@ -97,7 +97,17 @@ class Dashboard extends React.PureComponent {
                 type={this.getType()}
                 mrfId={this.getMRF()}
                 aggregated={this.state.aggregated}
-                locations={this.state.locations}
+                locations={this.state.locations.map(location => {
+                    const matched = location.name.match(/Макрорегиональный филиал «(.*)»/);
+
+                    if (matched !== null) {
+                        return {
+                            ...location,
+                            name: matched[1],
+                        };
+                    }
+                    return location;
+                })}
             />
         );
     }

@@ -4,7 +4,7 @@ import Chart from './Chart';
 import ConnectedChart from './ConnectedChart';
 import ls from '../../../../../i18n';
 
-class KICount extends React.Component {
+class KIDuration extends React.Component {
     static propTypes = {
         data: PropTypes.arrayOf(PropTypes.shape({
             name: PropTypes.string.isRequired,
@@ -18,34 +18,27 @@ class KICount extends React.Component {
         const categories = this.getCategories();
 
         return {
-            id: 'KICount',
             chart: {
-                type: 'spline',
-                height: 162,
+                type: 'column',
             },
             title: {
-                ...Chart.DEFAULT_OPTIONS.title,
-                text: ls('DASHBOARD_CHART_KI_TITLE', 'Суммарная длительность Ки МРФ Волга по РФ'),
+                text: '',
             },
             colors: [
-                '#fc3737',
+                '#377dc4',
             ],
             tooltip: Chart.DEFAULT_OPTIONS.tooltip,
             legend: {
                 enabled: false,
             },
             plotOptions: {
-                spline: {
-                    marker: Chart.DEFAULT_OPTIONS.plotOptions.spline.marker,
+                plotOptions: {
+                    column: Chart.DEFAULT_OPTIONS.plotOptions.column,
                 },
             },
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
-                labels: {
-                    enabled: false,
-                },
-                lineWidth: 0,
             },
             yAxis: Chart.DEFAULT_OPTIONS.yAxis,
             series,
@@ -54,8 +47,8 @@ class KICount extends React.Component {
 
     getSeries() {
         return [{
-            name: ls('DASHBOARD_CHART_KI_SERIES_COUNT', 'Количество'),
-            data: this.props.data.map(city => city.count),
+            name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
+            data: this.props.data.map(city => city.duration),
         }];
     }
     getCategories() {
@@ -69,12 +62,12 @@ class KICount extends React.Component {
     render() {
         return (
             <ConnectedChart
-                id="KICount"
-                connectedTo="KIDuration"
+                id="KIDuration"
+                connectedTo="KICount"
                 options={this.getChartOptions()}
             />
         );
     }
 }
 
-export default KICount;
+export default KIDuration;

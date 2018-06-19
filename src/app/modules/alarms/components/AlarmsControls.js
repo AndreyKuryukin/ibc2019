@@ -98,6 +98,7 @@ class AlarmsControls extends React.PureComponent {
                                 options={AlarmsControls.mapOptions(locations)}
                                 value={this.getFilterProperty('mrf', '')}
                                 onChange={value => this.setFilterProperty('mrf', value)}
+                                placeholder={ls('ALARMS_MRF_FILTER_PLACEHOLDER', 'МРФ')}
                             />
                         </Field>
                         <Field
@@ -112,6 +113,7 @@ class AlarmsControls extends React.PureComponent {
                                 options={this.getRfOptions()}
                                 value={this.getFilterProperty('rf', '')}
                                 onChange={value => this.setFilterProperty('rf', value)}
+                                placeholder={ls('ALARMS_REGION_FILTER_PLACEHOLDER', 'Регион')}
                             />
                         </Field>
                     </div>

@@ -283,10 +283,6 @@ class App extends React.Component {
             access_level: ['EDIT', 'VIEW']
         },
         {
-            name: 'SOURCES',
-            access_level: ['EDIT', 'VIEW']
-        },
-        {
             name: 'POLICY',
             access_level: ['EDIT', 'VIEW']
         },

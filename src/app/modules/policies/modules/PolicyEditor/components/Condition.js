@@ -124,6 +124,15 @@ class Condition extends React.PureComponent {
         return moment.duration(Number(secs), 'seconds').asMilliseconds() || '';
     };
 
+    validateNumKey = (e) => {
+        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
+
+        if (!isKeyAllowed) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    };
+
     render() {
         const { errors } = this.state;
         const { parameters } = this.props;
@@ -163,11 +172,12 @@ class Condition extends React.PureComponent {
                     <Input
                         id="maxInterval"
                         name="maxInterval"
-                        type="number"
                         placeholder="0"
                         value={this.getSeconds(this.getConditionProperty('conditionDuration'))}
                         onChange={event => this.setConditionProperty('conditionDuration', this.getMilliSeconds(_.get(event, 'target.value', '')), true)}
                         valid={errors && _.isEmpty(errors.conditionDuration)}
+                        onKeyPress={this.validateNumKey}
+                        maxLength={6}
                     />
                     <span style={unitStyle}>{ls('SECOND_UNIT', 'сек.')}</span>
                 </Field>

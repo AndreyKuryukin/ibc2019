@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
 import moment from 'moment';
@@ -39,12 +39,14 @@ class Period extends React.PureComponent {
     static propTypes = {
         onIntervalChange: PropTypes.func,
         onAutoCheck: PropTypes.func,
+        templateId: PropTypes.string,
         errors: PropTypes.object,
     };
 
     static defaultProps = {
         onIntervalChange: () => null,
         onAutoCheck: () => null,
+        templateId: '',
         errors: null
     };
 
@@ -61,6 +63,12 @@ class Period extends React.PureComponent {
 
     componentDidMount() {
         this.onIntervalChange(this.state.interval, true);
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.templateId === '9' && this.props.templateId !== nextProps.templateId) {
+            this.onIntervalChange(INTERVALS.WEEK, true);
+        }
     }
 
     onStartChange = (start) => {
@@ -127,7 +135,7 @@ class Period extends React.PureComponent {
     };
 
     render() {
-        const { errors } = this.props;
+        const { errors, templateId } = this.props;
         return (
             <Panel
                 title={<div
@@ -142,7 +150,7 @@ class Period extends React.PureComponent {
                 </div>}
             >
                 <div className={styles.intervalsGroup}>
-                    <Field
+                    {templateId !== '9' && <Field
                         id="day-interval"
                         labelText={ls('TIME_INTERVAL_DAY', 'День')}
                         inputWidth={15}
@@ -155,7 +163,7 @@ class Period extends React.PureComponent {
                             checked={this.state.interval === INTERVALS.DAY}
                             onChange={v => this.onIntervalChange(INTERVALS.DAY, v)}
                         />
-                    </Field>
+                    </Field>}
                     <Field
                         id="week-interval"
                         labelText={ls('TIME_INTERVAL_WEEK', 'Неделя')}
@@ -171,36 +179,38 @@ class Period extends React.PureComponent {
                             onChange={v => this.onIntervalChange(INTERVALS.WEEK, v)}
                         />
                     </Field>
-                    <Field
-                        id="month-interval"
-                        labelText={ls('TIME_INTERVAL_MONTH', 'Месяц')}
-                        inputWidth={15}
-                        labelAlign="right"
-                        style={intervalFieldStyle}
-                        title={ls('TIME_INTERVAL_MONTH_TITLE', 'Предыдущий месяц 00:00 часов 1-го числа до 24:00 часов последнего числа')}
-                    >
-                        <Radio
+                    {templateId !== '9' && <Fragment>
+                        <Field
                             id="month-interval"
-                            name="time-interval"
-                            checked={this.state.interval === INTERVALS.MONTH}
-                            onChange={v => this.onIntervalChange(INTERVALS.MONTH, v)}
-                        />
-                    </Field>
-                    <Field
-                        id="other-interval"
-                        labelText={ls('TIME_INTERVAL_OTHER', 'Другое')}
-                        inputWidth={15}
-                        labelAlign="right"
-                        style={intervalFieldStyle}
-                        title={ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета')}
-                    >
-                        <Radio
+                            labelText={ls('TIME_INTERVAL_MONTH', 'Месяц')}
+                            inputWidth={15}
+                            labelAlign="right"
+                            style={intervalFieldStyle}
+                            title={ls('TIME_INTERVAL_MONTH_TITLE', 'Предыдущий месяц 00:00 часов 1-го числа до 24:00 часов последнего числа')}
+                        >
+                            <Radio
+                                id="month-interval"
+                                name="time-interval"
+                                checked={this.state.interval === INTERVALS.MONTH}
+                                onChange={v => this.onIntervalChange(INTERVALS.MONTH, v)}
+                            />
+                        </Field>
+                        <Field
                             id="other-interval"
-                            name="time-interval"
-                            checked={this.state.interval === INTERVALS.OTHER}
-                            onChange={v => this.onIntervalChange(INTERVALS.OTHER, v)}
-                        />
-                    </Field>
+                            labelText={ls('TIME_INTERVAL_OTHER', 'Другое')}
+                            inputWidth={15}
+                            labelAlign="right"
+                            style={intervalFieldStyle}
+                            title={ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета')}
+                        >
+                            <Radio
+                                id="other-interval"
+                                name="time-interval"
+                                checked={this.state.interval === INTERVALS.OTHER}
+                                onChange={v => this.onIntervalChange(INTERVALS.OTHER, v)}
+                            />
+                        </Field>
+                    </Fragment>}
                 </div>
                 <Field
                     id="start-date"
