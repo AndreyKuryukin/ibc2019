@@ -19,6 +19,8 @@ $light-blue: #B3D1E0;
 $enable-rounded: false;
 
 $theme-colors: map-merge((
+  "primary": $orange,
+  "secondary": $white,
   "action": $orange,
 ), ());
 

@@ -1,0 +1,38 @@
+$primary-btn-text-color: $white;
+.btn-primary {
+  color: $primary-btn-text-color;
+
+  &:hover,
+  &:active {
+    color: $primary-btn-text-color;
+  }
+}
+.btn-outline-primary {
+  color: $primary-btn-text-color;
+
+  &:hover,
+  &:active {
+    color: $primary-btn-text-color;
+  }
+}
+
+
+$secondary: map-get($theme-colors, 'secondary');
+$secondary-btn-text-color: #02486e;
+.btn-secondary {
+  color: $secondary-btn-text-color;
+
+  &:hover,
+  &:active {
+    color: $secondary-btn-text-color;
+    background-color: $secondary;
+  }
+}
+.btn-outline-secondary {
+  color: $secondary;
+
+  &:hover,
+  &:active {
+    color: $secondary-btn-text-color;
+  }
+}

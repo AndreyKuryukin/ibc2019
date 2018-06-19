@@ -13,11 +13,15 @@ class ButtonGroup extends React.Component {
             href: PropTypes.string,
             value: PropTypes.any.isRequired,
         })).isRequired,
+        color: PropTypes.string,
         onChange: PropTypes.func,
+    };
+    static defaultProps = {
+        color: 'secondary',
     };
 
     renderButton = (option) => {
-        const { value, onChange } = this.props;
+        const { value, color, onChange } = this.props;
 
         const linkProps = {};
         if (option.href !== undefined) {
@@ -31,7 +35,7 @@ class ButtonGroup extends React.Component {
         return (
             <Button
                 key={option.id}
-                color="action"
+                color={color}
                 outline={option.value !== value}
                 style={{ textDecoration: 'none' }}
                 {...linkProps}
