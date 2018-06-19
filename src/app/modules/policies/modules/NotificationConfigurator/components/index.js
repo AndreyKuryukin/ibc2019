@@ -70,6 +70,7 @@ class NotificationConfigurator extends React.PureComponent {
 
                             return {
                                 ...param,
+                                errors: parameter ? parameter.errors : null,
                                 value: parameter ? parameter.value : '',
                             };
                         }),
@@ -156,7 +157,7 @@ class NotificationConfigurator extends React.PureComponent {
                 }))
                 .value();
 
-        this.props.onSubmit(notificationsConfigs);
+        this.props.onSubmit(Object.values(this.state.configs));
     };
 
     render() {

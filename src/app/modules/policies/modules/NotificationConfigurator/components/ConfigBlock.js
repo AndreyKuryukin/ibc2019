@@ -89,6 +89,7 @@ class ConfigBlock extends React.PureComponent {
                                     multiple={param.multiple}
                                     matcher={MATCHERS_BY_UID[param.uid]}
                                     onChange={this.onChangeParameter.bind(this, index)}
+                                    errors={param.errors}
                                 />
                             ))}
                         </div>
