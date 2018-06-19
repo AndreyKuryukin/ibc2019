@@ -157,7 +157,7 @@ class RoleEditor extends React.PureComponent {
                         >
                             <Field
                                 id="name"
-                                labelText={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                                labelText={ls('NEW_ROLE_NAME_LABEL', 'Имя роли')}
                                 labelWidth="50%"
                                 inputWidth="50%"
                                 required
@@ -168,6 +168,8 @@ class RoleEditor extends React.PureComponent {
                                     onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     errorMessage={_.get(errors, 'name.title')}
+                                    placeholder={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
+                                    maxLength={255}
                                 />
                             </Field>
 
@@ -183,6 +185,7 @@ class RoleEditor extends React.PureComponent {
                                     value={this.state.selectedRoleId}
                                     options={this.getSourceOptions(filteredSourceOptions)}
                                     onChange={this.copySubjectsFromRole}
+                                    placeholder={ls('NEW_ROLE_COPY_SUBJECTS_FROM_PLACEHOLDER', 'Роль')}
                                 />
                             </Field>
                         </Panel>
@@ -199,10 +202,13 @@ class RoleEditor extends React.PureComponent {
                         <Panel
                             title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
                         >
-                            <Input type="textarea"
-                                   value={role.description || ''}
-                                   onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
-                                   rows={6}
+                            <Input
+                                type="textarea"
+                                value={role.description || ''}
+                                onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
+                                rows={6}
+                                placeholder={ls('ROLE_COMMENT_PLACEHOLDER', 'Описание')}
+                                maxLength={255}
                             />
                         </Panel>
                     </div>
