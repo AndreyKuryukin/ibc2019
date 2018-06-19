@@ -1,6 +1,6 @@
 {
   "name": "js",
-  "version": "0.2.12-SNAPSHOT",
+  "version": "0.2.12",
   "description": "",
   "main": "index.js",
   "scripts": {
