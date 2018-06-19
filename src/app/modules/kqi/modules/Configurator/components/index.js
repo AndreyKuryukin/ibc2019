@@ -57,8 +57,9 @@ class Configurator extends React.PureComponent {
         if (this.state.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
-        if (!_.isEmpty(nextProps.config) && this.state.config !== nextProps.config) {
-            this.setState({ config: nextProps.config });
+        if (!_.isEmpty(nextProps.config) && this.props.config !== nextProps.config) {
+            const object_type = _.find(nextProps.objectTypes, { type: _.get(nextProps.config, 'object_type', '') });
+            this.setState({ config: nextProps.config, paramTypes: _.get(object_type, 'parameters') });
         }
     }
 
@@ -77,9 +78,9 @@ class Configurator extends React.PureComponent {
         }, callback);
     };
 
-    onChangeParameterType = (value) => {
-
-        this.setConfigProperty('parameter_type', value);
+    onChangeParameterType = (name) => {
+        const parameter_type = _.find(this.state.paramTypes, {name}) || {};
+        this.setConfigProperty('parameter_type', parameter_type);
     };
 
     onClose = () => {
@@ -191,11 +192,11 @@ class Configurator extends React.PureComponent {
                                 <Select
                                     id="param"
                                     options={this.state.paramTypes.map(type => ({
-                                        value: type.id,
+                                        value: type.name,
                                         title: type.display_name
                                     }))}
                                     onChange={this.onChangeParameterType}
-                                    value={_.get(config, 'parameter_type')}
+                                    value={_.get(config, 'parameter_type.name')}
                                     valid={errors && _.isEmpty(errors.parameter_type)}
                                     disabled={disableForm}
                                     placeholder={ls('KQI_CONFIGURATOR_PARAMETER_PLACEHOLDER', 'Параметр')}
