@@ -32,6 +32,8 @@ class Reports extends React.PureComponent {
 
     componentDidMount() {
         this.context.navBar.setPageTitle('Отчёты');
+        this.fetchReports();
+        this.fetchUsers();
     }
 
     fetchReports = () => {
@@ -47,6 +49,14 @@ class Reports extends React.PureComponent {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
+    };
+
+    fetchUsers = () => {
+        rest.get('/api/v1/user')
+            .then((response) => {
+                const users = response.data;
+                this.setState({ users })
+            })
     };
 
     removeResult = (report_id) => {
@@ -72,6 +82,7 @@ class Reports extends React.PureComponent {
     render() {
         return (
             <ReportsComponent
+                users={this.state.users}
                 match={this.props.match}
                 history={this.props.history}
                 reportsData={this.props.reportsData}

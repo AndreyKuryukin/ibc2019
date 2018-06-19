@@ -29,6 +29,7 @@ class ReportsTable extends React.PureComponent {
 
     static propTypes = {
         data: PropTypes.array,
+        users: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         onRemoveResult: PropTypes.func,
@@ -37,6 +38,7 @@ class ReportsTable extends React.PureComponent {
 
     static defaultProps = {
         data: [],
+        users: [],
         searchText: '',
         preloader: false,
         onRemoveResult: () => null,
@@ -92,7 +94,7 @@ class ReportsTable extends React.PureComponent {
     }] : [])]);
 
     getReportTimeStatus = (report) => {
-        switch(report.state) {
+        switch (report.state) {
             case 'RUNNING': {
                 return `c ${report.start}`;
             }
@@ -122,7 +124,7 @@ class ReportsTable extends React.PureComponent {
         nodeType: 'config',
         author: config.author_name,
         comment: config.comment,
-        notify: config.notify_users && Array.isArray(config.notify_users) ? config.notify_users.join(', ') : '',
+        notify: _.isArray(config.notify_users) ? config.notify_users : [],
         name: config.name,
         children: (config.reports || []).map((() => {
             let lastSuccessEnd = 0;
@@ -197,8 +199,8 @@ class ReportsTable extends React.PureComponent {
             case 'type': {
                 const type = _.get(node, 'type', '');
                 return (node.nodeType === 'config') ? <DefaultCell
-                        content={ls(`REPORT_TYPE_${String(type).toUpperCase()}`, '')}
-                    /> : '';
+                    content={ls(`REPORT_TYPE_${String(type).toUpperCase()}`, '')}
+                /> : '';
             }
             case 'state': {
                 const state = _.get(node, 'state', '').toLowerCase();
@@ -214,6 +216,17 @@ class ReportsTable extends React.PureComponent {
                 return (node.nodeType === 'report') &&
                     <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
             }
+            case 'notify': {
+                const users = _.get(node, column.name, []).map(id => {
+                    const user = _.find(this.props.users, { id });
+                    if (user) {
+                        return user.login;
+                    }
+                }).join(', ');
+                return <DefaultCell
+                    content={users}
+                />
+            }
             default:
                 return (
                     <DefaultCell
@@ -226,7 +239,7 @@ class ReportsTable extends React.PureComponent {
     filter = (data, searchableColumns, searchText) =>
         data.filter(
             node => searchableColumns.find(column => search(node[column.name], searchText))
-            || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
+                || (node.children && this.filter(node.children, searchableColumns, searchText).length > 0)
         );
 
     render() {
