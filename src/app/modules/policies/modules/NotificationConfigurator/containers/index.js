@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import NotificationConfiguratorComponent from '../components';
 import { fetchAdaptersSuccess, fetchNotificationsSuccess } from '../actions';
 import rest from '../../../../../rest';
+import { validateForm } from '../../../../../util/validation';
 
 class NotificationConfigurator extends React.PureComponent {
     static contextTypes = {
@@ -37,6 +38,12 @@ class NotificationConfigurator extends React.PureComponent {
         };
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (this.props.notifications !== nextProps.notifications) {
+            this.setState({ notifications: nextProps.notifications });
+        }
+    }
+
     onMount = () => {
         if (this.props.policyId) {
             this.setState({ isLoading: true });
@@ -64,13 +71,39 @@ class NotificationConfigurator extends React.PureComponent {
 
     onSubmit = (notifications) => {
         if (this.props.policyId) {
-            rest.post(`/api/v1/policy/${this.props.policyId}/notifications`, notifications)
-                .then(() => {
-                    this.context.history.push('/policies');
-                })
-                .catch((e) => {
-                    console.error(e);
+            let isAllFieldsValid = true;
+            const validatedNotifications = notifications.reduce((result, notification) => {
+                const parameters = notification.parameters.map(param => {
+                    const errors = validateForm({ [param.uid]: _.get(param, 'value.0', '') }, { [param.uid]: { required: !!param.required } });
+                    isAllFieldsValid = isAllFieldsValid && _.isEmpty(errors);
+
+                    return {
+                        ...param,
+                        errors: !_.isEmpty(errors) ? errors : null,
+                    };
                 });
+
+                return [...result, { ...notification, parameters }];
+            }, []);
+
+            this.setState({ notifications: validatedNotifications });
+
+            if (isAllFieldsValid) {
+                rest.post(`/api/v1/policy/${this.props.policyId}/notifications`, notifications.map(cfg => ({
+                    adapter_id: cfg.adapter_id,
+                    instance_id: cfg.instance_id,
+                    parameters: cfg.parameters.map(param => ({
+                        uid: param.uid,
+                        value: _.isArray(param.value) ? param.value : [param.value],
+                    })),
+                })))
+                    .then(() => {
+                        this.context.history.push('/policies');
+                    })
+                    .catch((e) => {
+                        console.error(e);
+                    });
+            }
         }
     };
 
@@ -79,7 +112,7 @@ class NotificationConfigurator extends React.PureComponent {
             <NotificationConfiguratorComponent
                 active={this.props.active}
                 adapters={this.props.adapters}
-                notifications={this.props.notifications}
+                notifications={this.state.notifications}
                 policyName={this.state.policyName}
                 onSubmit={this.onSubmit}
                 onMount={this.onMount}

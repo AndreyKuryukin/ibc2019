@@ -20,6 +20,7 @@ class ParameterField extends React.Component {
         required: PropTypes.bool,
         multiple: PropTypes.bool,
         matcher: PropTypes.object,
+        errors: PropTypes.object,
         onChange: PropTypes.func,
     };
 
@@ -30,6 +31,7 @@ class ParameterField extends React.Component {
         required: false,
         multiple: false,
         matcher: null,
+        errors: null,
         onChange: () => null,
     };
 
@@ -44,18 +46,31 @@ class ParameterField extends React.Component {
         this.state = {
             value: '',
             error: null,
+            errors: null,
         };
     }
+
+   componentWillReceiveProps(nextProps) {
+        if (this.props.errors !== nextProps.errors) {
+            this.setState({ errors: nextProps.errors });
+        }
+   }
 
     shouldComponentUpdate(nextProps, nextState) {
         const isValueChanged = this.props.value !== nextProps.value || this.state.value !== nextState.value;
         const isErrorChange = this.state.error !== nextState.error;
+        const isErrorsChanged = this.props.errors !== nextProps.errors;
 
-        return isValueChanged || isErrorChange;
+        return isValueChanged || isErrorChange || isErrorsChanged;
     }
 
     onChangeInput = (e) => {
-        this.props.onChange(_.get(e, 'target.value', ''));
+        const value = _.get(e, 'target.value', '');
+        this.props.onChange(value);
+
+        if (value) {
+            this.setState({ errors: null });
+        }
     };
 
     onChangeValue = (value) => {
@@ -85,6 +100,9 @@ class ParameterField extends React.Component {
     };
 
     onSelectChange = (value) => {
+        if (value) {
+            this.setState({ errors: null });
+        }
         this.props.onChange([value]);
     }
 
@@ -108,6 +126,8 @@ class ParameterField extends React.Component {
             multiple,
             onChange,
         } = this.props;
+
+        const { errors } = this.state;
 
         return (
             <Field
@@ -149,6 +169,7 @@ class ParameterField extends React.Component {
                         value={value[0] || ''}
                         onChange={this.onChangeInput}
                         placeholder={name}
+                        maxLength={255}
                     />
                 ))}
                 {type === 'enum' && (multiple ? (
@@ -165,6 +186,8 @@ class ParameterField extends React.Component {
                         value={value[0] || ''}
                         onChange={this.onSelectChange}
                         placeholder={name}
+                        errorMessage={_.get(errors, `${name}.title`, '')}
+                        valid={_.isEmpty(errors)}
                     />
                 ))}
             </Field>
