@@ -1,17 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Highcharts from 'highcharts';
+import PatternFill from 'highcharts/modules/pattern-fill';
 import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
 
+PatternFill(Highcharts);
+
 
 const colors = {
-    FTTB: 'rgb(124, 192, 50)',
-    GPON: 'rgb(55, 125, 196)',
-    XDSL: 'rgb(253, 127, 0)',
-    FTTB_broken: 'rgba(124, 192, 50, 0.6)',
-    GPON_broken: 'rgba(55, 125, 196, 0.6)',
-    XDSL_broken: 'rgba(253, 127, 0, 0.6)',
+    FTTB: '#7cc032',
+    GPON: '#377dc4',
+    XDSL: '#fd7f00',
 };
 
 class Amount extends React.Component {
@@ -101,7 +102,7 @@ class Amount extends React.Component {
                 },
             },
             series: [{
-                name: 'Amount',
+                name: ls('AMOUNT', 'Количество'),
                 colorByPoint: true,
                 size: '100%',
                 innerSize: '80%',
@@ -140,7 +141,17 @@ class Amount extends React.Component {
             result.push({
                 name: `${ls('DASHBOARD_CHART_AMOUNT_LABEL_BROKEN', 'Аварийные')} ${key}`,
                 y: total,
-                color: colors[`${key}_broken`],
+                color: {
+                    pattern: {
+                        path: {
+                            d: 'M2,-2l16,16M-2,2l16,16M-2,10l8,8M10,-2l8,8z',
+                            strokeWidth: 1.5,
+                            stroke: colors[key],
+                        },
+                        width: 16,
+                        height: 16,
+                    },
+                },
                 legendIndex: i + ar.length,
                 hoverData,
             });

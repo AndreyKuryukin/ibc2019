@@ -79,6 +79,7 @@ class DashboardHead extends React.Component {
                     className={styles.modeSwitcher}
                     value={this.props.viewMode}
                     options={this.getModeSwitcherOptions()}
+                    color="primary"
                 />
                 {this.props.viewMode !== VIEW_MODE.MAP && (
                     <LocationDropdown
@@ -94,7 +95,7 @@ class DashboardHead extends React.Component {
                     options={this.getRegularityOptions()}
                 />
                 <Button
-                    color="action"
+                    color="secondary"
                     style={{
                         marginLeft: 10,
                     }}

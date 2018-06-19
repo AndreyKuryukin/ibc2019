@@ -41,11 +41,11 @@ class LocationDropdown extends React.Component {
         return (
             <ButtonDropdown
                 className={this.props.className}
-                color="action"
+                color="secondary"
                 isOpen={this.state.isOpen}
                 toggle={this.toggle}
             >
-                <DropdownToggle caret color="action">{this.getCurrentValue()}</DropdownToggle>
+                <DropdownToggle caret color="secondary">{this.getCurrentValue()}</DropdownToggle>
                 <DropdownMenu>
                     <DropdownItem className={styles.item}>
                         <Link to={this.props.buildLink({ mrfId: null })}>{defaultMRFName}</Link>
