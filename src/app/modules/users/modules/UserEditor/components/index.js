@@ -162,14 +162,12 @@ class UserEditor extends React.Component {
         const { errors, showTooltipFor } = this.state;
 
         return (
-            <DraggableWrapper>
             <Modal
                 isOpen={active}
                 title={userId ? ls('USER_EDIT_USER', 'Редактирование пользователя') : ls('USER_ADD_USER', 'Создание пользователя')}
                 onClose={this.onClose}
                 onSubmit={this.onSubmit}
                 className={styles.userEditor}
-                modalClassName={styles.userEditor}
                 submitTitle={userId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}
                 cancelTitle={ls('CANCEL', 'Отмена')}
             >
@@ -376,7 +374,6 @@ class UserEditor extends React.Component {
                     </div>
                 </div>
             </Modal>
-            </DraggableWrapper>
         );
     }
 }

@@ -108,7 +108,7 @@ class Graph extends React.PureComponent {
         const unit = this.getUnit(this.props.projection);
         const options = {
             legend: {
-                display: true,
+                display: false,
                 position: 'bottom',
                 labels: {
                     boxWidth: 80,
