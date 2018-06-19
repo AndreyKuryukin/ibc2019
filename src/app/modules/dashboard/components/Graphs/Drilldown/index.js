@@ -51,7 +51,9 @@ class Drilldown extends React.Component {
     };
 
     mapDataToRows() {
-        const format = number => parseFloat(number.toFixed(2)) + '%';
+        const format = number => typeof number === 'number'
+            ? parseFloat(number.toFixed(2)) + '%'
+            : 'N/A';
 
         return Object.entries(this.state.data)
             .filter(([type, value]) => value !== null)
