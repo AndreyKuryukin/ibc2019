@@ -34,6 +34,7 @@ class PolicyEditor extends React.PureComponent {
 
     componentDidMount() {
         this.context.pageBlur && this.context.pageBlur(true);
+        this.fetchBasicData();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -41,12 +42,14 @@ class PolicyEditor extends React.PureComponent {
             this.setState({ loading: true });
             Promise.all([
                 this.fetchPolicyTypes(nextProps.policy.object_type),
-                this.fetchMetaData(nextProps.policy.object_type, nextProps.policy.policy_type)])
-                .then(([policyTypes, metaData]) => {
+                this.fetchMetaData(nextProps.policy.object_type, nextProps.policy.policy_type),
+                this.fetchScopeTypes(nextProps.policy.object_type, nextProps.policy.policy_type)])
+                .then(([policyTypes, metaData, scopeTypes]) => {
                     this.setState({
                         policy: this.decodeConditions(nextProps.policy),
                         policyTypes,
                         metaData,
+                        scopeTypes,
                         loading: false
                     })
                 })
@@ -140,9 +143,11 @@ class PolicyEditor extends React.PureComponent {
         };
     };
 
-    onChildMount = () => {
+    mapKqi = (kqiList = []) => kqiList.map(kqi => ({ id: kqi.id, name: kqi.name }));
+
+    fetchBasicData = () => {
         const requests = [];
-        requests.push(rest.get('/api/v1/policy/scopeTypes'));
+        requests.push(rest.get('/api/v1/kqi'));
         requests.push(rest.get('/api/v1/policy/objectTypes'));
         if (this.props.policyId) {
             const urlParams = {
@@ -152,12 +157,11 @@ class PolicyEditor extends React.PureComponent {
         }
         this.setState({ loading: true });
         Promise.all(requests)
-            .then(([scopeResp, objectTypesResp, policyResp]) => {
-                const scopes = scopeResp.data;
+            .then(([kqiResp, objectTypesResp, policyResp]) => {
                 const objectTypes = objectTypesResp.data;
+                const kqiList = kqiResp.data;
                 const policy = _.get(policyResp, 'data');
-                this.setState({ objectTypes, loading: false, policy }, () => {
-                    this.props.onFetchScopesSuccess(scopes);
+                this.setState({ objectTypes, kqiList: this.mapKqi(kqiList), loading: false, policy }, () => {
                     if (policyResp) {
                         this.props.onFetchPolicySuccess(policy);
                     }
@@ -191,6 +195,30 @@ class PolicyEditor extends React.PureComponent {
         }
     };
 
+    fetchScopeTypes = (objectType, policytype) => {
+        if (objectType && policytype) {
+            return rest.get('/api/v1/policy/scopeTypes', {
+                urlParams: {
+                    objectType
+                }
+            }, {
+                queryParams: {
+                    objectType,
+                    'function': policytype
+                }
+            })
+                .then((response) => {
+                    return response.data;
+                })
+                .catch((e) => {
+                    console.error(e);
+                    return {};
+                })
+        } else {
+            return Promise.resolve([])
+        }
+    };
+
     updatePolicy = (policy) => {
         this.setState({ policy });
     };
@@ -206,10 +234,10 @@ class PolicyEditor extends React.PureComponent {
 
     makeMetaDataRequest = (objectType, policyType) => {
         this.setState({ loading: true });
-        this.fetchMetaData(objectType, policyType)
-            .then((metaData) => {
+        Promise.all([this.fetchMetaData(objectType, policyType), this.fetchScopeTypes(objectType, policyType)])
+            .then(([metaData, scopeTypes]) => {
                 const policy = this.applyMetaDataToPolicy(metaData, this.state.policy);
-                this.setState({ policy, metaData, loading: false });
+                this.setState({ policy, metaData, scopeTypes, loading: false });
             });
     };
 
@@ -285,7 +313,6 @@ class PolicyEditor extends React.PureComponent {
         return (
             <PolicyEditorComponent
                 onSubmit={this.onSubmit}
-                onMount={this.onChildMount}
                 onClose={this.props.onReset}
                 policy={this.state.policy}
                 errors={this.state.errors}
@@ -297,6 +324,8 @@ class PolicyEditor extends React.PureComponent {
                 fetchPolicyTypes={this.makePolicyTypeRequest}
                 fetchMetaData={this.makeMetaDataRequest}
                 updatePolicy={this.updatePolicy}
+                scopes={this.state.scopeTypes}
+                kqiList={this.state.kqiList}
                 {...props}
             />
         );
@@ -306,7 +335,6 @@ class PolicyEditor extends React.PureComponent {
 const mapStateToProps = state => {
     return {
         policy: state.policies.editor.policy,
-        scopes: state.policies.scopes,
         types: state.policies.types,
     }
 };

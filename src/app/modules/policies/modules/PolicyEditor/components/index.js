@@ -16,6 +16,7 @@ import styles from './styles.scss';
 import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 import Preloader from "../../../../../components/Preloader";
 import MacList from "./MacList";
+import KqiList from "./KqiList";
 
 const notAllowedAccidentStyle = { width: '60%' };
 const unitStyle = { margin: '3px 0px 3px 2px' };
@@ -147,7 +148,7 @@ class PolicyEditor extends React.PureComponent {
                     return srcValue;
                 } else if (_.isObject(srcValue)) {
                     return _.merge(objValue, srcValue)
-                }  else {
+                } else {
                     return srcValue
                 }
             }
@@ -247,10 +248,18 @@ class PolicyEditor extends React.PureComponent {
                                                 onChange={scope_type => this.setPolicyProperty('scope_type', scope_type)}
                                             />
                                         </Field>
-                                        {this.getPolicyProperty('scope_type') === 'MAC' && <MacList
-                                                macs={this.getPolicyProperty('scope_list')}
-                                                onChange={macs => this.setPolicyProperty('scope_list', macs)}>
-                                            </MacList>
+                                        {/*{*/}
+                                            {/*this.getPolicyProperty('scope_type') === 'MAC' && <MacList*/}
+                                                {/*macs={this.getPolicyProperty('scope_list')}*/}
+                                                {/*onChange={macs => this.setPolicyProperty('scope_list', macs)}>*/}
+                                            {/*</MacList>*/}
+                                        {/*}*/}
+                                        {
+                                            <KqiList
+                                                selected={this.getPolicyProperty('scope_list')}
+                                                onChange={kqis => this.setPolicyProperty('scope_list', kqis)}
+                                                kqiList={this.props.kqiList}
+                                             />
                                         }
                                     </Panel>
                                     <Panel
