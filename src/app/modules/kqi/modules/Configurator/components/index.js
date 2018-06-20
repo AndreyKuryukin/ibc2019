@@ -125,7 +125,7 @@ class Configurator extends React.PureComponent {
     mapConfig = (config) => {
         const conf = { ...config };
         if (config.parameter_type) {
-            const paramType = this.state.paramTypes.find(param => param.id === config.parameter_type);
+            const paramType = this.state.paramTypes.find(param => param.name === config.parameter_type);
             conf.parameter_type = _.get(paramType, 'name', '');
         }
         if (config.operator_type) {
@@ -237,7 +237,7 @@ class Configurator extends React.PureComponent {
                                 />
                             </Field>
                             <Formula
-                                config={this.mapConfig(config)}
+                                config={config}
                             />
                         </div>
                     </ModalBody>

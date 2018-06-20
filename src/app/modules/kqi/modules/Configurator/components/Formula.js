@@ -25,7 +25,13 @@ class Formula extends React.PureComponent {
     };
 
     replaceByPattern = (config, pattern, keyMap = {}) => {
-        return _.reduce(config, (result, value, key) => result.replace(`{{${key}}}`, value || keyMap[key]), pattern)
+        return _.reduce(config, (result, value, key) => {
+
+            if (key === 'parameter_type') {
+                return result.replace(`{{${key}}}`, _.get(value, 'name') || keyMap[key])
+            }
+           return result.replace(`{{${key}}}`, value || keyMap[key])
+        }, pattern)
     };
 
     render() {
