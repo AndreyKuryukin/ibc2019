@@ -26,11 +26,13 @@ class Select extends React.PureComponent {
     onChange = (event) => {
         const value = event.currentTarget.value;
         if (value === PLACEHOLDER_VALUE) {
-            this.setState({ value: '' });
-            this.props.onChange(null);
+            this.setState({ value: '' }, () => {
+                this.props.onChange('');
+            });
         } else {
-            this.setState({ value: value });
-            this.props.onChange(value);
+            this.setState({ value: value }, () => {
+                this.props.onChange(value);
+            });
         }
     };
 
