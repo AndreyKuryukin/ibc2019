@@ -156,6 +156,7 @@ class Period extends React.PureComponent {
                         inputWidth={15}
                         labelAlign="right"
                         title={ls('TIME_INTERVAL_DAY_TITLE', 'Предыдущие сутки с 00:00 до 24:00')}
+                        splitter=""
                     >
                         <Radio
                             id="day-interval"
@@ -171,6 +172,7 @@ class Period extends React.PureComponent {
                         labelAlign="right"
                         style={intervalFieldStyle}
                         title={ls('TIME_INTERVAL_WEEK_TITLE', 'Предыдущая неделя с 00:00 часов понедельника до 24:00 часов воскресения')}
+                        splitter=""
                     >
                         <Radio
                             id="week-interval"
@@ -187,6 +189,7 @@ class Period extends React.PureComponent {
                             labelAlign="right"
                             style={intervalFieldStyle}
                             title={ls('TIME_INTERVAL_MONTH_TITLE', 'Предыдущий месяц 00:00 часов 1-го числа до 24:00 часов последнего числа')}
+                            splitter=""
                         >
                             <Radio
                                 id="month-interval"
@@ -202,6 +205,7 @@ class Period extends React.PureComponent {
                             labelAlign="right"
                             style={intervalFieldStyle}
                             title={ls('TIME_INTERVAL_OTHER_TITLE', 'При выборе данного пункта невозможно задать расписание для формирования отчета')}
+                            splitter=""
                         >
                             <Radio
                                 id="other-interval"
@@ -252,10 +256,11 @@ class Period extends React.PureComponent {
                 <Field
                     id="auto-checkbox"
                     labelText={ls('REPORTS_CONFIG_EDITOR_AUTO_FIELD', 'Автогенерация')}
-                    labelWidth="90%"
-                    inputWidth="10%"
+                    labelWidth="95%"
+                    inputWidth="5%"
                     labelAlign="right"
                     title={ls('REPORTS_CONFIG_EDITOR_AUTO_FIELD_TITLE', 'Автогенерация отчёта в зависимости от заданного периода')}
+                    splitter=""
                 >
                     <Checkbox
                         id="auto-checkbox"
