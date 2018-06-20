@@ -108,7 +108,9 @@
 .help-icon {
   @include iconBuilder(22px, 22px, 'help.png');
 }
-
+.view-icon {
+  @include iconBuilder(16px, 16px, 'eye.png');
+}
 .refresh-icon {
   @include iconBuilder(22px, 22px, 'refresh.png');
 }
