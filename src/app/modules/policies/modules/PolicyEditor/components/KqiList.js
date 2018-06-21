@@ -10,7 +10,7 @@ class KqiList extends React.PureComponent {
         title: PropTypes.string,
         separator: PropTypes.string,
         onChange: PropTypes.func,
-        kqis: PropTypes.arrayOf(PropTypes.shape({
+        kqiList: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.oneOfType(PropTypes.string, PropTypes.number).isRequired,
             name: PropTypes.string
         })),
@@ -30,20 +30,33 @@ class KqiList extends React.PureComponent {
         kqiList: []
     };
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            kqiList: props.kqiList || [],
+            selected: props.selected || [],
+            kqiListById: this.mapKqiById(props.kqiList)
+        }
+    }
+
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.selected !== this.props.selected) {
             this.setState({ selected: nextProps.selected })
         }
         if (nextProps.kqiList !== this.props.kqiList) {
+            console.log(nextProps.kqiList);
             this.setState({
                 kqiList: nextProps.kqiList,
-                kqiListById: _.reduce(nextProps.kqiList, (kqis, kqi) => {
-                    kqis[kqi.id] = kqi;
-                    return kqis
-                }, {})
+                kqiListById: this.mapKqiById(nextProps.kqiList)
             })
         }
     }
+
+    mapKqiById = kqiList => _.reduce(kqiList, (kqis, kqi) => {
+        kqis[kqi.id] = kqi;
+        return kqis
+    }, {});
 
     select = (kqi) => this.setState({ kqi });
 
