@@ -5,11 +5,11 @@ import {
 import { FILTER_FIELDS } from '../constants';
 
 const initialState = {
-    [FILTER_FIELDS.START]: moment().subtract(1, 'weeks').toDate(),
+    [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
     [FILTER_FIELDS.END]: moment().toDate(),
     [FILTER_FIELDS.RF]: '',
     [FILTER_FIELDS.MRF]: '',
-    [FILTER_FIELDS.CURRENT]: false,
+    [FILTER_FIELDS.CURRENT]: true,
     [FILTER_FIELDS.HISTORICAL]: false,
 };
 

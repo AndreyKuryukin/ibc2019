@@ -7,6 +7,7 @@ import rest from '../../../rest';
 import AlarmsComponent from '../components';
 import ls from "i18n";
 import { SENDING_ALARM_TYPES } from '../constants';
+import { convertDateToUTC0 } from '../../../util/date';
 
 class Alarms extends React.PureComponent {
     static contextTypes = {
@@ -78,8 +79,8 @@ class Alarms extends React.PureComponent {
         const queryParams = {
             ...filter,
             type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start.getTime(),
-            end: filter.end.getTime(),
+            start: convertDateToUTC0(filter.start.getTime()).valueOf(),
+            end: convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
         rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {

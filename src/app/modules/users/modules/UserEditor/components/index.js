@@ -34,6 +34,7 @@ class UserEditor extends React.Component {
     };
 
     static defaultProps = {
+        userId: '',
         rolesList: [],
         groupsList: [],
         divisions: null,
@@ -46,7 +47,10 @@ class UserEditor extends React.Component {
         super(props);
 
         this.state = {
-            user: props.user,
+            user: props.userId ? props.user : {
+                ...props.user,
+                division_id: props.divisions ? props.divisions.id : null,
+            },
             errors: null,
             showTooltipFor: null,
         };
@@ -67,6 +71,10 @@ class UserEditor extends React.Component {
 
         if (this.state.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
+        }
+
+        if (this.props.divisions !== nextProps.divisions) {
+            this.setUserProperty('division_id', nextProps.divisions.id);
         }
     }
 

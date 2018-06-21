@@ -1,3 +1,5 @@
+@import '../../../../../scss/vars';
+
 .userEditor {
   width: 912px !important;
   max-width: 912px !important;
@@ -28,4 +30,7 @@
       width: 200px;
     }
   }
+}
+.divisionsPanel .panelHeader {
+  color: $orange;
 }

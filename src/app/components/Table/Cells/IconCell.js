@@ -6,6 +6,7 @@ import Icon from '../../Icon/Icon';
 class IconCell extends React.PureComponent {
     static propTypes = {
         icon: PropTypes.string.isRequired,
+        iconTitle: PropTypes.string,
         href: PropTypes.string,
         text: PropTypes.string,
         style: PropTypes.object,
@@ -25,7 +26,7 @@ class IconCell extends React.PureComponent {
     };
 
     render() {
-        const { icon, href, text, style, cellStyle, iconProps, onIconClick, onLinkClick } = this.props;
+        const { icon, iconTitle, href, text, style, cellStyle, iconProps, onIconClick, onLinkClick } = this.props;
         const iconStyle = {
             marginRight: text ? 10 : 0,
             ...style,
@@ -35,6 +36,7 @@ class IconCell extends React.PureComponent {
             <div className="table-cell-content" style={cellStyle} title={text}>
                 <Icon
                     icon={icon}
+                    title={iconTitle}
                     style={iconStyle}
                     onClick={onIconClick}
                     {...iconProps}
