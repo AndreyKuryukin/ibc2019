@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Field from "../Field/index";
 import Input from "../Input/index";
+import Select from "../Select/index";
 import Icon from "../Icon/Icon";
 
 import styles from './styles.scss';
+import * as _ from "lodash";
 
 class ChipList extends React.PureComponent {
     static propTypes = {
@@ -18,6 +19,10 @@ class ChipList extends React.PureComponent {
         valid: PropTypes.bool,
         value: PropTypes.string,
         placeholder: PropTypes.string,
+        options: PropTypes.arrayOf(PropTypes.shape({
+            title: PropTypes.string,
+            value: PropTypes.oneOfType(PropTypes.string, PropTypes.number)
+        }))
     };
 
     static defaultProps = {
@@ -57,17 +62,22 @@ class ChipList extends React.PureComponent {
     };
 
     render() {
+        const isSelect = !_.isUndefined(this.props.options);
+        const InputCmp = isSelect ? Select : Input;
+        const value = this.formatValue(this.state.value);
         return <div className={styles.chipListContainer}>
             <div style={{ display: 'flex', position: 'relative' }}>
-                <Input
+                <InputCmp
                     id={this.props.id}
+                    options={this.props.options}
                     placeholder={this.props.placeholder}
                     valid={this.props.valid}
                     errorMessage={this.props.error}
-                    value={this.formatValue(this.state.value)}
-                    onChange={event => this.onChange(event.target.value)}
+                    value={value}
+                    onChange={event => this.onChange(isSelect ? event : event.target.value)}
                 />
                 <Icon
+                    disabled={_.isEmpty(value)}
                     icon="addIcon"
                     onClick={() => this.onAdd(this.state.value)}
                     title={this.props.addTitle}

@@ -8,8 +8,14 @@ import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { convertUTC0ToLocal } from '../../../util/date';
 import { naturalSort } from '../../../util/sort';
-import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
+import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
 import { ALARMS_TYPES } from '../constants';
+
+const iconCellStyle = {
+    display: 'flex',
+    width: '100%',
+    justifyContent: 'center'
+};
 
 class AlarmsTable extends React.PureComponent {
     static propTypes = {
@@ -40,6 +46,11 @@ class AlarmsTable extends React.PureComponent {
             searchable: true,
             sortable: true,
             width: 500,
+        }, {
+            title: ls('ALARMS_STATUS_COLUMN', 'Статус'),
+            name: 'status',
+            sortable: true,
+            width: 150,
         }, {
             title: ls('ALARMS_RAISE_TIME_COLUMN', 'Время возникновения'),
             name: 'raise_time',
@@ -76,6 +87,22 @@ class AlarmsTable extends React.PureComponent {
                         content={node[column.name]}
                     />
                 );
+            case 'status': {
+                const status = _.get(node, 'status', '');
+                return status ? (
+                    <IconCell
+                        icon={`icon-state-${status.toLowerCase()}`}
+                        iconProps={{
+                            title: ls(`ALARMS_STATUS_${status}`, 'Статус')
+                        }}
+                        cellStyle={iconCellStyle}
+                    />
+                ) : (
+                    <DefaultCell
+                        content={''}
+                    />
+                );
+            }
             default:
                 return (
                     <DefaultCell
@@ -99,6 +126,7 @@ class AlarmsTable extends React.PureComponent {
     mapData = memoize(data => data.map(node => ({
         id: node.id.toString(),
         policy_name: node.policy_name,
+        status: node.status,
         raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD:MM:YYYY'),
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',

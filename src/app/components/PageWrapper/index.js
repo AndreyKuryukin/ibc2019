@@ -95,7 +95,7 @@ class PageWrapper extends React.Component {
                   className={classNames({ [styles.hidden]: this.state.hidden })}
                   path={_.get(this.props, 'location.pathname')}
             />
-            <div className={styles.workspace}>
+            <div className={classNames(styles.workspace, { [styles.withSidebar]: !this.state.hidden })}>
                 <Navbar color="faded"
                         light
                         className={classNames({

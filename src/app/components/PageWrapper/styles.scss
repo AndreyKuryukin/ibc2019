@@ -14,7 +14,9 @@
     flex-grow: 1;
     flex-direction: column;
     height: 100%;
-    max-width: calc(100vw - 120px);
+    &.withSidebar {
+      max-width: calc(100vw - 120px);
+    }
     .navBar {
       display: flex;
       flex-grow: 0;

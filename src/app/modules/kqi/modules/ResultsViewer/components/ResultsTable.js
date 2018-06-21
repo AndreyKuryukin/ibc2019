@@ -143,12 +143,14 @@ class ResultsTable extends React.PureComponent {
         name: 'result',
         searchable: true,
         sortable: true,
-    }, {
-        title: ls('KQI_WEIGHT_COLUMN_TITLE', 'Вносимый вес'),
-        name: 'weight',
-        searchable: true,
-        sortable: true,
-    }]);
+    }
+    // , {
+    //     title: ls('KQI_WEIGHT_COLUMN_TITLE', 'Вносимый вес'),
+    //     name: 'weight',
+    //     searchable: true,
+    //     sortable: true,
+    // }
+    ]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell

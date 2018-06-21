@@ -67,6 +67,7 @@ class MacList extends React.PureComponent {
     render() {
         return <ChipList
             id="policy-mac-adresses"
+            options={[1]}
             onChange={this.makeMac}
             onAdd={this.addMac}
             formatValue={this.composeDisplayString}
