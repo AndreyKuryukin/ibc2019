@@ -59,6 +59,7 @@ class AlarmsControls extends React.Component {
             { wpx: 150 },
             { wpx: 150 },
             { wpx: 150 },
+            { wpx: 150 },
             { hidden: true },
         ];
         var worksheet = XLSX.utils.json_to_sheet(this.props.displayedData);

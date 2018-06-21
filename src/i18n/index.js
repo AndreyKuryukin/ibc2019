@@ -15,6 +15,7 @@ const languageMap = {
 
     ALARMS_ID_COLUMN: 'ID',
     ALARMS_POLICY_NAME_COLUMN: 'Имя политики',
+    ALARMS_STATUS_COLUMN: 'Статус',
     ALARMS_RAISE_TIME_COLUMN: 'Время возникновения',
     ALARMS_DURATION_COLUMN: 'Длительность',
     ALARMS_OBJECT_COLUMN: 'Объект',
