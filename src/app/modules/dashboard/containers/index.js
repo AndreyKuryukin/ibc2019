@@ -45,7 +45,7 @@ class Dashboard extends React.PureComponent {
         return props.match.params.regularity || REGULARITIES.HOUR;
     }
     getMode(props = this.props) {
-        return props.match.params.mode || VIEW_MODE.GRAPH;
+        return props.match.params.mode || VIEW_MODE.MAP;
     }
     getType(props = this.props) {
         if (props.match.params.type !== undefined) return props.match.params.type;

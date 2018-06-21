@@ -1,8 +1,8 @@
 import ls from '../../../i18n';
 
 export const VIEW_MODE = {
-    GRAPH: 'graph',
     MAP: 'map',
+    GRAPH: 'graph',
 };
 
 export const REGULARITIES = {
