@@ -8,6 +8,7 @@ import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 import Icon from '../../../../../components/Icon/Icon';
 import { ALARMS_TYPES } from '../../../constants';
+import { convertUTC0ToLocal } from '../../../../../util/date';
 
 const infoScheme = [
     'raise_time',
@@ -59,7 +60,7 @@ class AlarmsViewer extends React.PureComponent {
     getAlarmContent = (key) => {
         switch (key) {
             case 'raise_time':
-                return _.get(this.props.alarm, key, null) ? moment(_.get(this.props.alarm, key)).format('DD-MM-YYYY HH:mm:ss') : '';
+                return _.get(this.props.alarm, key, null) ? convertUTC0ToLocal(_.get(this.props.alarm, key)).format('DD-MM-YYYY HH:mm:ss') : '';
             case 'duration':
                 return this.getReadableDuration(_.get(this.props.alarm, key, 0));
             case 'notified': {

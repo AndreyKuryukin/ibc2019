@@ -58,7 +58,7 @@ class NotificationConfigurator extends React.PureComponent {
     componentWillReceiveProps(nextProps) {
         if (this.props.notifications !== nextProps.notifications) {
             const configs = nextProps.notifications.reduce((result, cfg) => {
-                const adapterConfig = nextProps.adapters.find(adapter => adapter.adapter_id === cfg.adapter_id);
+                const adapterConfig = nextProps.adapters.find(adapter => cfg && (adapter.adapter_id === cfg.adapter_id));
 
                 return adapterConfig ? {
                     ...result,
