@@ -144,6 +144,7 @@ class AlarmsTable extends React.PureComponent {
         const columns = AlarmsTable.getColumns();
         const mappedData = this.mapData(data);
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
+
         return (
             <Table
                 data={filteredData}

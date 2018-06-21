@@ -58,6 +58,7 @@ class RolesControls extends React.PureComponent {
                     />
                     <Dropdown
                         isOpen={this.state.removeConfirmOpen}
+                        dropdownClass={styles.rolesRemovingDropdown}
                         onToggle={this.triggerDelete}
                         trigger={
                             <Icon
