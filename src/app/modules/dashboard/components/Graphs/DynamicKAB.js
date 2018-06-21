@@ -2,13 +2,108 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import Chart from './Chart';
+import moment from 'moment';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
+import { REGULARITIES } from '../../constants';
+
+
+const NAMES = {
+    itv1: ls('DASHBOARD_ITV', 'ИТВ'),
+    itv2: ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
+};
+const STEPS = {
+    [REGULARITIES.HOUR]: 3600 * 1000,
+    [REGULARITIES.DAY]: 24 * 3600 * 1000,
+    [REGULARITIES.WEEK]: 7 * 24 * 3600 * 1000,
+};
 
 class DynamicKAB extends React.Component {
     static propTypes = {
-        regularity: PropTypes.string.isRequired,
+        regularity: PropTypes.oneOf(Object.values(REGULARITIES)).isRequired,
     };
+
+    static createPlotLineOptions(x, timestamp) {
+        return {
+            value: x,
+            color: '#082545',
+            width: 1,
+            label: {
+                text: moment(timestamp).format('D MMMM YYYY').toLowerCase(),
+                style: {
+                    color: 'rgba(0, 0, 0, 0.3)',
+                    fontSize: '12px',
+                },
+                rotation: -90,
+                verticalAlign: 'bottom',
+                textAlign: 'left',
+                y: -8,
+                x: -8,
+            },
+        };
+    }
+
+    static isStartOfTheDay(timestamp) {
+        return new Date(timestamp).getHours() === 0;
+    }
+
+    /*
+        Expands chart data in the following way:
+         * sorts points by timestamp
+         * adds nully points for each skipped timestamp
+     */
+    static expandData(data, regularity) {
+        const keys = Object.keys(data);
+        const acc = new Map(); // Map<Timestamp, Map<[itv1|itv2], Array<Point>>>
+
+        // grouping points by timestamp
+        for (const [key, points] of Object.entries(data)) {
+            for (const point of points) {
+                const timestamp = new Date(point.date_time).getTime();
+                let points = acc.get(timestamp);
+                if (points === undefined) {
+                    points = new Map();
+                    acc.set(timestamp, points);
+                }
+                points.set(key, point);
+            }
+        }
+
+        let prevTimestamp;
+        const step = STEPS[regularity];
+        return Array.from(acc)
+            .sort(([aTimestamp], [bTimestamp]) => aTimestamp - bTimestamp)
+            .reduce(
+                (result, [timestamp, value]) => {
+                    let offset = prevTimestamp === undefined ? 0 : timestamp - prevTimestamp;
+
+                    while (offset > step) {
+                        for (const key of keys) {
+                            result[key].push({
+                                value: null,
+                                timestamp,
+                            });
+                        }
+                        offset -= step;
+                    }
+
+                    for (const key of keys) {
+                        result[key].push({
+                            value: (value.get(key) || {}).kqi || null,
+                            timestamp,
+                        });
+                    }
+
+                    prevTimestamp = timestamp;
+
+                    return result;
+                },
+                keys.reduce((result, key) => ({
+                    ...result,
+                    [key]: [],
+                }), {})
+            );
+    }
 
     state = {
         data: [],
@@ -21,6 +116,17 @@ class DynamicKAB extends React.Component {
         if (this.props.regularity !== nextProps.regularity) {
             this.fetchChartData(nextProps);
         }
+    }
+
+    getPlotLines() {
+        if (this.props.regularity !== REGULARITIES.HOUR) return undefined;
+
+        const values = Object.values(this.state.data)[0];
+        if (values === undefined) return undefined;
+
+        return values
+            .filter(DynamicKAB.isStartOfTheDay)
+            .map((value, index) => DynamicKAB.createPlotLineOptions(index, value.timestamp));
     }
 
     getChartOptions = () => {
@@ -42,6 +148,19 @@ class DynamicKAB extends React.Component {
             tooltip: {
                 ...Chart.DEFAULT_OPTIONS.tooltip,
                 shared: true,
+                formatter: function() {
+                    if (this.points.length === 0) return undefined;
+
+                    const date = moment(this.points[0].point.timestamp).format('D MMMM YYYY').toLowerCase();
+                    const points = this.points
+                        .map(point => `${point.series.name}: <span style="color: ${point.series.color}">${point.y}%</span>`)
+                        .join('<br />');
+
+                    return `
+                        ${date}<br />
+                        ${points}
+                    `;
+                },
             },
             plotOptions: {
                 spline: {
@@ -51,6 +170,7 @@ class DynamicKAB extends React.Component {
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
+                plotLines: this.getPlotLines(),
             },
             yAxis: Chart.DEFAULT_OPTIONS.yAxis,
             series,
@@ -63,41 +183,40 @@ class DynamicKAB extends React.Component {
         };
 
         return rest.get('/api/v1/dashboard/dynamic/kab', {}, { queryParams })
-            .then(({ data }) => this.setState({ data }))
+            .then(({ data }) => this.setState({
+                data: DynamicKAB.expandData(data, props.regularity),
+            }))
             .catch(console.error);
     }
 
     getSeries() {
-        const names = {
-            itv1: ls('DASHBOARD_ITV', 'ИТВ'),
-            itv2: ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
-        };
-
         return Object.entries(this.state.data).map(([key, values], i) => ({
-            name: names[key],
-            data: values.map(item => Number(item.kqi.toFixed(2))),
+            name: NAMES[key],
+            data: values.map((item, x) => ({
+                x,
+                y: typeof item.value !== 'number' ? null : Number(item.value.toFixed(2)),
+                timestamp: item.timestamp,
+            })),
         }));
     }
-    getMinMax() {
-        let min = Infinity;
-        let max = -Infinity;
-        for (const values of Object.values(this.state.data)) {
-            for (const value of values) {
-                const time = (new Date(value.date_time)).getTime();
-                min = Math.min(min, time);
-                max = Math.max(max, time);
-            }
-        }
-        return [min, max];
-    }
     getCategories() {
-        const [min, max] = this.getMinMax();
+        const { regularity } = this.props;
+        const values = Object.values(this.state.data)[0];
 
+        if (values === undefined || values.length === 0) return [];
+
+        const step = STEPS[regularity];
+        const minTime = values[0].timestamp;
+        const maxTime = values[values.length - 1].timestamp;
         const categories = [];
-        for (let i = min; i <= max; i += 3600 * 1000) {
-            const formatted = Highcharts.dateFormat('%H:00', i);
+
+        const formatPattern = regularity === REGULARITIES.HOUR ? 'HH:00' : 'd.MM.YYYY';
+
+        for (let time = minTime; time <= maxTime; time += step) {
+            const formatted = moment(time).format(formatPattern);
             categories.push(formatted);
         }
+
         return categories;
     }
 
