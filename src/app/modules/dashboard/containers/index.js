@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import ls from 'i18n';
 import DashboardCmp from '../components/index';
 import {REGULARITIES, VIEW_MODE} from '../constants';
+import {extractRegionName} from '../components/utils';
 import rest from '../../../rest';
 
 class Dashboard extends React.PureComponent {
@@ -97,17 +98,10 @@ class Dashboard extends React.PureComponent {
                 type={this.getType()}
                 mrfId={this.getMRF()}
                 aggregated={this.state.aggregated}
-                locations={this.state.locations.map(location => {
-                    const matched = location.name.match(/Макрорегиональный филиал «(.*)»/);
-
-                    if (matched !== null) {
-                        return {
-                            ...location,
-                            name: matched[1],
-                        };
-                    }
-                    return location;
-                })}
+                locations={this.state.locations.map(location => ({
+                    ...location,
+                    name: extractRegionName(location.name),
+                }))}
             />
         );
     }

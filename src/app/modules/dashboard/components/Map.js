@@ -5,6 +5,7 @@ import WidgetWrapper from './WidgetWrapper';
 import RussianMap from './RussianMap';
 import rest from '../../../rest';
 import KQI from './KQI';
+import {extractRegionName} from './utils';
 
 class Map extends React.Component {
     static propTypes = {
@@ -69,16 +70,35 @@ class Map extends React.Component {
             });
     }
 
-    getRegionName() {
-        const defaultRegionName = 'РФ';
+    getTitle() {
+        const { mrfId, type } = this.props;
 
-        const { mrfId } = this.props;
-        if (mrfId === undefined) return defaultRegionName;
+        if (mrfId === undefined) {
+            return (
+                <span>
+                    {'Средний показатель '}
+                    <KQI
+                        className={styles.mapTitleKQI}
+                        type={type}
+                    />
+                    {' по МРФ'}
+                </span>
+            );
+        }
 
         const mrf = this.state.details.find(r => r.id === mrfId);
-        if (mrf === undefined) return defaultRegionName;
+        if (mrf === undefined) return '';
 
-        return mrf.name;
+        return (
+            <span>
+                {`Средний показатель ${extractRegionName(mrf.name)} `}
+                <KQI
+                    className={styles.mapTitleKQI}
+                    type={type}
+                />
+                {' по МРФ'}
+            </span>
+        );
     }
 
     render() {
@@ -103,16 +123,7 @@ class Map extends React.Component {
         return (
             <WidgetWrapper
                 className={styles.map}
-                title={(
-                    <span>
-                        {`Средний показатель `}
-                        <KQI
-                            className={styles.mapTitleKQI}
-                            type={type}
-                        />
-                        {` по ${this.getRegionName()}`}
-                    </span>
-                )}
+                title={this.getTitle()}
                 backLink={mrfId === undefined ? undefined : this.props.buildLink({ mrfId: null })}
             >
                 <RussianMap
