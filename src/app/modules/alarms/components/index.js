@@ -65,11 +65,11 @@ class Alarms extends React.PureComponent {
                 activeTabId={type}
             >
                 <div
-                    id={GROUP_POLICIES_ALARMS}
-                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
+                    id={CLIENTS_INCIDENTS_ALARMS}
+                    tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
                     style={tabStyle}
                 >
-                    {type === GROUP_POLICIES_ALARMS && (
+                    {type === CLIENTS_INCIDENTS_ALARMS && (
                         <AlarmsContent
                             type={type}
                             params={params}
@@ -83,11 +83,11 @@ class Alarms extends React.PureComponent {
                     )}
                 </div>
                 <div
-                    id={CLIENTS_INCIDENTS_ALARMS}
-                    tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
+                    id={GROUP_POLICIES_ALARMS}
+                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
                     style={tabStyle}
                 >
-                    {type === CLIENTS_INCIDENTS_ALARMS && (
+                    {type === GROUP_POLICIES_ALARMS && (
                         <AlarmsContent
                             type={type}
                             params={params}
