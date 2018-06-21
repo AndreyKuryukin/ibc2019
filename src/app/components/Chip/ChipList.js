@@ -66,7 +66,7 @@ class ChipList extends React.PureComponent {
         const InputCmp = isSelect ? Select : Input;
         const value = this.formatValue(this.state.value);
         return <div className={styles.chipListContainer}>
-            <div style={{ display: 'flex', position: 'relative' }}>
+            <div className={styles.inputContainer}>
                 <InputCmp
                     id={this.props.id}
                     options={this.props.options}
