@@ -210,7 +210,6 @@ class PolicyEditor extends React.PureComponent {
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
-
         return (
             <DraggableWrapper>
                 <Modal
@@ -248,18 +247,18 @@ class PolicyEditor extends React.PureComponent {
                                                 onChange={scope_type => this.setPolicyProperty('scope_type', scope_type)}
                                             />
                                         </Field>
-                                        {/*{*/}
-                                            {/*this.getPolicyProperty('scope_type') === 'MAC' && <MacList*/}
-                                                {/*macs={this.getPolicyProperty('scope_list')}*/}
-                                                {/*onChange={macs => this.setPolicyProperty('scope_list', macs)}>*/}
-                                            {/*</MacList>*/}
-                                        {/*}*/}
                                         {
-                                            <KqiList
+                                            this.getPolicyProperty('scope_type') === 'MAC' && <MacList
+                                                macs={this.getPolicyProperty('scope_list')}
+                                                onChange={macs => this.setPolicyProperty('scope_list', macs)}>
+                                            </MacList>
+                                        }
+                                        {
+                                            this.getPolicyProperty('scope_type') === 'KQI_PROJECTION' && <KqiList
                                                 selected={this.getPolicyProperty('scope_list')}
                                                 onChange={kqis => this.setPolicyProperty('scope_list', kqis)}
                                                 kqiList={this.props.kqiList}
-                                             />
+                                            />
                                         }
                                     </Panel>
                                     <Panel
