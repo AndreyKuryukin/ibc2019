@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import NotificationConfiguratorComponent from '../components';
 import { fetchAdaptersSuccess, fetchNotificationsSuccess } from '../actions';
 import rest from '../../../../../rest';
@@ -18,6 +19,7 @@ class NotificationConfigurator extends React.PureComponent {
         notifications: PropTypes.array,
         onFetchAdaptersSuccess: PropTypes.func,
         onFetchNotificationsSuccess: PropTypes.func,
+        fetchPolicies: PropTypes.func,
     };
 
     static defaultProps = {
@@ -27,6 +29,7 @@ class NotificationConfigurator extends React.PureComponent {
         notifications: [],
         onFetchAdaptersSuccess: () => null,
         onFetchNotificationsSuccess: () => null,
+        fetchPolicies: () => null,
     };
 
     constructor(props) {
@@ -99,6 +102,7 @@ class NotificationConfigurator extends React.PureComponent {
                 })))
                     .then(() => {
                         this.context.history.push('/policies');
+                        this.props.fetchPolicies();
                     })
                     .catch((e) => {
                         console.error(e);

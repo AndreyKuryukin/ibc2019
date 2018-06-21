@@ -13,16 +13,15 @@ class Icon extends React.PureComponent {
     };
 
     static defaultProps = {
-        title: '',
         disabled: false,
         style: null,
         onClick: () => null,
     };
 
     render() {
-        const {icon, disabled, ...rest} = this.props;
+        const {icon, title, disabled, ...rest} = this.props;
         return (
-            <div
+            <div title={title}
                 className={classnames(
                     styles.iconBlock,
                     { [styles.iconDisabled]: disabled },

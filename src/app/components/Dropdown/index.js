@@ -9,11 +9,13 @@ import styles from './styles.scss';
 export default class DropdownComponent extends React.PureComponent {
 
     static propTypes = {
+        dropdownClass: PropTypes.string,
         isOpen: PropTypes.bool,
         onToggle: PropTypes.func,
     };
 
     static defaultProps = {
+        dropdownClass: '',
         isOpen: false,
         onToggle: () => null,
     };
@@ -35,9 +37,6 @@ export default class DropdownComponent extends React.PureComponent {
 
     toggle = () => {
         const isOpen = this.state.isOpen;
-        this.setState({
-            isOpen: !isOpen
-        });
         this.props.onToggle(!isOpen);
     };
 
@@ -59,7 +58,7 @@ export default class DropdownComponent extends React.PureComponent {
                 >
                     {trigger}
                 </DropdownToggle>
-                <DropdownMenu className={classnames(styles.dropdownPositionFix, dropdownClass)}>
+                <DropdownMenu className={classnames(dropdownClass)}>
                     {this.props.children}
                 </DropdownMenu>
             </Dropdown>

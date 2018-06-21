@@ -79,6 +79,7 @@ class Conjunction extends React.PureComponent {
         const typeMap = {
             'integer': 'number',
             'string': 'text',
+            'KQI': 'number'
         };
         const params = {
             placeholder: ls('POLICY_CONJUNCTION_VALUE_PLACEHOLDER', 'Значение'),
@@ -98,8 +99,13 @@ class Conjunction extends React.PureComponent {
         />
     };
 
-    setParameter = (value) => {
-        this.setState({ operator: null, value: null }, () => {
+    setParameter = (value, parameters) => {
+        const update = { value: { operator: null, value: null } };
+        const parameterCfg = this.getParamCfgByName(parameters, value);
+        if (parameterCfg.type === 'KQI') {
+            update.value.operator = '>'
+        }
+        this.setState(update, () => {
             this.setConjunctionProperty('parameterType', value)
         })
     };
@@ -127,12 +133,12 @@ class Conjunction extends React.PureComponent {
                                 placeholder={ls('POLICY_CONJUNCTION_PARAMETER_PLACEHOLDER', 'Параметр')}
                                 value={parameter}
                                 options={this.mapParameters(parameters)}
-                                onChange={(value) => this.setParameter(value)}
+                                onChange={(value) => this.setParameter(value, parameters)}
                                 valid={errors && _.isEmpty(_.get(errors, 'parameterType', null))}
                             />
                         </Field>
                     </div>
-                    <div style={{ width: '20%', paddingLeft: 5 }}>
+                    {paramCfg.type !== 'KQI' && <div style={{ width: '20%', paddingLeft: 5 }}>
                         <Select
                             type="select"
                             placeholder={ls('POLICY_CONJUNCTION_OPERATOR_PLACEHOLDER', 'Оператор')}
@@ -141,7 +147,7 @@ class Conjunction extends React.PureComponent {
                             onChange={(value) => this.setConjunctionProperty('operator', value)}
                             valid={errors && _.isEmpty(_.get(errors, 'operator', null))}
                         />
-                    </div>
+                    </div>}
                     <div style={{ width: '20%', paddingLeft: 5 }}>
                         {this.renderValueControl(paramCfg, value, errors)}
                     </div>

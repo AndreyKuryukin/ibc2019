@@ -143,11 +143,11 @@ class PolicyEditor extends React.PureComponent {
         };
     };
 
-    mapKqi = (kqiList = []) => kqiList.map(kqi => ({ id: kqi.id, name: kqi.name }));
+    mapKqi = (kqiList = []) => kqiList.map(kqi => ({ id: String(kqi.id), name: kqi.name }));
 
     fetchBasicData = () => {
         const requests = [];
-        requests.push(rest.get('/api/v1/kqi'));
+        requests.push(rest.get('/api/v1/kqi/projection/'));
         requests.push(rest.get('/api/v1/policy/objectTypes'));
         if (this.props.policyId) {
             const urlParams = {

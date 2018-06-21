@@ -55,7 +55,7 @@ class MacList extends React.PureComponent {
         } else if (macs.findIndex(m => mac === m) !== -1) {
             this.setState({ error:  ls('DUPLICATE_MAC', 'Мак-адрес уже добавлен') });
         } else {
-            this.setState({ error: null });
+            this.setState({ error: null, mac: '' });
             this.props.onChange([...macs, mac])
         }
     };
@@ -66,8 +66,7 @@ class MacList extends React.PureComponent {
 
     render() {
         return <ChipList
-            id="policy-mac-adresses"
-            options={[1]}
+            id="policy-mac-addresses"
             onChange={this.makeMac}
             onAdd={this.addMac}
             formatValue={this.composeDisplayString}
