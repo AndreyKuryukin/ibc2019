@@ -134,7 +134,7 @@ class PolicyEditor extends React.PureComponent {
             prevPolicy = this.handlePolicyTypeChange(prevPolicy, value);
         }
         if (key === 'scope_type') {
-            prevPolicy.scope_list = [];
+            prevPolicy.scope = [];
         }
         if (key === 'allow_accident' && value === false) {
             _.set(policyValues, 'accident', '');
@@ -191,8 +191,8 @@ class PolicyEditor extends React.PureComponent {
     };
 
     addMac = (mac) => {
-        const scope_list = this.getPolicyProperty('scope_list') || [];
-        this.setPolicyProperty('scope_list', [...scope_list, mac])
+        const scope = this.getPolicyProperty('scope') || [];
+        this.setPolicyProperty('scope', [...scope, mac])
     };
 
     validateNumKey = (e) => {
@@ -249,14 +249,14 @@ class PolicyEditor extends React.PureComponent {
                                         </Field>
                                         {
                                             this.getPolicyProperty('scope_type') === 'MAC' && <MacList
-                                                macs={this.getPolicyProperty('scope_list')}
-                                                onChange={macs => this.setPolicyProperty('scope_list', macs)}>
+                                                macs={this.getPolicyProperty('scope')}
+                                                onChange={macs => this.setPolicyProperty('scope', macs)}>
                                             </MacList>
                                         }
                                         {
                                             this.getPolicyProperty('scope_type') === 'KQI_PROJECTION' && <KqiList
-                                                selected={this.getPolicyProperty('scope_list')}
-                                                onChange={kqis => this.setPolicyProperty('scope_list', kqis)}
+                                                selected={this.getPolicyProperty('scope')}
+                                                onChange={kqis => this.setPolicyProperty('scope', kqis)}
                                                 kqiList={this.props.kqiList}
                                             />
                                         }
