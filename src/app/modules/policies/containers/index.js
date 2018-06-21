@@ -47,7 +47,7 @@ class Policies extends React.PureComponent {
                 console.error(e);
                 this.setState({ isLoading: false });
             });
-    }
+    };
 
     render() {
         return (
@@ -55,7 +55,7 @@ class Policies extends React.PureComponent {
                 match={this.props.match}
                 history={this.props.history}
                 policiesData={this.props.policiesData}
-                onMount={this.fetchPolicies}
+                fetchPolicies={this.fetchPolicies}
                 isLoading={this.state.isLoading}
             />
         );

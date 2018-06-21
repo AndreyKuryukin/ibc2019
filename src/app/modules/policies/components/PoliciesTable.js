@@ -31,51 +31,60 @@ class PoliciesTable extends React.PureComponent {
         notificationClick: () => null
     };
 
-    static getColumns = memoize(() => [{
-        title: ls('POLICIES_NAME_COLUMN_TITLE', 'Название'),
-        name: 'name',
-        sortable: true,
-        searchable: true,
-    },
-        // {
-        //     title: ls('POLICIES_CONDITION_COLUMN_TITLE', 'Условие'),
-        //     name: 'condition',
-        //     sortable: true,
-        //     searchable: true,
-        // }, {
-        //     title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
-        //     name: 'agregation',
-        //     sortable: true,
-        //     searchable: true,
-        //     filter: {
-        //         type: 'text',
-        //     },
-        // },
-        {
-            title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
-            name: 'aggregation_interval',
-            sortable: true,
-            searchable: true,
-            columns: [{
-                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
-                name: 'rise_duration',
-            }, {
-                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
-                name: 'cease_duration',
-            }],
-        }, {
-            title: ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
-            name: 'threshold',
-            sortable: true,
-            searchable: true,
-            columns: [{
-                title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
-                name: 'rise_value',
-            }, {
-                title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
-                name: 'cease_value',
-            }],
+    getColumns = memoize(() => [
+        this.context.hasAccess('POLICY', 'EDIT') && {
+            title: '',
+            name: 'has_notifications',
+            sortable: false,
+            searchable: false,
+            width: 32
         },
+        {
+            title: ls('POLICIES_NAME_COLUMN_TITLE', 'Имя политики'),
+            name: 'name',
+            sortable: true,
+            searchable: true,
+        },
+        {
+            title: ls('POLICIES_OBJECT_COLUMN_TITLE', 'Объект'),
+            name: 'object_type',
+            sortable: true,
+            searchable: true,
+        },
+        {
+            title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
+            name: 'policy_type',
+            sortable: true,
+            searchable: true,
+            filter: {
+                type: 'text',
+            },
+        },
+        // {
+        //     title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
+        //     name: 'aggregation_interval',
+        //     sortable: true,
+        //     searchable: true,
+        //     columns: [{
+        //         title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
+        //         name: 'rise_duration',
+        //     }, {
+        //         title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
+        //         name: 'cease_duration',
+        //     }],
+        // }, {
+        //     title: ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
+        //     name: 'threshold',
+        //     sortable: true,
+        //     searchable: true,
+        //     columns: [{
+        //         title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
+        //         name: 'rise_value',
+        //     }, {
+        //         title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
+        //         name: 'cease_value',
+        //     }],
+        // },
         // {
         //     title: ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
         //     name: 'scope',
@@ -87,6 +96,9 @@ class PoliciesTable extends React.PureComponent {
     static mapPolicies = memoize(policies => policies.map(policy => ({
         id: policy.id,
         name: policy.name,
+        has_notifications: policy.has_notifications,
+        object_type: policy.object_type,
+        policy_type: policy.policy_type,
         threshold: {
             id: _.get(policy, 'threshold.id', ''),
             cease_duration: _.get(policy, 'threshold.cease_duration', '').toString() / 1000,
@@ -99,7 +111,7 @@ class PoliciesTable extends React.PureComponent {
     headerRowRender = (column, sort) => {
         const sortDirection = sort.by === column.name ? sort.direction : null;
 
-        switch(column.name) {
+        switch (column.name) {
             case 'aggregation_interval':
             case 'threshold':
                 return (
@@ -122,19 +134,24 @@ class PoliciesTable extends React.PureComponent {
     };
 
     bodyRowRender = (column, node) => {
-        switch(column.name) {
+        switch (column.name) {
+            case 'has_notifications' :
+                const icon = node[column.name] ? 'notification-active-icon' : 'notification-disabled-icon';
+                const title = node[column.name] ? ls('POLICY_NOTIFICATION_TITLE_ACTIVE', 'Нотификация настроена') : ls('POLICY_NOTIFICATION_TITLE_INACTIVE', 'Нотификация настроена')
+                return <IconCell
+                    icon={icon}
+                    iconTitle={title}
+                    cellStyle={editIconStyle}
+                    onIconClick={() => {
+                        this.props.notificationClick(node.id)
+                    }}
+                />;
             case 'name':
                 return this.context.hasAccess('POLICY', 'EDIT') ? (
                     <div className={styles.nameCell}>
                         <LinkCell
                             href={`/policies/edit/${node.id}`}
                             content={node[column.name]}
-                        />
-                        <IconCell icon="edit-icon"
-                                  cellStyle={editIconStyle}
-                                  onIconClick={() => {
-                                      this.props.notificationClick(node.id)
-                                  }}
                         />
                     </div>
                 ) : (
@@ -178,7 +195,7 @@ class PoliciesTable extends React.PureComponent {
     };
 
     render() {
-        const columns = PoliciesTable.getColumns();
+        const columns = this.getColumns();
         const { data: policies, searchText } = this.props;
         const data = PoliciesTable.mapPolicies(policies);
         const filteredData = searchText ? this.filterBySearchText(data, columns, searchText) : data;
