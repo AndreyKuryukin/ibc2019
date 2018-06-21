@@ -80,7 +80,7 @@ class App extends React.Component {
             },
             'ALARMS': {
                 title: 'Аварии',
-                link: '/alarms/gp',
+                link: '/alarms/ci',
                 path: "/alarms/:type/:id?",
                 component: Alarms
             },
