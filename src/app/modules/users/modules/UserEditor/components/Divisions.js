@@ -6,6 +6,7 @@ import Panel from '../../../../../components/Panel';
 import Grid from '../../../../../components/Grid'
 import { CheckedCell } from '../../../../../components/Table/Cells';
 import search from '../../../../../util/search';
+import styles from './styles.scss';
 
 const bodyStyle = { padding: 0 };
 
@@ -84,6 +85,7 @@ class Divisions extends React.Component {
         return (
             <Panel
                 title={ls('USER_DIVISION_PANEL_TITLE', 'Подразделения')}
+                className={styles.divisionsPanel}
                 bodyStyle={bodyStyle}
             >
                 <Grid
