@@ -33,10 +33,12 @@ export const FILTERS = [
         id: 'product',
         title: ls('DASHBOARD_FILTERS_PRODUCT_TITLE', 'Продукт'),
         editable: true,
+        type: 'radio',
         options: [
             {
                 value: 'ITV',
                 label: ls('ITV', 'ИТВ'),
+                enabled: true,
             }, {
                 value: 'ITV2',
                 label: ls('ITV2_0', 'ИТВ 2.0'),
