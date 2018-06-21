@@ -47,10 +47,10 @@ class AlarmsTable extends React.PureComponent {
             sortable: true,
             width: 500,
         }, {
-            title: ls('ALARMS_STATUS_COLUMN', 'Статус'),
+            title: ls('ALARMS_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
             name: 'status',
             sortable: true,
-            width: 150,
+            width: 250,
         }, {
             title: ls('ALARMS_RAISE_TIME_COLUMN', 'Время возникновения'),
             name: 'raise_time',

@@ -56,7 +56,7 @@ class AlarmsControls extends React.Component {
         const worksheetCols = [
             { wpx: 250 },
             { wpx: 300 },
-            { wpx: 150 },
+            { wpx: 220 },
             { wpx: 150 },
             { wpx: 150 },
             { wpx: 150 },
