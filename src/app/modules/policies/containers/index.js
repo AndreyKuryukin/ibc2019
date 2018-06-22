@@ -32,6 +32,7 @@ class Policies extends React.PureComponent {
 
     componentDidMount() {
         this.context.navBar.setPageTitle('Политики');
+        this.fetchPolicies();
     }
 
     fetchPolicies = () => {

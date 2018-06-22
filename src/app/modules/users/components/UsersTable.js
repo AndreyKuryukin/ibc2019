@@ -10,6 +10,8 @@ import MailLink from "../../../components/MailLink/index";
 import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 
+const iconCellStyle = { flexShrink: 0 };
+
 class UsersTable extends React.PureComponent {
     static contextTypes = {
         hasAccess: PropTypes.func.isRequired,
@@ -195,6 +197,7 @@ class UsersTable extends React.PureComponent {
                         icon="adminIcon"
                         href={`/users-and-roles/users/edit/${node.id}`}
                         text={value}
+                        style={iconCellStyle}
                     />
                 );
             default:

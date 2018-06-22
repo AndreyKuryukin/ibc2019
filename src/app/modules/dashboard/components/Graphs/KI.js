@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import rest from '../../../../rest';
 import KICount from './KICount';
 import KIDuration from './KIDuration';
+import {MACRO_RF_ID} from '../../constants';
 
 class KI extends React.Component {
     static propTypes = {
@@ -28,6 +29,9 @@ class KI extends React.Component {
             regularity: props.regularity,
             mrf: props.mrfId,
         };
+        if (queryParams.mrf === MACRO_RF_ID) {
+            delete queryParams.mrf;
+        }
 
         return rest.get('/api/v1/dashboard/ki', {}, { queryParams })
             .then(({ data }) => this.setState({ data }))

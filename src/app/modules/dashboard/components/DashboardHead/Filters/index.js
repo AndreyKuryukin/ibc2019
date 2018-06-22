@@ -17,20 +17,22 @@ class Filters extends React.Component {
     };
 
     onChange(filterId, optionId, isChecked) {
+        const type = this.props.list.find(filter => filter.id === filterId).type || 'bool';
+
         const result = { ...this.props.values };
 
-        if (result[filterId] === undefined) {
-            result[filterId] = [];
-        }
-
-        if (isChecked) {
-            result[filterId] = [...result[filterId], optionId];
+        if (type === 'radio') {
+            result[filterId] = [optionId];
         } else {
-            result[filterId] = result[filterId].filter(id => id !== optionId);
-        }
+            if (result[filterId] === undefined) {
+                result[filterId] = [];
+            }
 
-        if (result[filterId].length === 0) {
-            // delete result[filterId];
+            if (isChecked) {
+                result[filterId] = [...result[filterId], optionId];
+            } else {
+                result[filterId] = result[filterId].filter(id => id !== optionId);
+            }
         }
 
         this.props.onChange(result);
@@ -58,8 +60,10 @@ class Filters extends React.Component {
                     result.push(
                         <Filter
                             key={filter.id}
+                            name={filter.id}
                             className={styles.dashboardFiltersGroup}
                             title={filter.title}
+                            type={filter.type}
                             options={filter.options}
                             values={values[filter.id] || []}
                             onChange={onChangeCallback}

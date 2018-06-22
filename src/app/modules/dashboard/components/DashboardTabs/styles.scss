@@ -5,10 +5,18 @@
   flex-wrap: wrap;
 
   & > .tabs {
-    display: flex;
-    justify-content: stretch;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr 30px) 1fr;
+    justify-items: center;
     flex-grow: 1;
     padding: 11px 0;
+
+    & > *:nth-child(1) {
+      justify-self: start;
+    }
+    & > *:nth-last-child(1) {
+      justify-self: end;
+    }
 
     .separator {
       flex-grow: 1;
