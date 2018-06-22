@@ -233,7 +233,7 @@ class AlarmsControls extends React.Component {
                         {ls('ALARMS_APPLY_FILTER', 'Применить')}
                     </Button>
                     <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
-                        {ls('ALARMS_LOAD_XLSX', 'XLSX')}
+                        {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
                     </Button>
                 </div>
                 <Input
