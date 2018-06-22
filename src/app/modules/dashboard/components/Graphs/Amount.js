@@ -121,8 +121,18 @@ class Amount extends React.Component {
             delete queryParams.mrf;
         }
 
+        const multiply = (data, multiplier) => Object.entries(data).reduce((result, [key, value]) => ({
+            ...result,
+            [key]: Object.entries(value).reduce((result, [key, value]) => ({
+                ...result,
+                [key]: typeof value === 'number' ? value * multiplier : value,
+            }), {}),
+        }), {});
+
         return rest.get('/api/v1/dashboard/abonents', {}, { queryParams })
-            .then(({ data }) => this.setState({ data }))
+            .then(({ data }) => this.setState({
+                data: multiply(data, 100),
+            }))
             .catch(console.error);
     }
 
