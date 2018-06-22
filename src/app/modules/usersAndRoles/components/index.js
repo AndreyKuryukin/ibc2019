@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
+import classnames from 'classnames';
 import TabPanel from '../../../components/TabPanel';
 import Users from '../../users/container';
 import Roles from '../../roles/containers';
@@ -30,7 +31,7 @@ class UsersAndRoles extends React.PureComponent {
             <TabPanel
                 onTabClick={(tabId) => history && history.push(`/users-and-roles${tabId}`)}
                 activeTabId={(hasAccess('USERS', 'EDIT') || hasAccess('USERS', 'VIEW')) ? `/${params.page}` : '/roles'}
-                className={styles.usersAndRolesContainer}
+                className={classnames(styles.usersAndRolesContainer, { [styles.usersActive]: params.page === 'users' })}
             >
                 {(hasAccess('USERS', 'EDIT') || hasAccess('USERS', 'VIEW')) && <Users
                     id="/users"
