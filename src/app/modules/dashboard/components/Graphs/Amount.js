@@ -24,6 +24,10 @@ class Amount extends React.Component {
 
     state = {
         data: {},
+        sum: {
+            total: 'N/A',
+            broken: 'N/A',
+        },
     };
 
     componentDidMount() {
@@ -36,8 +40,6 @@ class Amount extends React.Component {
     }
 
     getChartOptions = () => {
-        const instance = this;
-
         const hoverTextOptions = [
             {
                 getter: data => data.name,
@@ -45,7 +47,7 @@ class Amount extends React.Component {
                 fill: '#02486e',
                 size: 14,
             }, {
-                getter: data => data.totalPart + '%',
+                getter: data => data.totalPart,
                 offset: -35,
                 fill: '#7cc032',
                 size: 34,
@@ -55,16 +57,55 @@ class Amount extends React.Component {
                 fill: '#02486e',
                 size: 14,
             }, {
-                getter: data => data.broken + '%',
+                getter: data => data.broken,
                 offset: 22,
                 fill: '#e43f3f',
                 size: 34,
             }
         ];
 
+        const {sum} = this.state;
+        const totalData = {
+            name: ls('TOTAL', 'Всего'),
+            totalPart: sum.total,
+            broken: parseFloat((sum.broken / sum.total * 100).toFixed(2)) + '%',
+        };
+
+        const replaceTexts = (data) => {
+            hoverTextOptions.forEach((option, i) => {
+                const textNode = instance.texts[i];
+
+                if (typeof textNode !== undefined) {
+                    textNode.attr({
+                        text: option.getter(data),
+                    });
+                }
+            });
+        };
+
+        const instance = this;
+
         return {
             chart: {
                 type: 'pie',
+                events: {
+                    load: function() {
+                        const { renderer, chartWidth, chartHeight } = this;
+
+                        const cx = chartWidth / 2;
+                        const cy = chartHeight / 2;
+
+                        instance.texts = hoverTextOptions.map(options => renderer.text(
+                            options.getter(totalData),
+                            cx,
+                            cy + options.offset,
+                        ).attr({
+                            fill: options.fill,
+                            'font-size': options.size,
+                            align: 'center',
+                        }).add());
+                    },
+                },
             },
             title: {
                 ...Chart.DEFAULT_OPTIONS.title,
@@ -76,27 +117,10 @@ class Amount extends React.Component {
                     point: {
                         events: {
                             mouseOver: function() {
-                                const { renderer, chartWidth, chartHeight } = instance.chart.getChart();
-                                const { hoverData } = this;
-
-                                const cx = chartWidth / 2;
-                                const cy = chartHeight / 2;
-
-                                instance.texts = hoverTextOptions.map(options => renderer.text(
-                                    options.getter(hoverData),
-                                    cx,
-                                    cy + options.offset,
-                                ).attr({
-                                    fill: options.fill,
-                                    'font-size': options.size,
-                                    align: 'center',
-                                }).add());
+                                replaceTexts(this.hoverData);
                             },
                             mouseOut: function() {
-                                if (Array.isArray(instance.texts)) {
-                                    instance.texts.forEach(text => text.destroy());
-                                    delete instance.texts;
-                                }
+                                replaceTexts(totalData);
                             },
                         },
                     },
@@ -130,20 +154,28 @@ class Amount extends React.Component {
         }), {});
 
         return rest.get('/api/v1/dashboard/abonents', {}, { queryParams })
-            .then(({ data }) => this.setState({
-                data: multiply(data, 100),
-            }))
+            .then(({ data }) => {
+                const multipliedData = multiply(data, 100);
+                const sum = Object.values(multipliedData).reduce((result, item) => {
+                    result.total += item.total;
+                    result.broken += item.broken;
+                    return result;
+                }, {total: 0, broken: 0});
+
+                this.setState({
+                    data: multipliedData,
+                    sum,
+                });
+            })
             .catch(console.error);
     }
 
     getSeries() {
-        const sum = Object.values(this.state.data).reduce((result, item) => result + item.total, 0);
-
         return Object.entries(this.state.data).reduce((result, [key, { total, broken }], i, ar) => {
             const hoverData = {
                 name: key,
-                totalPart: parseFloat((total / sum).toFixed(2)),
-                broken: parseFloat((broken / total).toFixed(2)),
+                totalPart: parseFloat((total / this.state.sum.total).toFixed(2)) + '%',
+                broken: parseFloat((broken / total).toFixed(2)) + '%',
             };
 
             result.push({
@@ -154,7 +186,7 @@ class Amount extends React.Component {
             });
             result.push({
                 name: `${ls('DASHBOARD_CHART_AMOUNT_LABEL_BROKEN', 'Аварийные')} ${key}`,
-                y: total,
+                y: broken,
                 color: {
                     pattern: {
                         path: {
