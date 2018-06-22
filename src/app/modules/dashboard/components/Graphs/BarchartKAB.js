@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
+import {MACRO_RF_ID} from '../../constants';
 
 class BarchartKAB extends React.Component {
     static propTypes = {
@@ -58,6 +59,9 @@ class BarchartKAB extends React.Component {
             regularity: props.regularity,
             mrf: props.mrfId,
         };
+        if (queryParams.mrf === MACRO_RF_ID) {
+            delete queryParams.mrf;
+        }
 
         return rest.get('/api/v1/dashboard/barchart/kab', {}, { queryParams })
             .then(({ data }) => this.setState({ data }))

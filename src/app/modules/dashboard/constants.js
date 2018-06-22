@@ -11,6 +11,15 @@ export const REGULARITIES = {
     WEEK: 'WEEK',
 };
 
+export const MACRO_RF_ID = 'macro';
+export const DEFAULT_PATH_PARAMETERS = {
+    regularity: REGULARITIES.HOUR,
+    mode: VIEW_MODE.MAP,
+    mapMrfId: MACRO_RF_ID,
+    graphMrfId: '9',
+    type: undefined,
+};
+
 export const FILTERS = [
     {
         id: 'service',

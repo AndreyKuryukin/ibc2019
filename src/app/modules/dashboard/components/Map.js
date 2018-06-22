@@ -6,10 +6,11 @@ import RussianMap from './RussianMap';
 import rest from '../../../rest';
 import KQI from './KQI';
 import {extractRegionName} from './utils';
+import {MACRO_RF_ID} from '../constants';
 
 class Map extends React.Component {
     static propTypes = {
-        mrfId: PropTypes.string,
+        mrfId: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         buildLink: PropTypes.func.isRequired,
         plan: PropTypes.number,
@@ -73,7 +74,7 @@ class Map extends React.Component {
     getTitle() {
         const { mrfId, type } = this.props;
 
-        if (mrfId === undefined) {
+        if (mrfId === MACRO_RF_ID) {
             return (
                 <span>
                     {'Средний показатель '}
@@ -104,7 +105,7 @@ class Map extends React.Component {
     render() {
         const { mrfId, type } = this.props;
         let kqi = {};
-        if (mrfId === undefined) {
+        if (mrfId === MACRO_RF_ID) {
             kqi = this.state.details.reduce((acc, region) => ({
                 ...acc,
                 [region.id]: region.kqi,
@@ -124,7 +125,7 @@ class Map extends React.Component {
             <WidgetWrapper
                 className={styles.map}
                 title={this.getTitle()}
-                backLink={mrfId === undefined ? undefined : this.props.buildLink({ mrfId: null })}
+                backLink={mrfId === MACRO_RF_ID ? undefined : this.props.buildLink({ mrfId: null })}
             >
                 <RussianMap
                     mrfId={this.props.mrfId}

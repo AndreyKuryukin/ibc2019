@@ -5,6 +5,7 @@ import PatternFill from 'highcharts/modules/pattern-fill';
 import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
+import {MACRO_RF_ID} from '../../constants';
 
 PatternFill(Highcharts);
 
@@ -116,6 +117,9 @@ class Amount extends React.Component {
             regularity: props.regularity,
             mrf: props.mrfId,
         };
+        if (queryParams.mrf === MACRO_RF_ID) {
+            delete queryParams.mrf;
+        }
 
         return rest.get('/api/v1/dashboard/abonents', {}, { queryParams })
             .then(({ data }) => this.setState({ data }))

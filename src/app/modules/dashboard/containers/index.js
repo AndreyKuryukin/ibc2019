@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import ls from 'i18n';
 import DashboardCmp from '../components/index';
-import {REGULARITIES, VIEW_MODE} from '../constants';
+import {REGULARITIES, VIEW_MODE, DEFAULT_PATH_PARAMETERS} from '../constants';
 import {extractRegionName} from '../components/utils';
 import rest from '../../../rest';
 
@@ -43,25 +43,28 @@ class Dashboard extends React.PureComponent {
     }
 
     getRegularity(props = this.props) {
-        return props.match.params.regularity || REGULARITIES.HOUR;
+        return props.match.params.regularity || DEFAULT_PATH_PARAMETERS.regularity;
     }
     getMode(props = this.props) {
-        return props.match.params.mode || VIEW_MODE.MAP;
+        return props.match.params.mode || DEFAULT_PATH_PARAMETERS.mode;
     }
     getType(props = this.props) {
         if (props.match.params.type !== undefined) return props.match.params.type;
 
         const { aggregated } = this.state;
-        if (aggregated === null) return undefined;
+        if (aggregated === null) return DEFAULT_PATH_PARAMETERS.type;
 
         const keys = Object.keys(aggregated);
 
-        if (keys.length === 0) return undefined;
+        if (keys.length === 0) return DEFAULT_PATH_PARAMETERS.type;
 
         return keys[0];
     }
     getMRF(props = this.props) {
-        return props.match.params.mrfId;
+        const defaultMrfId = this.getMode() === VIEW_MODE.MAP
+            ? DEFAULT_PATH_PARAMETERS.mapMrfId
+            : DEFAULT_PATH_PARAMETERS.graphMrfId;
+        return props.match.params.mrfId || defaultMrfId;
     }
 
     fetchAggregated(regularity = this.getRegularity()) {

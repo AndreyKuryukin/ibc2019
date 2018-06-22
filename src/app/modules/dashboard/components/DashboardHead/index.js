@@ -6,7 +6,7 @@ import styles from './styles.scss';
 import ButtonGroup from './ButtonGroup';
 import Filters from './Filters';
 import ls from '../../../../../i18n';
-import {REGULARITIES, VIEW_MODE} from '../../constants';
+import {REGULARITIES, VIEW_MODE, DEFAULT_PATH_PARAMETERS} from '../../constants';
 import LocationDropdown from './LocationDropdown';
 
 class DashboardHead extends React.Component {
@@ -57,9 +57,14 @@ class DashboardHead extends React.Component {
             text: DashboardHead.localizeViewMode(mode),
             value: mode,
             href: this.props.buildLink(
-                mode === VIEW_MODE.MAP
-                    ? { mode, mrfId: null }
-                    : { mode, type: null }
+                mode === VIEW_MODE.MAP ? {
+                    mode,
+                    mrfId: DEFAULT_PATH_PARAMETERS.mapMrfId,
+                } : {
+                    mode,
+                    mrfId: DEFAULT_PATH_PARAMETERS.graphMrfId,
+                    type: null,
+                },
             ),
         }));
     }
