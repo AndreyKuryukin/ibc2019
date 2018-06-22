@@ -192,7 +192,7 @@ class AlarmsControls extends React.PureComponent {
                         </Field>
                     </div>
                     <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                        {ls('ALARMS_APPLY_FILTER', 'ОК')}
+                        {ls('ALARMS_APPLY_FILTER', 'Применить')}
                     </Button>
                 </div>
                 <Input
