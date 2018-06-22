@@ -1,14 +1,23 @@
 import ls from '../../../i18n';
 
 export const VIEW_MODE = {
-    GRAPH: 'graph',
     MAP: 'map',
+    GRAPH: 'graph',
 };
 
 export const REGULARITIES = {
     HOUR: 'HOUR',
     DAY: 'DAY',
     WEEK: 'WEEK',
+};
+
+export const MACRO_RF_ID = 'macro';
+export const DEFAULT_PATH_PARAMETERS = {
+    regularity: REGULARITIES.HOUR,
+    mode: VIEW_MODE.MAP,
+    mapMrfId: MACRO_RF_ID,
+    graphMrfId: '9',
+    type: undefined,
 };
 
 export const FILTERS = [
@@ -33,10 +42,12 @@ export const FILTERS = [
         id: 'product',
         title: ls('DASHBOARD_FILTERS_PRODUCT_TITLE', 'Продукт'),
         editable: true,
+        type: 'radio',
         options: [
             {
                 value: 'ITV',
                 label: ls('ITV', 'ИТВ'),
+                enabled: true,
             }, {
                 value: 'ITV2',
                 label: ls('ITV2_0', 'ИТВ 2.0'),

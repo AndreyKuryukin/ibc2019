@@ -11,7 +11,7 @@ import ls from '../../../../i18n';
 class Graph extends React.Component {
     static propTypes = {
         regularity: PropTypes.string.isRequired,
-        mrfId: PropTypes.string,
+        mrfId: PropTypes.string.isRequired,
     };
 
     render() {
