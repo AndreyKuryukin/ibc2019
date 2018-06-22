@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styles from './styles.scss';
 import ls from "i18n";
 import * as _ from "lodash";
+import { OPERATOR_TYPES } from "../constants";
 
 class Formula extends React.PureComponent {
     static propTypes = {
@@ -24,11 +25,15 @@ class Formula extends React.PureComponent {
         }
     };
 
+
     replaceByPattern = (config, pattern, keyMap = {}) => {
         return _.reduce(config, (result, value, key) => {
 
             if (key === 'parameter_type') {
                 return result.replace(`{{${key}}}`, _.get(value, 'name') || keyMap[key])
+            }
+            if (key === 'operator_type') {
+                return result.replace(`{{${key}}}`, OPERATOR_TYPES[value] || keyMap[key])
             }
            return result.replace(`{{${key}}}`, value || keyMap[key])
         }, pattern)

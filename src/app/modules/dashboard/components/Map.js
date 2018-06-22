@@ -5,10 +5,12 @@ import WidgetWrapper from './WidgetWrapper';
 import RussianMap from './RussianMap';
 import rest from '../../../rest';
 import KQI from './KQI';
+import {extractRegionName} from './utils';
+import {MACRO_RF_ID} from '../constants';
 
 class Map extends React.Component {
     static propTypes = {
-        mrfId: PropTypes.string,
+        mrfId: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         buildLink: PropTypes.func.isRequired,
         plan: PropTypes.number,
@@ -69,22 +71,41 @@ class Map extends React.Component {
             });
     }
 
-    getRegionName() {
-        const defaultRegionName = 'РФ';
+    getTitle() {
+        const { mrfId, type } = this.props;
 
-        const { mrfId } = this.props;
-        if (mrfId === undefined) return defaultRegionName;
+        if (mrfId === MACRO_RF_ID) {
+            return (
+                <span>
+                    {'Средний показатель '}
+                    <KQI
+                        className={styles.mapTitleKQI}
+                        type={type}
+                    />
+                    {' по МРФ'}
+                </span>
+            );
+        }
 
         const mrf = this.state.details.find(r => r.id === mrfId);
-        if (mrf === undefined) return defaultRegionName;
+        if (mrf === undefined) return '';
 
-        return mrf.name;
+        return (
+            <span>
+                {`Средний показатель ${extractRegionName(mrf.name)} `}
+                <KQI
+                    className={styles.mapTitleKQI}
+                    type={type}
+                />
+                {' по МРФ'}
+            </span>
+        );
     }
 
     render() {
         const { mrfId, type } = this.props;
         let kqi = {};
-        if (mrfId === undefined) {
+        if (mrfId === MACRO_RF_ID) {
             kqi = this.state.details.reduce((acc, region) => ({
                 ...acc,
                 [region.id]: region.kqi,
@@ -103,17 +124,8 @@ class Map extends React.Component {
         return (
             <WidgetWrapper
                 className={styles.map}
-                title={(
-                    <span>
-                        {`Средний показатель `}
-                        <KQI
-                            className={styles.mapTitleKQI}
-                            type={type}
-                        />
-                        {` по ${this.getRegionName()}`}
-                    </span>
-                )}
-                backLink={mrfId === undefined ? undefined : this.props.buildLink({ mrfId: null })}
+                title={this.getTitle()}
+                backLink={mrfId === MACRO_RF_ID ? undefined : this.props.buildLink({ mrfId: null })}
             >
                 <RussianMap
                     mrfId={this.props.mrfId}

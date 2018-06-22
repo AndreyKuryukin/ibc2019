@@ -9,6 +9,7 @@ import Field from '../../../components/Field';
 import Select from '../../../components/Select';
 import Checkbox from '../../../components/Checkbox';
 import DatePicker from '../../../components/LabeledDateTimePicker';
+import Dropdown from '../../../components/Dropdown';
 import styles from './styles.scss';
 
 const filterControlStyle = {
@@ -41,6 +42,14 @@ class AlarmsControls extends React.Component {
     };
 
     static mapOptions = memoize(opts => opts.map(opt => ({ value: opt.id, title: opt.name })));
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            isHistoricalConfirmOpen: false,
+        };
+    }
 
     shouldComponentUpdate(nextProps, nextState) {
         const isFilterChanged = this.props.filter !== nextProps.filter;
@@ -94,6 +103,11 @@ class AlarmsControls extends React.Component {
         return selectedMrf ? AlarmsControls.mapOptions(selectedMrf.rf) : [];
     };
 
+    checkHistorical = () => {
+        this.setFilterProperty('historical', true);
+        this.onTriggerHistoricalDropdown();
+    }
+
     onApplyFilter = () => {
         this.props.onApplyFilter(this.props.filter);
     };
@@ -101,6 +115,10 @@ class AlarmsControls extends React.Component {
     onSearchTextChange = (event) => {
         this.setFilterProperty('searchText', _.get(event, 'currentTarget.value', ''));
     };
+
+    onTriggerHistoricalDropdown = () => {
+        this.setState({ isHistoricalConfirmOpen: !this.state.isHistoricalConfirmOpen });
+    }
 
     render() {
         const { locations } = this.props;
@@ -112,16 +130,20 @@ class AlarmsControls extends React.Component {
                         <DatePicker
                             title={ls('ALARMS_START_FILTER', 'Показать аварии с')}
                             value={this.getFilterProperty('start')}
-                            inputWidth={80}
+                            inputWidth={115}
                             onChange={value => this.setFilterProperty('start', value)}
+                            format={'DD.MM.YYYY HH:mm'}
+                            time
                         />
                         <DatePicker
                             title={ls('ALARMS_END_FILTER', 'по')}
                             min={this.getFilterProperty('start')}
                             value={this.getFilterProperty('end')}
-                            inputWidth={80}
+                            inputWidth={115}
                             onChange={value => this.setFilterProperty('end', value)}
                             style={filterControlStyle}
+                            format={'DD.MM.YYYY HH:mm'}
+                            time
                         />
                     </div>
                     <div className={styles.alarmsFilterGroup}>
@@ -159,7 +181,7 @@ class AlarmsControls extends React.Component {
                         <Field
                             id="current-checkbox-filter"
                             labelText={ls('ALARMS_CURRENT_FILTER', 'Текущие')}
-                            inputWidth={15}
+                            inputWidth={12}
                             labelAlign="right"
                             splitter=""
                         >
@@ -172,20 +194,43 @@ class AlarmsControls extends React.Component {
                         <Field
                             id="historical-checkbox-filter"
                             labelText={ls('ALARMS_HISTORICAL_FILTER', 'Исторические')}
-                            inputWidth={15}
+                            inputWidth={12}
                             labelAlign="right"
                             splitter=""
                             style={filterControlStyle}
                         >
-                            <Checkbox
-                                id="historical-checkbox-filter"
-                                checked={this.getFilterProperty('historical', false)}
-                                onChange={value => this.setFilterProperty('historical', value)}
-                            />
+                            <Dropdown
+                                isOpen={this.state.isHistoricalConfirmOpen}
+                                dropdownClass={styles.historicalDropdown}
+                                onToggle={() => null}
+                                trigger={
+                                    <Checkbox
+                                        id="historical-checkbox-filter"
+                                        checked={this.getFilterProperty('historical', false)}
+                                        onChange={this.getFilterProperty('historical', false)
+                                            ? () => this.setFilterProperty('historical', false)
+                                            : this.onTriggerHistoricalDropdown}
+                                    />
+                                }
+                            >
+                                <div className={styles.warningMsg}>
+                                    {ls('ATTENTION', 'Внимание!')}
+                                    <br/>
+                                    {ls('ALARMS_HISTORICAL_WARNING_MESSAGE', 'Загрузка архивных аварий может занять длительное время')}
+                                </div>
+                                <div className={styles.buttonWrapper}>
+                                    <Button outline color="action" onClick={this.onTriggerHistoricalDropdown}>
+                                        {ls('CANCEL', 'Отмена')}
+                                    </Button>
+                                    <Button color="action" onClick={this.checkHistorical}>
+                                        {ls('CONTINUE', 'Продолжить')}
+                                    </Button>
+                                </div>
+                            </Dropdown>
                         </Field>
                     </div>
                     <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                        {ls('ALARMS_APPLY_FILTER', 'ОК')}
+                        {ls('ALARMS_APPLY_FILTER', 'Применить')}
                     </Button>
                     <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
                         {ls('ALARMS_LOAD_XLSX', 'XLSX')}

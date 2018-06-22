@@ -29,4 +29,11 @@
 
 .chipListContainer {
   padding: 4px 8px 4px 0;
+  .inputContainer {
+    position: relative;
+    display: flex;
+    > :first-child {
+      width: 100%;
+    }
+  }
 }

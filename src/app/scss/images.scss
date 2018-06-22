@@ -111,6 +111,12 @@
 .view-icon {
   @include iconBuilder(16px, 16px, 'eye.png');
 }
+.notification-active-icon {
+  @include iconBuilder(16px, 16px, 'notification-active.png');
+}
+.notification-disabled-icon {
+  @include iconBuilder(16px, 16px, 'notification-disabled.png');
+}
 .refresh-icon {
   @include iconBuilder(22px, 22px, 'refresh.png');
 }

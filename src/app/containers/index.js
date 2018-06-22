@@ -62,7 +62,7 @@ class App extends React.Component {
             'LANDING': {
                 title: 'Рабочий стол',
                 link: '/dashboard',
-                path: '/dashboard/:regularity?/:mode?/:type?/:mrfId?',
+                path: '/dashboard/:mode?/:regularity?/:mrfId?/:type?',
                 component: Dashboard,
                 exact: true
             },
@@ -80,7 +80,7 @@ class App extends React.Component {
             },
             'ALARMS': {
                 title: 'Аварии',
-                link: '/alarms/gp',
+                link: '/alarms/ci',
                 path: "/alarms/:type/:id?",
                 component: Alarms
             },

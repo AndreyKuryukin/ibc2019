@@ -21,13 +21,13 @@ class Policies extends React.Component {
         history: PropTypes.object.isRequired,
         policiesData: PropTypes.array,
         isLoading: PropTypes.bool,
-        onMount: PropTypes.func,
+        fetchPolicies: PropTypes.func,
     };
 
     static defaultProps = {
         policiesData: [],
         isLoading: false,
-        onMount: () => null,
+        fetchPolicies: () => null,
     };
 
     constructor(props) {
@@ -46,7 +46,7 @@ class Policies extends React.Component {
 
     componentDidMount() {
         if (typeof this.props.onMount === 'function') {
-            this.props.onMount();
+            this.props.fetchPolicies();
         }
     }
 
@@ -61,7 +61,7 @@ class Policies extends React.Component {
     };
 
     render() {
-        const { policiesData: data, isLoading, match } = this.props;
+        const { policiesData: data, isLoading, match, fetchPolicies } = this.props;
         const { searchText } = this.state;
 
         const { params } = match;
@@ -88,6 +88,7 @@ class Policies extends React.Component {
                 {isConfiguratorActive && <NotificationConfigurator
                     active={isConfiguratorActive}
                     policyId={policyId}
+                    fetchPolicies={fetchPolicies}
                 />}
             </div>
         );

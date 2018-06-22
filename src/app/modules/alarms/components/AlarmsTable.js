@@ -126,8 +126,8 @@ class AlarmsTable extends React.PureComponent {
     mapData = memoize(data => data.map(node => ({
         id: node.id.toString(),
         policy_name: node.policy_name,
+        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
         status: node.status || '',
-        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD:MM:YYYY'),
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
@@ -148,6 +148,7 @@ class AlarmsTable extends React.PureComponent {
         const columns = AlarmsTable.getColumns();
         const mappedData = this.mapData(data);
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
+
         return (
             <Table
                 data={filteredData}
