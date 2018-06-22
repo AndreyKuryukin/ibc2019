@@ -12,6 +12,14 @@ const languageMap = {
     REPORT_TYPE_PDF: 'PDF',
     REPORT_TYPE_XLS: 'XLS',
 
+
+    ALARMS_ID_COLUMN: 'ID',
+    ALARMS_POLICY_NAME_COLUMN: 'Имя политики',
+    ALARMS_STATUS_COLUMN: 'Статус отправки во внешнюю систему',
+    ALARMS_RAISE_TIME_COLUMN: 'Время возникновения',
+    ALARMS_DURATION_COLUMN: 'Длительность',
+    ALARMS_OBJECT_COLUMN: 'Объект',
+
     ALARMS_STATUS_SUCCESS: 'Успешно',
     ALARMS_STATUS_FAILED: 'Сбой',
 

@@ -4,6 +4,7 @@ import { Input, Button } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import memoize from 'memoizejs';
+import XLSX from 'xlsx';
 import Field from '../../../components/Field';
 import Select from '../../../components/Select';
 import Checkbox from '../../../components/Checkbox';
@@ -16,7 +17,7 @@ const filterControlStyle = {
     marginTop: 0,
 };
 
-class AlarmsControls extends React.PureComponent {
+class AlarmsControls extends React.Component {
     static propTypes = {
         onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
@@ -29,12 +30,14 @@ class AlarmsControls extends React.PureComponent {
             current: PropTypes.bool,
             historical: PropTypes.bool,
         }),
+        displayedData: PropTypes.array,
     };
 
     static defaultProps = {
         onChangeFilter: () => null,
         onApplyFilter: () => null,
         locations: [],
+        displayedData: [],
         filter: null,
     };
 
@@ -46,6 +49,41 @@ class AlarmsControls extends React.PureComponent {
         this.state = {
             isHistoricalConfirmOpen: false,
         };
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        const isFilterChanged = this.props.filter !== nextProps.filter;
+        const isLocationsChanged = this.props.locations !== nextProps.locations;
+        const isOnChangeFilterChanged = this.props.onChangeFilter !== nextProps.onChangeFilter;
+        const isOnApplyFilterChanged = this.props.onApplyFilter !== nextProps.onApplyFilter;
+
+        return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged;
+    }
+
+    formAndLoadXLSX = () => {
+        const workbook = XLSX.utils.book_new();
+        const worksheetCols = [
+            { wpx: 250 },
+            { wpx: 300 },
+            { wpx: 220 },
+            { wpx: 150 },
+            { wpx: 150 },
+            { wpx: 150 },
+            { hidden: true },
+        ];
+        var worksheet = XLSX.utils.json_to_sheet(this.props.displayedData);
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
+        worksheet['!cols'] = worksheetCols;
+        for (let col = range.s.c; col <= range.e.c; ++col) {
+            var address = XLSX.utils.encode_col(col) + '1';
+            worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
+        }
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
+
+        XLSX.writeFile(workbook, 'Alarms.xlsx', {
+            type: 'base64',
+            bookType: 'xlsx',
+        });
     }
 
     getFilterProperty = (key, defaultValue) => _.get(this.props.filter, key, defaultValue);
@@ -193,6 +231,9 @@ class AlarmsControls extends React.PureComponent {
                     </div>
                     <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
                         {ls('ALARMS_APPLY_FILTER', 'Применить')}
+                    </Button>
+                    <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
+                        {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
                     </Button>
                 </div>
                 <Input
