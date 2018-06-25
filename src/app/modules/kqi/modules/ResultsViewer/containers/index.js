@@ -56,7 +56,7 @@ class KqiResults extends React.PureComponent {
                 const projection = projectionResponse.data;
                 this.setState({ locations, projection }, () => {
                     this.props.onFetchResultSuccess(result);
-                })
+                });
             });
     };
 

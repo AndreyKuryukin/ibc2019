@@ -217,7 +217,7 @@ class PolicyEditor extends React.PureComponent {
         const { policy, errors, metaData } = this.state;
         const object_type = _.get(policy, 'object_type');
         const modalTitle = policyId
-            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
+            ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
             <DraggableWrapper>
