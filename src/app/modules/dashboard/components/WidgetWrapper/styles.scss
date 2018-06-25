@@ -17,6 +17,13 @@
 
       .backLink {
         margin-right: 20px;
+        position: relative;
+
+        svg {
+          position: absolute;
+          left: -12px;
+          top: 3px;
+        }
       }
     }
   }
