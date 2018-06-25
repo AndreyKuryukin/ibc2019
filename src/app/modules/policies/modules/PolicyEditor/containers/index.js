@@ -289,7 +289,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     onSubmit = (policyId, policyData) => {
-        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData));
+        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData));
         if (_.isEmpty(errors)) {
             const submit = policyId ? rest.put : rest.post;
             const success = (response) => {

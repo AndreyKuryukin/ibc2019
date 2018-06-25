@@ -56,6 +56,7 @@ class Configuration extends React.PureComponent {
 
     render() {
         const { getPolicyProperty, setPolicyProperty, policyTypes, objectTypes, errors, metaData } = this.props;
+        const object_type = getPolicyProperty('object_type');
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -111,7 +112,8 @@ class Configuration extends React.PureComponent {
                         valid={errors && _.isEmpty(errors.policy_type)}
                     />
                 </Field>
-                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
+
+                {object_type !== 'KQI' && <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                     <div style={{ width: '60%' }}>
                         <Field
                             id="rise_duration"
@@ -159,7 +161,8 @@ class Configuration extends React.PureComponent {
                             </div>
                         </Field>}
                     </div>
-                </div>
+                </div>}
+
                 <Field
                     id="message"
                     labelText={`${ls('POLICIES_POLICY_FIELD_MESSAGE', 'Текст сообщения')}`}
