@@ -81,6 +81,7 @@ class Map extends React.Component {
                     <KQI
                         className={styles.mapTitleKQI}
                         type={type}
+                        placeholder={null}
                     />
                     {' по МРФ'}
                 </span>
@@ -90,14 +91,23 @@ class Map extends React.Component {
         const mrf = this.state.details.find(r => r.id === mrfId);
         if (mrf === undefined) return '';
 
+        const { plan } = this.props;
+
         return (
             <span>
                 {`Средний показатель ${extractRegionName(mrf.name)} `}
                 <KQI
                     className={styles.mapTitleKQI}
                     type={type}
+                    placeholder={null}
                 />
-                {' по МРФ'}
+                {' по МРФ '}
+                <KQI
+                    className={styles.mapTitleKQI}
+                    value={mrf.kqi}
+                    positive={mrf.kqi > plan}
+                    negative={mrf.kqi < plan}
+                />
             </span>
         );
     }

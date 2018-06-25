@@ -53,9 +53,14 @@ class Login extends React.PureComponent {
         const { errors } = this.state;
         return (
             <div className={styles.loginContainer}>
-                <div className={styles.shield}/>
+                <div className={styles.shield}>
+                    <div className={styles.rostelecomLogo}></div>
+                    <div className={styles.qligentLogo}></div>
+                </div>
                 <div className={styles.formContainer}>
-                    <div className={styles.sqmLabel}/>
+                    <div className={styles.sqmLabel}>
+                        {'SQM B2C'}
+                    </div>
                     <Form
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
