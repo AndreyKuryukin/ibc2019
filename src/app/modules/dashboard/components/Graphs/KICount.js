@@ -49,8 +49,9 @@ class KICount extends React.Component {
             },
             yAxis: {
                 ...Chart.DEFAULT_OPTIONS.yAxis,
-                min: 0,
-                max: 100,
+                title: {
+                    text: '',
+                },
             },
             series,
         };
