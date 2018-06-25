@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
 import moment from 'moment';
-import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 import Icon from '../../../../../components/Icon/Icon';
@@ -63,6 +63,12 @@ class AlarmsViewer extends React.PureComponent {
                 return _.get(this.props.alarm, key, null) ? convertUTC0ToLocal(_.get(this.props.alarm, key)).format('DD-MM-YYYY HH:mm:ss') : '';
             case 'duration':
                 return this.getReadableDuration(_.get(this.props.alarm, key, 0));
+            case 'notification_text':
+                const text = _.get(this.props.alarm, key, '');
+                const NEW_LINE_SYMBOL = '\n';
+                return <ul className={styles.attributesList}>
+                    {text.split(NEW_LINE_SYMBOL).map(line => <li>{line}</li>)}
+                </ul>;
             case 'notified': {
                 const notifications = _.get(this.props.alarm, key, []);
                 return (
@@ -77,7 +83,8 @@ class AlarmsViewer extends React.PureComponent {
                 );
             }
             case 'attributes':
-                return <ul className={styles.attributesList}>{_.reduce(_.get(this.props.alarm, key, {}), (result, value, key) => {
+                return <ul
+                    className={styles.attributesList}>{_.reduce(_.get(this.props.alarm, key, {}), (result, value, key) => {
                     result.push(`${key}=${value}`);
                     return result;
                 }, []).map(attr => <li title={attr}>{attr}</li>)}</ul>;
