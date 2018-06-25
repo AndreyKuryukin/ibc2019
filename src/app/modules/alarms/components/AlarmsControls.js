@@ -12,8 +12,12 @@ import DatePicker from '../../../components/LabeledDateTimePicker';
 import Dropdown from '../../../components/Dropdown';
 import styles from './styles.scss';
 
-const filterControlStyle = {
-    marginLeft: 10,
+const firstControlStyle = {
+    padding: '2.5px',
+};
+
+const secondControlStyle = {
+    padding: '2.5px',
     marginTop: 0,
 };
 
@@ -56,8 +60,9 @@ class AlarmsControls extends React.Component {
         const isLocationsChanged = this.props.locations !== nextProps.locations;
         const isOnChangeFilterChanged = this.props.onChangeFilter !== nextProps.onChangeFilter;
         const isOnApplyFilterChanged = this.props.onApplyFilter !== nextProps.onApplyFilter;
+        const isHistoricalConfirmOpenChanged = this.state.isHistoricalConfirmOpen !== nextState.isHistoricalConfirmOpen;
 
-        return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged;
+        return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
     }
 
     formAndLoadXLSX = () => {
@@ -93,6 +98,11 @@ class AlarmsControls extends React.Component {
             ...filter,
             [property]: value,
         };
+
+        if (property === 'mrf') {
+            _.set(newFilter, 'rf', '');
+        }
+
         this.props.onChangeFilter(newFilter);
     };
 
@@ -134,6 +144,7 @@ class AlarmsControls extends React.Component {
                             onChange={value => this.setFilterProperty('start', value)}
                             format={'DD.MM.YYYY HH:mm'}
                             time
+                            style={firstControlStyle}
                         />
                         <DatePicker
                             title={ls('ALARMS_END_FILTER', 'по')}
@@ -141,9 +152,9 @@ class AlarmsControls extends React.Component {
                             value={this.getFilterProperty('end')}
                             inputWidth={115}
                             onChange={value => this.setFilterProperty('end', value)}
-                            style={filterControlStyle}
                             format={'DD.MM.YYYY HH:mm'}
                             time
+                            style={secondControlStyle}
                         />
                     </div>
                     <div className={styles.alarmsFilterGroup}>
@@ -151,7 +162,9 @@ class AlarmsControls extends React.Component {
                             id="mrf-filter"
                             labelText={ls('ALARMS_MRF_FILTER', 'Фильтр по МРФ')}
                             inputWidth={150}
+                            labelWidth={120}
                             splitter=""
+                            style={firstControlStyle}
                         >
                             <Select
                                 id="mrf-filter"
@@ -165,8 +178,9 @@ class AlarmsControls extends React.Component {
                             id="region-filter"
                             labelText={ls('ALARMS_REGION_FILTER', 'Фильтр по региону')}
                             inputWidth={150}
+                            labelWidth={120}
                             splitter=""
-                            style={filterControlStyle}
+                            style={secondControlStyle}
                         >
                             <Select
                                 id="region-filter"
@@ -184,6 +198,7 @@ class AlarmsControls extends React.Component {
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
+                            style={firstControlStyle}
                         >
                             <Checkbox
                                 id="current-checkbox-filter"
@@ -197,7 +212,7 @@ class AlarmsControls extends React.Component {
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
-                            style={filterControlStyle}
+                            style={secondControlStyle}
                         >
                             <Dropdown
                                 isOpen={this.state.isHistoricalConfirmOpen}
@@ -229,12 +244,18 @@ class AlarmsControls extends React.Component {
                             </Dropdown>
                         </Field>
                     </div>
-                    <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                        {ls('ALARMS_APPLY_FILTER', 'Применить')}
-                    </Button>
-                    <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
-                        {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
-                    </Button>
+                    <div className={styles.alarmsFilterGroup}>
+                        <div style={firstControlStyle}>
+                            <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
+                                {ls('ALARMS_APPLY_FILTER', 'Применить')}
+                            </Button>
+                        </div>
+                        <div style={secondControlStyle}>
+                            <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
+                                {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
