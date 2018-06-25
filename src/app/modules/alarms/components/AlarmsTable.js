@@ -41,6 +41,11 @@ class AlarmsTable extends React.PureComponent {
             sortable: true,
             width: 150,
         }, {
+            title: ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
+            name: 'external_id',
+            sortable: true,
+            width: 150,
+        }, {
             title: ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
             name: 'policy_name',
             searchable: true,
@@ -62,7 +67,7 @@ class AlarmsTable extends React.PureComponent {
             name: 'duration',
             searchable: true,
             sortable: true,
-            width: 120,
+            width: 150,
         }, {
             title: ls('ALARMS_OBJECT_COLUMN', 'Объект'),
             name: 'object',
@@ -125,9 +130,10 @@ class AlarmsTable extends React.PureComponent {
 
     mapData = memoize(data => data.map(node => ({
         id: node.id.toString(),
+        external_id: node.external_id || '',
         policy_name: node.policy_name,
-        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
         status: node.status || '',
+        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
