@@ -174,8 +174,8 @@ class Amount extends React.Component {
         return Object.entries(this.state.data).reduce((result, [key, { total, broken }], i, ar) => {
             const hoverData = {
                 name: key,
-                totalPart: parseFloat((total / this.state.sum.total).toFixed(2)) + '%',
-                broken: parseFloat((broken / total).toFixed(2)) + '%',
+                totalPart: parseFloat((total / this.state.sum.total * 100).toFixed(2)) + '%',
+                broken: parseFloat((broken / total * 100).toFixed(2)) + '%',
             };
 
             result.push({
