@@ -38,7 +38,7 @@ const plugins = [
     // './kqi',
     // './reports',
     // './sources',
-    // './alarms',
+     './alarms',
     // './common',
     // './dashboard',
 ];

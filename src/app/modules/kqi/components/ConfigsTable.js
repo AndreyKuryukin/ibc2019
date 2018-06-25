@@ -4,7 +4,7 @@ import ls from 'i18n';
 import memoize from 'memoizejs';
 import search from '../../../util/search';
 import Table from '../../../components/Table';
-import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
+import { DefaultCell, LinkCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
 
 class ConfigsTable extends React.PureComponent {
@@ -48,11 +48,7 @@ class ConfigsTable extends React.PureComponent {
         title: '',
         name: 'edit',
         width: 40,
-    }, ...(hasEditAccess ? [{
-        title: '',
-        name: 'delete',
-        width: 25,
-    }] : [])]);
+    }]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell
@@ -70,7 +66,7 @@ class ConfigsTable extends React.PureComponent {
                         content={node[column.name]}
                     />
                 );
-            case 'edit': 
+            case 'edit':
                 return (
                     <div
                         className="view-icon"
