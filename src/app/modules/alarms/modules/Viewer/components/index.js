@@ -60,7 +60,7 @@ class AlarmsViewer extends React.PureComponent {
     getAlarmContent = (key) => {
         switch (key) {
             case 'raise_time':
-                return _.get(this.props.alarm, key, null) ? convertUTC0ToLocal(_.get(this.props.alarm, key)).format('DD-MM-YYYY HH:mm:ss') : '';
+                return _.get(this.props.alarm, key, null) ? convertUTC0ToLocal(_.get(this.props.alarm, key)).format('HH:mm:ss DD.MM.YYYY') : '';
             case 'duration':
                 return this.getReadableDuration(_.get(this.props.alarm, key, 0));
             case 'notified': {
