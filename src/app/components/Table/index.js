@@ -114,7 +114,7 @@ class Table extends React.Component {
             : naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '').toString()]);
 
     onRowClick = (node) => {
-        this.setState({ selected: node.id });
+        this.setState({ primary: node.id });
         if (typeof this.props.onSelectRow === 'function') {
             this.props.onSelectRow(node.id);
         }

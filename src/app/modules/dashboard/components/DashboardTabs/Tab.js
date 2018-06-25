@@ -13,6 +13,7 @@ class Tab extends React.PureComponent {
         value: PropTypes.number,
         previous: PropTypes.number,
         expected: PropTypes.number,
+        primary: PropTypes.bool,
     };
 
     renderDynamic(label, absoluteValue) {
@@ -43,13 +44,12 @@ class Tab extends React.PureComponent {
     }
 
     renderContent() {
-        const { previous, expected, href } = this.props;
-
-        const hasPrev = previous !== undefined;
-        const hasExpected = expected !== undefined;
+        const { previous, expected, primary } = this.props;
 
         return (
-            <div className={styles.tab}>
+            <div className={cn(styles.tab, {
+                [styles.primary]: primary,
+            })}>
                 <KQI
                     type={this.props.type}
                     value={this.props.value}
