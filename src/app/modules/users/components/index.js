@@ -135,7 +135,7 @@ class Users extends React.Component {
                     <Input
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.search}
-                        onChange={e => this.onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
+                        onChange={this.onSearchTextChange}
                     />
                 </div>
 

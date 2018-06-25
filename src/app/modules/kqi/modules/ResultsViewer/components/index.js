@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Modal, ModalBody, ModalFooter, ModalHeader, Button } from 'reactstrap';
+import { Modal, ModalBody, ModalFooter, ModalHeader, Button } from 'reactstrap';
 import ls from 'i18n';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
+import Input from '../../../../../components/Input';
 import ResultsTable from './ResultsTable';
 import styles from './styles.scss';
 import Graph from "./Graph";
@@ -47,8 +48,7 @@ class ResultsViewer extends React.PureComponent {
     }
 
 
-    onSearchTextChange = (e) => {
-        const searchText = e.target.value;
+    onSearchTextChange = (searchText) => {
         this.setState({ searchText });
     };
 

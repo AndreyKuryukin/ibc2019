@@ -74,7 +74,7 @@ class ChipList extends React.PureComponent {
                     valid={this.props.valid}
                     errorMessage={this.props.error}
                     value={value}
-                    onChange={event => this.onChange(isSelect ? event : event.target.value)}
+                    onChange={this.onChange}
                 />
                 <Icon
                     disabled={_.isEmpty(value)}

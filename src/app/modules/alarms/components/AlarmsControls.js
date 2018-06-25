@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import memoize from 'memoizejs';
 import Field from '../../../components/Field';
+import Input from '../../../components/Input';
 import Select from '../../../components/Select';
 import Checkbox from '../../../components/Checkbox';
 import DatePicker from '../../../components/LabeledDateTimePicker';
@@ -74,8 +75,8 @@ class AlarmsControls extends React.PureComponent {
         this.props.onApplyFilter(this.props.filter);
     };
 
-    onSearchTextChange = (event) => {
-        this.setFilterProperty('searchText', _.get(event, 'currentTarget.value', ''));
+    onSearchTextChange = (value) => {
+        this.setFilterProperty('searchText', value);
     };
 
     onTriggerHistoricalDropdown = () => {

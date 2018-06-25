@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'reactstrap'
+import Input from '../../../components/Input';
 import Icon from "../../../components/Icon/Icon";
 import _ from 'lodash';
 
@@ -25,8 +25,8 @@ class PoliciesControls extends React.PureComponent {
         this.context.history.push('/policies/add');
     };
 
-    onSearchTextChange = (event) => {
-        this.props.onSearchTextChange(_.get(event, 'currentTarget.value'));
+    onSearchTextChange = (searchText) => {
+        this.props.onSearchTextChange(searchText);
     };
 
     render() {

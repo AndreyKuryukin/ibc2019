@@ -169,6 +169,7 @@ class PolicyEditor extends React.PureComponent {
             })
             .catch((e) => {
                 console.error(e);
+                this.setState({ loading: false });
             });
     };
 
