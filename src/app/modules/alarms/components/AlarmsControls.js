@@ -64,6 +64,7 @@ class AlarmsControls extends React.Component {
         const workbook = XLSX.utils.book_new();
         const worksheetCols = [
             { wpx: 250 },
+            { wpx: 250 },
             { wpx: 300 },
             { wpx: 220 },
             { wpx: 150 },
