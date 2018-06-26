@@ -83,6 +83,17 @@
 .icon-state-running {
   @include iconBuilder(22px, 22px, 'running.png');
 }
+
+.icon-state-waiting {
+  @include iconBuilder(22px, 22px, 'running.png');
+}
+.icon-state-byzerror {
+  @include iconBuilder(16px, 16px, 'business_error.svg');
+}
+.icon-state-syserror {
+  @include iconBuilder(22px, 22px, 'error.png');
+}
+
 .icon-state-success {
   @include iconBuilder(22px, 22px, 'success.png');
 }

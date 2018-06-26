@@ -53,7 +53,7 @@ class AlarmsTable extends React.PureComponent {
             width: 500,
         }, {
             title: ls('ALARMS_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
-            name: 'status',
+            name: 'notification_status',
             sortable: true,
             width: 250,
         }, {
@@ -92,7 +92,7 @@ class AlarmsTable extends React.PureComponent {
                         content={node[column.name]}
                     />
                 );
-            case 'status': {
+            case 'notification_status': {
                 const status = _.get(node, 'status', '');
                 return status ? (
                     <IconCell

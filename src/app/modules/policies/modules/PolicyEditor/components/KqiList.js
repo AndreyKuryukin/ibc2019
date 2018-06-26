@@ -34,15 +34,15 @@ class KqiList extends React.PureComponent {
         super(props);
         this.state = {
             kqiList: props.kqiList || [],
-            selected: props.primary || [],
+            selected: props.selected || [],
             kqiListById: this.mapKqiById(props.kqiList)
         }
     }
 
 
     componentWillReceiveProps(nextProps) {
-        if (nextProps.primary !== this.props.selected) {
-            this.setState({ primary: nextProps.primary })
+        if (nextProps.selected !== this.props.selected) {
+            this.setState({ selected: nextProps.selected })
         }
         if (nextProps.kqiList !== this.props.kqiList) {
             console.log(nextProps.kqiList);
@@ -72,7 +72,7 @@ class KqiList extends React.PureComponent {
         if (_.isFunction(this.props.onChange)) {
             this.setState({ kqi: null }, () => this.props.onChange(selected));
         } else {
-            this.setState({ kqi: null, primary: selected });
+            this.setState({ kqi: null, selected: selected });
         }
     };
 
@@ -81,7 +81,7 @@ class KqiList extends React.PureComponent {
         if (_.isFunction(this.props.onChange)) {
             this.props.onChange(selected);
         } else {
-            this.setState({ primary: selected });
+            this.setState({ selected: selected });
         }
     };
 

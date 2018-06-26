@@ -128,7 +128,7 @@ class PolicyEditor extends React.PureComponent {
 
     composeConjunctionString = (object) => {
         let { parameterType = '', operator = '', value = '' } = object;
-        value = isNaN(Number(value)) ? `'${value}'` : Number(value);
+        value = isNaN(Number(value)) ? `${value}` : Number(value);
         const conjString = `${parameterType} ${operator} ${value}`;
         return conjString.trim();
     };

@@ -143,7 +143,7 @@ class PoliciesTable extends React.PureComponent {
                     iconTitle={title}
                     cellStyle={editIconStyle}
                     onIconClick={() => {
-                        this.props.notificationClick(node.id)
+                        this.props.notificationClick(node.id, this.context.hasAccess('POLICY', 'EDIT'))
                     }}
                 />;
             case 'name':
