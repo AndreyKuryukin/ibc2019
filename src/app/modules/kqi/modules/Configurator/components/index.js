@@ -90,23 +90,6 @@ class Configurator extends React.PureComponent {
         this.props.onSubmit(this.state.config);
     };
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = (e.charCode >= 48 && e.charCode <= 57) || e.charCode === 46 || e.charCode === 45;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
-    onChangeLevel = (value) => {
-        const isValidValue = value === '-' || !isNaN(+value);
-
-        if (value.length <= 21 && isValidValue) {
-            this.setConfigProperty('level', value);
-        }
-    };
-
     onObjectTypeChange = (type) => {
         if (type) {
             const object_type = _.find(this.props.objectTypes, { type }) || {};
@@ -226,12 +209,15 @@ class Configurator extends React.PureComponent {
                             >
                                 <Input
                                     id="level"
+                                    type="number"
                                     value={config.level}
-                                    onChange={this.onChangeLevel}
+                                    onChange={value => this.setConfigProperty('level', value)}
                                     valid={errors && _.isEmpty(errors.level)}
                                     disabled={disableForm}
-                                    onKeyPress={this.validateNumKey}
                                     placeholder={ls('KQI_CONFIGURATOR_LEVEL_PLACEHOLDER', 'Значение')}
+                                    maxLength={21}
+                                    allowDecimal
+                                    allowNegative
                                 />
                             </Field>
                             <Formula

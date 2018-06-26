@@ -64,9 +64,9 @@ class Conjunction extends React.PureComponent {
     mapOperators = (parameters, parameter) => {
         const paramCfg = _.find(parameters, { name: parameter });
         if (paramCfg && _.isArray(paramCfg.operators)) {
-            return paramCfg.operators.map(operator => ({ title: operator, value: operator }))
+            return paramCfg.operators.map(operator => ({ title: operator, value: operator }));
         }
-        return []
+        return [];
     };
 
     getParamCfgByName = (parameters, parameterName) => {
@@ -74,23 +74,21 @@ class Conjunction extends React.PureComponent {
         return _.find(parameters, { name: parameterName }) || defaultCfg;
     };
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
     renderValueControl = (paramCfg, value, errors) => {
         const Component = paramCfg.type === 'enum' ? Select : Input;
+        const typeMap = {
+            'integer': 'number',
+            'string': 'text',
+            'KQI': 'number'
+        };
         const params = {
             placeholder: ls('POLICY_CONJUNCTION_VALUE_PLACEHOLDER', 'Значение'),
+            maxLength: (paramCfg.type === 'integer' || paramCfg.type === 'KQI') ? 6 : 255,
         };
+
         if (paramCfg.type === 'enum' && _.isArray(paramCfg.values)) {
             params.options = paramCfg.values.map(v => ({ title: v, value: v }));
-            params.onChange = value => this.setConjunctionProperty('value', value)
+            params.onChange = value => this.setConjunctionProperty('value', value);
         } else {
             params.type = 'text';
             params.onChange = (value) => this.setConjunctionProperty('value', value);
@@ -99,12 +97,15 @@ class Conjunction extends React.PureComponent {
                 params.maxLength = 6;
             }
         }
-        return <Component
-            name="value"
-            value={_.get(value, 'value')}
-            valid={errors && _.isEmpty(_.get(errors, 'value', null))}
-            {...params}
-        />
+
+        return (
+            <Component
+                name="value"
+                value={_.get(value, 'value')}
+                valid={errors && _.isEmpty(_.get(errors, 'value', null))}
+                {...params}
+            />
+        );
     };
 
     setParameter = (value, parameters) => {
