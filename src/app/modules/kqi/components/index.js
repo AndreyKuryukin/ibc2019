@@ -112,7 +112,6 @@ class KQI extends React.PureComponent {
         const isCalculatorActive = this.context.hasAccess('KQI', 'EDIT') && action === 'calculate';
         const isResultsViewerActive = !_.isEmpty(configId) && !_.isEmpty(projectionId) && !_.isEmpty(resultId);
         const cfgName = configId ? _.get(this.getConfigsByIdFromProps(this.props), `${configId}.name`, '') : '';
-
         return (
             <div className={styles.kqiWrapper}>
                 <div className={classnames(styles.kqiColumn, styles.configsTableContainer)}>
@@ -128,6 +127,7 @@ class KQI extends React.PureComponent {
                             onSelectConfig={this.onSelectConfig}
                             onEditConfig={this.onEditConfig}
                             onDeleteConfig={this.props.onDeleteConfig}
+                            selected={configId}
                         />
                     </Panel>
                 </div>
@@ -147,7 +147,10 @@ class KQI extends React.PureComponent {
                     </Panel>
                 </div>
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={urlKqiId}/>}
-                {isCalculatorActive && <Calculator active={isCalculatorActive} projectionId={projectionId}/>}
+                {isCalculatorActive && <Calculator active={isCalculatorActive}
+                                                   projectionId={projectionId}
+                                                   onClose={() => this.props.onSelectConfig(configId)}
+                />}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}
                                                          resultId={resultId}

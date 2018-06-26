@@ -15,6 +15,7 @@ class ConfigsTable extends React.PureComponent {
     static propTypes = {
         data: PropTypes.array,
         searchText: PropTypes.string,
+        selected: PropTypes.string,
         preloader: PropTypes.bool,
         onSelectConfig: PropTypes.func,
         onEditConfig: PropTypes.func,
@@ -24,6 +25,7 @@ class ConfigsTable extends React.PureComponent {
     static defaultProps = {
         data: [],
         searchText: '',
+        selected: '',
         preloader: false,
         onSelectConfig: () => null,
         onEditConfig: () => null,
@@ -46,7 +48,7 @@ class ConfigsTable extends React.PureComponent {
         width: 150,
     }, {
         title: '',
-        name: 'edit',
+        name: 'view',
         width: 40,
     }]);
 
@@ -66,27 +68,29 @@ class ConfigsTable extends React.PureComponent {
                         content={node[column.name]}
                     />
                 );
-            case 'edit':
+            case 'view':
                 return (
-                    <div
+                    node.predefined ? '' : <div
                         className="view-icon"
+                        style={{cursor: 'pointer'}}
+                        title={ls('KQI_CONFIG_VIEW_TITLE', 'Просмотр')}
                         onClick={(event) => {
                             event.stopPropagation();
                             this.props.onEditConfig(node.id)
                         }}
                     />
                 );
-            case 'delete': {
-                const onDeleteConfig = this.onDelete.bind(this, node.id);
-                return (
-                    !node.predefined && <div
-                        className={styles.deleteStyle}
-                        onClick={onDeleteConfig}
-                    >
-                        ×
-                    </div>
-                );
-            }
+            // case 'delete': {
+            //     const onDeleteConfig = this.onDelete.bind(this, node.id);
+            //     return (
+            //         !node.predefined && <div
+            //             className={styles.deleteStyle}
+            //             onClick={onDeleteConfig}
+            //         >
+            //             ×
+            //         </div>
+            //     );
+            // }
             default:
                 return (
                     <DefaultCell
@@ -95,11 +99,11 @@ class ConfigsTable extends React.PureComponent {
                 );
         }
     };
-
-    onDelete = (id, e) => {
-        e.stopPropagation();
-        this.props.onDeleteConfig(id);
-    };
+    //
+    // onDelete = (id, e) => {
+    //     e.stopPropagation();
+    //     this.props.onDeleteConfig(id);
+    // };
 
     filter = (data, columns, searchText) => {
         const searchableColumns = columns.filter(col => col.searchable);
@@ -108,11 +112,10 @@ class ConfigsTable extends React.PureComponent {
     };
 
     render() {
-        const { data, searchText } = this.props;
+        const { data, searchText, selected } = this.props;
         const hasEditAccess = this.context.hasAccess('KQI', 'EDIT');
         const columns = ConfigsTable.getColumns(hasEditAccess);
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
-
         return (
             <Table
                 data={filteredData}
@@ -121,6 +124,7 @@ class ConfigsTable extends React.PureComponent {
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}
                 onSelectRow={this.props.onSelectConfig}
+                selected={[String(selected)]}
             />
         );
     }

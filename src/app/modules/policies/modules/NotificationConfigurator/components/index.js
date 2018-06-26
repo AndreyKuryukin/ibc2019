@@ -2,9 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
-import Icon from '../../../../../components/Icon/Icon';
 import ls from 'i18n';
 import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
@@ -101,7 +99,7 @@ class NotificationConfigurator extends React.PureComponent {
 
         if (config) {
             const configs = {
-                ..._.omit({...this.state.configs}, `${configId}`),
+                ..._.omit({ ...this.state.configs }, `${configId}`),
                 [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: {
                     ...config,
                     instance_id: instanceId,
@@ -175,7 +173,14 @@ class NotificationConfigurator extends React.PureComponent {
                     <ModalBody>
                         <Preloader active={isLoading}>
                             <div className={styles.notificationConfiguratorContent}>
-                                <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${policyName}`}</div>
+                                <Field
+                                    labelText={ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}
+                                    inputWidth={'80%'}
+                                    labelWidth={'20%'}
+                                >
+                                    <div className={styles.policyNameField} title={policyName}>{policyName}</div>
+                                </Field>
+
                                 <div className={styles.configsWrapper}>
                                     <Controls
                                         adapters={adapters}

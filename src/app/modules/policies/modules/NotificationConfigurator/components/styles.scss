@@ -7,6 +7,10 @@
     background: $white;
     padding: 10px;
     flex-direction: column;
+    .policyNameField {
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
     .configsWrapper {
       display: flex;
       flex-grow: 1;
