@@ -194,8 +194,7 @@ class Table extends React.Component {
                         ))}
                     </div>}
                     <div className={styles.tableBody}>
-                        {data.map(node => {
-                            return <div
+                        {data.map(node => <div
                                 key={node.id}
                                 id={node.id}
                                 className={classnames(styles.bodyRow, { [styles.selected]: _.find(selected, id => id === node.id) })}
@@ -214,7 +213,7 @@ class Table extends React.Component {
                                     </div>
                                 ))}
                             </div>
-                        })}
+                        )}
                     </div>
                 </div>
             </Preloader>

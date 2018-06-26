@@ -56,8 +56,8 @@ class Policies extends React.Component {
         });
     };
 
-    navigateNotificationConfig = (policyId) => {
-        this.props.history.push(`/policies/cofigure/${policyId}`)
+    navigateNotificationConfig = (policyId, edit) => {
+        this.props.history.push(`/policies/${edit ? 'configure' : 'view'}/${policyId}`)
     };
 
     render() {
@@ -66,7 +66,8 @@ class Policies extends React.Component {
 
         const { params } = match;
         const isEditorActive = this.context.hasAccess('POLICY', 'EDIT') && (params.action === 'edit' || params.action === 'add');
-        const isConfiguratorActive = params.action === 'cofigure';
+        const isConfiguratorActive = params.action === 'configure';
+        const isConfiguratorViewActive = params.action === 'view';
         const policyId = params.id ? params.id : null;
 
         return (
@@ -85,8 +86,9 @@ class Policies extends React.Component {
                     policyId={policyId}
                     policies={data}
                 />}
-                {isConfiguratorActive && <NotificationConfigurator
-                    active={isConfiguratorActive}
+                {(isConfiguratorActive || isConfiguratorViewActive) && <NotificationConfigurator
+                    active={(isConfiguratorActive || isConfiguratorViewActive)}
+                    view={isConfiguratorViewActive}
                     policyId={policyId}
                     fetchPolicies={fetchPolicies}
                 />}

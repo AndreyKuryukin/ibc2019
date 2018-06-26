@@ -14,6 +14,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        view: PropTypes.bool,
         policyId: PropTypes.string,
         adapters: PropTypes.array,
         notifications: PropTypes.array,
@@ -24,6 +25,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static defaultProps = {
         active: false,
+        view: true,
         policyId: '',
         adapters: [],
         notifications: [],
@@ -115,6 +117,7 @@ class NotificationConfigurator extends React.PureComponent {
         return (
             <NotificationConfiguratorComponent
                 active={this.props.active}
+                view={this.props.view}
                 adapters={this.props.adapters}
                 notifications={this.state.notifications}
                 policyName={this.state.policyName}

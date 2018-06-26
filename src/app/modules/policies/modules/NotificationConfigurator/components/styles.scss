@@ -1,11 +1,17 @@
 @import "../../../../../scss/vars";
 
+.viewMode {
+  pointer-events: none;
+  filter: grayscale(1);
+}
+
 .notificationConfigurator {
   .notificationConfiguratorContent {
     display: flex;
     flex-grow: 1;
     background: $white;
     padding: 10px;
+    width: 100%;
     flex-direction: column;
     .policyNameField {
       overflow: hidden;

@@ -102,7 +102,6 @@ class RolesListGrid extends React.PureComponent {
         const isAllChecked = subjectsData.every(node => this.state.checked.includes(node.id));
         const checkedPartially = !isAllChecked && this.state.checked.length > 0;
         const filteredData = this.state.searchText ? this.filter(subjectsData, this.state.searchText) : subjectsData;
-
         return (
             <Grid
                 id="role-editor-subjects-grid"

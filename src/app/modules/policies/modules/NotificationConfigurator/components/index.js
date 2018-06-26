@@ -1,6 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import classnames from 'classnames';
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import Field from '../../../../../components/Field';
 import ls from 'i18n';
@@ -21,6 +23,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        view: PropTypes.bool,
         adapters: PropTypes.array,
         notifications: PropTypes.array,
         policyName: PropTypes.string,
@@ -32,6 +35,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static defaultProps = {
         active: false,
+        view: true,
         adapters: [],
         notifications: [],
         policyName: '',
@@ -159,7 +163,7 @@ class NotificationConfigurator extends React.PureComponent {
     };
 
     render() {
-        const { active, adapters, policyName, isLoading } = this.props;
+        const { active, adapters, policyName, isLoading, view } = this.props;
         const selectedConfigsKeys = _.keys(this.state.configs);
         return (
             <DraggableWrapper>
@@ -172,7 +176,7 @@ class NotificationConfigurator extends React.PureComponent {
                     </ModalHeader>
                     <ModalBody>
                         <Preloader active={isLoading}>
-                            <div className={styles.notificationConfiguratorContent}>
+                            <div className={classnames(styles.notificationConfiguratorContent, {[styles.viewMode]: view})}>
                                 <Field
                                     labelText={ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}
                                     inputWidth={'80%'}
@@ -204,8 +208,9 @@ class NotificationConfigurator extends React.PureComponent {
                         </Preloader>
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>
-                        <Button color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>
+                        {!view && <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>}
+                        {!view && <Button color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>}
+                        {view && <Button color="action" onClick={this.onClose}>{ls('OK', 'Закрыть')}</Button>}
                     </ModalFooter>
                 </Modal>
             </DraggableWrapper>
