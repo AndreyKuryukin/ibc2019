@@ -90,7 +90,7 @@ class Configuration extends React.Component {
 
     render() {
         const { policyTypes, objectTypes, errors, metaData } = this.props;
-        const object_type = getPolicyProperty('object_type');
+        const object_type = this.state.object_type;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
