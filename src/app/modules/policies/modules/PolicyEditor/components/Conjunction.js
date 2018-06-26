@@ -90,8 +90,12 @@ class Conjunction extends React.PureComponent {
             params.options = paramCfg.values.map(v => ({ title: v, value: v }));
             params.onChange = value => this.setConjunctionProperty('value', value);
         } else {
-            params.type = typeMap[paramCfg.type];
-            params.onChange = value => this.setConjunctionProperty('value', value);
+            params.type = 'text';
+            params.onChange = (value) => this.setConjunctionProperty('value', value);
+            if (paramCfg.type === 'integer' || paramCfg.type === 'KQI') {
+                params.onKeyPress = this.validateNumKey;
+                params.maxLength = 6;
+            }
         }
 
         return (
