@@ -150,14 +150,6 @@ class UserEditor extends React.Component {
         this.setState({ showTooltipFor: null });
     };
 
-    onChangePhone = (value) => {
-        const reg = new RegExp(/^([0-9]){0,11}$/);
-
-        if (reg.test(value)) {
-            this.setUserProperty('phone', value);
-        }
-    };
-
     render() {
         const {
             active,
@@ -340,9 +332,11 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="phone"
+                                        type="number"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
-                                        onChange={this.onChangePhone}
+                                        onChange={value => this.setUserProperty('phone', value)}
+                                        maxLength={11}
                                     />
                                 </Field>
                             </Form>

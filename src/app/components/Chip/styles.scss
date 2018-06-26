@@ -10,10 +10,13 @@
 
 .chipContainer {
   display: flex;
+  max-width: 100%;
   flex-direction: row;
   background-color: $dark-blue;
   color: $white;
   > * {
+    overflow: hidden;
+    text-overflow: ellipsis;
     padding: 4px 8px 4px 8px;
   }
 }

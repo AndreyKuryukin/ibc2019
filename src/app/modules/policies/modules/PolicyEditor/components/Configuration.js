@@ -79,15 +79,6 @@ class Configuration extends React.Component {
 
     mapObjectTypes = objectTypes => _.isArray(objectTypes) ? objectTypes.map(type => ({ title: type, value: type })) : [];
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
     render() {
         const { policyTypes, objectTypes, errors, metaData } = this.props;
         const object_type = this.state.object_type;
@@ -162,11 +153,11 @@ class Configuration extends React.Component {
                             <div style={{ display: 'flex' }}>
                                 <Input
                                     id="rise_duration"
+                                    type="number"
                                     name="rise_duration"
                                     placeholder="0"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_duration'))}
                                     value={this.getSeconds(_.get(this.state.policy, 'threshold.rise_duration', ''))}
-                                    onKeyPress={this.validateNumKey}
                                     onChange={value => this.setPolicyProperty('threshold.rise_duration', this.getMilliSeconds(value))}
                                     maxLength={6}
                                     errorMessage={_.get(errors, 'threshold.rise_duration.title')}
@@ -187,11 +178,11 @@ class Configuration extends React.Component {
                             <div style={{ display: 'flex' }}>
                                 <Input
                                     id="rise_value"
+                                    type="number"
                                     name="rise_value"
                                     placeholder="0"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_value'))}
                                     value={this.getSeconds(_.get(this.state.policy, 'threshold.rise_value', ''))}
-                                    onKeyPress={this.validateNumKey}
                                     onChange={value => this.setPolicyProperty('threshold.rise_value', this.getMilliSeconds(value))}
                                     maxLength={6}
                                     errorMessage={_.get(errors, 'threshold.rise_value.title')}
