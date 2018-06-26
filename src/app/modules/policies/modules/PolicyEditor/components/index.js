@@ -103,17 +103,25 @@ class PolicyEditor extends React.PureComponent {
     }
 
     handleObjectTypeChange = (prevPolicy, objectType) => {
-        const policy = _.pick(prevPolicy, ['name', 'objectType']);
-        policy['objectType'] = objectType;
+        const policy = _.pick(prevPolicy, ['name', 'object_type']);
+        policy['object_type'] = objectType;
         policy['condition'] = { condition: defaultCondition };
+        if (objectType === 'KQI') {
+            policy['threshold'] = {
+                cease_duration: 0,
+                cease_value: 0,
+                rise_duration: 0,
+                rise_value: 0
+            };
+        }
         this.setState({ metaData: {} }, () => {
-            this.props.fetchPolicyTypes(policy.objectType);
+            this.props.fetchPolicyTypes(policy.object_type);
         });
         return policy;
     };
 
     handlePolicyTypeChange = (prevPolicy, policy_type) => {
-        const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type']);
+        const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type', 'threshold']);
         policy['policy_type'] = policy_type;
         policy['condition'] = { condition: defaultCondition };
         this.setState({ metaData: {} }, () => {
@@ -207,6 +215,7 @@ class PolicyEditor extends React.PureComponent {
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
+        const object_type = _.get(policy, 'object_type');
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
@@ -260,7 +269,7 @@ class PolicyEditor extends React.PureComponent {
                                             />
                                         }
                                     </Panel>
-                                    <Panel
+                                    {object_type !== 'KQI' && <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -314,7 +323,7 @@ class PolicyEditor extends React.PureComponent {
                                                 </Field>}
                                             </div>
                                         </div>
-                                    </Panel>
+                                    </Panel>}
                                 </div>
                                 <div className={styles.policyEditorColumn}>
                                     <Condition

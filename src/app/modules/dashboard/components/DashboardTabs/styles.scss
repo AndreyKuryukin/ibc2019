@@ -3,25 +3,13 @@
 .dashboardTabs {
   display: flex;
   flex-wrap: wrap;
+  max-width: 1300px;
 
   & > .tabs {
     display: flex;
-    justify-content: stretch;
+    justify-content: space-between;
     flex-grow: 1;
-    padding: 11px 0;
-
-    .separator {
-      flex-grow: 1;
-      display: flex;
-      justify-content: center;
-
-      &::before {
-        display: block;
-        content: '';
-        width: 2px;
-        background-color: $dashboard-tabs-separator-color;
-      }
-    }
+    padding: 18px 0 29px;
 
     .tabLink {
       text-decoration: none;
@@ -31,38 +19,46 @@
       flex-grow: 0;
       display: flex;
       align-items: center;
-      padding: 16px 0;
+      padding: 30px 20px 20px;
 
       &:hover {
         color: white;
       }
 
       .KQI {
-        transform: translate(0, 0.35em);
+        transform: translate(0, 0.05em);
 
         .name {
-          font-size: 2.1em;
-          transform: translate(0, 0.5em);
+          font-size: 20px;
 
-          .parameter {
-            text-transform: lowercase;
-          }
           .index {
-            bottom: -0.5em;
-            font-size: 0.5em;
+            font-size: 14px;
+            left: 3px;
+            bottom: -6px;
           }
         }
         .value {
-          font-size: 3em;
+          @media (min-width: 1600px) {
+            font-size: 36px;
+          }
+          font-size: 30px;
           font-weight: bold;
-          margin-left: 12px;
+          margin-left: 15px;
+
+          .units {
+            font-size: 16px;
+            margin-left: 5px;
+          }
         }
       }
+
       .dynamics {
         display: flex;
         flex-direction: column;
-        margin-left: 12px;
-        line-height: 1.5em;
+        margin-left: 10px;
+        font-size: 12px;
+        margin-top: -6px;
+        line-height: 18px;
 
         & > span {
           &.positive span {
@@ -71,6 +67,24 @@
           &.negative span {
             color: $red;
           }
+        }
+      }
+
+      &.primary {
+        background-color: rgba(2, 47, 71, 0.27);
+
+        .KQI .value {
+          @media (min-width: 1600px) {
+            font-size: 48px;
+          }
+          font-size: 38px;
+        }
+        .dynamics {
+          font-size: 14px;
+          margin-left: 20px;
+          line-height: 21px;
+          margin-top: -12px;
+          transform: translate(0, 2px);
         }
       }
     }

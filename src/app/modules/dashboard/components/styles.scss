@@ -28,7 +28,17 @@
         display: inline;
 
         .value {
-          display: none;
+          margin-left: 0;
+
+          .raw {
+            font-weight: bold;
+            font-size: 1.3em;
+            line-height: 0.7em;
+          }
+
+          .units {
+            font-size: 0.8em;
+          }
         }
       }
     }

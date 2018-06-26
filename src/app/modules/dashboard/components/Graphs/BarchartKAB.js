@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
+import {MACRO_RF_ID} from '../../constants';
 
 class BarchartKAB extends React.Component {
     static propTypes = {
@@ -30,7 +31,23 @@ class BarchartKAB extends React.Component {
             },
             title: {
                 ...Chart.DEFAULT_OPTIONS.title,
-                text: ls('DASHBOARD_CHART_BARCHART_KAB_TITLE', 'Каб по РФ'),
+                text: ls('DASHBOARD_CHART_BARCHART_KAB_TITLE', 'Каб ИТВ МРФ Волга в проекции по региональным филиалам'),
+            },
+            tooltip: {
+                ...Chart.DEFAULT_OPTIONS.tooltip,
+                shared: true,
+                formatter: function() {
+                    const {x, points} = this;
+
+                    if (points.length === 0) return '';
+                    const {currentColor, previous, current} = points[0].point.options;
+
+                    return `
+                        ${x}<br />
+                        ${ls('PREVIOUS', 'Предыдущий')}: ${previous}%<br />
+                        ${ls('CURRENT', 'Текущий')}: <span style="color: ${currentColor}">${current}%</span><br />
+                    `;
+                },
             },
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
@@ -44,11 +61,6 @@ class BarchartKAB extends React.Component {
             plotOptions: {
                 column: Chart.DEFAULT_OPTIONS.plotOptions.column,
             },
-            colors: [
-                '#082545',
-                '#7cc032',
-                '#fc3737',
-            ],
             series: this.getSeries(),
         };
     };
@@ -58,6 +70,9 @@ class BarchartKAB extends React.Component {
             regularity: props.regularity,
             mrf: props.mrfId,
         };
+        if (queryParams.mrf === MACRO_RF_ID) {
+            delete queryParams.mrf;
+        }
 
         return rest.get('/api/v1/dashboard/barchart/kab', {}, { queryParams })
             .then(({ data }) => this.setState({ data }))
@@ -65,21 +80,44 @@ class BarchartKAB extends React.Component {
     }
 
     getSeries() {
-        const previous = this.state.data.map(item => item.previous);
+        const previousColor = '#082545';
+        const normalColor = '#7cc032';
+        const criticalColor = '#fc3737';
+
+        const previousName = ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_PREVIOUS', 'Предыдущий период');
+        const normalName = ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_NORMAL', 'Текущий период лучше предыдущего');
+        const criticalName = ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_CRITICAL', 'Текущий период хуже предыдущего');
+
+        const cut = number => typeof number === 'number'
+            ? parseFloat(number.toFixed(2))
+            : 'N/A';
+
+        const previousData = this.state.data.map(item => ({
+            y: item.previous,
+            currentColor: item.current >= item.previous ? normalColor : criticalColor,
+            previous: cut(item.previous),
+            current: cut(item.current),
+        }));
+        const normalData = this.state.data.map(item => ({
+            y: item.current,
+            color: item.current >= item.previous ? normalColor : criticalColor,
+            currentColor: item.current >= item.previous ? normalColor : criticalColor,
+            previous: cut(item.previous),
+            current: cut(item.current),
+        }));
 
         return [
             {
-                name: ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_PREVIOUS', 'Предыдущий'),
-                data: previous,
+                name: previousName,
+                data: previousData,
+                color: previousColor,
             }, {
-                name: ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_NORMAL', 'Нормальный'),
-                data: this.state.data.map((item, i) => ({
-                    y: item.current,
-                    color: item.current >= previous[i] ? '#7cc032' : '#fc3737',
-                })),
+                name: normalName,
+                data: normalData,
+                color: normalColor,
             }, {
-                name: ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_CRITITCAL', 'Критический'),
-                color: '#fc3737',
+                name: criticalName,
+                color: criticalColor,
             },
         ];
     }

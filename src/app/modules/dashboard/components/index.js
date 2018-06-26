@@ -27,8 +27,8 @@ class Dashboard extends React.PureComponent {
     static propTypes = {
         regularity: PropTypes.string.isRequired,
         mode: PropTypes.string.isRequired,
+        mrfId: PropTypes.string.isRequired,
         type: PropTypes.string,
-        mrfId: PropTypes.string,
         aggregated: PropTypes.shape({
             KAB: aggregatedItemPT,
             KGS: aggregatedItemPT,
@@ -47,16 +47,16 @@ class Dashboard extends React.PureComponent {
     };
 
     buildLink = ({
-        regularity = this.props.regularity,
         mode = this.props.mode,
-        type = this.props.type,
+        regularity = this.props.regularity,
         mrfId = this.props.mrfId,
+        type = this.props.type,
     }) => {
-        // /dashboard/:regularity/:mode/:type/:mrfId
+        // /dashboard/:mode/:regularity/:mrfId/:type
 
         const parts = ['/dashboard'];
 
-        const values = [regularity, mode, type, mrfId];
+        const values = [mode, regularity, mrfId, type];
 
         for (const value of values) {
             if (value === undefined || value === null) break;

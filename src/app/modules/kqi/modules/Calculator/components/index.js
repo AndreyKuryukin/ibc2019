@@ -110,7 +110,6 @@ class Calculator extends React.PureComponent {
         this.state = {
             config: {
                 name: period.DAY,
-                service_type: '',
                 period: {
                     start_date,
                     end_date,
@@ -202,15 +201,15 @@ class Calculator extends React.PureComponent {
                     }
                 } else {
                     if (nameMap) {
-                        name.push(getNameById(nameMap, value))
+                        name.push(getNameById(nameMap, value));
                     } else {
-                        name.push(config[fieldName])
+                        name.push(config[fieldName]);
                     }
                 }
             }
             return name;
         }, []);
-        return composedName.join('_')
+        return composedName.join('_');
     };
 
 

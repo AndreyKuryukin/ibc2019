@@ -6,7 +6,7 @@ import styles from './styles.scss';
 class KQI extends React.PureComponent {
     static propTypes = {
         className: PropTypes.string,
-        type: PropTypes.oneOf(['KAB', 'KGS', 'KSPD']).isRequired,
+        type: PropTypes.oneOf(['KAB', 'KGS', 'KSPD']),
         value: PropTypes.number,
         positive: PropTypes.bool,
         negative: PropTypes.bool,
@@ -22,7 +22,7 @@ class KQI extends React.PureComponent {
         if (type === 'KAB') return ['К', 'аб'];
         if (type === 'KGS') return ['К', 'гс'];
         if (type === 'KSPD') return ['К', 'спд'];
-        return ['?', '?'];
+        return [null, null];
     };
 
     render() {
@@ -43,10 +43,12 @@ class KQI extends React.PureComponent {
                 [styles.positive]: positive,
                 [styles.negative]: negative,
             })}>
-                <span className={styles.name}>
-                    <span className={styles.parameter}>{parameter}</span>
-                    <span className={styles.index}>{index}</span>
-                </span>
+                {parameter !== null && (
+                    <span className={styles.name}>
+                        <span className={styles.parameter}>{parameter}</span>
+                        <span className={styles.index}>{index}</span>
+                    </span>
+                )}
                 {typeof value === 'number' ? (
                     <span className={styles.value}>
                         <span className={styles.raw}>{value.toFixed(precision)}</span>

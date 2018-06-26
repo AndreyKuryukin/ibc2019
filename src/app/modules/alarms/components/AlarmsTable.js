@@ -23,12 +23,14 @@ class AlarmsTable extends React.PureComponent {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        onDisplayedDataChanged: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
+        onDisplayedDataChanged: () => null,
     };
 
     static getColumns = memoize(() => ([
@@ -39,16 +41,21 @@ class AlarmsTable extends React.PureComponent {
             sortable: true,
             width: 150,
         }, {
+            title: ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
+            name: 'external_id',
+            sortable: true,
+            width: 150,
+        }, {
             title: ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
             name: 'policy_name',
             searchable: true,
             sortable: true,
             width: 500,
         }, {
-            title: ls('ALARMS_STATUS_COLUMN', 'Статус'),
+            title: ls('ALARMS_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
             name: 'status',
             sortable: true,
-            width: 150,
+            width: 250,
         }, {
             title: ls('ALARMS_RAISE_TIME_COLUMN', 'Время возникновения'),
             name: 'raise_time',
@@ -60,7 +67,7 @@ class AlarmsTable extends React.PureComponent {
             name: 'duration',
             searchable: true,
             sortable: true,
-            width: 120,
+            width: 150,
         }, {
             title: ls('ALARMS_OBJECT_COLUMN', 'Объект'),
             name: 'object',
@@ -123,17 +130,21 @@ class AlarmsTable extends React.PureComponent {
 
     mapData = memoize(data => data.map(node => ({
         id: node.id.toString(),
+        external_id: node.external_id || '',
         policy_name: node.policy_name,
+        status: node.status || '',
         raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
         duration: this.getReadableDuration(node.duration),
-        object: node.object,
+        object: node.object || '',
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
     })));
 
     customSortFunction = (data, columnName, direction) => {
         const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
+        const sortedData = naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
+        this.props.onDisplayedDataChanged(sortedData);
 
-        return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
+        return sortedData;
     };
 
     filter = (data, searchableColumns, searchText) => data.filter(node => searchableColumns.find(column => search(node[column.name], searchText)));

@@ -117,13 +117,47 @@ module.exports = (app) => {
     //         res.end();
     //     }
     // });
-    const target = 'http://192.168.192.209:8010';
-    const config = {
-        proxyReqPathResolver: (req) => {
-            console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
-            return target + require('url').parse(req.originalUrl).path;
-        },
-    };
-    console.log(`Specific proxy for /api/v1/alerts  ->  http://192.168.192.209:8010`);
-    app.use('/api/v1/alerts', proxy(target, config))
+
+    // const target = 'http://192.168.192.209:8010';
+    // const config = {
+    //     proxyReqPathResolver: (req) => {
+    //         console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
+    //         return target + require('url').parse(req.originalUrl).path;
+    //     },
+    // };
+    // console.log(`Specific proxy for /api/v1/alerts  ->  http://192.168.192.209:8010`);
+    // app.use('/api/v1/alerts', proxy(target, config))
+
+    app.use('/api/v1/alerts/684017e8-5e1c-457e-a5fa-d93fc246e0ba', (req, res) => {
+        res.send({
+            "notification_text": "Line 1\nLine 2\nEnd",
+            "notified": [{ "type": "SMS", "status": "UNKNOWN" }, {
+                "type": "EMAIL",
+                "status": "UNKNOWN"
+            }, { "type": "CRM", "status": "UNKNOWN" }],
+            "attributes": {
+                "SAN": "030397733788769",
+                "SUPPRESSION_TIMEOUT": "0",
+                "REGION_ID": "300001",
+                "MAC": "001A790256FF",
+                "POLICY_ID": "358587294912544770",
+                "POLICY_TYPE": "SMART_SPY_SIMPLE",
+                "AFFILIATE_ID": "VLG.NNV",
+                "MRF_ID": "69",
+                "TECH": "FTTB",
+                "POLICY_NAME": "ddff",
+                "STATE": "RISE",
+                "SUB_REGION_ID": "0",
+                "NLS": "352012223579"
+            },
+            "id": "684017e8-5e1c-457e-a5fa-d93fc246e0ba",
+            "duration": 263432893,
+            "mrf": "69",
+            "rf": "300001",
+            "closed": false,
+            "object": "SAN=030397733788769, Л/С=352012223579",
+            "raise_time": "2018-06-22T11:33:13.679",
+            "policy_name": "ddff"
+        })
+    })
 };

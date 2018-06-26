@@ -6,6 +6,10 @@
   justify-content: stretch;
   padding: 18px 30px;
   border-radius: 3px;
+
+  .fieldWrapper .fieldInput {
+    background-color: transparent;
+  }
 }
 .dashboardFiltersGroup {
   flex-grow: 0;
