@@ -351,7 +351,7 @@ class Calculator extends React.PureComponent {
                 <ModalHeader
                     toggle={this.onClose}
                 >
-                    {ls('KQI_CALCULATOR_TITLE', 'Проекция KQI')}
+                    {ls('KQI_CALCULATOR_TITLE', `Проекция KQI ${_.get(this.props.config, 'name', '')}`)}
                 </ModalHeader>
                 <ModalBody>
                     <div className={styles.kqiCalculatorContent}>
