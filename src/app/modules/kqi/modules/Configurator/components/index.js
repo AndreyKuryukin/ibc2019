@@ -143,7 +143,7 @@ class Configurator extends React.PureComponent {
                 >
                     <ModalHeader
                         className="handle"
-                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI')}</ModalHeader>
+                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', `Конфигурация KQI ${_.get(this.props.config, 'name', '')}`)}</ModalHeader>
                     <ModalBody>
                         <div className={styles.configuratorContent}>
                             <Field

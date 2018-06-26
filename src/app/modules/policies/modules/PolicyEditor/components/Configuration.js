@@ -77,7 +77,7 @@ class Configuration extends React.Component {
         return moment.duration(Number(secs), 'seconds').asMilliseconds();
     };
 
-    mapObjectTypes = objectTypes => objectTypes.map(type => ({ title: type, value: type }));
+    mapObjectTypes = objectTypes => _.isArray(objectTypes) ? objectTypes.map(type => ({ title: type, value: type })) : [];
 
     validateNumKey = (e) => {
         const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
