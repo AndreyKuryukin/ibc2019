@@ -68,7 +68,7 @@ class ColumnFilterForm extends React.PureComponent {
                         <Input
                             key={key}
                             value={value}
-                            onChange={event => this.setFilterValue(key, _.get(event, 'target.value', ''))}
+                            onChange={value => this.setFilterValue(key, value)}
                             onBlur={event => this.onBlurInput(event, key)}
                             style={{ width: '90%' }}
                         />

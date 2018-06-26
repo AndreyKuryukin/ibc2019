@@ -76,7 +76,7 @@ class Grid extends React.PureComponent {
                     {!noSearch && <Input
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.gridSearch}
-                        onChange={e => onSearchTextChange(_.get(e, 'currentTarget.value', ''))}
+                        onChange={onSearchTextChange}
                     />}
                 </div>
                 <div className={styles.gridBody}>

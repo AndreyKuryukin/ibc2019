@@ -12,9 +12,9 @@ const unitStyle = { margin: '3px 0px 3px 2px' };
 const textareaStyle = { marginTop: 10 };
 const thresholdFieldStyle = { flexGrow: 1, justifyContent: 'flex-end' };
 
-class Configuration extends React.PureComponent {
+class Configuration extends React.Component {
     static propTypes = {
-        getPolicyProperty: PropTypes.func,
+        policy: PropTypes.object,
         setPolicyProperty: PropTypes.func,
         policyTypes: PropTypes.array,
         objectTypes: PropTypes.array,
@@ -23,13 +23,47 @@ class Configuration extends React.PureComponent {
     };
 
     static defaultProps = {
-        getPolicyProperty: () => null,
+        policy: null,
         setPolicyProperty: () => null,
         policyTypes: [],
         objectTypes: [],
         errors: PropTypes.object,
         metaData: PropTypes.object,
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            policy: props.policy,
+        };
+    }
+
+    shouldComponentUpdate(nextProps) {
+        const isPolicyTypesChanged = this.props.policyTypes !== nextProps.policyTypes;
+        const isObjectTypesChanged = this.props.objectTypes !== nextProps.objectTypes;
+        const isErrorsChanged = this.props.errors !== nextProps.errors;
+        const isMetaDataChanged = this.props.metaData !== nextProps.metaData;
+
+        return isPolicyTypesChanged || isObjectTypesChanged || isErrorsChanged || isMetaDataChanged;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(this.props.policy, nextProps.policy)) {
+            this.setState({ policy: nextProps.policy });
+        }
+    }
+
+    setPolicyProperty = (key, value) => {
+        const policy = {
+            ...this.state.policy,
+            [key]: value
+        };
+
+        this.setState({ policy }, () => {
+            this.props.setPolicyProperty(key, value);
+        });
+    }
 
     mapTypes = (types) => {
         return types.map(type => ({ value: type, title: type }))
@@ -55,8 +89,8 @@ class Configuration extends React.PureComponent {
     };
 
     render() {
-        const { getPolicyProperty, setPolicyProperty, policyTypes, objectTypes, errors, metaData } = this.props;
-        const object_type = getPolicyProperty('object_type');
+        const { policyTypes, objectTypes, errors, metaData } = this.props;
+        const object_type = this.state.object_type;
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -72,10 +106,11 @@ class Configuration extends React.PureComponent {
                         id="name"
                         name="name"
                         placeholder={ls('POLICY_NAME_PLACEHOLDER', 'Имя')}
-                        value={getPolicyProperty('name')}
-                        onChange={event => setPolicyProperty('name', _.get(event, 'target.value'))}
+                        value={_.get(this.state.policy, 'name')}
+                        onChange={value => this.setPolicyProperty('name', value)}
                         valid={errors && _.isEmpty(errors.name)}
                         maxLength={255}
+                        errorMessage={_.get(errors, 'name.title')}
                     />
                 </Field>
                 <Field
@@ -89,10 +124,11 @@ class Configuration extends React.PureComponent {
                         id="object"
                         type="select"
                         placeholder={ls('POLICY_OBJECT_TYPE_PLACEHOLDER', 'Тип объекта')}
-                        value={getPolicyProperty('object_type') || undefined}
+                        value={_.get(this.state.policy, 'object_type') || ''}
                         options={this.mapObjectTypes(objectTypes)}
-                        onChange={value => setPolicyProperty('object_type', value, true)}
-                        valid={errors && _.isEmpty(errors.objectType)}
+                        onChange={value => this.setPolicyProperty('object_type', value, true)}
+                        valid={errors && _.isEmpty(errors.object_type)}
+                        errorMessage={_.get(errors, 'object_type.title')}
                     />
                 </Field>
                 <Field
@@ -107,9 +143,10 @@ class Configuration extends React.PureComponent {
                         type="select"
                         placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Функция агрегации')}
                         options={this.mapTypes(policyTypes)}
-                        value={getPolicyProperty('policy_type') || undefined}
-                        onChange={policy_type => setPolicyProperty('policy_type', policy_type)}
+                        value={_.get(this.state.policy, 'policy_type') || ''}
+                        onChange={policy_type => this.setPolicyProperty('policy_type', policy_type)}
                         valid={errors && _.isEmpty(errors.policy_type)}
+                        errorMessage={_.get(errors, 'policy_type.title')}
                     />
                 </Field>
 
@@ -128,10 +165,11 @@ class Configuration extends React.PureComponent {
                                     name="rise_duration"
                                     placeholder="0"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_duration'))}
-                                    value={this.getSeconds(getPolicyProperty('threshold.rise_duration'))}
+                                    value={this.getSeconds(_.get(this.state.policy, 'threshold.rise_duration', ''))}
                                     onKeyPress={this.validateNumKey}
-                                    onChange={event => setPolicyProperty('threshold.rise_duration', this.getMilliSeconds(_.get(event, 'currentTarget.value')))}
+                                    onChange={value => this.setPolicyProperty('threshold.rise_duration', this.getMilliSeconds(value))}
                                     maxLength={6}
+                                    errorMessage={_.get(errors, 'threshold.rise_duration.title')}
                                 />
                                 <span style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
                             </div>
@@ -152,10 +190,11 @@ class Configuration extends React.PureComponent {
                                     name="rise_value"
                                     placeholder="0"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_value'))}
-                                    value={this.getSeconds(getPolicyProperty('threshold.rise_value'))}
+                                    value={this.getSeconds(_.get(this.state.policy, 'threshold.rise_value', ''))}
                                     onKeyPress={this.validateNumKey}
-                                    onChange={event => setPolicyProperty('threshold.rise_value', this.getMilliSeconds(_.get(event, 'currentTarget.value')))}
+                                    onChange={value => this.setPolicyProperty('threshold.rise_value', this.getMilliSeconds(value))}
                                     maxLength={6}
+                                    errorMessage={_.get(errors, 'threshold.rise_value.title')}
                                 />
                                 <span style={unitStyle}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
                             </div>
@@ -175,15 +214,14 @@ class Configuration extends React.PureComponent {
                         id="message"
                         type="textarea"
                         placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Текст сообщения')}
-                        value={getPolicyProperty('notification_template')}
-                        onChange={(event) => {
-                            setPolicyProperty('notification_template', _.get(event, 'target.value'))
-                        }}
+                        value={_.get(this.state.policy, 'notification_template')}
+                        onChange={value => this.setPolicyProperty('notification_template', value)}
                         rows={5}
+                        errorMessage={_.get(errors, 'notification_template.title')}
                     />
                 </Field>
             </Panel>
-        )
+        );
     }
 }
 

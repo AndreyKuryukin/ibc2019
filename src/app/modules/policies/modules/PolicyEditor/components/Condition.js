@@ -174,7 +174,7 @@ class Condition extends React.PureComponent {
                         name="maxInterval"
                         placeholder="0"
                         value={this.getSeconds(this.getConditionProperty('conditionDuration'))}
-                        onChange={event => this.setConditionProperty('conditionDuration', this.getMilliSeconds(_.get(event, 'target.value', '')), true)}
+                        onChange={value => this.setConditionProperty('conditionDuration', this.getMilliSeconds(value), true)}
                         valid={errors && _.isEmpty(errors.conditionDuration)}
                         onKeyPress={this.validateNumKey}
                         maxLength={6}

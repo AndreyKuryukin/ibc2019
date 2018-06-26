@@ -167,7 +167,7 @@ class RoleEditor extends React.PureComponent {
                                     <Input
                                         id="name"
                                         value={role.name || ''}
-                                        onChange={event => this.setRoleProperty('name', event.currentTarget.value)}
+                                        onChange={value => this.setRoleProperty('name', value)}
                                         valid={errors && _.isEmpty(errors.name)}
                                         errorMessage={_.get(errors, 'name.title')}
                                         placeholder={ls('NEW_ROLE_NAME_PLACEHOLDER', 'Имя роли')}
@@ -207,7 +207,7 @@ class RoleEditor extends React.PureComponent {
                                 <Input
                                     type="textarea"
                                     value={role.description || ''}
-                                    onChange={event => this.setRoleProperty('description', event.currentTarget.value)}
+                                    onChange={value => this.setRoleProperty('description', value)}
                                     rows={6}
                                     placeholder={ls('ROLE_COMMENT_PLACEHOLDER', 'Описание')}
                                     maxLength={255}

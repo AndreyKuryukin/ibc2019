@@ -90,7 +90,7 @@ class Conjunction extends React.PureComponent {
         };
         if (paramCfg.type === 'enum' && _.isArray(paramCfg.values)) {
             params.options = paramCfg.values.map(v => ({ title: v, value: v }));
-            params.onChange = (value) => this.setConjunctionProperty('value', value)
+            params.onChange = value => this.setConjunctionProperty('value', value)
         } else {
             params.type = 'text';
             params.onChange = (event) => this.setConjunctionProperty('value', _.get(event, 'currentTarget.value'));

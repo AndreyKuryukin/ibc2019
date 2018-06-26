@@ -46,7 +46,7 @@ class BasicParams extends React.PureComponent {
                         <div className={styles.displayField}>{_.get(config, 'name')}</div> : <Input
                             id="name"
                             value={_.get(config, 'name')}
-                            onChange={event => this.props.onChange('name', event.currentTarget.value)}
+                            onChange={value => this.props.onChange('name', value)}
                             valid={errors && _.isEmpty(errors.name)}
                             disabled={disabled}
                             maxLength={255}
