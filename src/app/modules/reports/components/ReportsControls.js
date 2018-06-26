@@ -1,9 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'reactstrap'
 import ls from 'i18n';
-import _ from 'lodash';
 import Icon from "../../../components/Icon/Icon";
+import Input from "../../../components/Input";
 
 import styles from './styles.scss';
 
@@ -25,8 +24,8 @@ class ReportsControls extends React.PureComponent {
         this.context.history.push('/reports/add');
     };
 
-    onSearchTextChange = (event) => {
-        this.props.onSearchTextChange(_.get(event, 'currentTarget.value'));
+    onSearchTextChange = (searchText) => {
+        this.props.onSearchTextChange(searchText);
     };
 
     render() {

@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Button, Input } from 'reactstrap';
+import { Button } from 'reactstrap';
 
 import styles from './styles.scss';
 import ls from "i18n";
 import Icon from "../../../components/Icon/Icon";
+import Input from "../../../components/Input";
 import Dropdown from "../../../components/Dropdown";
 
 class RolesControls extends React.PureComponent {
@@ -27,19 +28,22 @@ class RolesControls extends React.PureComponent {
 
     constructor(props) {
         super(props);
-        this.state = {}
+
+        this.state = {
+            removeConfirmOpen: false,
+        };
     }
 
     onAdd = () => {
         this.context.history.push('/users-and-roles/roles/add');
     };
 
-    onSearchTextChange = (event) => {
-        this.props.onSearchTextChange(event.currentTarget.value)
+    onSearchTextChange = (searchText) => {
+        this.props.onSearchTextChange(searchText);
     };
 
     triggerDelete = () => {
-        this.setState({ removeConfirmOpen: !this.state.removeConfirmOpen })
+        this.setState({ removeConfirmOpen: !this.state.removeConfirmOpen });
     };
 
     onRemove = () => {

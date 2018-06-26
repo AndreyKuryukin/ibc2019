@@ -17,10 +17,12 @@ const propTypes = {
     addon: PropTypes.bool,
     className: PropTypes.string,
     cssModule: PropTypes.object,
+    value: PropTypes.string,
 };
 
 const defaultProps = {
     type: 'text',
+    value: '',
 };
 
 const style = {
@@ -28,6 +30,27 @@ const style = {
 };
 
 class Input extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: props.value,
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.value !== nextProps.value) {
+            this.setState({ value: nextProps.value });
+        }
+    }
+
+    onChange = (e) => {
+        const value = e.target.value;
+        this.setState({ value }, () => {
+            this.props.onChange(value);
+        });
+    };
+
     render() {
         let {
             className,
@@ -96,7 +119,13 @@ class Input extends React.Component {
         return (
             <div style={style} className={className}>
                 {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}
-            <Tag {...attributes} ref={innerRef} className={classes} />
+            <Tag
+                {...attributes}
+                value={this.state.value}
+                ref={innerRef}
+                className={classes}
+                onChange={this.onChange}
+            />
             </div>
         );
     }

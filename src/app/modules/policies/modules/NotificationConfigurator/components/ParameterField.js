@@ -64,8 +64,7 @@ class ParameterField extends React.Component {
         return isValueChanged || isErrorChange || isErrorsChanged;
     }
 
-    onChangeInput = (e) => {
-        const value = _.get(e, 'target.value', '');
+    onChangeInput = (value) => {
         this.props.onChange(value);
 
         if (value) {

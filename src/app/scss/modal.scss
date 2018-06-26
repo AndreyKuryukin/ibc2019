@@ -19,6 +19,12 @@
     margin: 0;
     padding: 0;
   }
+  .modal-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    padding: 2px 0;
+  }
 }
 
 .modal-body {

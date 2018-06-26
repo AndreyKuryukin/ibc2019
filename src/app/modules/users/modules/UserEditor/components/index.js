@@ -150,8 +150,7 @@ class UserEditor extends React.Component {
         this.setState({ showTooltipFor: null });
     };
 
-    onChangePhone = (e) => {
-        const value = e.target.value;
+    onChangePhone = (value) => {
         const reg = new RegExp(/^([0-9]){0,11}$/);
 
         if (reg.test(value)) {
@@ -172,7 +171,9 @@ class UserEditor extends React.Component {
         return (
             <Modal
                 isOpen={active}
-                title={userId ? ls('USER_EDIT_USER', 'Редактирование пользователя') : ls('USER_ADD_USER', 'Создание пользователя')}
+                title={userId
+                    ? ls('USER_EDIT_USER', `Редактирование пользователя ${_.get(this.props.user, 'login', '')}`)
+                    : ls('USER_ADD_USER', 'Создание пользователя')}
                 onClose={this.onClose}
                 onSubmit={this.onSubmit}
                 className={styles.userEditor}
@@ -236,7 +237,7 @@ class UserEditor extends React.Component {
                                         id="login"
                                         name="login"
                                         value={this.getUserProperty('login', '')}
-                                        onChange={event => this.setUserProperty('login', _.get(event, 'target.value'))}
+                                        onChange={value => this.setUserProperty('login', value)}
                                         valid={errors && _.isEmpty(errors.login)}
                                         errorMessage={_.get(errors, 'login.title')}
                                     />
@@ -253,7 +254,7 @@ class UserEditor extends React.Component {
                                         name="password"
                                         type="password"
                                         value={this.getUserProperty('password', '')}
-                                        onChange={event => this.setUserProperty('password', _.get(event, 'target.value'))}
+                                        onChange={value => this.setUserProperty('password', value)}
                                         onClick={this.onPasswordClick}
                                         onKeyDown={this.onPasswordKeyDown}
                                         onFocus={this.onPasswordFocus}
@@ -277,7 +278,7 @@ class UserEditor extends React.Component {
                                         name="confirm"
                                         type="password"
                                         value={this.getUserProperty('confirm', '')}
-                                        onChange={event => this.setUserProperty('confirm', _.get(event, 'target.value'))}
+                                        onChange={value => this.setUserProperty('confirm', value)}
                                         onClick={this.onPasswordClick}
                                         onKeyDown={this.onPasswordKeyDown}
                                         onFocus={this.onPasswordFocus}
@@ -300,7 +301,7 @@ class UserEditor extends React.Component {
                                         id="email"
                                         name="email"
                                         value={this.getUserProperty('email', '')}
-                                        onChange={event => this.setUserProperty('email', _.get(event, 'target.value'))}
+                                        onChange={value => this.setUserProperty('email', value)}
                                         valid={errors && _.isEmpty(errors.email)}
                                         errorMessage={_.get(errors, 'email.title')}
                                     />
@@ -315,7 +316,7 @@ class UserEditor extends React.Component {
                                         id="name"
                                         name="name"
                                         value={this.getUserProperty('first_name', '')}
-                                        onChange={event => this.setUserProperty('first_name', _.get(event, 'target.value'))}
+                                        onChange={value => this.setUserProperty('first_name', value)}
                                     />
                                 </Field>
                                 <Field
@@ -328,7 +329,7 @@ class UserEditor extends React.Component {
                                         id="last-name"
                                         name="last-name"
                                         value={this.getUserProperty('last_name', '')}
-                                        onChange={event => this.setUserProperty('last_name', _.get(event, 'target.value'))}
+                                        onChange={value => this.setUserProperty('last_name', value)}
                                     />
                                 </Field>
                                 <Field

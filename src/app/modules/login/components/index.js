@@ -42,9 +42,9 @@ class Login extends React.PureComponent {
         this.props.onSubmit(login, password);
     };
 
-    inputValue = (event, valuePath) => {
+    inputValue = (value, valuePath) => {
         const errors = _.omit({ ...this.state.errors }, valuePath);
-        this.setState({ [valuePath]: _.get(event, 'currentTarget.value'), errors }, () => {
+        this.setState({ [valuePath]: value, errors }, () => {
             this.props.onInput();
         });
     };
@@ -68,7 +68,7 @@ class Login extends React.PureComponent {
                         <Input
                             value={this.state.login}
                             placeholder={ls('LOGIN_LOGIN', 'Логин')}
-                            onChange={event => this.inputValue(event, 'login')}
+                            onChange={value => this.inputValue(value, 'login')}
                             valid={_.isEmpty(errors.login)}
                         />
 
@@ -77,7 +77,7 @@ class Login extends React.PureComponent {
                             id="password"
                             value={this.state.password}
                             placeholder={ls('LOGIN_PASSWD', 'Пароль')}
-                            onChange={(event) => this.inputValue(event, 'password')}
+                            onChange={value => this.inputValue(value, 'password')}
                             valid={_.isEmpty(errors.password)}
                         />
 

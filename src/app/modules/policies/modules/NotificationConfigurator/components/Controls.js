@@ -76,11 +76,12 @@ class Controls extends React.PureComponent {
         const { selectedAdapter, selectedInstance } = this.state;
         const instanceOptions = this.getInstancesOptions(this.state.selectedAdapter);
         const isAddButtonDisabled = selectedConfigsKeys.includes(`${selectedAdapter}_${selectedInstance}`)
-            || (instanceOptions.length > 0 && !selectedInstance);
+            || (instanceOptions.length > 0 && !selectedInstance) || !selectedAdapter;
 
         return (
             <div className={styles.configsControls}>
                 <Icon
+                    title={ls('POLICIES_NOTIFICATIONS_ADD_ADAPTER', 'Добавить адаптер')}
                     icon="addIcon"
                     disabled={isAddButtonDisabled}
                     onClick={this.onAddConfig}

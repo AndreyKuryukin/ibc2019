@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
-
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
@@ -100,9 +99,8 @@ class Configurator extends React.PureComponent {
         }
     };
 
-    onChangeLevel = (e) => {
-        const value = e.target.value;
-        const isValidValue = e.target.value === '-' || !isNaN(+e.target.value);
+    onChangeLevel = (value) => {
+        const isValidValue = value === '-' || !isNaN(+value);
 
         if (value.length <= 21 && isValidValue) {
             this.setConfigProperty('level', value);
@@ -145,7 +143,7 @@ class Configurator extends React.PureComponent {
                 >
                     <ModalHeader
                         className="handle"
-                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI')}</ModalHeader>
+                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', `Конфигурация KQI ${_.get(this.props.config, 'name', '')}`)}</ModalHeader>
                     <ModalBody>
                         <div className={styles.configuratorContent}>
                             <Field
@@ -159,7 +157,7 @@ class Configurator extends React.PureComponent {
                                     id="name"
                                     disabled={disableForm}
                                     value={config.name}
-                                    onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
+                                    onChange={value => this.setConfigProperty('name', value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     placeholder={ls('KQI_CONFIGURATOR_NAME_PLACEHOLDER', 'Название')}
                                     maxLength={255}

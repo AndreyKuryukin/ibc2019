@@ -45,7 +45,7 @@ class Policies extends React.Component {
     }
 
     componentDidMount() {
-        if (typeof this.props.onMount === 'function') {
+        if (typeof this.props.fetchPolicies === 'function') {
             this.props.fetchPolicies();
         }
     }

@@ -127,7 +127,7 @@ class PolicyEditor extends React.PureComponent {
         this.setState({ metaData: {} }, () => {
             this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
-        return policy
+        return policy;
     };
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
@@ -136,7 +136,7 @@ class PolicyEditor extends React.PureComponent {
         const policyValues = _.set({}, key, value);
         let prevPolicy = _.cloneDeep(this.state.policy);
         if (key === 'object_type') {
-            prevPolicy = this.handleObjectTypeChange(prevPolicy, value)
+            prevPolicy = this.handleObjectTypeChange(prevPolicy, value);
         }
         if (key === 'policy_type') {
             prevPolicy = this.handlePolicyTypeChange(prevPolicy, value);
@@ -155,9 +155,9 @@ class PolicyEditor extends React.PureComponent {
                 if (_.isArray(srcValue)) {
                     return srcValue;
                 } else if (_.isObject(srcValue)) {
-                    return _.merge(objValue, srcValue)
+                    return _.merge(objValue, srcValue);
                 } else {
-                    return srcValue
+                    return srcValue;
                 }
             }
         );
@@ -165,7 +165,7 @@ class PolicyEditor extends React.PureComponent {
         this.setState({
             errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : this.state.errors,
         }, () => {
-            this.props.updatePolicy(policy)
+            this.props.updatePolicy(policy);
         });
     };
 
@@ -217,7 +217,7 @@ class PolicyEditor extends React.PureComponent {
         const { policy, errors, metaData } = this.state;
         const object_type = _.get(policy, 'object_type');
         const modalTitle = policyId
-            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
+            ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
             <DraggableWrapper>
@@ -231,7 +231,6 @@ class PolicyEditor extends React.PureComponent {
                             <div className={styles.policyEditorContent}>
                                 <div className={styles.policyEditorColumn}>
                                     <Configuration
-                                        getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
                                         setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
                                         policyTypes={policyTypes}
                                         objectTypes={objectTypes}
@@ -290,7 +289,7 @@ class PolicyEditor extends React.PureComponent {
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_duration'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
                                                             onKeyPress={this.validateNumKey}
-                                                            onChange={event => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                            onChange={value => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(value))}
                                                             maxLength={6}
                                                         />
                                                         <span
@@ -315,7 +314,7 @@ class PolicyEditor extends React.PureComponent {
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
                                                             onKeyPress={this.validateNumKey}
-                                                            onChange={event => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                            onChange={value => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(value))}
                                                             maxLength={6}
                                                         />
                                                         <span
@@ -408,7 +407,7 @@ class PolicyEditor extends React.PureComponent {
                                                     name="waiting-time"
                                                     placeholder="0"
                                                     value={this.getPolicyProperty('waiting_time')}
-                                                    onChange={event => this.setPolicyProperty('waiting_time', _.get(event, 'target.value'))}
+                                                    onChange={value => this.setPolicyProperty('waiting_time', value)}
                                                     disabled={!this.getPolicyProperty('allow_accident')}
                                                     onKeyPress={this.validateNumKey}
                                                     maxLength={6}

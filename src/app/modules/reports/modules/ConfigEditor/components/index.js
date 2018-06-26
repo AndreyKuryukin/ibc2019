@@ -20,6 +20,8 @@ import styles from './styles.scss';
 //     title: 'XLS'
 // }];
 
+const panelStyle = { height: 250 };
+const panelBodyStyle = { padding: 0 };
 
 const REGULARITY_MAP = {
     'WEEK': ls('WEEKLY', 'Еженедельный'),
@@ -215,7 +217,7 @@ class ConfigEditor extends React.PureComponent {
                                                 id="config-name"
                                                 name="config-name"
                                                 value={this.getConfigProperty('name')}
-                                                onChange={event => this.setConfigProperty('name', _.get(event, 'target.value'))}
+                                                onChange={value => this.setConfigProperty('name', value)}
                                                 valid={!_.get(errors, 'name.title', false)}
                                                 errorMessage={_.get(errors, 'name.title')}
                                             />
@@ -232,7 +234,8 @@ class ConfigEditor extends React.PureComponent {
                                         labelText={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD', 'Шаблон')}
                                         labelWidth="30%"
                                         inputWidth="70%"
-                                        required>
+                                        required
+                                    >
                                         <Select
                                             id="template-id"
                                             options={this.mapTemplateOptions(templates)}
@@ -296,15 +299,15 @@ class ConfigEditor extends React.PureComponent {
                                     <Input
                                         type="textarea"
                                         value={this.getConfigProperty('comment')}
-                                        onChange={event => this.setConfigProperty('comment', _.get(event, 'target.value'))}
+                                        onChange={value => this.setConfigProperty('comment', value)}
                                         rows={6}
                                     />
                                 </Panel></div>
                             <div className={styles.configEditorColumn}>
                                 <Panel
                                     title={ls('REPORTS_CONFIG_EDITOR_NOTIFY_USERS_TITLE', 'Рассылка для')}
-                                    style={{ height: 250 }}
-                                    bodyStyle={{ padding: 0 }}
+                                    style={panelStyle}
+                                    bodyStyle={panelBodyStyle}
                                 >
                                     <UsersGrid
                                         usersData={this.props.users}
