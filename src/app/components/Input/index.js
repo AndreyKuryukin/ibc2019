@@ -43,7 +43,7 @@ class Input extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.value !== nextProps.value) {
+        if (this.state.value !== nextProps.value) {
             this.setState({ value: nextProps.value });
         }
     }
@@ -54,9 +54,11 @@ class Input extends React.Component {
         const isValidValue = type !== 'number' || ((value === '-' && allowNegative) || !isNaN(+value));
 
         if (isValidValue) {
-            this.setState({ value }, () => {
+            if (typeof this.props.onChange === 'function') {
                 this.props.onChange(value);
-            });
+            } else {
+                this.setState({ value });
+            }
         }
     };
 

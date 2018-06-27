@@ -160,6 +160,7 @@ class Calculator extends React.PureComponent {
     );
 
     composeConfigName = (config) => {
+        debugger;
         const ENTITY_NAME_MAP = {
             'period.regularity': period,
             location: this.props.locationsList,
@@ -191,8 +192,7 @@ class Calculator extends React.PureComponent {
                 }
                 return itemName !== undefined ? itemName : id;
             };
-            if (value) {
-                console.log(fieldName, ': ', value);
+            if (!_.isEmpty(value)) {
                 if (_.isArray(value)) {
                     if (nameMap) {
                         const names = value.map(id => getNameById(nameMap, id));
