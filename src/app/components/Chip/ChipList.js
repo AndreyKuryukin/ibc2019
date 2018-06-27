@@ -21,7 +21,7 @@ class ChipList extends React.PureComponent {
         placeholder: PropTypes.string,
         options: PropTypes.arrayOf(PropTypes.shape({
             title: PropTypes.string,
-            value: PropTypes.oneOfType(PropTypes.string, PropTypes.number)
+            value: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
         }))
     };
 

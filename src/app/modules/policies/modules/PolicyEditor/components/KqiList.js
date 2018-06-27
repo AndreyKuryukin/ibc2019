@@ -11,10 +11,10 @@ class KqiList extends React.PureComponent {
         separator: PropTypes.string,
         onChange: PropTypes.func,
         kqiList: PropTypes.arrayOf(PropTypes.shape({
-            id: PropTypes.oneOfType(PropTypes.string, PropTypes.number).isRequired,
+            id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
             name: PropTypes.string
         })),
-        selected: PropTypes.arrayOf(PropTypes.oneOfType(PropTypes.string, PropTypes.number))
+        selected: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number]))
     };
 
     static defaultProps = {
