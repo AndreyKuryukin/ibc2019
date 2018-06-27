@@ -160,7 +160,6 @@ class Calculator extends React.PureComponent {
     );
 
     composeConfigName = (config) => {
-        debugger;
         const ENTITY_NAME_MAP = {
             'period.regularity': period,
             location: this.props.locationsList,

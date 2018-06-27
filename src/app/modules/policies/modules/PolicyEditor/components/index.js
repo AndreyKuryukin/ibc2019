@@ -344,8 +344,8 @@ class PolicyEditor extends React.PureComponent {
                                     >
                                         <Checkbox
                                             id="exclude-tv"
-                                            checked={this.getPolicyProperty('exclude_tv')}
-                                            onChange={value => this.setPolicyProperty('exclude_tv', value)}
+                                            checked={this.getPolicyProperty('channel_suppression')}
+                                            onChange={value => this.setPolicyProperty('channel_suppression', value)}
                                         />
                                     </Field>}
                                     {
