@@ -33,6 +33,14 @@ class ConnectedChart extends React.Component {
                 }
             }
         });
+
+        this.chart.container.addEventListener('mouseout', () => {
+            const chart = getOppositeChart();
+
+            if (chart !== undefined) {
+                chart.tooltip.hide();
+            }
+        });
     }
 
     render() {

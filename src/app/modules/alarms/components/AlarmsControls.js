@@ -1,22 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input, Button } from 'reactstrap';
+import { Button } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
 import memoize from 'memoizejs';
+import XLSX from 'xlsx';
 import Field from '../../../components/Field';
+import Input from '../../../components/Input';
 import Select from '../../../components/Select';
 import Checkbox from '../../../components/Checkbox';
 import DatePicker from '../../../components/LabeledDateTimePicker';
 import Dropdown from '../../../components/Dropdown';
 import styles from './styles.scss';
 
-const filterControlStyle = {
-    marginLeft: 10,
+const firstControlStyle = {
+    padding: '2.5px',
+};
+
+const secondControlStyle = {
+    padding: '2.5px',
     marginTop: 0,
 };
 
-class AlarmsControls extends React.PureComponent {
+class AlarmsControls extends React.Component {
     static propTypes = {
         onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
@@ -29,12 +35,14 @@ class AlarmsControls extends React.PureComponent {
             current: PropTypes.bool,
             historical: PropTypes.bool,
         }),
+        displayedData: PropTypes.array,
     };
 
     static defaultProps = {
         onChangeFilter: () => null,
         onApplyFilter: () => null,
         locations: [],
+        displayedData: [],
         filter: null,
     };
 
@@ -48,6 +56,43 @@ class AlarmsControls extends React.PureComponent {
         };
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        const isFilterChanged = this.props.filter !== nextProps.filter;
+        const isLocationsChanged = this.props.locations !== nextProps.locations;
+        const isOnChangeFilterChanged = this.props.onChangeFilter !== nextProps.onChangeFilter;
+        const isOnApplyFilterChanged = this.props.onApplyFilter !== nextProps.onApplyFilter;
+        const isHistoricalConfirmOpenChanged = this.state.isHistoricalConfirmOpen !== nextState.isHistoricalConfirmOpen;
+
+        return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
+    }
+
+    formAndLoadXLSX = () => {
+        const workbook = XLSX.utils.book_new();
+        const worksheetCols = [
+            { wpx: 250 },
+            { wpx: 250 },
+            { wpx: 300 },
+            { wpx: 220 },
+            { wpx: 150 },
+            { wpx: 150 },
+            { wpx: 150 },
+            { hidden: true },
+        ];
+        var worksheet = XLSX.utils.json_to_sheet(this.props.displayedData);
+        const range = XLSX.utils.decode_range(worksheet['!ref']);
+        worksheet['!cols'] = worksheetCols;
+        for (let col = range.s.c; col <= range.e.c; ++col) {
+            var address = XLSX.utils.encode_col(col) + '1';
+            worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
+        }
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
+
+        XLSX.writeFile(workbook, 'Alarms.xlsx', {
+            type: 'base64',
+            bookType: 'xlsx',
+        });
+    }
+
     getFilterProperty = (key, defaultValue) => _.get(this.props.filter, key, defaultValue);
     setFilterProperty = (property, value) => {
         const { filter } = this.props;
@@ -55,6 +100,11 @@ class AlarmsControls extends React.PureComponent {
             ...filter,
             [property]: value,
         };
+
+        if (property === 'mrf') {
+            _.set(newFilter, 'rf', '');
+        }
+
         this.props.onChangeFilter(newFilter);
     };
 
@@ -74,8 +124,8 @@ class AlarmsControls extends React.PureComponent {
         this.props.onApplyFilter(this.props.filter);
     };
 
-    onSearchTextChange = (event) => {
-        this.setFilterProperty('searchText', _.get(event, 'currentTarget.value', ''));
+    onSearchTextChange = (value) => {
+        this.setFilterProperty('searchText', value);
     };
 
     onTriggerHistoricalDropdown = () => {
@@ -96,6 +146,7 @@ class AlarmsControls extends React.PureComponent {
                             onChange={value => this.setFilterProperty('start', value)}
                             format={'DD.MM.YYYY HH:mm'}
                             time
+                            style={firstControlStyle}
                         />
                         <DatePicker
                             title={ls('ALARMS_END_FILTER', 'по')}
@@ -103,9 +154,9 @@ class AlarmsControls extends React.PureComponent {
                             value={this.getFilterProperty('end')}
                             inputWidth={115}
                             onChange={value => this.setFilterProperty('end', value)}
-                            style={filterControlStyle}
                             format={'DD.MM.YYYY HH:mm'}
                             time
+                            style={secondControlStyle}
                         />
                     </div>
                     <div className={styles.alarmsFilterGroup}>
@@ -113,7 +164,9 @@ class AlarmsControls extends React.PureComponent {
                             id="mrf-filter"
                             labelText={ls('ALARMS_MRF_FILTER', 'Фильтр по МРФ')}
                             inputWidth={150}
+                            labelWidth={120}
                             splitter=""
+                            style={firstControlStyle}
                         >
                             <Select
                                 id="mrf-filter"
@@ -127,8 +180,9 @@ class AlarmsControls extends React.PureComponent {
                             id="region-filter"
                             labelText={ls('ALARMS_REGION_FILTER', 'Фильтр по региону')}
                             inputWidth={150}
+                            labelWidth={120}
                             splitter=""
-                            style={filterControlStyle}
+                            style={secondControlStyle}
                         >
                             <Select
                                 id="region-filter"
@@ -146,6 +200,7 @@ class AlarmsControls extends React.PureComponent {
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
+                            style={firstControlStyle}
                         >
                             <Checkbox
                                 id="current-checkbox-filter"
@@ -159,7 +214,7 @@ class AlarmsControls extends React.PureComponent {
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
-                            style={filterControlStyle}
+                            style={secondControlStyle}
                         >
                             <Dropdown
                                 isOpen={this.state.isHistoricalConfirmOpen}
@@ -191,9 +246,18 @@ class AlarmsControls extends React.PureComponent {
                             </Dropdown>
                         </Field>
                     </div>
-                    <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                        {ls('ALARMS_APPLY_FILTER', 'ОК')}
-                    </Button>
+                    <div className={styles.alarmsFilterGroup}>
+                        <div style={firstControlStyle}>
+                            <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
+                                {ls('ALARMS_APPLY_FILTER', 'Применить')}
+                            </Button>
+                        </div>
+                        <div style={secondControlStyle}>
+                            <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
+                                {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
+                            </Button>
+                        </div>
+                    </div>
                 </div>
                 <Input
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}

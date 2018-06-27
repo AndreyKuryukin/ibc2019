@@ -2,10 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import MacroMap from './MacroMap/MacroMap';
 import MicroMap from './MicroMap/MicroMap';
+import {MACRO_RF_ID} from '../../constants';
 
 class RussianMap extends React.PureComponent {
     static propTypes = {
-        mrfId: PropTypes.string,
+        mrfId: PropTypes.string.isRequired,
         type: PropTypes.string.isRequired,
         plan: PropTypes.number,
         kqi: PropTypes.objectOf(PropTypes.number).isRequired,
@@ -15,7 +16,7 @@ class RussianMap extends React.PureComponent {
     render() {
         const { mrfId, type, plan, kqi, buildLink } = this.props;
 
-        if (mrfId === undefined) {
+        if (mrfId === MACRO_RF_ID) {
             return (
                 <MacroMap
                     plan={plan}

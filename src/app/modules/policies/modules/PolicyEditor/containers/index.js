@@ -128,7 +128,6 @@ class PolicyEditor extends React.PureComponent {
 
     composeConjunctionString = (object) => {
         let { parameterType = '', operator = '', value = '' } = object;
-        value = isNaN(Number(value)) ? `'${value}'` : Number(value);
         const conjString = `${parameterType} ${operator} ${value}`;
         return conjString.trim();
     };
@@ -168,7 +167,9 @@ class PolicyEditor extends React.PureComponent {
                 });
             })
             .catch((e) => {
+                this.setState({ loading: false });
                 console.error(e);
+                this.setState({ loading: false });
             });
     };
 
@@ -289,7 +290,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     onSubmit = (policyId, policyData) => {
-        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData));
+        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData));
         if (_.isEmpty(errors)) {
             const submit = policyId ? rest.put : rest.post;
             const success = (response) => {

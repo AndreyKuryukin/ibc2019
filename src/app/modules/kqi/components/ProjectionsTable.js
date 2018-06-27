@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import ls from 'i18n';
-import moment from 'moment';
 import { createSelector } from 'reselect';
 import memoize from 'memoizejs';
 import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells';
 import styles from './styles.scss';
-import { DATE, DATE_TIME } from '../../../costants/date';
+import { DATE_TIME } from '../../../costants/date';
 import _ from "lodash";
 import Table from "../../../components/Table/index";
 
@@ -53,6 +52,7 @@ export class ProjectionsTable extends React.PureComponent {
         name: 'author',
         searchable: true,
         sortable: true,
+        width: 80
     }, {
         title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество'),
         name: 'count',
@@ -73,18 +73,10 @@ export class ProjectionsTable extends React.PureComponent {
         title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
         name: 'auto',
         width: 110,
-    }, {
-        title: ls('KQI_GRAPH_COLUMN_TITLE', 'График'),
-        name: 'graph',
-        width: 60,
     }, ...(hasEditAccess ? [{
         title: '',
         name: 'edit',
         width: 40,
-    }, {
-        title: '',
-        name: 'delete',
-        width: 25,
     }] : [])]);
 
 
@@ -165,7 +157,7 @@ export class ProjectionsTable extends React.PureComponent {
             case 'status':
                 return (
                     <IconCell
-                        cellStyle={{justifyContent: 'center'}}
+                        cellStyle={{ justifyContent: 'center', margin: '0 auto' }}
                         icon={`icon-state-${node.status.toLowerCase()}`}
                         iconProps={{ title: ls(`KQI_STATUS_${node.status.toUpperCase()}`) }}
                     />

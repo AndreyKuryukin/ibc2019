@@ -29,6 +29,14 @@ class AlarmsContent extends React.PureComponent {
         isLoading: false,
     };
 
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            displayedData: [],
+        };
+    };
+
     componentDidMount() {
         this.props.onFetchAlarms(this.props.filter);
     }
@@ -36,6 +44,10 @@ class AlarmsContent extends React.PureComponent {
     onApplyFilter = () => {
         this.props.onFetchAlarms(this.props.filter);
     };
+
+    onDisplayedDataChanged = (displayedData) => {
+        this.setState({ displayedData });
+    }
 
     render() {
         const {
@@ -58,12 +70,14 @@ class AlarmsContent extends React.PureComponent {
                     onChangeFilter={onChangeFilter}
                     onApplyFilter={this.onApplyFilter}
                     locations={locations}
+                    displayedData={this.state.displayedData}
                 />
                 <AlarmsTable
                     type={type}
                     data={data}
                     preloader={isLoading}
                     searchText={_.get(filter, 'searchText', '')}
+                    onDisplayedDataChanged={this.onDisplayedDataChanged}
                 />
                 {isAlarmsViewerActive && <AlarmsViewer alarmId={alarmId} active={isAlarmsViewerActive} type={type} />}
             </div>

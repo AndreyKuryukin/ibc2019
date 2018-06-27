@@ -103,23 +103,31 @@ class PolicyEditor extends React.PureComponent {
     }
 
     handleObjectTypeChange = (prevPolicy, objectType) => {
-        const policy = _.pick(prevPolicy, ['name', 'objectType']);
-        policy['objectType'] = objectType;
+        const policy = _.pick(prevPolicy, ['name', 'object_type']);
+        policy['object_type'] = objectType;
         policy['condition'] = { condition: defaultCondition };
+        if (objectType === 'KQI') {
+            policy['threshold'] = {
+                cease_duration: 0,
+                cease_value: 0,
+                rise_duration: 0,
+                rise_value: 0
+            };
+        }
         this.setState({ metaData: {} }, () => {
-            this.props.fetchPolicyTypes(policy.objectType);
+            this.props.fetchPolicyTypes(policy.object_type);
         });
         return policy;
     };
 
     handlePolicyTypeChange = (prevPolicy, policy_type) => {
-        const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type']);
+        const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type', 'threshold']);
         policy['policy_type'] = policy_type;
         policy['condition'] = { condition: defaultCondition };
         this.setState({ metaData: {} }, () => {
             this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
-        return policy
+        return policy;
     };
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
@@ -128,7 +136,7 @@ class PolicyEditor extends React.PureComponent {
         const policyValues = _.set({}, key, value);
         let prevPolicy = _.cloneDeep(this.state.policy);
         if (key === 'object_type') {
-            prevPolicy = this.handleObjectTypeChange(prevPolicy, value)
+            prevPolicy = this.handleObjectTypeChange(prevPolicy, value);
         }
         if (key === 'policy_type') {
             prevPolicy = this.handlePolicyTypeChange(prevPolicy, value);
@@ -147,9 +155,9 @@ class PolicyEditor extends React.PureComponent {
                 if (_.isArray(srcValue)) {
                     return srcValue;
                 } else if (_.isObject(srcValue)) {
-                    return _.merge(objValue, srcValue)
+                    return _.merge(objValue, srcValue);
                 } else {
-                    return srcValue
+                    return srcValue;
                 }
             }
         );
@@ -157,7 +165,7 @@ class PolicyEditor extends React.PureComponent {
         this.setState({
             errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : this.state.errors,
         }, () => {
-            this.props.updatePolicy(policy)
+            this.props.updatePolicy(policy);
         });
     };
 
@@ -195,20 +203,12 @@ class PolicyEditor extends React.PureComponent {
         this.setPolicyProperty('scope', [...scope, mac])
     };
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
+        const object_type = _.get(policy, 'object_type');
         const modalTitle = policyId
-            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику')
+            ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
             <DraggableWrapper>
@@ -222,7 +222,6 @@ class PolicyEditor extends React.PureComponent {
                             <div className={styles.policyEditorContent}>
                                 <div className={styles.policyEditorColumn}>
                                     <Configuration
-                                        getPolicyProperty={(key, defaultValue) => this.getPolicyProperty(key, defaultValue)}
                                         setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
                                         policyTypes={policyTypes}
                                         objectTypes={objectTypes}
@@ -261,7 +260,7 @@ class PolicyEditor extends React.PureComponent {
                                             />
                                         }
                                     </Panel>
-                                    <Panel
+                                    {object_type !== 'KQI' && <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -276,12 +275,12 @@ class PolicyEditor extends React.PureComponent {
                                                     <div style={{ display: 'flex' }}>
                                                         <Input
                                                             id="cease_duration"
+                                                            type="number"
                                                             name="cease_duration"
                                                             placeholder="0"
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_duration'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
-                                                            onKeyPress={this.validateNumKey}
-                                                            onChange={event => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                            onChange={value => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(value))}
                                                             maxLength={6}
                                                         />
                                                         <span
@@ -301,12 +300,12 @@ class PolicyEditor extends React.PureComponent {
                                                     <div style={{ display: 'flex' }}>
                                                         <Input
                                                             id="cease_value"
+                                                            type="number"
                                                             name="cease_value"
                                                             placeholder="0"
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
-                                                            onKeyPress={this.validateNumKey}
-                                                            onChange={event => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(_.get(event, 'target.value')))}
+                                                            onChange={value => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(value))}
                                                             maxLength={6}
                                                         />
                                                         <span
@@ -315,7 +314,7 @@ class PolicyEditor extends React.PureComponent {
                                                 </Field>}
                                             </div>
                                         </div>
-                                    </Panel>
+                                    </Panel>}
                                 </div>
                                 <div className={styles.policyEditorColumn}>
                                     <Condition
@@ -345,8 +344,8 @@ class PolicyEditor extends React.PureComponent {
                                     >
                                         <Checkbox
                                             id="exclude-tv"
-                                            checked={this.getPolicyProperty('exclude_tv')}
-                                            onChange={value => this.setPolicyProperty('exclude_tv', value)}
+                                            checked={this.getPolicyProperty('channel_suppression')}
+                                            onChange={value => this.setPolicyProperty('channel_suppression', value)}
                                         />
                                     </Field>}
                                     {
@@ -396,12 +395,12 @@ class PolicyEditor extends React.PureComponent {
                                             <div style={{ display: 'flex' }}>
                                                 <Input
                                                     id="waiting-time"
+                                                    type="number"
                                                     name="waiting-time"
                                                     placeholder="0"
                                                     value={this.getPolicyProperty('waiting_time')}
-                                                    onChange={event => this.setPolicyProperty('waiting_time', _.get(event, 'target.value'))}
+                                                    onChange={value => this.setPolicyProperty('waiting_time', value)}
                                                     disabled={!this.getPolicyProperty('allow_accident')}
-                                                    onKeyPress={this.validateNumKey}
                                                     maxLength={6}
                                                 />
                                                 <span

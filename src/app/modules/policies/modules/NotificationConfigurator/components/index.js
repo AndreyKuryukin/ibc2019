@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import classnames from 'classnames';
+
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
-import Icon from '../../../../../components/Icon/Icon';
 import ls from 'i18n';
 import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
@@ -23,6 +23,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static propTypes = {
         active: PropTypes.bool,
+        view: PropTypes.bool,
         adapters: PropTypes.array,
         notifications: PropTypes.array,
         policyName: PropTypes.string,
@@ -34,6 +35,7 @@ class NotificationConfigurator extends React.PureComponent {
 
     static defaultProps = {
         active: false,
+        view: true,
         adapters: [],
         notifications: [],
         policyName: '',
@@ -101,7 +103,7 @@ class NotificationConfigurator extends React.PureComponent {
 
         if (config) {
             const configs = {
-                ..._.omit({...this.state.configs}, `${configId}`),
+                ..._.omit({ ...this.state.configs }, `${configId}`),
                 [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: {
                     ...config,
                     instance_id: instanceId,
@@ -161,7 +163,7 @@ class NotificationConfigurator extends React.PureComponent {
     };
 
     render() {
-        const { active, adapters, policyName, isLoading } = this.props;
+        const { active, adapters, policyName, isLoading, view } = this.props;
         const selectedConfigsKeys = _.keys(this.state.configs);
         return (
             <DraggableWrapper>
@@ -174,8 +176,15 @@ class NotificationConfigurator extends React.PureComponent {
                     </ModalHeader>
                     <ModalBody>
                         <Preloader active={isLoading}>
-                            <div className={styles.notificationConfiguratorContent}>
-                                <div>{`${ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}: ${policyName}`}</div>
+                            <div className={classnames(styles.notificationConfiguratorContent, {[styles.viewMode]: view})}>
+                                <Field
+                                    labelText={ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}
+                                    inputWidth={'80%'}
+                                    labelWidth={'20%'}
+                                >
+                                    <div className={styles.policyNameField} title={policyName}>{policyName}</div>
+                                </Field>
+
                                 <div className={styles.configsWrapper}>
                                     <Controls
                                         adapters={adapters}
@@ -199,8 +208,9 @@ class NotificationConfigurator extends React.PureComponent {
                         </Preloader>
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>
-                        <Button color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>
+                        {!view && <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>}
+                        {!view && <Button color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>}
+                        {view && <Button color="action" onClick={this.onClose}>{ls('OK', 'Закрыть')}</Button>}
                     </ModalFooter>
                 </Modal>
             </DraggableWrapper>

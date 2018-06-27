@@ -64,8 +64,7 @@ class ParameterField extends React.Component {
         return isValueChanged || isErrorChange || isErrorsChanged;
     }
 
-    onChangeInput = (e) => {
-        const value = _.get(e, 'target.value', '');
+    onChangeInput = (value) => {
         this.props.onChange(value);
 
         if (value) {
@@ -106,15 +105,6 @@ class ParameterField extends React.Component {
         this.props.onChange([value]);
     }
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
     render() {
         const {
             id,
@@ -140,10 +130,10 @@ class ParameterField extends React.Component {
             >
                 {type === 'integer' && <Input
                     id={id}
+                    type="number"
                     value={value[0] || ''}
                     onChange={this.onChangeInput}
                     placeholder={name}
-                    onKeyPress={this.validateNumKey}
                 />}
                 {type === 'string' && (multiple ? (
                     <ChipList

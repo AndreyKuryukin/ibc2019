@@ -46,27 +46,27 @@ class BasicParams extends React.PureComponent {
                         <div className={styles.displayField}>{_.get(config, 'name')}</div> : <Input
                             id="name"
                             value={_.get(config, 'name')}
-                            onChange={event => this.props.onChange('name', event.currentTarget.value)}
+                            onChange={value => this.props.onChange('name', value)}
                             valid={errors && _.isEmpty(errors.name)}
                             disabled={disabled}
                             maxLength={255}
                         />}
                 </Field>
-                <Field
-                    id="service-type"
-                    labelText={ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}
-                    labelWidth="20%"
-                    inputWidth="80%"
-                >
-                    <Select
-                        id="service-type"
-                        placeholder={ls('KQI_CALCULATOR_SERVICE_FIELD_PLACEHOLDER', 'Выберите услугу')}
-                        value={_.get(config, 'service_type')}
-                        options={this.props.serviceTypesOptions}
-                        onChange={value => this.props.onChange('service_type', value)}
-                        disabled={disabled}
-                    />
-                </Field>
+                {/*<Field*/}
+                    {/*id="service-type"*/}
+                    {/*labelText={ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}*/}
+                    {/*labelWidth="20%"*/}
+                    {/*inputWidth="80%"*/}
+                {/*>*/}
+                    {/*<Select*/}
+                        {/*id="service-type"*/}
+                        {/*placeholder={ls('KQI_CALCULATOR_SERVICE_FIELD_PLACEHOLDER', 'Выберите услугу')}*/}
+                        {/*value={_.get(config, 'service_type')}*/}
+                        {/*options={this.props.serviceTypesOptions}*/}
+                        {/*onChange={value => this.props.onChange('service_type', value)}*/}
+                        {/*disabled={disabled}*/}
+                    {/*/>*/}
+                {/*</Field>*/}
                 <Field
                     id="kqi"
                     labelText={ls('KQI_CALCULATOR_KQI_FIELD_LABEL', 'KQI')}

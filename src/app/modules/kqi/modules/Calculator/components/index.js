@@ -110,7 +110,6 @@ class Calculator extends React.PureComponent {
         this.state = {
             config: {
                 name: period.DAY,
-                service_type: '',
                 period: {
                     start_date,
                     end_date,
@@ -192,7 +191,7 @@ class Calculator extends React.PureComponent {
                 }
                 return itemName !== undefined ? itemName : id;
             };
-            if (value) {
+            if (!_.isEmpty(value)) {
                 if (_.isArray(value)) {
                     if (nameMap) {
                         const names = value.map(id => getNameById(nameMap, id));
@@ -202,15 +201,15 @@ class Calculator extends React.PureComponent {
                     }
                 } else {
                     if (nameMap) {
-                        name.push(getNameById(nameMap, value))
+                        name.push(getNameById(nameMap, value));
                     } else {
-                        name.push(config[fieldName])
+                        name.push(config[fieldName]);
                     }
                 }
             }
             return name;
         }, []);
-        return composedName.join('_')
+        return composedName.join('_');
     };
 
 
@@ -352,7 +351,7 @@ class Calculator extends React.PureComponent {
                 <ModalHeader
                     toggle={this.onClose}
                 >
-                    {ls('KQI_CALCULATOR_TITLE', 'Проекция KQI')}
+                    {ls('KQI_CALCULATOR_TITLE', `Проекция KQI ${_.get(this.props.config, 'name', '')}`)}
                 </ModalHeader>
                 <ModalBody>
                     <div className={styles.kqiCalculatorContent}>

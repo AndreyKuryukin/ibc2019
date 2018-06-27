@@ -42,9 +42,9 @@ class Login extends React.PureComponent {
         this.props.onSubmit(login, password);
     };
 
-    inputValue = (event, valuePath) => {
+    inputValue = (value, valuePath) => {
         const errors = _.omit({ ...this.state.errors }, valuePath);
-        this.setState({ [valuePath]: _.get(event, 'currentTarget.value'), errors }, () => {
+        this.setState({ [valuePath]: value, errors }, () => {
             this.props.onInput();
         });
     };
@@ -53,9 +53,14 @@ class Login extends React.PureComponent {
         const { errors } = this.state;
         return (
             <div className={styles.loginContainer}>
-                <div className={styles.shield}/>
+                <div className={styles.shield}>
+                    <div className={styles.rostelecomLogo}></div>
+                    <div className={styles.qligentLogo}></div>
+                </div>
                 <div className={styles.formContainer}>
-                    <div className={styles.sqmLabel}/>
+                    <div className={styles.sqmLabel}>
+                        {'SQM B2C'}
+                    </div>
                     <Form
                         onSubmit={this.onSubmit}
                         className={styles.loginForm}
@@ -63,7 +68,7 @@ class Login extends React.PureComponent {
                         <Input
                             value={this.state.login}
                             placeholder={ls('LOGIN_LOGIN', 'Логин')}
-                            onChange={event => this.inputValue(event, 'login')}
+                            onChange={value => this.inputValue(value, 'login')}
                             valid={_.isEmpty(errors.login)}
                         />
 
@@ -72,7 +77,7 @@ class Login extends React.PureComponent {
                             id="password"
                             value={this.state.password}
                             placeholder={ls('LOGIN_PASSWD', 'Пароль')}
-                            onChange={(event) => this.inputValue(event, 'password')}
+                            onChange={value => this.inputValue(value, 'password')}
                             valid={_.isEmpty(errors.password)}
                         />
 

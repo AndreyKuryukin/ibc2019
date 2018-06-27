@@ -90,6 +90,9 @@ class Table extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
+        if (!_.isEqual(nextProps.selected, this.state.selected)) {
+            this.setState({selected: nextProps.selected})
+        }
         if (this.props.data !== nextProps.data) {
             const { by, direction } = this.state.sort;
 
@@ -114,9 +117,10 @@ class Table extends React.Component {
             : naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '').toString()]);
 
     onRowClick = (node) => {
-        this.setState({ selected: node.id });
         if (typeof this.props.onSelectRow === 'function') {
             this.props.onSelectRow(node.id);
+        } else {
+            this.setState({ selected: [node.id] });
         }
     };
 
@@ -173,7 +177,6 @@ class Table extends React.Component {
         } = this.props;
         const { data = [], selected, sort } = this.state;
         const columnsWidths = Table.computeColumnsWidths(columns);
-
         return (
             <Preloader active={preloader}>
                 <div className={classnames(styles.tableContainer, className )}>
@@ -191,11 +194,10 @@ class Table extends React.Component {
                         ))}
                     </div>}
                     <div className={styles.tableBody}>
-                        {data.map(node => (
-                            <div
+                        {data.map(node => <div
                                 key={node.id}
                                 id={node.id}
-                                className={classnames(styles.bodyRow, { [styles.selected]: selected === node.id })}
+                                className={classnames(styles.bodyRow, { [styles.selected]: _.find(selected, id => id === node.id) })}
                                 onClick={() => this.onRowClick(node)}
                             >
                                 {columns.map((column) => (
@@ -211,7 +213,7 @@ class Table extends React.Component {
                                     </div>
                                 ))}
                             </div>
-                        ))}
+                        )}
                     </div>
                 </div>
             </Preloader>

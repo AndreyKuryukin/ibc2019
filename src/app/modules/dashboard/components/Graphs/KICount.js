@@ -25,7 +25,7 @@ class KICount extends React.Component {
             },
             title: {
                 ...Chart.DEFAULT_OPTIONS.title,
-                text: ls('DASHBOARD_CHART_KI_TITLE', 'Суммарная длительность Ки МРФ Волга по РФ'),
+                text: ls('DASHBOARD_CHART_KI_TITLE', 'Статистика КИ МРФ Волга в проекции по региональным филиалам'),
             },
             colors: [
                 '#fc3737',
@@ -47,7 +47,12 @@ class KICount extends React.Component {
                 },
                 lineWidth: 0,
             },
-            yAxis: Chart.DEFAULT_OPTIONS.yAxis,
+            yAxis: {
+                ...Chart.DEFAULT_OPTIONS.yAxis,
+                title: {
+                    text: '',
+                },
+            },
             series,
         };
     };

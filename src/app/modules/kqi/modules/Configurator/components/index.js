@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
-
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from "../../../../../components/Field";
@@ -91,24 +90,6 @@ class Configurator extends React.PureComponent {
         this.props.onSubmit(this.state.config);
     };
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = (e.charCode >= 48 && e.charCode <= 57) || e.charCode === 46 || e.charCode === 45;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
-    onChangeLevel = (e) => {
-        const value = e.target.value;
-        const isValidValue = e.target.value === '-' || !isNaN(+e.target.value);
-
-        if (value.length <= 21 && isValidValue) {
-            this.setConfigProperty('level', value);
-        }
-    };
-
     onObjectTypeChange = (type) => {
         if (type) {
             const object_type = _.find(this.props.objectTypes, { type }) || {};
@@ -145,7 +126,7 @@ class Configurator extends React.PureComponent {
                 >
                     <ModalHeader
                         className="handle"
-                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI')}</ModalHeader>
+                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', `Конфигурация KQI ${_.get(this.props.config, 'name', '')}`)}</ModalHeader>
                     <ModalBody>
                         <div className={styles.configuratorContent}>
                             <Field
@@ -159,7 +140,7 @@ class Configurator extends React.PureComponent {
                                     id="name"
                                     disabled={disableForm}
                                     value={config.name}
-                                    onChange={event => this.setConfigProperty('name', event.currentTarget.value)}
+                                    onChange={value => this.setConfigProperty('name', value)}
                                     valid={errors && _.isEmpty(errors.name)}
                                     placeholder={ls('KQI_CONFIGURATOR_NAME_PLACEHOLDER', 'Название')}
                                     maxLength={255}
@@ -228,12 +209,15 @@ class Configurator extends React.PureComponent {
                             >
                                 <Input
                                     id="level"
+                                    type="number"
                                     value={config.level}
-                                    onChange={this.onChangeLevel}
+                                    onChange={value => this.setConfigProperty('level', value)}
                                     valid={errors && _.isEmpty(errors.level)}
                                     disabled={disableForm}
-                                    onKeyPress={this.validateNumKey}
                                     placeholder={ls('KQI_CONFIGURATOR_LEVEL_PLACEHOLDER', 'Значение')}
+                                    maxLength={21}
+                                    allowDecimal
+                                    allowNegative
                                 />
                             </Field>
                             <Formula

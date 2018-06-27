@@ -53,10 +53,15 @@ class KQI extends React.PureComponent {
     }
 
     componentWillReceiveProps(nextProps) {
+        const params = _.get(nextProps, 'match.params', {});
         const path = _.get(nextProps, 'match.url', '');
         const previousPath = _.get(this.props, 'match.url', '');
         if (previousPath !== path && path === '/kqi' ) {
             this.onFetchKQI();
+        }
+        if (params.configId !== this.state.configId) {
+            this.setState({configId: params.configId});
+            this.onSelectConfig(params.configId)
         }
     }
 
@@ -84,9 +89,8 @@ class KQI extends React.PureComponent {
         this.setState({ isConfigsLoading: true });
         rest.get('/api/v1/kqi')
             .then((response) => {
-                const kqi = response.data;
-                this.props.onFetchKQISuccess(kqi);
-                this.setState({ isConfigsLoading: false });
+                const kqiConfigs = response.data;
+                this.setState({ isConfigsLoading: false, kqiConfigs });
             })
             .catch((e) => {
                 console.error(e);
@@ -94,23 +98,25 @@ class KQI extends React.PureComponent {
             });
     };
 
-    onSelectConfig = (kqiId) => {
-        this.setState({ isProjectionsLoading: true });
+    onSelectConfig = (configId) => {
+        if (configId && this.state.configId !== configId) {
+            this.setState({ isProjectionsLoading: true, configId });
 
-        const urlParams = {
-            kqiId,
-        };
-        rest.get('/api/v1/kqi/:kqiId/projection', { urlParams })
-            .then((response) => {
-                const projections = response.data;
-                this.props.onFetchProjectionsSuccess(projections);
-                this.props.history.push(`/kqi/view/${kqiId}`);
-                this.setState({ isProjectionsLoading: false });
-            })
-            .catch((e) => {
-                console.error(e);
-                this.setState({ isProjectionsLoading: false });
-            });
+            const urlParams = {
+                kqiId: configId,
+            };
+            rest.get('/api/v1/kqi/:kqiId/projection', { urlParams })
+                .then((response) => {
+                    const projections = response.data;
+                    this.props.history.push(`/kqi/view/${configId}`);
+                    this.setState({ isProjectionsLoading: false, projections });
+                })
+                .catch((e) => {
+                    console.error(e);
+                    this.setState({ isProjectionsLoading: false });
+                });
+        }
+
     };
 
     render() {
@@ -118,8 +124,8 @@ class KQI extends React.PureComponent {
             <KQIComponent
                 match={this.props.match}
                 history={this.props.history}
-                kqiData={this.props.kqiData}
-                projectionsData={this.props.projectionsData}
+                kqiData={this.state.kqiConfigs}
+                projectionsData={this.state.projections}
                 isConfigsLoading={this.state.isConfigsLoading}
                 isProjectionsLoading={this.state.isProjectionsLoading}
                 onSelectConfig={this.onSelectConfig}

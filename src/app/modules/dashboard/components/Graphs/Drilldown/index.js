@@ -7,11 +7,12 @@ import Table from '../../../../../components/Table/index';
 import rest from '../../../../../rest/index';
 import KQI from '../../KQI';
 import ls from '../../../../../../i18n';
+import {MACRO_RF_ID} from '../../../constants';
 
 class Drilldown extends React.Component {
     static propTypes = {
         regularity: PropTypes.string.isRequired,
-        mrfId: PropTypes.string,
+        mrfId: PropTypes.string.isRequired,
     };
 
     state = {
@@ -32,6 +33,9 @@ class Drilldown extends React.Component {
             regularity: props.regularity,
             mrf: props.mrfId,
         };
+        if (queryParams.mrf === MACRO_RF_ID) {
+            delete queryParams.mrf;
+        }
 
         return rest.get('/api/v1/dashboard/drilldown', {}, { queryParams })
             .then(({ data }) => this.setState({ data }))

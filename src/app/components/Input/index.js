@@ -17,10 +17,16 @@ const propTypes = {
     addon: PropTypes.bool,
     className: PropTypes.string,
     cssModule: PropTypes.object,
+    value: PropTypes.string,
+    allowDecimal: PropTypes.bool,
+    allowNegative: PropTypes.bool,
 };
 
 const defaultProps = {
     type: 'text',
+    value: '',
+    allowDecimal: false,
+    allowNegative: false,
 };
 
 const style = {
@@ -28,6 +34,50 @@ const style = {
 };
 
 class Input extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            value: props.value,
+        };
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.state.value !== nextProps.value) {
+            this.setState({ value: nextProps.value });
+        }
+    }
+
+    onChange = (e) => {
+        const value = e.target.value;
+        const { type, allowNegative } = this.props;
+        const isValidValue = type !== 'number' || ((value === '-' && allowNegative) || !isNaN(+value));
+
+        if (isValidValue) {
+            if (typeof this.props.onChange === 'function') {
+                this.props.onChange(value);
+            } else {
+                this.setState({ value });
+            }
+        }
+    };
+
+    validateNumKey = (e) => {
+        const { allowDecimal, allowNegative } = this.props;
+        let isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
+        if (allowDecimal) {
+            isKeyAllowed = isKeyAllowed || e.charCode === 46;
+        }
+        if (allowNegative) {
+            isKeyAllowed = isKeyAllowed || e.charCode === 45;
+        }
+
+        if (!isKeyAllowed) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
+    };
+
     render() {
         let {
             className,
@@ -93,10 +143,21 @@ class Input extends React.Component {
             attributes.type = type;
         }
 
+        if (type === 'number') {
+            attributes.type = 'text';
+            attributes.onKeyPress = this.validateNumKey;
+        }
+
         return (
             <div style={style} className={className}>
                 {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}
-            <Tag {...attributes} ref={innerRef} className={classes} />
+            <Tag
+                {...attributes}
+                value={this.state.value}
+                ref={innerRef}
+                className={classes}
+                onChange={this.onChange}
+            />
             </div>
         );
     }

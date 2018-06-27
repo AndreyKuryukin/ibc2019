@@ -23,12 +23,11 @@
   background: $white;
   .alarmsFilterGroups{
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     flex: 0 0 75%;
     align-items: center;
     .alarmsFilterGroup {
       display: flex;
+      flex-wrap: wrap;
       margin: 4px 0;
     }
     .applyButton {

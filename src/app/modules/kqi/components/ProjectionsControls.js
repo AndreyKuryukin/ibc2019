@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Input } from 'reactstrap';
 import _ from 'lodash';
 import ls from 'i18n';
 import styles from './styles.scss';
 import Icon from "../../../components/Icon/Icon";
+import Input from "../../../components/Input";
 
 class ProjectionsControls extends React.PureComponent {
     static contextTypes = {
@@ -20,8 +20,8 @@ class ProjectionsControls extends React.PureComponent {
         onSearchTextChange: () => null,
     };
 
-    onSearchTextChange = (event) => {
-        this.props.onSearchTextChange(_.get(event, 'currentTarget.value'));
+    onSearchTextChange = (searchText) => {
+        this.props.onSearchTextChange(searchText);
     };
 
     onCalculate = () => {

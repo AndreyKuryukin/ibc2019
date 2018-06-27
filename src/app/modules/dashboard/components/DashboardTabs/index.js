@@ -27,29 +27,17 @@ class DashboardTabs extends React.PureComponent {
         return (
             <div className={cn(styles.dashboardTabs, className)}>
                 <div className={styles.tabs}>
-                    {tabs.reduce((result, tab, i) => {
-                        if (i !== 0) {
-                            result.push(
-                                <div
-                                    key={`separator-${i}`}
-                                    className={styles.separator}
-                                />
-                            );
-                        }
-
-                        result.push(
-                            <Tab
-                                key={tab.id}
-                                type={tab.type}
-                                href={enableLinks ? tab.href : null}
-                                value={tab.value}
-                                previous={tab.previous}
-                                expected={tab.expected}
-                            />
-                        );
-
-                        return result;
-                    }, [])}
+                    {tabs.map((tab, i) => (
+                        <Tab
+                            key={tab.id}
+                            type={tab.type}
+                            href={enableLinks ? tab.href : null}
+                            value={tab.value}
+                            previous={tab.previous}
+                            expected={tab.expected}
+                            primary={i === 0}
+                        />
+                    ))}
                 </div>
                 {selectedTabIndex !== -1 && enableLinks && (
                     <Indicator

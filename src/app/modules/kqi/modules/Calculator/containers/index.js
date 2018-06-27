@@ -20,6 +20,7 @@ class Calculator extends React.PureComponent {
         kqiList: PropTypes.array,
         manufactureList: PropTypes.array,
         onFetchListsSuccess: PropTypes.func,
+        onClose: PropTypes.func,
     };
 
     static defaultProps = {
@@ -30,6 +31,7 @@ class Calculator extends React.PureComponent {
         equipmentsList: [],
         usergroupsList: [],
         onFetchListsSuccess: () => null,
+        onClose: () => null,
     };
 
     validationConfig = {
@@ -116,13 +118,13 @@ class Calculator extends React.PureComponent {
                     const kqi = response.data;
                     this.setState({ isLoading: false });
                     this.context.history.push('/kqi');
+                    this.props.onClose()
                 })
                 .catch((e) => {
                     console.error(e);
                     this.setState({ isLoading: false });
                 });
         }
-
         this.setState({ errors });
     };
 
