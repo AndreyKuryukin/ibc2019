@@ -18,11 +18,15 @@ const propTypes = {
     className: PropTypes.string,
     cssModule: PropTypes.object,
     value: PropTypes.string,
+    allowDecimal: PropTypes.bool,
+    allowNegative: PropTypes.bool,
 };
 
 const defaultProps = {
     type: 'text',
     value: '',
+    allowDecimal: false,
+    allowNegative: false,
 };
 
 const style = {
@@ -39,16 +43,39 @@ class Input extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.value !== nextProps.value) {
+        if (this.state.value !== nextProps.value) {
             this.setState({ value: nextProps.value });
         }
     }
 
     onChange = (e) => {
         const value = e.target.value;
-        this.setState({ value }, () => {
-            this.props.onChange(value);
-        });
+        const { type, allowNegative } = this.props;
+        const isValidValue = type !== 'number' || ((value === '-' && allowNegative) || !isNaN(+value));
+
+        if (isValidValue) {
+            if (typeof this.props.onChange === 'function') {
+                this.props.onChange(value);
+            } else {
+                this.setState({ value });
+            }
+        }
+    };
+
+    validateNumKey = (e) => {
+        const { allowDecimal, allowNegative } = this.props;
+        let isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
+        if (allowDecimal) {
+            isKeyAllowed = isKeyAllowed || e.charCode === 46;
+        }
+        if (allowNegative) {
+            isKeyAllowed = isKeyAllowed || e.charCode === 45;
+        }
+
+        if (!isKeyAllowed) {
+            e.stopPropagation();
+            e.preventDefault();
+        }
     };
 
     render() {
@@ -114,6 +141,11 @@ class Input extends React.Component {
 
         if (Tag === 'input' || typeof tag !== 'string') {
             attributes.type = type;
+        }
+
+        if (type === 'number') {
+            attributes.type = 'text';
+            attributes.onKeyPress = this.validateNumKey;
         }
 
         return (

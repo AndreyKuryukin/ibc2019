@@ -20,7 +20,7 @@ class Chip extends React.PureComponent {
     render() {
         const { title } = this.props;
         return <div className={styles.chipContainer}>
-            <div>{title}</div>
+            <div title={title}>{title}</div>
             <div onClick={this.props.onRemove}
                  className={styles.closeButton}
             >

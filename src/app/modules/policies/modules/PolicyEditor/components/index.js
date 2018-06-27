@@ -203,15 +203,6 @@ class PolicyEditor extends React.PureComponent {
         this.setPolicyProperty('scope', [...scope, mac])
     };
 
-    validateNumKey = (e) => {
-        const isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
-
-        if (!isKeyAllowed) {
-            e.stopPropagation();
-            e.preventDefault();
-        }
-    };
-
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
@@ -284,11 +275,11 @@ class PolicyEditor extends React.PureComponent {
                                                     <div style={{ display: 'flex' }}>
                                                         <Input
                                                             id="cease_duration"
+                                                            type="number"
                                                             name="cease_duration"
                                                             placeholder="0"
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_duration'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
-                                                            onKeyPress={this.validateNumKey}
                                                             onChange={value => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(value))}
                                                             maxLength={6}
                                                         />
@@ -309,11 +300,11 @@ class PolicyEditor extends React.PureComponent {
                                                     <div style={{ display: 'flex' }}>
                                                         <Input
                                                             id="cease_value"
+                                                            type="number"
                                                             name="cease_value"
                                                             placeholder="0"
                                                             valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
-                                                            onKeyPress={this.validateNumKey}
                                                             onChange={value => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(value))}
                                                             maxLength={6}
                                                         />
@@ -353,8 +344,8 @@ class PolicyEditor extends React.PureComponent {
                                     >
                                         <Checkbox
                                             id="exclude-tv"
-                                            checked={this.getPolicyProperty('exclude_tv')}
-                                            onChange={value => this.setPolicyProperty('exclude_tv', value)}
+                                            checked={this.getPolicyProperty('channel_suppression')}
+                                            onChange={value => this.setPolicyProperty('channel_suppression', value)}
                                         />
                                     </Field>}
                                     {
@@ -404,12 +395,12 @@ class PolicyEditor extends React.PureComponent {
                                             <div style={{ display: 'flex' }}>
                                                 <Input
                                                     id="waiting-time"
+                                                    type="number"
                                                     name="waiting-time"
                                                     placeholder="0"
                                                     value={this.getPolicyProperty('waiting_time')}
                                                     onChange={value => this.setPolicyProperty('waiting_time', value)}
                                                     disabled={!this.getPolicyProperty('allow_accident')}
-                                                    onKeyPress={this.validateNumKey}
                                                     maxLength={6}
                                                 />
                                                 <span
