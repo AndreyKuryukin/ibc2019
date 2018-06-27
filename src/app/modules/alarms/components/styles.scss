@@ -4,12 +4,14 @@
   display: flex;
   flex-grow: 1;
   height: 100%;
+  width: 100%;
   padding: 0 9px 0 0;
+  min-width: 1500px;
 }
 
 .alarmsContentWrapper {
   display: flex;
-  flex-grow: 1;
+  width: 100%;
   flex-direction: column;
 }
 
@@ -23,17 +25,23 @@
   background: $white;
   .alarmsFilterGroups{
     display: flex;
-    flex: 0 0 75%;
+    //flex: 0 0 50%;
     align-items: center;
     .alarmsFilterGroup {
       display: flex;
-      flex-wrap: wrap;
+      flex-direction: column;
       margin: 4px 0;
+    }
+    .alarmsFilterGroup + .alarmsFilterGroup {
+      margin-left: 10px;
     }
     .applyButton {
       font-size: 12px;
       line-height: 0;
       height: $input-height;
+    }
+    .applyButton + .applyButton {
+      margin-top: 5px;
     }
   }
   .search {
@@ -57,9 +65,6 @@
   display: flex;
   justify-content: flex-end;
   padding: 16px 8px 0;
-  *:not(:last-child) {
-    margin-right: 8px;
-  }
 }
 .historicalDropdown {
   left: 1px !important;

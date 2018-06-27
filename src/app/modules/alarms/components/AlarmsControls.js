@@ -9,18 +9,11 @@ import Field from '../../../components/Field';
 import Input from '../../../components/Input';
 import Select from '../../../components/Select';
 import Checkbox from '../../../components/Checkbox';
-import DatePicker from '../../../components/LabeledDateTimePicker';
+import DatePicker from '../../../components/DateTimePicker';
 import Dropdown from '../../../components/Dropdown';
 import styles from './styles.scss';
 
-const firstControlStyle = {
-    padding: '2.5px',
-};
-
-const secondControlStyle = {
-    padding: '2.5px',
-    marginTop: 0,
-};
+// const datePickerStyle = { marginTop: 5 };
 
 class AlarmsControls extends React.Component {
     static propTypes = {
@@ -139,34 +132,45 @@ class AlarmsControls extends React.Component {
             <div className={styles.alarmsControls}>
                 <div className={styles.alarmsFilterGroups}>
                     <div className={styles.alarmsFilterGroup}>
-                        <DatePicker
-                            title={ls('ALARMS_START_FILTER', 'Показать аварии с')}
-                            value={this.getFilterProperty('start')}
-                            inputWidth={115}
-                            onChange={value => this.setFilterProperty('start', value)}
-                            format={'DD.MM.YYYY HH:mm'}
-                            time
-                            style={firstControlStyle}
-                        />
-                        <DatePicker
-                            title={ls('ALARMS_END_FILTER', 'по')}
-                            min={this.getFilterProperty('start')}
-                            value={this.getFilterProperty('end')}
-                            inputWidth={115}
-                            onChange={value => this.setFilterProperty('end', value)}
-                            format={'DD.MM.YYYY HH:mm'}
-                            time
-                            style={secondControlStyle}
-                        />
+                        <Field
+                            id="alarms-filter-start"
+                            labelText={ls('ALARMS_START_FILTER', 'Показать аварии с')}
+                            inputWidth={160}
+                            labelWidth={110}
+                            splitter=""
+                        >
+                            <DatePicker
+                                value={this.getFilterProperty('start')}
+                                inputWidth={115}
+                                onChange={value => this.setFilterProperty('start', value)}
+                                format={'DD.MM.YYYY HH:mm'}
+                                time
+                            />
+                        </Field>
+                        <Field
+                            id="alarms-filter-start"
+                            labelText={ls('ALARMS_END_FILTER', 'по')}
+                            inputWidth={160}
+                            labelWidth={110}
+                            splitter=""
+                        >
+                            <DatePicker
+                                min={this.getFilterProperty('start')}
+                                value={this.getFilterProperty('end')}
+                                inputWidth={115}
+                                onChange={value => this.setFilterProperty('end', value)}
+                                format={'DD.MM.YYYY HH:mm'}
+                                time
+                            />
+                        </Field>
                     </div>
                     <div className={styles.alarmsFilterGroup}>
                         <Field
                             id="mrf-filter"
                             labelText={ls('ALARMS_MRF_FILTER', 'Фильтр по МРФ')}
-                            inputWidth={150}
+                            inputWidth={300}
                             labelWidth={120}
                             splitter=""
-                            style={firstControlStyle}
                         >
                             <Select
                                 id="mrf-filter"
@@ -179,10 +183,9 @@ class AlarmsControls extends React.Component {
                         <Field
                             id="region-filter"
                             labelText={ls('ALARMS_REGION_FILTER', 'Фильтр по региону')}
-                            inputWidth={150}
+                            inputWidth={300}
                             labelWidth={120}
                             splitter=""
-                            style={secondControlStyle}
                         >
                             <Select
                                 id="region-filter"
@@ -200,7 +203,6 @@ class AlarmsControls extends React.Component {
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
-                            style={firstControlStyle}
                         >
                             <Checkbox
                                 id="current-checkbox-filter"
@@ -214,7 +216,6 @@ class AlarmsControls extends React.Component {
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
-                            style={secondControlStyle}
                         >
                             <Dropdown
                                 isOpen={this.state.isHistoricalConfirmOpen}
@@ -247,16 +248,12 @@ class AlarmsControls extends React.Component {
                         </Field>
                     </div>
                     <div className={styles.alarmsFilterGroup}>
-                        <div style={firstControlStyle}>
-                            <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                                {ls('ALARMS_APPLY_FILTER', 'Применить')}
-                            </Button>
-                        </div>
-                        <div style={secondControlStyle}>
-                            <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
-                                {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
-                            </Button>
-                        </div>
+                        <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
+                            {ls('ALARMS_APPLY_FILTER', 'Применить')}
+                        </Button>
+                        <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
+                            {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
+                        </Button>
                     </div>
                 </div>
                 <Input
