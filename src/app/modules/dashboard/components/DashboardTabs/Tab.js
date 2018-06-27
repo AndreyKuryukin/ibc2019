@@ -20,7 +20,7 @@ class Tab extends React.PureComponent {
             return (
                 <span>
                     {label}&nbsp;
-                    <span>N/A</span>
+                    <span>{ls('NOT_AVAILABLE', 'Н/Д')}</span>
                 </span>
             );
         }

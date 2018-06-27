@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import styles from './styles.scss';
+import ls from 'i18n';
 
 class KQI extends React.PureComponent {
     static propTypes = {
@@ -15,7 +16,7 @@ class KQI extends React.PureComponent {
     };
     static defaultProps = {
         precision: 2,
-        placeholder: 'N/A',
+        placeholder: ls('NOT_AVAILABLE', 'Н/Д'),
     };
 
     static parseType(type) {

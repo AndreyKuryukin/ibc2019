@@ -25,8 +25,8 @@ class Amount extends React.Component {
     state = {
         data: {},
         sum: {
-            total: 'N/A',
-            broken: 'N/A',
+            total: ls('NOT_AVAILABLE', 'Н/Д'),
+            broken: ls('NOT_AVAILABLE', 'Н/Д'),
         },
     };
 
