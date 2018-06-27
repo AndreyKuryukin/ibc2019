@@ -137,7 +137,7 @@ class PoliciesTable extends React.PureComponent {
         switch (column.name) {
             case 'has_notifications' :
                 const icon = node[column.name] ? 'notification-active-icon' : 'notification-disabled-icon';
-                const title = node[column.name] ? ls('POLICY_NOTIFICATION_TITLE_ACTIVE', 'Нотификация настроена') : ls('POLICY_NOTIFICATION_TITLE_INACTIVE', 'Нотификация настроена')
+                const title = node[column.name] ? ls('POLICY_NOTIFICATION_TITLE_ACTIVE', 'Нотификация настроена') : ls('POLICY_NOTIFICATION_TITLE_INACTIVE', 'Нотификация не настроена')
                 return <IconCell
                     icon={icon}
                     iconTitle={title}

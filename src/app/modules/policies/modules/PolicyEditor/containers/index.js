@@ -128,6 +128,7 @@ class PolicyEditor extends React.PureComponent {
 
     composeConjunctionString = (object) => {
         let { parameterType = '', operator = '', value = '' } = object;
+        value = _.isString(value) ? `'${value}'` : value;
         const conjString = `${parameterType} ${operator} ${value}`;
         return conjString.trim();
     };
@@ -136,7 +137,8 @@ class PolicyEditor extends React.PureComponent {
         const parts = conjunctionString.split(' ');
         const parameterType = _.get(parts, '0', '');
         const operator = _.get(parts, '1');
-        const value = _.get(parts, '2');
+        let value = _.get(parts, '2');
+        value = value.indexOf("'") === -1 ? Number(value) : value.replace(/'+/g, '');
         return {
             parameterType, operator, value
         };
