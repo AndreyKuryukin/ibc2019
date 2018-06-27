@@ -76,11 +76,6 @@ class Conjunction extends React.PureComponent {
 
     renderValueControl = (paramCfg, value, errors) => {
         const Component = paramCfg.type === 'enum' ? Select : Input;
-        const typeMap = {
-            'integer': 'number',
-            'string': 'text',
-            'KQI': 'number'
-        };
         const params = {
             placeholder: ls('POLICY_CONJUNCTION_VALUE_PLACEHOLDER', 'Значение'),
             maxLength: (paramCfg.type === 'integer' || paramCfg.type === 'KQI') ? 6 : 255,
@@ -93,8 +88,8 @@ class Conjunction extends React.PureComponent {
             params.type = 'text';
             params.onChange = (value) => this.setConjunctionProperty('value', value);
             if (paramCfg.type === 'integer' || paramCfg.type === 'KQI') {
-                params.onKeyPress = this.validateNumKey;
                 params.maxLength = 6;
+                params.type = 'number';
             }
         }
 

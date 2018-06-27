@@ -155,7 +155,7 @@ class Amount extends React.Component {
 
         return rest.get('/api/v1/dashboard/abonents', {}, { queryParams })
             .then(({ data }) => {
-                const multipliedData = multiply(data, 100);
+                const multipliedData = data;
                 const sum = Object.values(multipliedData).reduce((result, item) => {
                     result.total += item.total;
                     result.broken += item.broken;

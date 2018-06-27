@@ -41,7 +41,7 @@ const mapErrors = (valueResult, messages) =>
             const type = 'VALIDATION';
             return { type, title, severity };
         }
-       return result;
+        return result;
     }, {});
 
 export const validateForm = (form, config, messages = {}, customValidators = {}, prefix) =>
@@ -60,9 +60,9 @@ export const validateForm = (form, config, messages = {}, customValidators = {},
 
         if (_.isArray(valueConfig)) {
             const [selfConfig, elemConfig] = valueConfig;
-            const selfResult = validateValue(value, selfConfig, {...validators, ...customValidators});
+            const selfResult = validateValue(value, selfConfig, { ...validators, ...customValidators });
             if (!_.isEmpty(selfResult)) {
-                result[fieldName] = mapErrors(selfResult, {...defaultMessages, ...messages});
+                result[fieldName] = mapErrors(selfResult, { ...defaultMessages, ...messages });
             } else {
                 const subFormsResult = value.reduce((subforms, subForm, index) => {
                     const subformErrors = validateForm(subForm, elemConfig, messages, customValidators);
@@ -81,10 +81,21 @@ export const validateForm = (form, config, messages = {}, customValidators = {},
             return result;
         }
 
-        const valueResult = validateValue(value, valueConfig, {...validators, ...customValidators});
-        const errorMessages = mapErrors(valueResult, {...defaultMessages, ...messages});
+        const valueResult = validateValue(value, valueConfig, { ...validators, ...customValidators });
+        const errorMessages = mapErrors(valueResult, { ...defaultMessages, ...messages });
         if (!_.isEmpty(errorMessages)) {
             result[fieldName] = errorMessages;
         }
         return result;
     }, {});
+
+export const handleErrors = (errorConfig, errors = []) => _.reduce(errors, (result, error = {}) => {
+    const { code, type, description } = error;
+    const errorCfg = _.get(errorConfig, code, {});
+    const { title, path, severity } = errorCfg;
+    let err = {};
+    if (path) {
+        _.set(err, path, { title, severity, type })
+    }
+    return _.merge(result, err)
+}, {});
