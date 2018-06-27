@@ -82,8 +82,10 @@ class Grid extends React.PureComponent {
                 <div className={styles.gridBody}>
                     <div className={styles.gridBodyInner}>
                         {tree ? <TreeView
+                            id={id}
                             {...rest}
                         /> : <Table
+                            id={id}
                             {...rest}
                         />}
                     </div>

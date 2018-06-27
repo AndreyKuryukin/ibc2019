@@ -9,6 +9,7 @@ import styles from './styles.scss';
 
 class TreeView extends React.Component {
     static propTypes = {
+        id: PropTypes.string.isRequired,
         data: PropTypes.arrayOf(
             PropTypes.shape({
                 id: PropTypes.oneOfType([

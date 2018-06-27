@@ -42,23 +42,23 @@ class PoliciesTable extends React.PureComponent {
         {
             title: ls('POLICIES_NAME_COLUMN_TITLE', 'Имя политики'),
             name: 'name',
+            resizable: true,
             sortable: true,
             searchable: true,
         },
         {
             title: ls('POLICIES_OBJECT_COLUMN_TITLE', 'Объект'),
             name: 'object_type',
+            resizable: true,
             sortable: true,
             searchable: true,
         },
         {
             title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
             name: 'policy_type',
+            resizable: true,
             sortable: true,
             searchable: true,
-            filter: {
-                type: 'text',
-            },
         },
         // {
         //     title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
@@ -201,6 +201,7 @@ class PoliciesTable extends React.PureComponent {
         const filteredData = searchText ? this.filterBySearchText(data, columns, searchText) : data;
         return (
             <Table
+                id="policies-table"
                 className={styles.policyTable}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}

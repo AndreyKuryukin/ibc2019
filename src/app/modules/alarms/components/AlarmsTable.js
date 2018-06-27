@@ -37,20 +37,22 @@ class AlarmsTable extends React.PureComponent {
         {
             title: ls('ALARMS_ID_COLUMN', 'ID'),
             name: 'id',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 150,
         }, {
             title: ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
             name: 'external_id',
+            resizable: true,
+            searchable: true,
             sortable: true,
             width: 150,
         }, {
             title: ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
             name: 'policy_name',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 500,
         }, {
             title: ls('ALARMS_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
             name: 'notification_status',
@@ -67,10 +69,11 @@ class AlarmsTable extends React.PureComponent {
             name: 'duration',
             searchable: true,
             sortable: true,
-            width: 150,
+            width: 100,
         }, {
             title: ls('ALARMS_OBJECT_COLUMN', 'Объект'),
             name: 'object',
+            resizable: true,
             searchable: true,
             sortable: true,
         }
@@ -157,6 +160,7 @@ class AlarmsTable extends React.PureComponent {
 
         return (
             <Table
+                id="alarms-table"
                 data={filteredData}
                 columns={columns}
                 customSortFunction={this.customSortFunction}

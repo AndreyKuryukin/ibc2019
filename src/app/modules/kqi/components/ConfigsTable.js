@@ -35,6 +35,7 @@ class ConfigsTable extends React.PureComponent {
     static getColumns = memoize(hasEditAccess => [{
         title: ls('KQI_NAME_COLUMN_TITLE', 'Название'),
         name: 'name',
+        resizable: true,
         searchable: true,
         sortable: true,
         filter: {
@@ -43,6 +44,7 @@ class ConfigsTable extends React.PureComponent {
     }, {
         title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество проекций'),
         name: 'projection_count',
+        resizable: true,
         searchable: true,
         sortable: true,
         width: 150,
@@ -118,6 +120,7 @@ class ConfigsTable extends React.PureComponent {
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <Table
+                id="kqi-configs-table"
                 data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

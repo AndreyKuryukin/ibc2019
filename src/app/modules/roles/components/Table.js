@@ -51,11 +51,9 @@ class RolesTable extends React.PureComponent {
         {
             title: ls('ROLES_NAME', 'Имя роли'),
             name: 'name',
+            resizable: true,
             searchable: true,
             sortable: true,
-            filter: {
-                type: 'text',
-            },
         },
         // {
         //     title: ls('ROLES_NUMBER_OF_USERS', 'Количество пользователей'),
@@ -67,6 +65,7 @@ class RolesTable extends React.PureComponent {
         {
             title: ls('ROLES_DESCRIPTION', 'Описание'),
             name: 'description',
+            resizable: true,
             searchable: true,
             sortable: true,
         }
@@ -144,11 +143,13 @@ class RolesTable extends React.PureComponent {
         const columns = RolesTable.getColumns(hasEditAccess);
         const resultData = searchText ? this.filter(data, columns, searchText) : data;
         return (
-            <Table headerRowRender={this.headerRowRender}
-                   bodyRowRender={this.bodyRowRender}
-                   data={resultData}
-                   columns={columns}
-                   preloader={preloader}
+            <Table
+                id="roles-table"
+                headerRowRender={this.headerRowRender}
+                bodyRowRender={this.bodyRowRender}
+                data={resultData}
+                columns={columns}
+                preloader={preloader}
             />
         );
     }
