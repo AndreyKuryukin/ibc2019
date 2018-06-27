@@ -6,8 +6,7 @@ import Input from '../../../../../components/Input';
 import Panel from '../../../../../components/Panel';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
-
-import styles from './styles.scss';
+import DisplayField from "../../../../../components/DisplayField/index";
 
 class BasicParams extends React.PureComponent {
     static propTypes = {
@@ -31,6 +30,7 @@ class BasicParams extends React.PureComponent {
 
     render() {
         const { errors, disabled, config, kqiOptions } = this.props;
+        const nameError = _.get(errors, 'name.title');
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_BASIC_PARAMETERS_TITLE', 'Основные параметры')}
@@ -43,29 +43,32 @@ class BasicParams extends React.PureComponent {
                     required
                 >
                     {_.get(config, 'period.auto') ?
-                        <div className={styles.displayField}>{_.get(config, 'name')}</div> : <Input
+                        <DisplayField error={_.get(errors, 'name')}>
+                            {_.get(config, 'name')}
+                        </DisplayField> : <Input
                             id="name"
                             value={_.get(config, 'name')}
                             onChange={value => this.props.onChange('name', value)}
                             valid={errors && _.isEmpty(errors.name)}
+                            errorMessage={_.get(errors, 'name.title')}
                             disabled={disabled}
                             maxLength={255}
                         />}
                 </Field>
                 {/*<Field*/}
-                    {/*id="service-type"*/}
-                    {/*labelText={ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}*/}
-                    {/*labelWidth="20%"*/}
-                    {/*inputWidth="80%"*/}
+                {/*id="service-type"*/}
+                {/*labelText={ls('KQI_CALCULATOR_SERVICE_FIELD_LABEL', 'Услуга')}*/}
+                {/*labelWidth="20%"*/}
+                {/*inputWidth="80%"*/}
                 {/*>*/}
-                    {/*<Select*/}
-                        {/*id="service-type"*/}
-                        {/*placeholder={ls('KQI_CALCULATOR_SERVICE_FIELD_PLACEHOLDER', 'Выберите услугу')}*/}
-                        {/*value={_.get(config, 'service_type')}*/}
-                        {/*options={this.props.serviceTypesOptions}*/}
-                        {/*onChange={value => this.props.onChange('service_type', value)}*/}
-                        {/*disabled={disabled}*/}
-                    {/*/>*/}
+                {/*<Select*/}
+                {/*id="service-type"*/}
+                {/*placeholder={ls('KQI_CALCULATOR_SERVICE_FIELD_PLACEHOLDER', 'Выберите услугу')}*/}
+                {/*value={_.get(config, 'service_type')}*/}
+                {/*options={this.props.serviceTypesOptions}*/}
+                {/*onChange={value => this.props.onChange('service_type', value)}*/}
+                {/*disabled={disabled}*/}
+                {/*/>*/}
                 {/*</Field>*/}
                 <Field
                     id="kqi"

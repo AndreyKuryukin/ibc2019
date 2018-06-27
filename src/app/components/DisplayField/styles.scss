@@ -1,0 +1,10 @@
+@import '../../scss/vars';
+
+.displayField {
+  padding: 3px 2px 2px 9px;
+  margin-bottom: 1px;
+}
+
+.errorMark {
+  border: 1px solid $red
+}

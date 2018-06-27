@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import ConfigEditorComponent from '../components';
-import { fetchUsersSuccess, fetchTemplatesSuccess } from '../actions';
+import { fetchTemplatesSuccess, fetchUsersSuccess } from '../actions';
 import rest from '../../../../../rest';
-import { validateForm } from '../../../../../util/validation';
+import { handleErrors, validateForm } from '../../../../../util/validation';
 import { convertDateToUTC0 } from '../../../../../util/date';
+import ls from "i18n";
 
 class ConfigEditor extends React.PureComponent {
     static contextTypes = {
@@ -54,6 +55,14 @@ class ConfigEditor extends React.PureComponent {
         }),
     };
 
+    errorConfig = {
+        NAME_EXISTS: {
+            severity: 'CRITICAL',
+            path: 'name',
+            title: ls('REPORT_ERROR_NAME_EXISTS', 'Отчет с таким именем уже существует')
+        }
+    };
+
     onMount = () => {
         this.context.pageBlur && this.context.pageBlur(true);
         this.setState({ isLoading: true });
@@ -96,8 +105,9 @@ class ConfigEditor extends React.PureComponent {
                     this.props.onSubmitConfig();
                 })
                 .catch((e) => {
-                    console.error(e);
-                    this.setState({ isLoading: false});
+                    const errorData = e.data;
+                    const beErrors = handleErrors(this.errorConfig, [errorData]);
+                    this.setState({ isLoading: false, errors: beErrors });
                 });
         } else {
             this.setState({ errors });
