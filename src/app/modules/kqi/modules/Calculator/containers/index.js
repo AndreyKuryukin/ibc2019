@@ -5,7 +5,8 @@ import _ from 'lodash';
 import CalculatorComponent from '../components';
 import rest from '../../../../../rest';
 import { fetchListsSuccess, fetchProjectionSuccess } from '../actions';
-import { validateForm } from '../../../../../util/validation';
+import { handleErrors, validateForm } from '../../../../../util/validation';
+import ls from "i18n";
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -49,6 +50,14 @@ class Calculator extends React.PureComponent {
                 required: true,
             }
         }),
+    };
+
+    errorConfig = {
+        NAME_EXISTS: {
+            severity: 'CRITICAL',
+            path: 'name',
+            title: ls('KQI_ERROR_NAME_EXISTS', 'Проекция с таким именем уже существует')
+        }
     };
 
     constructor(props) {
@@ -121,8 +130,9 @@ class Calculator extends React.PureComponent {
                     this.props.onClose()
                 })
                 .catch((e) => {
-                    console.error(e);
-                    this.setState({ isLoading: false });
+                    const errorData = e.data;
+                    const beErrors = handleErrors(this.errorConfig, [errorData]);
+                    this.setState({ isLoading: false, errors: beErrors });
                 });
         }
         this.setState({ errors });

@@ -11,6 +11,7 @@ import DraggableWrapper from "../../../../../components/DraggableWrapper";
 import Period from './Period';
 import UsersGrid from './UsersGrid';
 import styles from './styles.scss';
+import DisplayField from "../../../../../components/DisplayField/index";
 
 // const REPORT_TYPE_OPTIONS = [{
 //     value: 'PDF',
@@ -123,14 +124,15 @@ class ConfigEditor extends React.PureComponent {
         } else {
             name.push(NAME_PATTERNS['mrf'.toUpperCase()]);
         }
-        name.push(`${type|| NAME_PATTERNS['type'.toUpperCase()]}`);
+        name.push(`${type || NAME_PATTERNS['type'.toUpperCase()]}`);
         return name.join('_');
     };
 
     setConfigProperty = (key, value) => {
         const config = _.set({ ...this.state.config }, `${key}`, value);
-        let errors = _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors;
-
+        const removeKeys = [
+            'name', key
+        ];
         if (key === 'period.auto') {
             config.notify_users = value ? _.get('notify_users', []) : [];
         }
@@ -142,12 +144,11 @@ class ConfigEditor extends React.PureComponent {
                 _.get(config, 'type', null),
                 _.get(config, 'mrf', null),
             ));
-            errors = _.get(errors, 'name') ? _.omit(errors, 'name') : errors;
         }
 
         this.setState({
             config,
-            errors
+            errors: _.omit(this.state.errors, removeKeys),
         });
     };
 
@@ -163,6 +164,7 @@ class ConfigEditor extends React.PureComponent {
 
     onIntervalChange = (regularity, start, end, auto = false) => {
         const removeKeys = [
+            'name',
             ...(start ? ['period.start_date'] : []),
             ...(end ? ['period.end_date'] : []),
         ];
@@ -190,7 +192,7 @@ class ConfigEditor extends React.PureComponent {
 
     render() {
         const { errors, templates } = this.state;
-
+console.log(errors);
         return (
             <DraggableWrapper>
                 <Modal
@@ -222,11 +224,12 @@ class ConfigEditor extends React.PureComponent {
                                                 errorMessage={_.get(errors, 'name.title')}
                                             />
                                         ) : (
-                                            <div className={styles.truncated_field}
-                                                  title={this.getConfigProperty('name')}
+                                            <DisplayField className={styles.truncated_field}
+                                                          title={this.getConfigProperty('name')}
+                                                          error={_.get(errors, 'name')}
                                             >
                                                 {this.getConfigProperty('name')}
-                                            </div>
+                                            </DisplayField>
                                         )}
                                     </Field>
                                     <Field
@@ -247,22 +250,22 @@ class ConfigEditor extends React.PureComponent {
                                         />
                                     </Field>
                                     {/*<Field*/}
-                                        {/*id="type"*/}
-                                        {/*labelText={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}*/}
-                                        {/*labelWidth="30%"*/}
-                                        {/*inputWidth="70%"*/}
-                                        {/*required*/}
+                                    {/*id="type"*/}
+                                    {/*labelText={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD', 'Формат')}*/}
+                                    {/*labelWidth="30%"*/}
+                                    {/*inputWidth="70%"*/}
+                                    {/*required*/}
                                     {/*>*/}
-                                        {/*<Select*/}
-                                            {/*id="type"*/}
-                                            {/*options={REPORT_TYPE_OPTIONS}*/}
-                                            {/*value={this.getConfigProperty('type')}*/}
-                                            {/*placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}*/}
-                                            {/*onChange={value => this.setConfigProperty('type', value)}*/}
-                                            {/*valid={!_.get(errors, 'type', false)}*/}
-                                            {/*errorMessage={_.get(errors, 'type.title')}*/}
-                                            {/*noEmptyOption*/}
-                                        {/*/>*/}
+                                    {/*<Select*/}
+                                    {/*id="type"*/}
+                                    {/*options={REPORT_TYPE_OPTIONS}*/}
+                                    {/*value={this.getConfigProperty('type')}*/}
+                                    {/*placeholder={ls('REPORTS_CONFIG_EDITOR_TYPE_FIELD_PLACEHOLDER', 'Выберите формат отчета')}*/}
+                                    {/*onChange={value => this.setConfigProperty('type', value)}*/}
+                                    {/*valid={!_.get(errors, 'type', false)}*/}
+                                    {/*errorMessage={_.get(errors, 'type.title')}*/}
+                                    {/*noEmptyOption*/}
+                                    {/*/>*/}
                                     {/*</Field>*/}
                                 </Panel>
                                 <Panel

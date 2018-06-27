@@ -214,6 +214,9 @@ class Calculator extends React.PureComponent {
 
 
     setConfigProperty = (key, value, callback) => {
+        const removeKeys = [
+            'name', key
+        ];
         let config = _.set({
             ...this.state.config,
         }, key, value);
@@ -255,7 +258,7 @@ class Calculator extends React.PureComponent {
 
         this.setState({
             config,
-            errors: _.get(this.state.errors, key) ? _.omit(this.state.errors, key) : this.state.errors,
+            errors: _.omit(this.state.errors, removeKeys),
         }, callback);
     };
 
@@ -265,6 +268,7 @@ class Calculator extends React.PureComponent {
 
     onIntervalChange = (start_date, end_date, regularity, groupingType) => {
         const removeKeys = [
+            'name',
             ...(start_date ? ['period.start_date'] : []),
             ...(end_date ? ['period.end_date'] : []),
         ];

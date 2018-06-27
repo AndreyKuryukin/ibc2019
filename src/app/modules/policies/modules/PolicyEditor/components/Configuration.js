@@ -81,7 +81,7 @@ class Configuration extends React.Component {
 
     render() {
         const { policyTypes, objectTypes, errors, metaData } = this.props;
-        const object_type = this.state.object_type;
+        const object_type = _.get(this.state, 'policy.object_type');
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -117,7 +117,7 @@ class Configuration extends React.Component {
                         placeholder={ls('POLICY_OBJECT_TYPE_PLACEHOLDER', 'Тип объекта')}
                         value={_.get(this.state.policy, 'object_type') || ''}
                         options={this.mapObjectTypes(objectTypes)}
-                        onChange={value => this.setPolicyProperty('object_type', value, true)}
+                        onChange={value => this.setPolicyProperty('object_type', value)}
                         valid={errors && _.isEmpty(errors.object_type)}
                         errorMessage={_.get(errors, 'object_type.title')}
                     />
