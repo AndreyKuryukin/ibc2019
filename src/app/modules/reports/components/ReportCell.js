@@ -4,6 +4,8 @@ import Icon from '../../../components/Icon/Icon';
 import styles from './styles.scss';
 import classnames from "classnames";
 
+const iconStyle = { cursor: 'default', flexShrink: 0 };
+
 class ReportCell extends React.PureComponent {
     static propTypes = {
         formatIcon: PropTypes.string,
@@ -59,7 +61,7 @@ class ReportCell extends React.PureComponent {
                 {formatIcon && <Icon
                     title={iconTitle}
                     icon={formatIcon}
-                    style={{cursor: 'default'}}
+                    style={iconStyle}
                 />}
                 <span className={`truncated ${styles.reportText}`}
                       {...linkProps}
