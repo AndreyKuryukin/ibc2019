@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { mapToCssModules } from 'reactstrap/lib/utils';
-import styles from './styles.scss';
 import ls from "i18n";
 
 const propTypes = {
@@ -43,7 +42,7 @@ class Input extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (this.state.value !== nextProps.value) {
+        if (this.props.value !== nextProps.value) {
             this.setState({ value: nextProps.value });
         }
     }
@@ -54,13 +53,12 @@ class Input extends React.Component {
         const isValidValue = type !== 'number' || ((value === '-' && allowNegative) || !isNaN(+value));
 
         if (isValidValue) {
-            if (typeof this.props.onChange === 'function') {
+            this.setState({ value }, () => {
                 this.props.onChange(value);
-            } else {
-                this.setState({ value });
-            }
+            });
         }
     };
+
 
     validateNumKey = (e) => {
         const { allowDecimal, allowNegative } = this.props;
