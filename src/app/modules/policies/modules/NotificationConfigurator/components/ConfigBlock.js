@@ -53,6 +53,8 @@ class ConfigBlock extends React.PureComponent {
 
     render() {
         const { config, onRemove } = this.props;
+        const errors = _.get(config, 'errors');
+
         return (
             <div className={styles.configBlock}>
                 <div className={styles.configContentRow}>
@@ -66,6 +68,7 @@ class ConfigBlock extends React.PureComponent {
                                 labelText={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_LABEL', 'Инстанс')}
                                 inputWidth={115}
                                 style={instanceFieldStyle}
+                                required
                             >
                                 <Select
                                     id={`${this.props.id}_instance`}
@@ -73,6 +76,8 @@ class ConfigBlock extends React.PureComponent {
                                     value={_.get(config, 'instance_id', '') || ''}
                                     onChange={this.onChangeInstance}
                                     placeholder={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_PLACEHOLDER', 'Инстанс')}
+                                    errorMessage={_.get(errors, `instance_id.title`, '')}
+                                    valid={_.get(config, 'instance_id', '') || _.isEmpty(errors)}
                                 />
                             </Field>}
                         </div>

@@ -54,7 +54,7 @@ class Select extends React.PureComponent {
         const { placeholder, errorMessage, options, noEmptyOption, children, valid, ...rest } = this.props;
         const value = this.getValue();
         const invalid = valid !== null && !valid;
-        const placeholderClass = !value ? styles.placeholder : '';
+        const placeholderClass =  value === '' ? styles.placeholder : '';
         if (!_.isEmpty(children)) {
             console.info('Select should not has children')
         }
