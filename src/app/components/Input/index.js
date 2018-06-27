@@ -48,11 +48,12 @@ class Input extends React.Component {
     }
 
     onChange = (e) => {
-        const value = e.target.value;
+        let value = e.target.value;
         const { type, allowNegative } = this.props;
         const isValidValue = type !== 'number' || ((value === '-' && allowNegative) || !isNaN(+value));
 
         if (isValidValue) {
+            value = type === 'number' ? Number(value) : value;
             this.setState({ value }, () => {
                 this.props.onChange(value);
             });
