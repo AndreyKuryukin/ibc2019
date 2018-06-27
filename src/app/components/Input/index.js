@@ -148,6 +148,9 @@ class Input extends React.Component {
             attributes.onKeyPress = this.validateNumKey;
         }
 
+        delete attributes.allowDecimal;
+        delete attributes.allowNegative;
+
         return (
             <div style={style} className={className}>
                 {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}

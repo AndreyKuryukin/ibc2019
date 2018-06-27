@@ -67,6 +67,7 @@ class NotificationConfigurator extends React.PureComponent {
                     [`${_.get(adapterConfig, 'adapter_id', '')}_${_.get(cfg, 'instance_id', '')}`]: {
                         ...adapterConfig,
                         instance_id: cfg.instance_id,
+                        errors: cfg.errors || null,
                         parameters: adapterConfig.parameters.map(param => {
                             const parameter = cfg.parameters.find(p => p.uid === param.uid);
 
