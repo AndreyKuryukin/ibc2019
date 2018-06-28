@@ -206,8 +206,8 @@ class PolicyEditor extends React.PureComponent {
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
-        const threshold = _.get(policy, 'threshold', true);
-        const duration = _.get(policy, 'duration', true);
+        const threshold = _.get(metaData, 'threshold', true);
+        const duration = _.get(metaData, 'duration', true);
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');

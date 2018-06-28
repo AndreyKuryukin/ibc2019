@@ -84,8 +84,8 @@ class Configuration extends React.Component {
 
     render() {
         const { policyTypes, objectTypes, errors, metaData } = this.props;
-        const threshold = _.get(policy, 'threshold', true);
-        const duration = _.get(policy, 'duration', true);
+        const threshold = _.get(metaData, 'threshold', true);
+        const duration = _.get(metaData, 'duration', true);
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
