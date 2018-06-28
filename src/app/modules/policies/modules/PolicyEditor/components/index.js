@@ -261,7 +261,7 @@ class PolicyEditor extends React.PureComponent {
                                             />
                                         }
                                     </Panel>
-                                    {threshold && duration && <Panel
+                                    {(threshold || duration) && <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>

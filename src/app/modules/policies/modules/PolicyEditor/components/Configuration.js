@@ -145,7 +145,7 @@ class Configuration extends React.Component {
                     />
                 </Field>
 
-                {threshold && duration &&
+                {(threshold || duration) &&
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                     <div style={{ width: '60%' }}>
                         <Field
