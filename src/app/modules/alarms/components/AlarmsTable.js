@@ -97,9 +97,7 @@ class AlarmsTable extends React.PureComponent {
                 return status ? (
                     <IconCell
                         icon={`icon-state-${status.toLowerCase()}`}
-                        iconProps={{
-                            title: ls(`ALARMS_STATUS_${status}`, 'Статус')
-                        }}
+                        iconTitle={ls(`ALARMS_STATUS_${status.toUpperCase()}`, 'Статус')}
                         cellStyle={iconCellStyle}
                     />
                 ) : (
