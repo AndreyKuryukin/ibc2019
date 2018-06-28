@@ -88,7 +88,7 @@
   @include iconBuilder(22px, 22px, 'running.png');
 }
 .icon-state-byzerror {
-  @include iconBuilder(16px, 16px, 'business_error.svg');
+  @include iconBuilder(22px, 22px, 'business_error.svg');
 }
 .icon-state-syserror {
   @include iconBuilder(22px, 22px, 'error.png');

@@ -44,12 +44,6 @@ class Policies extends React.Component {
         };
     }
 
-    componentDidMount() {
-        if (typeof this.props.fetchPolicies === 'function') {
-            this.props.fetchPolicies();
-        }
-    }
-
     onSearchTextChange = (searchText) => {
         this.setState({
             searchText,
