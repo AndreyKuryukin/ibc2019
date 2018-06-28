@@ -63,7 +63,7 @@ class Configuration extends React.Component {
         this.setState({ policy }, () => {
             this.props.setPolicyProperty(key, value);
         });
-    }
+    };
 
     mapTypes = (types) => {
         return types.map(type => ({ value: type, title: type }))
@@ -84,8 +84,8 @@ class Configuration extends React.Component {
 
     render() {
         const { policyTypes, objectTypes, errors, metaData } = this.props;
-        const threshold = _.get(metaData, 'threshold', true);
-        const duration = _.get(metaData, 'duration', true);
+        const threshold = _.get(metaData, 'threshold', false);
+        const duration = _.get(metaData, 'duration', false);
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}

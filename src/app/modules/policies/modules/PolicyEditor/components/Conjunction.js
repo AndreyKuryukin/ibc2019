@@ -105,7 +105,7 @@ class Conjunction extends React.PureComponent {
     };
 
     setParameter = (value, parameters) => {
-        const update = { value: { operator: null, value: null } };
+        const update = { value: { operator: null, value: '' } };
         const parameterCfg = this.getParamCfgByName(parameters, value);
         if (parameterCfg.type === 'KQI') {
             update.value.operator = '>'

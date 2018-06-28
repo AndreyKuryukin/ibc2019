@@ -97,7 +97,7 @@ class PolicyEditor extends React.PureComponent {
             this.setState({ metaData: nextProps.metaData })
         }
 
-        if (this.state.errors !== nextProps.errors) {
+        if (this.props.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
     }
@@ -206,8 +206,8 @@ class PolicyEditor extends React.PureComponent {
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
-        const threshold = _.get(metaData, 'threshold', true);
-        const duration = _.get(metaData, 'duration', true);
+        const threshold = _.get(metaData, 'threshold', false);
+        const duration = _.get(metaData, 'duration', false);
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
