@@ -44,6 +44,7 @@ class AlarmsTable extends React.PureComponent {
             title: ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
             name: 'external_id',
             sortable: true,
+            searchable: true,
             width: 150,
         }, {
             title: ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
@@ -97,9 +98,7 @@ class AlarmsTable extends React.PureComponent {
                 return status ? (
                     <IconCell
                         icon={`icon-state-${status.toLowerCase()}`}
-                        iconProps={{
-                            title: ls(`ALARMS_STATUS_${status}`, 'Статус')
-                        }}
+                        iconTitle={ls(`ALARMS_STATUS_${status.toUpperCase()}`, 'Статус')}
                         cellStyle={iconCellStyle}
                     />
                 ) : (
