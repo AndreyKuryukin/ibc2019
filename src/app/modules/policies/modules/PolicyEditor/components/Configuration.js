@@ -77,11 +77,15 @@ class Configuration extends React.Component {
         return moment.duration(Number(secs), 'seconds').asMilliseconds();
     };
 
-    mapObjectTypes = objectTypes => _.isArray(objectTypes) ? objectTypes.map(type => ({ title: type, value: type })) : [];
+    mapObjectTypes = objectTypes => _.isArray(objectTypes) ? objectTypes.map(type => ({
+        title: type,
+        value: type
+    })) : [];
 
     render() {
         const { policyTypes, objectTypes, errors, metaData } = this.props;
-        const object_type = _.get(this.state, 'policy.object_type');
+        const threshold = _.get(policy, 'threshold', true);
+        const duration = _.get(policy, 'duration', true);
         return (
             <Panel
                 title={ls('POLICIES_CONFIGURATION_TITLE', 'Конфигурация')}
@@ -141,7 +145,8 @@ class Configuration extends React.Component {
                     />
                 </Field>
 
-                {object_type !== 'KQI' && <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
+                {threshold && duration &&
+                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
                     <div style={{ width: '60%' }}>
                         <Field
                             id="rise_duration"
@@ -167,7 +172,7 @@ class Configuration extends React.Component {
                         </Field>
                     </div>
                     <div style={{ width: '40%' }}>
-                        {_.get(metaData, 'group') !== 'SIMPLE' && <Field
+                        {threshold && <Field
                             id="rise_value"
                             required
                             labelText={`${ls('POLICIES_POLICY_FIELD_RISE_VALUE', 'Порог')}`}
