@@ -93,7 +93,7 @@ class AlarmsTable extends React.PureComponent {
                     />
                 );
             case 'notification_status': {
-                const status = _.get(node, 'status', '');
+                const status = _.get(node, 'notification_status', '');
                 return status ? (
                     <IconCell
                         icon={`icon-state-${status.toLowerCase()}`}
@@ -132,7 +132,7 @@ class AlarmsTable extends React.PureComponent {
         id: node.id.toString(),
         external_id: node.external_id || '',
         policy_name: node.policy_name,
-        status: node.status || '',
+        notification_status: node.notification_status || '',
         raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',
