@@ -1,11 +1,34 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Input from "../Input/index";
 import Select from "../Select/index";
 import Icon from "../Icon/Icon";
 
 import styles from './styles.scss';
 import * as _ from "lodash";
+import classnames from "classnames";
+
+const NativeInput = props => {
+    const {
+        onChange = () => null,
+        className,
+        valid,
+        errorMessage,
+        ...rest
+    } = props;
+    return <div
+        className={classnames(className, styles.inputStabContainer, {
+            ['is-invalid']: !valid
+        })}
+    >
+        {!valid && <div className={'fieldInvalid'} title={errorMessage}/>}
+        <input
+            className={classnames('form-control', {
+                ['is-invalid']: !valid
+            })}
+            onChange={(e) => onChange(e.target.value)}
+            {...rest}/>
+    </div>;
+};
 
 class ChipList extends React.PureComponent {
     static propTypes = {
@@ -63,7 +86,7 @@ class ChipList extends React.PureComponent {
 
     render() {
         const isSelect = !_.isUndefined(this.props.options);
-        const InputCmp = isSelect ? Select : Input;
+        const InputCmp = isSelect ? Select : NativeInput;
         const value = this.formatValue(this.state.value);
         return <div className={styles.chipListContainer}>
             <div className={styles.inputContainer}>
