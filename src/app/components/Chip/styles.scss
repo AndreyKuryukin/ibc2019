@@ -31,12 +31,19 @@
 }
 
 .chipListContainer {
-  padding: 4px 8px 4px 0;
+  padding: 4px 0 4px 0;
   .inputContainer {
     position: relative;
     display: flex;
     > :first-child {
       width: 100%;
     }
+    > :last-child {
+      margin-left: 4px;
+    }
   }
+}
+
+.inputStabContainer {
+  position: relative;
 }
