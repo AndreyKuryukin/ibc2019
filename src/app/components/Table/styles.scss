@@ -14,6 +14,7 @@
     background: -moz-linear-gradient(top, #232323 0%, #404040 33%); /* FF3.6-15 */
     background: -webkit-linear-gradient(top, #232323 0%, #404040 33%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(to bottom, #232323 0%, #404040 33%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+    padding-right: 17px;
   }
   .tableBody {
     display: flex;
@@ -49,4 +50,24 @@
       }
     }
   }
+}
+
+.resizer {
+  position: absolute;
+  top: 0;
+  width: 7px;
+  bottom: 0;
+  cursor: ew-resize;
+  z-index: 9000;
+}
+.resizer:active:before {
+  content: '';
+  display: block;
+  cursor: default;
+  position: absolute;
+  border-left: 1px black dashed;
+  top: 0;
+  left: 3px;
+  height: 99999px;
+  z-index: 9005;
 }

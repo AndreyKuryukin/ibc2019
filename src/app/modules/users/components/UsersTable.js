@@ -68,45 +68,51 @@ class UsersTable extends React.PureComponent {
         }] : []), {
             title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Логин'),
             name: 'login',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 110,
+            width: 150,
         }, {
             title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
             name: 'name',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 140,
+            width: 150,
         }, {
             title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
             name: 'email',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 120,
+            width: 150,
         }, {
             title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
             name: 'phone',
+            resizable: true,
             searchable: true,
             sortable: true,
             width: 110,
+            minWidth: 100,
+            maxWidth: 150,
         }, {
             title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
             name: 'roles',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 110,
         }, {
             title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
             name: 'division',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 110,
         }, {
             title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
             name: 'groups',
+            resizable: true,
             searchable: true,
             sortable: true,
-            width: 170,
         }, {
             title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
             name: 'created',
@@ -116,6 +122,7 @@ class UsersTable extends React.PureComponent {
         }, {
             title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
             name: 'last_connection',
+            resizable: true,
             searchable: true,
             sortable: true,
             width: 130,
@@ -124,7 +131,7 @@ class UsersTable extends React.PureComponent {
             name: 'disabled',
             searchable: true,
             sortable: true,
-            width: 70
+            width: 70,
         }
     ]);
 
@@ -222,11 +229,13 @@ class UsersTable extends React.PureComponent {
         const columns = UsersTable.getColumns(hasEditAccess);
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
-            <Table data={filteredData}
-                   columns={columns}
-                   headerRowRender={this.headerRowRender}
-                   bodyRowRender={this.bodyRowRender}
-                   preloader={this.props.preloader}
+            <Table
+                id="users-table"
+                data={filteredData}
+                columns={columns}
+                headerRowRender={this.headerRowRender}
+                bodyRowRender={this.bodyRowRender}
+                preloader={this.props.preloader}
             />
         );
     }

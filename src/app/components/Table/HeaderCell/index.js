@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from 'classnames';
 import styles from './styles.scss';
 import ColumnFilterTrigger from '../ColumnFilter/ColumnFilterTrigger';
 import ColumnFilterForm from '../ColumnFilter/ColumnFilterForm';
@@ -7,6 +8,7 @@ import ColumnFilterForm from '../ColumnFilter/ColumnFilterForm';
 class HeaderCell extends React.PureComponent {
     static propTypes = {
         children: PropTypes.node,
+        className: PropTypes.string,
         filterable: PropTypes.bool,
         width: PropTypes.oneOfType([
             PropTypes.string,
@@ -18,6 +20,7 @@ class HeaderCell extends React.PureComponent {
 
     static defaultProps = {
         children: null,
+        className: '',
         filterable: false,
         width: null,
         onClick: () => null,
@@ -60,13 +63,13 @@ class HeaderCell extends React.PureComponent {
     };
 
     render() {
-        const { filterable, children, width, onClick } = this.props;
+        const { filterable, className, children, width, onClick } = this.props;
         const { isFilterTriggerActive, isFilterFormActive } = this.state;
         const style = { width };
 
         return (
             <div
-                className={styles.headerCell}
+                className={classnames(styles.headerCell, className)}
                 style={style}
                 onClick={onClick}
                 onMouseEnter={this.onMouseEnter}

@@ -48,12 +48,14 @@ class ReportsTable extends React.PureComponent {
     static getColumns = memoize(hasEditAccess => [{
         title: ls('REPORTS_NAME_COLUMN_TITLE', 'Название отчёта'),
         name: 'name',
+        resizable: true,
         sortable: true,
         searchable: true,
         width: 500
     }, {
         title: ls('REPORTS_CREATED_COLUMN_TITLE', 'Создан'),
         name: 'end',
+        resizable: true,
         sortable: true,
         searchable: true,
         width: 130
@@ -74,16 +76,19 @@ class ReportsTable extends React.PureComponent {
     }, {
         title: ls('REPORTS_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',
+        resizable: true,
         sortable: true,
         searchable: true,
     }, {
         title: ls('REPORTS_COMMENT_COLUMN_TITLE', 'Комментарий'),
         name: 'comment',
+        resizable: true,
         sortable: true,
         searchable: true,
     }, {
         title: ls('REPORTS_RECEIVERS_COLUMN_TITLE', 'Получат отчёт'),
         name: 'notify',
+        resizable: true,
         sortable: true,
         searchable: true,
         width: 200
@@ -250,6 +255,7 @@ class ReportsTable extends React.PureComponent {
 
         return (
             <TreeView
+                id="reports-table"
                 data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

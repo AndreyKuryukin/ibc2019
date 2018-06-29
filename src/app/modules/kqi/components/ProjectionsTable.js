@@ -38,21 +38,21 @@ export class ProjectionsTable extends React.PureComponent {
     static getColumns = memoize(hasEditAccess => [{
         title: ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции'),
         name: 'name',
+        resizable: true,
         searchable: true,
         sortable: true,
-        width: 350
     }, {
         title: ls('KQI_CREATED_COLUMN_TITLE', 'Дата создания'),
         name: 'creation_date',
+        resizable: true,
         searchable: true,
         sortable: true,
-        width: 130
     }, {
         title: ls('KQI_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',
+        resizable: true,
         searchable: true,
         sortable: true,
-        width: 80
     }, {
         title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество'),
         name: 'count',
@@ -62,12 +62,14 @@ export class ProjectionsTable extends React.PureComponent {
     }, {
         title: ls('KQI_LAST_DATE_COLUMN_TITLE', 'Дата последнего вычисления'),
         name: 'last_calc_date',
+        resizable: true,
         searchable: true,
         sortable: true,
         width: 200,
     }, {
         title: ls('KQI_STATUS_COLUMN_TITLE', 'Статус последнего вычисления'),
         name: 'status',
+        resizable: true,
         width: 200
     }, {
         title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
@@ -185,6 +187,7 @@ export class ProjectionsTable extends React.PureComponent {
 
         return (
             <Table
+                id="kqi-projections-table"
                 data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

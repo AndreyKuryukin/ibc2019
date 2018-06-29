@@ -8,9 +8,8 @@ import Preloader from '../Preloader';
 import { naturalSort } from '../../util/sort';
 import search from '../../util/search';
 import styles from './styles.scss';
-import HeaderCell from './HeaderCell';
-
-const SCROLL_WIDTH = 17;
+import Header from './Header';
+import Body from './Body';
 
 class Table extends React.Component {
     static childContextTypes = {
@@ -18,6 +17,7 @@ class Table extends React.Component {
     };
 
     static propTypes = {
+        id: PropTypes.string.isRequired,
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
         className: PropTypes.string,
@@ -45,26 +45,6 @@ class Table extends React.Component {
         return defaultSortColumn ? defaultSortColumn.name : null;
     };
 
-    static pickReservedWidths(columns) {
-        return columns.reduce((result, { width }) => width ? result.concat(width) : result, []);
-    };
-
-    static computeColumnsWidths = memoize((columns) => {
-        const reservedWidths = Table.pickReservedWidths(columns);
-
-        return columns.reduce((widths, { name, width }) => {
-            const reservedWidth = reservedWidths.reduce((result, value) => result + value, 0);
-
-            return {
-                ...widths,
-                [name]: {
-                    header: width || `calc((100% - ${reservedWidth + SCROLL_WIDTH}px) / ${columns.length - reservedWidths.length})`,
-                    body: width || `calc((100% - ${reservedWidth}px) / ${columns.length - reservedWidths.length})`,
-                },
-            };
-        }, {});
-    });
-
     constructor(props) {
         super(props);
 
@@ -74,7 +54,7 @@ class Table extends React.Component {
         this.state = {
             data: Array.isArray(props.data) ? this.getSortedData(props.data, sortBy, defaultSortDirection) : [],
             cntrlIsPressed: false,
-            selected: [],
+            selected: '',
             sort: {
                 by: sortBy,
                 direction: defaultSortDirection,
@@ -120,7 +100,7 @@ class Table extends React.Component {
         if (typeof this.props.onSelectRow === 'function') {
             this.props.onSelectRow(node.id);
         } else {
-            this.setState({ selected: [node.id] });
+            this.setState({ selected: node.id });
         }
     };
 
@@ -169,6 +149,7 @@ class Table extends React.Component {
 
     render() {
         const {
+            id,
             columns,
             headerRowRender,
             bodyRowRender,
@@ -176,45 +157,26 @@ class Table extends React.Component {
             preloader,
         } = this.props;
         const { data = [], selected, sort } = this.state;
-        const columnsWidths = Table.computeColumnsWidths(columns);
+
         return (
             <Preloader active={preloader}>
                 <div className={classnames(styles.tableContainer, className )}>
-                    {headerRowRender && <div className={styles.tableHeader}>
-                        {columns.map((column, index) => (
-                            <HeaderCell
-                                key={column.name}
-                                filterable={!!column.filter}
-                                onClick={() => this.onHeaderCellClick(column)}
-                                onColumnFilterChange={(values) => this.onColumnFilterChange(column.name, values)}
-                                width={_.get(columnsWidths, `${[column.name]}.header`, 0)}
-                            >
-                                {headerRowRender(column, sort)}
-                            </HeaderCell>
-                        ))}
-                    </div>}
-                    <div className={styles.tableBody}>
-                        {data.map(node => <div
-                                key={node.id}
-                                id={node.id}
-                                className={classnames(styles.bodyRow, { [styles.selected]: _.find(selected, id => id === node.id) })}
-                                onClick={() => this.onRowClick(node)}
-                            >
-                                {columns.map((column) => (
-                                    <div
-                                        key={column.name}
-                                        className={styles.bodyCell}
-                                        style={{
-                                            width: _.get(columnsWidths, `${[column.name]}.body`, 0),
-                                            minWidth: _.get(columnsWidths, `${[column.name]}.body`, 0)
-                                        }}
-                                    >
-                                        {bodyRowRender(column, node)}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    {headerRowRender && <Header
+                        id={id}
+                        columns={columns}
+                        sortInfo={sort}
+                        headerRowRender={headerRowRender}
+                        onColumnFilterChange={this.onColumnFilterChange}
+                        onHeaderCellClick={this.onHeaderCellClick}
+                    />}
+                    <Body
+                        id={id}
+                        data={data}
+                        columns={columns}
+                        selected={selected}
+                        onRowClick={this.onRowClick}
+                        bodyRowRender={bodyRowRender}
+                    />
                 </div>
             </Preloader>
         );
