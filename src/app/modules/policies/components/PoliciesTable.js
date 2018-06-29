@@ -32,7 +32,7 @@ class PoliciesTable extends React.PureComponent {
     };
 
     getColumns = memoize(() => [
-        this.context.hasAccess('POLICY', 'EDIT') && {
+        {
             title: '',
             name: 'has_notifications',
             sortable: false,
