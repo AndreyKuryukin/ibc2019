@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
 import styles from '../styles.scss';
+import ls from 'i18n';
 
 class RegionList extends React.PureComponent {
     static propTypes = {
@@ -24,7 +25,7 @@ class RegionList extends React.PureComponent {
             );
         }
         return (
-            <span className={styles.kqi}>N/A</span>
+            <span className={styles.kqi}>{ls('NOT_AVAILABLE', 'Н/Д')}</span>
         );
     }
 

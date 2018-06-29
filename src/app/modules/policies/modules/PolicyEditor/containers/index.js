@@ -45,24 +45,22 @@ class PolicyEditor extends React.PureComponent {
                 this.fetchMetaData(nextProps.policy.object_type, nextProps.policy.policy_type),
                 this.fetchScopeTypes(nextProps.policy.object_type, nextProps.policy.policy_type)])
                 .then(([policyTypes, metaData, scopeTypes]) => {
-                    this.setState({
-                        policy: this.decodeConditions(nextProps.policy),
+                    const update = {
                         policyTypes,
                         metaData,
                         scopeTypes,
                         loading: false
-                    })
+                    };
+                    if (!_.isEmpty(nextProps.policy)) {
+                        update.policy = this.decodeConditions(nextProps.policy);
+                    }
+                    this.setState(update)
                 })
                 .catch((e) => {
                     console.log(e)
                 })
         }
     }
-
-    state = {
-        errors: null,
-    };
-
 
     getValidationConfig = (metaData) => {
         return {
@@ -77,16 +75,16 @@ class PolicyEditor extends React.PureComponent {
             },
             threshold: () => ({
                 cease_duration: {
-                    required: true,
+                    required: _.get(metaData, 'duration', false),
                 },
                 cease_value: {
-                    required: _.get(metaData, 'group') !== 'SIMPLE',
+                    required: _.get(metaData, 'threshold', false),
                 },
                 rise_duration: {
-                    required: true,
+                    required: _.get(metaData, 'duration', false),
                 },
                 rise_value: {
-                    required: _.get(metaData, 'group') !== 'SIMPLE',
+                    required: _.get(metaData, 'threshold', false),
                 }
             }),
             condition: () => ({
@@ -121,13 +119,24 @@ class PolicyEditor extends React.PureComponent {
         }
     };
 
-    constructor() {
-        super();
-        this.state = {};
+    constructor(props) {
+        super(props);
+        this.state = {
+            errors: null,
+            policy: {
+                condition: {
+                    conjunction: {
+                        type: 'AND',
+                        conjunctionList: []
+                    }
+                },
+            }
+        };
     }
 
     composeConjunctionString = (object) => {
         let { parameterType = '', operator = '', value = '' } = object;
+        value = _.isString(value) ? `'${value}'` : value;
         const conjString = `${parameterType} ${operator} ${value}`;
         return conjString.trim();
     };
@@ -136,7 +145,8 @@ class PolicyEditor extends React.PureComponent {
         const parts = conjunctionString.split(' ');
         const parameterType = _.get(parts, '0', '');
         const operator = _.get(parts, '1');
-        const value = _.get(parts, '2');
+        let value = _.get(parts, '2');
+        value = value.indexOf("'") === -1 ? Number(value) : value.replace(/'+/g, '');
         return {
             parameterType, operator, value
         };
@@ -159,8 +169,12 @@ class PolicyEditor extends React.PureComponent {
             .then(([kqiResp, objectTypesResp, policyResp]) => {
                 const objectTypes = objectTypesResp.data;
                 const kqiList = kqiResp.data;
-                const policy = _.get(policyResp, 'data');
-                this.setState({ objectTypes, kqiList: this.mapKqi(kqiList), loading: false, policy }, () => {
+                const policy = _.get(policyResp, 'data', false);
+                const update = {objectTypes, kqiList: this.mapKqi(kqiList), loading: false};
+                if (policy) {
+                    update.policy = policy;
+                }
+                this.setState(update, () => {
                     if (policyResp) {
                         this.props.onFetchPolicySuccess(policy);
                     }

@@ -1,0 +1,111 @@
+[
+  {
+    "name": "Test",
+    "object_type": "STB",
+    "policy_type": "STB_GROUP",
+    "condition": {
+      "condition": "{\"conditionDuration\":3000,\"conjunction\":{\"conjunctionList\":[{\"value\":\"lostOverflow < 3\"}],\"type\":\"OR\"}}"
+    },
+    "threshold": {
+      "cease_value": 0,
+      "rise_value": 0,
+      "rise_duration": 3000,
+      "cease_duration": 3000
+    },
+    "scope_list": [
+      "DDDDDDDDDDDD"
+    ],
+    "scope_type": "MAC",
+    "id": 0,
+    "notifications_configs": [
+      {
+        "adapter_id": "CRM",
+        "instance_id": "prod",
+        "parameters": [
+          {
+            "uid": "Type1Id",
+            "value": [
+              "TechSupport1"
+            ]
+          },
+          {
+            "uid": "Type2Id",
+            "value": [
+              "Security cam"
+            ]
+          },
+          {
+            "uid": "Type3Id",
+            "value": [
+              "Cant update PO"
+            ]
+          }
+        ]
+      },
+      {
+        "adapter_id": "EMAIL",
+        "instance_id": "",
+        "parameters": [
+          {
+            "uid": "group",
+            "value": [
+              null
+            ]
+          },
+          {
+            "uid": "users",
+            "value": [
+              null
+            ]
+          },
+          {
+            "uid": "emails",
+            "value": [
+              "osidj@skjdfsk.ru",
+              "osid=j@skjdfsk.ru",
+              "osid=j@skjdhfsk.ru"
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "object_type": "VB",
+    "policy_type": "VB_UNICAST_GROUP",
+    "condition": {
+      "condition": "{\"conjunction\":{\"type\":\"OR\",\"conjunctionList\":[{\"value\":\"type != 'mlr'\"}]},\"conditionDuration\":2000}"
+    },
+    "threshold": {
+      "cease_value": 0,
+      "rise_value": 0,
+      "rise_duration": 1000,
+      "cease_duration": 1000
+    },
+    "allow_accident": true,
+    "accident": "0",
+    "waiting_time": "1",
+    "name": "lsifoli",
+    "id": 1,
+    "notifications_configs": [
+      {
+        "adapter_id": "CRM",
+        "instance_id": "prod",
+        "parameters": [
+          {
+            "uid": "Type1Id",
+            "value": "TechSupport1"
+          },
+          {
+            "uid": "Type2Id",
+            "value": "Security cam"
+          },
+          {
+            "uid": "Type3Id",
+            "value": "Cant update PO"
+          }
+        ]
+      }
+    ]
+  }
+]

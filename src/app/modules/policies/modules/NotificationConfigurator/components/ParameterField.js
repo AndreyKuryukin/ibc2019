@@ -46,7 +46,7 @@ class ParameterField extends React.Component {
         this.state = {
             value: '',
             error: null,
-            errors: null,
+            errors: props.errors,
         };
     }
 

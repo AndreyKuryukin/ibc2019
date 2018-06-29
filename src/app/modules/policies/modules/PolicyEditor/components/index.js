@@ -97,7 +97,7 @@ class PolicyEditor extends React.PureComponent {
             this.setState({ metaData: nextProps.metaData })
         }
 
-        if (this.state.errors !== nextProps.errors) {
+        if (this.props.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
         }
     }
@@ -206,7 +206,8 @@ class PolicyEditor extends React.PureComponent {
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
-        const object_type = _.get(policy, 'object_type');
+        const threshold = _.get(metaData, 'threshold', false);
+        const duration = _.get(metaData, 'duration', false);
         const modalTitle = policyId
             ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
@@ -260,7 +261,7 @@ class PolicyEditor extends React.PureComponent {
                                             />
                                         }
                                     </Panel>
-                                    {object_type !== 'KQI' && <Panel
+                                    {(threshold || duration) && <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -289,7 +290,7 @@ class PolicyEditor extends React.PureComponent {
                                                 </Field>
                                             </div>
                                             <div style={{ width: '40%' }}>
-                                                {_.get(metaData, 'group') !== 'SIMPLE' && <Field
+                                                {threshold && <Field
                                                     id="cease_value"
                                                     labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}`}
                                                     labelWidth="35%"

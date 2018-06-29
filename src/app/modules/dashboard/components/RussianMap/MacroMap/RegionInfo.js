@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import styles from '../styles.scss';
+import ls from 'i18n';
 
 class RegionInfo extends React.PureComponent {
     static propTypes = {
@@ -47,7 +48,7 @@ class RegionInfo extends React.PureComponent {
             >
                 <span className="name">{name}</span>
                 {kqi === undefined ? (
-                    <span className={styles.value}>N/A</span>
+                    <span className={styles.value}>{ls('NOT_AVAILABLE', 'Н/Д')}</span>
                 ) : (
                     <span className="value">{kqi.toFixed(2)} <span>%</span></span>
                 )}

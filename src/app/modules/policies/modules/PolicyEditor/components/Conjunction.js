@@ -82,8 +82,9 @@ class Conjunction extends React.PureComponent {
         };
 
         if (paramCfg.type === 'enum' && _.isArray(paramCfg.values)) {
+            const isNum = _.isNumber(paramCfg.values[0]);
             params.options = paramCfg.values.map(v => ({ title: v, value: v }));
-            params.onChange = value => this.setConjunctionProperty('value', value);
+            params.onChange = value => this.setConjunctionProperty('value', isNum ? Number(value) : value);
         } else {
             params.type = 'text';
             params.onChange = (value) => this.setConjunctionProperty('value', value);
@@ -104,7 +105,7 @@ class Conjunction extends React.PureComponent {
     };
 
     setParameter = (value, parameters) => {
-        const update = { value: { operator: null, value: null } };
+        const update = { value: { operator: null, value: '' } };
         const parameterCfg = this.getParamCfgByName(parameters, value);
         if (parameterCfg.type === 'KQI') {
             update.value.operator = '>'

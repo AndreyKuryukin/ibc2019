@@ -1,6 +1,7 @@
 .iconBlock {
     display: inline-block;
     cursor: pointer;
+    background-position: center;
     &.iconDisabled {
         pointer-events: none;
     }

@@ -23,6 +23,9 @@ const languageMap = {
 
     ALARMS_STATUS_SUCCESS: 'Успешно',
     ALARMS_STATUS_FAILED: 'Сбой',
+    ALARMS_STATUS_BYZERROR: 'Бизнес ошибка',
+    ALARMS_STATUS_SYSERROR: 'Системная ошибка',
+    ALARMS_STATUS_WAITING: 'В процессе',
 
     ALARMS_GROUP_POLICIES_DURATION_DAYS_UNIT: 'д ',
     ALARMS_GROUP_POLICIES_DURATION_HOURS_UNIT: ':',
