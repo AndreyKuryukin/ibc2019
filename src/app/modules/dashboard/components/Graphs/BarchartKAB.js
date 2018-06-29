@@ -90,7 +90,7 @@ class BarchartKAB extends React.Component {
 
         const cut = number => typeof number === 'number'
             ? parseFloat(number.toFixed(2))
-            : 'N/A';
+            : ls('NOT_AVAILABLE', 'Н/Д');
 
         const previousData = this.state.data.map(item => ({
             y: item.previous,
