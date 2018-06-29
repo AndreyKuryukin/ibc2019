@@ -195,7 +195,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     getMilliSeconds = (secs) => {
-        return moment.duration(Number(secs), 'seconds').asMilliseconds();
+        return moment.duration(Number(secs), 'seconds').asMilliseconds() || '';
     };
 
     addMac = (mac) => {
@@ -283,6 +283,7 @@ class PolicyEditor extends React.PureComponent {
                                                             value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
                                                             onChange={value => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(value))}
                                                             maxLength={6}
+                                                            errorMessage={_.get(errors, 'threshold.cease_duration.title')}
                                                         />
                                                         <span
                                                             style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
