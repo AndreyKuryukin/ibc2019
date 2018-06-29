@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ls from 'i18n';
 import PolicyEditorComponent from '../components';
 import { createPolicy, fetchPolicySuccess, resetPolicyEditor, updatePolicy } from '../actions';
 import { fetchScopesSuccess, fetchTypesSuccess } from '../../../actions'
@@ -78,12 +79,14 @@ class PolicyEditor extends React.PureComponent {
             threshold: () => ({
                 cease_duration: {
                     required: true,
+                    ceaseLessThanRise: true,
                 },
                 cease_value: {
                     required: _.get(metaData, 'group') !== 'SIMPLE',
                 },
                 rise_duration: {
                     required: true,
+                    ceaseLessThanRise: true,
                 },
                 rise_value: {
                     required: _.get(metaData, 'group') !== 'SIMPLE',
@@ -290,7 +293,15 @@ class PolicyEditor extends React.PureComponent {
     };
 
     onSubmit = (policyId, policyData) => {
-        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData));
+        const messages = {
+            ceaseLessThanRise: ls('CEASE_LESS_THAN_RISE_ERROR_MESSAGE', 'Интервал агрегации окончания аварии должен быть больше, чем интервал агрегации начала аварии'),
+        };
+        const validators = {
+            ceaseLessThanRise: () => !(_.get(policyData, 'threshold.cease_duration') && _.get(policyData, 'threshold.rise_duration'))
+                || _.get(policyData, 'threshold.cease_duration') > _.get(policyData, 'threshold.rise_duration'),
+        };
+        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData), messages, validators);
+
         if (_.isEmpty(errors)) {
             const submit = policyId ? rest.put : rest.post;
             const success = (response) => {

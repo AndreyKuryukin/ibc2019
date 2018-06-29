@@ -74,7 +74,7 @@ class Configuration extends React.Component {
     };
 
     getMilliSeconds = (secs) => {
-        return moment.duration(Number(secs), 'seconds').asMilliseconds();
+        return moment.duration(Number(secs), 'seconds').asMilliseconds() || '';
     };
 
     mapObjectTypes = objectTypes => _.isArray(objectTypes) ? objectTypes.map(type => ({ title: type, value: type })) : [];
