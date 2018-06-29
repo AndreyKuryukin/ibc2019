@@ -44,6 +44,7 @@ class AlarmsTable extends React.PureComponent {
             title: ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
             name: 'external_id',
             sortable: true,
+            searchable: true,
             width: 150,
         }, {
             title: ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
@@ -93,13 +94,11 @@ class AlarmsTable extends React.PureComponent {
                     />
                 );
             case 'notification_status': {
-                const status = _.get(node, 'status', '');
+                const status = _.get(node, 'notification_status', '');
                 return status ? (
                     <IconCell
                         icon={`icon-state-${status.toLowerCase()}`}
-                        iconProps={{
-                            title: ls(`ALARMS_STATUS_${status}`, 'Статус')
-                        }}
+                        iconTitle={ls(`ALARMS_STATUS_${status.toUpperCase()}`, 'Статус')}
                         cellStyle={iconCellStyle}
                     />
                 ) : (
@@ -132,7 +131,7 @@ class AlarmsTable extends React.PureComponent {
         id: node.id.toString(),
         external_id: node.external_id || '',
         policy_name: node.policy_name,
-        status: node.status || '',
+        notification_status: node.notification_status || '',
         raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',

@@ -150,7 +150,7 @@ class Period extends React.PureComponent {
                 </div>}
             >
                 <div className={styles.intervalsGroup}>
-                    {templateId !== '9' && <Field
+                    {<Field
                         id="day-interval"
                         labelText={ls('TIME_INTERVAL_DAY', 'День')}
                         inputWidth={15}
