@@ -312,7 +312,7 @@ class PolicyEditor extends React.PureComponent {
         };
         const validators = {
             ceaseLessThanRise: () => !(_.get(policyData, 'threshold.cease_duration') && _.get(policyData, 'threshold.rise_duration'))
-                || _.get(policyData, 'threshold.cease_duration') > _.get(policyData, 'threshold.rise_duration'),
+                || _.get(policyData, 'threshold.cease_duration') >= _.get(policyData, 'threshold.rise_duration'),
         };
         const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData), messages, validators);
 
