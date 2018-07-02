@@ -50,6 +50,10 @@ class App extends React.Component {
         onLogOut: () => null,
     };
 
+    static contextTypes = {
+        notifications: PropTypes.object.isRequired,
+    };
+
     getMapedSubjects = () => {
         return {
             'LOGIN': {
@@ -137,6 +141,7 @@ class App extends React.Component {
     constructor(props) {
         super(props);
         rest.onResponseCode('401', this.navigateLogin);
+        rest.onResponseCode('401', this.navigateLogin);
         rest.onResponseCode('403', this.navigateLogin); //todo: Должен быть 401
         rest.onResponseCode('200', this.refreshToken);
         this.setToken();
@@ -179,10 +184,23 @@ class App extends React.Component {
                 this.onFetchUserSuccess(user);
                 this.setState({ loading: false, loggedIn: true });
             })
-            .catch(() => {
-                this.props.onFetchUserSuccess({
-                    subjects: this.getCommonSubjects(),
-                });
+            .catch((e) => {
+                this.navigateLogin();
+                if (e.status === 500) {
+                    this.context.notifications.notify({
+                        title: ls('LOGIN_ERROR_FIELD', 'Ошибка авторизации:'),
+                        message: ls('LOGIN_ERROR_FIELD', 'Внутренняя ошибка сервера'),
+                        type: 'CRITICAL',
+                        code: 'login-failed'
+                    });
+                } else if (e.status === 403) {
+                    this.context.notifications.notify({
+                        title: ls('LOGIN_ERROR_FIELD', 'Ошибка авторизации:'),
+                        message: ls('LOGIN_ERROR_FIELD', 'Войдите в систему'),
+                        type: 'CRITICAL',
+                        code: 'login-failed'
+                    });
+                }
                 this.setState({ loading: false, loggedIn: false });
             });
     }

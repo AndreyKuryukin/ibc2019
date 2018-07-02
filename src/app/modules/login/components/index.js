@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Form } from 'reactstrap';
 
+import Preloader from '../../../components/Preloader';
 import Input from '../../../components/Input';
 import _ from 'lodash';
 import ls from '../../../../i18n';
@@ -61,33 +62,35 @@ class Login extends React.PureComponent {
                     <div className={styles.sqmLabel}>
                         {'SQM B2C'}
                     </div>
-                    <Form
-                        onSubmit={this.onSubmit}
-                        className={styles.loginForm}
-                    >
-                        <Input
-                            value={this.state.login}
-                            placeholder={ls('LOGIN_LOGIN', 'Логин')}
-                            onChange={value => this.inputValue(value, 'login')}
-                            valid={_.isEmpty(errors.login)}
-                        />
-
-                        <Input
-                            type="password"
-                            id="password"
-                            value={this.state.password}
-                            placeholder={ls('LOGIN_PASSWD', 'Пароль')}
-                            onChange={value => this.inputValue(value, 'password')}
-                            valid={_.isEmpty(errors.password)}
-                        />
-
-                        <Button
-                            type="submit"
-                            color="action"
+                    <Preloader active={this.props.loading}>
+                        <Form
+                            onSubmit={this.onSubmit}
+                            className={styles.loginForm}
                         >
-                            {ls('LOGIN_SUBMIT', 'ВХОД')}
-                        </Button>
-                    </Form>
+                            <Input
+                                value={this.state.login}
+                                placeholder={ls('LOGIN_LOGIN', 'Логин')}
+                                onChange={value => this.inputValue(value, 'login')}
+                                valid={_.isEmpty(errors.login)}
+                            />
+
+                            <Input
+                                type="password"
+                                id="password"
+                                value={this.state.password}
+                                placeholder={ls('LOGIN_PASSWD', 'Пароль')}
+                                onChange={value => this.inputValue(value, 'password')}
+                                valid={_.isEmpty(errors.password)}
+                            />
+
+                            <Button
+                                type="submit"
+                                color="action"
+                            >
+                                {ls('LOGIN_SUBMIT', 'ВХОД')}
+                            </Button>
+                        </Form>
+                    </Preloader>
                 </div>
             </div>);
     }
