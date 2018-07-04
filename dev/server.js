@@ -85,6 +85,7 @@ const plugIn = (app, plugins) => {
 
 if (PROXY_HOST) {
     const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
+    const wsTarget = `ws://${PROXY_HOST}:${PROXY_PORT}`;
     const config = {
         proxyReqPathResolver: (req) => {
             console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
@@ -96,6 +97,13 @@ if (PROXY_HOST) {
         plugIn(app, plugins);
     }
     app.use('/api/*', proxy(target, config));
+    app.use('/notifications/*', proxy(target, config));
+
+    app.on('upgrade', function (req, socket, head) {
+        console.log("proxying upgrade request", req.url);
+        proxy.ws(req, socket, head);
+    });
+    // app.use('ws://', proxy({ target: wsTarget, ws: true }));
     app.use('/data/*', proxy(target, config));
     useStatic();
     console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);

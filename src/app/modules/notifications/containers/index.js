@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import SockJS from 'sockjs';
+import SockJS from 'sockjs-client';
 import { flush, onNewNotifications } from '../actions/index';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
@@ -44,20 +44,15 @@ class Notification extends React.PureComponent {
     }
 
     componentDidMount = () => {
-        this.connectToWebSocket('192.168.192.144', 8020)
-    };
-
-    onStompMessage = (message, topic) => {
-        debugger;
+        this.connectToWebSocket()
     };
 
     onWsConnect = (client) => {
-        client.subscribe('/alerts', (message) => this.onStompMessage(message, '/alerts'))
+        client.subscribe('/alerts', (message) => this.dispatchNotifications(message.body, '/alerts'))
     };
 
-    connectToWebSocket = (host = 'localhost', port = 8020, token = localStorage.getItem('jwtToken')) => {
-
-        const url = `http://${host}:${port}/notifications?jwt=${token}&t=${new Date().getTime()}`;
+    connectToWebSocket = (token = localStorage.getItem('jwtToken')) => {
+        const url = `/notifications?jwt=${token}`;
         const socket = new SockJS(url);
         const client = Stomp.over(socket);
         client.connect({}, () => this.onWsConnect(client))
@@ -66,13 +61,13 @@ class Notification extends React.PureComponent {
     dispatchNotifications = (notifications, topic) => {
         let count = 0;
         if (_.isArray(notifications)) {
+            count = notifications.length;
             notifications = _.reduce(notifications, (result, alert) => {
                 const { type } = alert;
                 if (!_.isArray(result[type])) {
                     result[type] = []
                 }
                 result[type].push(alert);
-                count++;
                 return result;
             }, {})
         }
@@ -147,7 +142,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    onNewNotifications: (msg, topic, count) => dispatch(onNewNotifications(msg, topic, count)),
+    onNewNotifications: (notifications, topic, count) => dispatch(onNewNotifications(notifications, topic, count)),
     onFlushNotifications: (topic, type) => dispatch(flush(topic, type)),
 });
 
