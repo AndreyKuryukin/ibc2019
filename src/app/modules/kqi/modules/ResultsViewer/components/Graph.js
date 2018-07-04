@@ -149,8 +149,10 @@ class Graph extends React.PureComponent {
                         tooltipFormat: DATE_TIME,
                         unit
                     },
-                    tick: {
-                        source: 'labels'
+                    ticks: {
+                        autoSkip: true,
+                        source: 'data',
+                        autoSkipPadding: 5,
                     }
                 }],
             }
