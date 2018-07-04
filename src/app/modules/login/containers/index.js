@@ -71,7 +71,7 @@ class Login extends React.PureComponent {
                         type: 'CRITICAL',
                         code: 'login-failed'
                     });
-                    this.setState({ errors: _.get(error, `data.${ERRORS}`) });
+                    this.setState({ loading: false, errors: _.get(error, `data.${ERRORS}`) });
                 });
         }
     };

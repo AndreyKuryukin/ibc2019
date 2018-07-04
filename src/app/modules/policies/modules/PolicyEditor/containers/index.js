@@ -133,6 +133,12 @@ class PolicyEditor extends React.PureComponent {
                         conjunctionList: []
                     }
                 },
+            },
+            threshold: {
+                raise_value: 0,
+                cease_value: 0,
+                raise_duration: 0,
+                cease_duration: 0,
             }
         };
     }
@@ -242,9 +248,14 @@ class PolicyEditor extends React.PureComponent {
     };
 
     applyMetaDataToPolicy = (metaData, policy) => {
-        if (_.get(metaData, 'group') === 'SIMPLE') {
+        if (!_.get(metaData, 'threshold')) {
             let threshold = _.get(policy, 'threshold', {});
             threshold = { ...threshold, cease_value: 0, rise_value: 0 };
+            policy.threshold = threshold;
+        }
+        if (!_.get(metaData, 'duration')) {
+            let threshold = _.get(policy, 'threshold', {});
+            threshold = { ...threshold, cease_duration: 0, rise_duration: 0 };
             policy.threshold = threshold;
         }
         return policy;
@@ -312,7 +323,7 @@ class PolicyEditor extends React.PureComponent {
         };
         const validators = {
             ceaseLessThanRise: () => !(_.get(policyData, 'threshold.cease_duration') && _.get(policyData, 'threshold.rise_duration'))
-                || _.get(policyData, 'threshold.cease_duration') > _.get(policyData, 'threshold.rise_duration'),
+                || _.get(policyData, 'threshold.cease_duration') >= _.get(policyData, 'threshold.rise_duration'),
         };
         const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData), messages, validators);
 
