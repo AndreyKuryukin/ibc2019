@@ -56,7 +56,6 @@ class Login extends React.PureComponent {
             <div className={styles.loginContainer}>
                 <div className={styles.shield}>
                     <div className={styles.rostelecomLogo}></div>
-                    <div className={styles.qligentLogo}></div>
                 </div>
                 <div className={styles.formContainer}>
                     <div className={styles.sqmLabel}>

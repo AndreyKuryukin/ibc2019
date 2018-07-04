@@ -103,7 +103,6 @@ class PageWrapper extends React.Component {
                             [styles.navBar]: true,
                             [styles.hidden]: this.state.hidden
                         })}>
-                    <div className={styles.qLogo}/>
                     <div className={styles.pageTitle}>
                         {this.renderTitle(this.state.pageTitle)}
                     </div>

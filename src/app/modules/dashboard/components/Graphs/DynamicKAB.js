@@ -6,7 +6,7 @@ import moment from 'moment';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
 import { REGULARITIES } from '../../constants';
-
+import { convertUTC0ToLocal } from '../../../../util/date';
 
 const NAMES = {
     itv1: ls('DASHBOARD_ITV', 'ИТВ'),
@@ -59,7 +59,7 @@ class DynamicKAB extends React.Component {
         // grouping points by timestamp
         for (const [key, points] of Object.entries(data)) {
             for (const point of points) {
-                const timestamp = new Date(point.date_time).getTime();
+                const timestamp = convertUTC0ToLocal(point.date_time).valueOf();
                 let points = acc.get(timestamp);
                 if (points === undefined) {
                     points = new Map();
@@ -210,7 +210,7 @@ class DynamicKAB extends React.Component {
         const maxTime = values[values.length - 1].timestamp;
         const categories = [];
 
-        const formatPattern = regularity === REGULARITIES.HOUR ? 'HH:00' : 'd.MM.YYYY';
+        const formatPattern = regularity === REGULARITIES.HOUR ? 'HH:00' : 'D.MM.YYYY';
 
         for (let time = minTime; time <= maxTime; time += step) {
             const formatted = moment(time).format(formatPattern);

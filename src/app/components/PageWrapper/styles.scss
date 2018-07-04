@@ -25,15 +25,6 @@
       justify-content: stretch;
       height: $navbar-height;
       color: $white;
-      .qLogo {
-        background: url(../../../resources/img/common/Qligent_logo.svg) no-repeat;
-        height: 28px;
-        width: 70px;
-        margin: 6px 0 0 26px;
-        &:hover {
-          cursor: pointer;
-        }
-      }
       .pageTitle {
         display: flex;
         padding: 10px;
