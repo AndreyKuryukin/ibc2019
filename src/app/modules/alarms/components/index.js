@@ -5,6 +5,7 @@ import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
 import { GROUP_POLICIES_ALARMS, CLIENTS_INCIDENTS_ALARMS, KQI_ALARMS } from '../constants';
+import * as _ from "lodash";
 
 const tabStyle = {
     display: 'flex',
@@ -21,6 +22,7 @@ class Alarms extends React.PureComponent {
         history: PropTypes.object.isRequired,
         filter: PropTypes.object,
         alarms: PropTypes.array,
+        notifications: PropTypes.object,
         locations: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlarms: PropTypes.func,
@@ -30,6 +32,7 @@ class Alarms extends React.PureComponent {
     static defaultProps = {
         filter: null,
         alarms: [],
+        notifications: {},
         locations: [],
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
@@ -46,6 +49,13 @@ class Alarms extends React.PureComponent {
         this.props.history.push(`/alarms/${tabId}`);
         const {filter} = this.props;
         this.props.onChangeFilter({...filter, searchText: ''})
+    };
+
+    composeNotificationCount = (notifications) => {
+        if (_.isArray(notifications) && !_.isEmpty(notifications)) {
+            return notifications.length
+        }
+        return ''
     };
 
     render() {
@@ -70,6 +80,7 @@ class Alarms extends React.PureComponent {
                     id={CLIENTS_INCIDENTS_ALARMS}
                     tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
                     style={tabStyle}
+                    notification={this.composeNotificationCount(_.get(this.props, 'notifications.ki'))}
                 >
                     {type === CLIENTS_INCIDENTS_ALARMS && (
                         <AlarmsContent
@@ -88,6 +99,7 @@ class Alarms extends React.PureComponent {
                     id={GROUP_POLICIES_ALARMS}
                     tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
                     style={tabStyle}
+                    notification={this.composeNotificationCount(_.get(this.props, 'notifications.gp'))}
                 >
                     {type === GROUP_POLICIES_ALARMS && (
                         <AlarmsContent
@@ -106,6 +118,7 @@ class Alarms extends React.PureComponent {
                     id={KQI_ALARMS}
                     tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
                     style={tabStyle}
+                    notification={this.composeNotificationCount(_.get(this.props, 'notifications.kqi'))}
                 >
                     {type === KQI_ALARMS && (
                         <AlarmsContent

@@ -19,6 +19,22 @@ $tile-height: 104px;
     width: $tile-width;
     height: $tile-height;
     overflow: hidden;
+    .notificationCount {
+      position: absolute;
+      font-weight: bold;
+      font-style: normal;
+      font-stretch: normal;
+      letter-spacing: normal;
+      text-align: center;
+      color: $white;
+      background: red;
+      width: 18px;
+      line-height: 14px;
+      border-radius: 8px;
+      padding: 2px;
+      font-size: 8px;
+      cursor: pointer;
+    }
     .tileTitle {
       margin-top: 10px;
       cursor: default;
@@ -34,8 +50,7 @@ $tile-height: 104px;
     &:not(.activeTile):hover {
       //background-color: $menu-grey;
       cursor: pointer;
-      .iconBlock, .tileTitle
-      {
+      .iconBlock, .tileTitle {
         opacity: 0.5;
         cursor: pointer !important;
       }
@@ -48,4 +63,23 @@ $tile-height: 104px;
     }
 
   }
+}
+
+.notificationCountPopup {
+  display: flex;
+  flex-direction: column;
+  padding: 4px;
+  > *:not(:first-child) {
+    padding-top: 4px
+  }
+  .type {
+    color: $white;
+    cursor: pointer;
+    > .count {
+      font-weight: bold;
+      color: $red;
+      margin-left: 2px;
+    }
+  }
+
 }

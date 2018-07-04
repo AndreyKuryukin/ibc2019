@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from "react-redux";
 import _ from 'lodash';
-import { fetchMrfSuccess, fetchAlarmsSuccess, FILTER_ACTIONS } from '../actions';
+import { fetchAlarmsSuccess, fetchMrfSuccess, FILTER_ACTIONS } from '../actions';
+import { flush } from '../../notifications/actions';
 import rest from '../../../rest';
 import AlarmsComponent from '../components';
 import ls from "i18n";
@@ -70,7 +71,7 @@ class Alarms extends React.PureComponent {
         const nextType = _.get(nextProps, 'match.params.type', type);
         if (nextType && type !== nextType) {
             this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, '')]);
-            this.setState({type: nextType})
+            this.setState({ type: nextType })
         }
     }
 
@@ -84,17 +85,24 @@ class Alarms extends React.PureComponent {
         };
         rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {
+            const typeMap = {
+                'gp': 'gp',
+                'kqi': 'kqi',
+                'ci': 'ki'
+            };
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);
+                this.props.flushNotifications(typeMap[this.props.match.params.type]);
+
                 this.setState({ isLoading: false });
             })
             .catch((e) => {
                 console.error(e);
                 this.setState({ isLoading: false });
-            }) ;
+            });
     };
 
-    render () {
+    render() {
         return (
             <AlarmsComponent
                 history={this.props.history}
@@ -103,6 +111,7 @@ class Alarms extends React.PureComponent {
                 alarms={this.props.alarms}
                 locations={this.props.locations}
                 onChangeFilter={this.props.onChangeFilter}
+                notifications={this.props.notifications}
                 onFetchAlarms={this.onFetchAlarms}
                 isLoading={this.state.isLoading}
             />
@@ -114,13 +123,14 @@ const mapStateToProps = (state, props) => ({
     filter: _.get(state, `alarms.${props.match.params.type}`, null),
     alarms: state.alarms.alarms,
     locations: state.alarms.mrf,
+    notifications: _.get(state, 'notifications.alerts')
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
     onFetchAlarmsSuccess: alarms => dispatch(fetchAlarmsSuccess(alarms)),
     onChangeFilter: filter => _.isFunction(FILTER_ACTIONS[props.match.params.type]) ? dispatch(FILTER_ACTIONS[props.match.params.type](filter)) : null,
-
+    flushNotifications: type => dispatch(flush('alerts', type))
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alarms);

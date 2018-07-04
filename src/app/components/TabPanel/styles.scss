@@ -1,6 +1,15 @@
 @import "../../scss/vars";
 @import "../../scss/tabs";
 
+.navTitle{
+  display: flex;
+  flex-direction: row;
+  > span {
+    color: $red;
+    padding-left: 2px;
+  }
+}
+
 .tabsWrapper {
   display: flex;
   flex-direction: column;

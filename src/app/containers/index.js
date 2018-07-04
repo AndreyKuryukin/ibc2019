@@ -151,7 +151,7 @@ class App extends React.Component {
     onLogOut = () => {
         this.dropToken();
         this.props.history.push('/login');
-        this.setState({ loggedIn: false }, () => this.props.onLogOut())
+        this.setState({ loggedIn: false }, () => this.onFetchUserSuccess({}))
     };
 
     setToken = (token) => {
@@ -186,14 +186,14 @@ class App extends React.Component {
             })
             .catch((e) => {
                 this.navigateLogin();
-                if (e.status === 500) {
+                if (e && e.status === 500) {
                     this.context.notifications.notify({
                         title: ls('LOGIN_ERROR_FIELD', 'Ошибка авторизации:'),
                         message: ls('LOGIN_ERROR_FIELD', 'Внутренняя ошибка сервера'),
                         type: 'CRITICAL',
                         code: 'login-failed'
                     });
-                } else if (e.status === 403) {
+                } else if (e && e.status === 403) {
                     this.context.notifications.notify({
                         title: ls('LOGIN_ERROR_FIELD', 'Ошибка авторизации:'),
                         message: ls('LOGIN_ERROR_FIELD', 'Войдите в систему'),
@@ -201,6 +201,7 @@ class App extends React.Component {
                         code: 'login-failed'
                     });
                 }
+                this.onFetchUserSuccess({});
                 this.setState({ loading: false, loggedIn: false });
             });
     }

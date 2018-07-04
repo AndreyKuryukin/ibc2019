@@ -58,7 +58,11 @@
     "webpack-dev-server": "^2.11.2",
     "webpack-shell-plugin": "^0.5.0"
   },
+  "browser": {
+    "fs": false
+  },
   "dependencies": {
+    "@stomp/stompjs": "^4.0.6",
     "availity-reactstrap-validation": "^1.4.3",
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
@@ -92,6 +96,8 @@
     "redux": "^3.7.2",
     "reselect": "^3.0.1",
     "sass-loader-once": "0.0.2",
+    "sockjs": "^0.3.19",
+    "sockjs-client": "^1.1.5",
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.9",
     "xlsx": "^0.13.0"
