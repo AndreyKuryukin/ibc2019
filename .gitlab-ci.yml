@@ -9,6 +9,7 @@ stages:
 variables:
   DOCKER_DRIVER: overlay
   SPRING_PROFILES_ACTIVE: dev
+  CI_REGISTRY_IMAGE: registry-sqm.qligent.com/qligent_sqm/frontend
 
 node-build:
   image: node:8.9.4 
