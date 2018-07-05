@@ -53,7 +53,7 @@ class Alarms extends React.PureComponent {
 
     composeNotificationCount = (notifications) => {
         if (_.isArray(notifications) && !_.isEmpty(notifications)) {
-            return notifications.length
+            return notifications.length > 99 ? '99+' : notifications.length;
         }
         return ''
     };
