@@ -87,7 +87,7 @@ class Equipment extends React.PureComponent {
                     <Select
                         id="self-equipment-type"
                         options={this.getGropingOptions()}
-                        value={_.get(this.props, 'groupingValue', this.state.grouping)}
+                        value={_.get(this.props, 'groupingValue', this.state.grouping) || ''}
                         placeholder={ls('KQI_CONFIGURATOR_GROUPING_FIELD_PLACEHOLDER', 'Выберите группировку')}
                         onChange={v => this.onGroupingChange(v)}
                         disabled={disabled || !!value}

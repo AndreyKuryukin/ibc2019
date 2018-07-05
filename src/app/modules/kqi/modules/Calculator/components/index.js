@@ -22,6 +22,7 @@ import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../../../util/date';
+import DraggableWrapper from '../../../../../components/DraggableWrapper';
 
 const NAME_PATTERN_SEQUENCE = [
     'period.regularity',
@@ -348,105 +349,108 @@ class Calculator extends React.PureComponent {
         const { config } = this.state;
         const isKgs = this.isKgs(config.kqi_id);
         return (
-            <Modal
-                isOpen={this.props.active}
-                className={styles.kqiCalculator}
-            >
-                <ModalHeader
-                    toggle={this.onClose}
+            <DraggableWrapper>
+                <Modal
+                    isOpen={this.props.active}
+                    className={styles.kqiCalculator}
                 >
-                    {ls('KQI_CALCULATOR_TITLE', `Проекция KQI ${_.get(this.props.config, 'name', '')}`)}
-                </ModalHeader>
-                <ModalBody>
-                    <div className={styles.kqiCalculatorContent}>
-                        <BasicParams
-                            onChange={this.setConfigProperty}
-                            config={this.state.config}
-                            kqiOptions={Calculator.mapListToOptions(this.props, 'kqiList')}
-                            serviceTypesOptions={Calculator.mapObjectToOptions(SERVICE_TYPES)}
-                            errors={this.state.errors}
-                            disabled={disableForm}
-                        />
-                        <Period
-                            groupingOptions={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
-                            errors={this.state.errors}
-                            isAutoGen={_.get(this.state.config, 'period.auto', false)}
-                            disabled={disableForm}
-                            config={this.state.config}
-                            onAutoGenChange={value => this.setConfigProperty('period.auto', value)}
-                            onGroupingTypeChange={value => this.setConfigProperty('date_time_grouping', value)}
-                            onIntervalChange={this.onIntervalChange}
-                        />
-                        <Location
-                            locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}
-                            groupingOptions={Calculator.mapObjectToOptions(isKgs ? {RF: LOCATION_GROUPING.RF} : LOCATION_GROUPING)}
-                            onLocationChange={value => this.setConfigProperty('location', value)}
-                            onGroupingTypeChange={value => this.setConfigProperty('location_grouping', value)}
-                            config={this.state.config}
-                            disabled={disableForm}
-                            isKgs={isKgs}
-                        />
-                        {!isKgs && <Technology
-                            id="last-mile-technology"
-                            title={ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии последней мили')}
-                            label={`${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}`}
-                            technologies={Calculator.mapObjectToOptions(LAST_MILE_TECHNOLOGIES)}
-                            onTechnologyChange={value => this.setConfigProperty('last_mile_technology', value)}
-                            onGroupingChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
-                            disabled={disableForm}
-                            value={_.get(this.state.config, 'last_mile_technology')}
-                            groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
-                        />}
-                        {/*<Technology*/}
-                        {/*id="last-inch-technology"*/}
-                        {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
-                        {/*label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}*/}
-                        {/*technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}*/}
-                        {/*onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}*/}
-                        {/*onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}*/}
-                        {/*disabled={disableForm}*/}
-                        {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
-                        {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
-                        {/*/>*/}
-                        {!isKgs && <div className={styles.bottomContent}>
-                            <Manufacture
-                                isGroupingChecked={_.get(this.state.config, 'manufacturer_grouping', false)}
-                                manufactureList={manufactureList}
-                                onCheckManufactures={this.onCheckManufactures}
-                                onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
+                    <ModalHeader
+                        className="handle"
+                        toggle={this.onClose}
+                    >
+                        {ls('KQI_CALCULATOR_TITLE', `Проекция KQI ${_.get(this.props.config, 'name', '')}`)}
+                    </ModalHeader>
+                    <ModalBody>
+                        <div className={styles.kqiCalculatorContent}>
+                            <BasicParams
+                                onChange={this.setConfigProperty}
+                                config={this.state.config}
+                                kqiOptions={Calculator.mapListToOptions(this.props, 'kqiList')}
+                                serviceTypesOptions={Calculator.mapObjectToOptions(SERVICE_TYPES)}
+                                errors={this.state.errors}
                                 disabled={disableForm}
-                                checked={_.get(this.state.config, 'manufacturer', [])}
                             />
-                            <div className={styles.panels}>
-                                <Equipment
-                                    equipmentsList={Calculator.mapListToOptions(this.state, 'equipmentsList')}
-                                    onEquipmentTypeChange={value => this.setConfigProperty('equipment_type', value)}
-                                    onGroupingChange={value => this.setConfigProperty('equipment_type_grouping', value)}
+                            <Period
+                                groupingOptions={Calculator.mapObjectToOptions(DATE_TIME_GROUPING)}
+                                errors={this.state.errors}
+                                isAutoGen={_.get(this.state.config, 'period.auto', false)}
+                                disabled={disableForm}
+                                config={this.state.config}
+                                onAutoGenChange={value => this.setConfigProperty('period.auto', value)}
+                                onGroupingTypeChange={value => this.setConfigProperty('date_time_grouping', value)}
+                                onIntervalChange={this.onIntervalChange}
+                            />
+                            <Location
+                                locationOptions={Calculator.mapListToOptions(this.props, 'locationsList')}
+                                groupingOptions={Calculator.mapObjectToOptions(isKgs ? {RF: LOCATION_GROUPING.RF} : LOCATION_GROUPING)}
+                                onLocationChange={value => this.setConfigProperty('location', value)}
+                                onGroupingTypeChange={value => this.setConfigProperty('location_grouping', value)}
+                                config={this.state.config}
+                                disabled={disableForm}
+                                isKgs={isKgs}
+                            />
+                            {!isKgs && <Technology
+                                id="last-mile-technology"
+                                title={ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE', 'Тип технологии последней мили')}
+                                label={`${ls('KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПМ')}`}
+                                technologies={Calculator.mapObjectToOptions(LAST_MILE_TECHNOLOGIES)}
+                                onTechnologyChange={value => this.setConfigProperty('last_mile_technology', value)}
+                                onGroupingChange={value => this.setConfigProperty('last_mile_technology_grouping', value)}
+                                disabled={disableForm}
+                                value={_.get(this.state.config, 'last_mile_technology')}
+                                groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
+                            />}
+                            {/*<Technology*/}
+                            {/*id="last-inch-technology"*/}
+                            {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
+                            {/*label={`${ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL', 'Тип технологии ПД')}`}*/}
+                            {/*technologies={Calculator.mapObjectToOptions(LAST_INCH_TECHNOLOGIES)}*/}
+                            {/*onTechnologyChange={value => this.setConfigProperty('last_inch_technology', value)}*/}
+                            {/*onGroupingChange={value => this.setConfigProperty('last_inch_technology_grouping', value)}*/}
+                            {/*disabled={disableForm}*/}
+                            {/*value={_.get(this.state.config, 'last_inch_technology')}*/}
+                            {/*groupingValue={_.get(this.state.config, 'last_inch_technology_grouping')}*/}
+                            {/*/>*/}
+                            {!isKgs && <div className={styles.bottomContent}>
+                                <Manufacture
+                                    isGroupingChecked={_.get(this.state.config, 'manufacturer_grouping', false)}
+                                    manufactureList={manufactureList}
+                                    onCheckManufactures={this.onCheckManufactures}
+                                    onGroupingChange={value => this.setConfigProperty('manufacturer_grouping', value)}
                                     disabled={disableForm}
-                                    value={_.get(config, 'equipment_type')}
-                                    groupingValue={_.get(config, 'equipment_type_grouping')}
+                                    checked={_.get(this.state.config, 'manufacturer', [])}
                                 />
-                                {/*<UserGroups*/}
-                                {/*usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}*/}
-                                {/*onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}*/}
-                                {/*onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}*/}
-                                {/*disabled={disableForm}*/}
-                                {/*value={_.get(config, 'abonent_group')}*/}
-                                {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
-                                {/*/>*/}
-                            </div>
-                        </div>}
-                    </div>
-                </ModalBody>
-                <ModalFooter>
-                    <Button outline color="action" onClick={this.onClose}>
-                        {ls('CANCEL', 'Отмена')}
-                    </Button>
-                    <Button color="action" onClick={this.onSubmit}>
-                        {ls('OK', 'OK')}
-                    </Button>
-                </ModalFooter>
-            </Modal>
+                                <div className={styles.panels}>
+                                    <Equipment
+                                        equipmentsList={Calculator.mapListToOptions(this.state, 'equipmentsList')}
+                                        onEquipmentTypeChange={value => this.setConfigProperty('equipment_type', value)}
+                                        onGroupingChange={value => this.setConfigProperty('equipment_type_grouping', value)}
+                                        disabled={disableForm}
+                                        value={_.get(config, 'equipment_type')}
+                                        groupingValue={_.get(config, 'equipment_type_grouping')}
+                                    />
+                                    {/*<UserGroups*/}
+                                    {/*usergroupsList={Calculator.mapListToOptions(this.props, 'usergroupsList')}*/}
+                                    {/*onUsergroupChange={value => this.setConfigProperty('abonent_group', value)}*/}
+                                    {/*onGroupingChange={value => this.setConfigProperty('abonent_group_grouping', value)}*/}
+                                    {/*disabled={disableForm}*/}
+                                    {/*value={_.get(config, 'abonent_group')}*/}
+                                    {/*groupingValue={_.get(config, 'abonent_group_grouping')}*/}
+                                    {/*/>*/}
+                                </div>
+                            </div>}
+                        </div>
+                    </ModalBody>
+                    <ModalFooter>
+                        <Button outline color="action" onClick={this.onClose}>
+                            {ls('CANCEL', 'Отмена')}
+                        </Button>
+                        <Button color="action" onClick={this.onSubmit}>
+                            {ls('OK', 'OK')}
+                        </Button>
+                    </ModalFooter>
+                </Modal>
+            </DraggableWrapper>
         );
     }
 }
