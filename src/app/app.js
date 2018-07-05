@@ -10,7 +10,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import './scss/style.scss';
 
 import rootReducer from './reducers';
-import Notification from './modules/notifications/containers';
+import Notifications from './components/notification/';
 import App from './containers';
 
 moment.locale('ru');
@@ -21,11 +21,11 @@ const store = createStore(rootReducer);
 const renderRootComponent = () => {
     ReactDOM.render(
         <Provider store={store}>
-            <Notification>
+            <Notifications>
                 <BrowserRouter>
                     <App/>
                 </BrowserRouter>
-            </Notification>
+            </Notifications>
         </Provider>,
         document.getElementById('app-root'));
 };

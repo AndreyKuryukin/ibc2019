@@ -1,4 +1,4 @@
-import { FLIUSH_NOTIFICATIONS, NEW_NOTIFICATIONS } from "../actions/index";
+import { FLUSH_NOTIFICATIONS, NEW_NOTIFICATIONS } from "../actions/index";
 import * as _ from "lodash";
 
 
@@ -20,7 +20,7 @@ export default (state = initialState, action) => {
             return { ...state };
         }
 
-        case FLIUSH_NOTIFICATIONS: {
+        case FLUSH_NOTIFICATIONS: {
             const countDecrement = _.get(state, `${action.payload.topic}.${action.payload.path}`, []).length;
             const count = _.get(state, `${action.payload.topic}.count`, 0);
             _.set(state, `${action.payload.topic}.${action.payload.path}`, []);

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Redirect, Route, Switch } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -19,6 +19,7 @@ import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
 import Alarms from '../modules/alarms/containers';
 import UsersAndRoles from '../modules/usersAndRoles/components';
+import AlarmsNotifications from '../modules/notifications/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
@@ -53,6 +54,16 @@ class App extends React.Component {
     static contextTypes = {
         notifications: PropTypes.object.isRequired,
     };
+
+    static childContextTypes = {
+        fetchUserSuccess: PropTypes.func.isRequired,
+        hasAccess: PropTypes.func.isRequired,
+    };
+
+    getChildContext = () => ({
+        fetchUserSuccess: this.fetchUserSuccess,
+        hasAccess: this.hasAccess,
+    });
 
     getMapedSubjects = () => {
         return {
@@ -121,16 +132,6 @@ class App extends React.Component {
         }
     };
 
-    static childContextTypes = {
-        fetchUserSuccess: PropTypes.func.isRequired,
-        hasAccess: PropTypes.func.isRequired,
-    };
-
-    getChildContext = () => ({
-        fetchUserSuccess: this.onFetchUserSuccess,
-        hasAccess: this.hasAccess,
-    });
-
     hasAccess = (subjectName, level) => {
         const userSubjects = _.get(this.props, 'user.subjects', []);
         const subject = _.find(userSubjects, (sbj) => sbj.name.toUpperCase() === subjectName.toUpperCase());
@@ -181,8 +182,7 @@ class App extends React.Component {
                 } else {
                     setGlobalTimezone(momentTz.tz.guess());
                 }
-                this.onFetchUserSuccess(user);
-                this.setState({ loading: false, loggedIn: true });
+                this.setState({ loading: false, loggedIn: true }, () => this.onFetchUserSuccess(user));
             })
             .catch((e) => {
                 this.navigateLogin();
@@ -201,8 +201,7 @@ class App extends React.Component {
                         code: 'login-failed'
                     });
                 }
-                this.onFetchUserSuccess({});
-                this.setState({ loading: false, loggedIn: false });
+                this.setState({ loading: false, loggedIn: false }, () => this.onFetchUserSuccess({}));
             });
     }
 
@@ -245,6 +244,8 @@ class App extends React.Component {
             return userSubjects
         }, []);
     };
+
+    fetchUserSuccess = (user) => this.setState({loggedIn: true}, () => this.onFetchUserSuccess(user));
 
     onFetchUserSuccess = (user) => {
         const subjectMap = this.getMapedSubjects() || {};
@@ -328,10 +329,11 @@ class App extends React.Component {
         const routes = this.renderRoutes(subjects);
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
+                <AlarmsNotifications loggedIn={loggedIn}/>
                 <Preloader active={this.state.loading}>
                     {!loading && <PageWrapper onLogOut={this.onLogOut}>
                         <Switch>
-                            <Redirect from="/" exact to="/dashboard" />
+                            <Redirect from="/" exact to="/dashboard"/>
                             {routes}
                             {loggedIn ? <Route component={NoMatch}/> : this.loginRedirect()}
                         </Switch>

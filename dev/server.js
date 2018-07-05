@@ -4,6 +4,8 @@ const path = require('path');
 const proxy = require('express-http-proxy');
 const querystring = require('querystring');
 const request = require('request');
+const http = require('http');
+const WebSocket = require('ws');
 
 const _ = require('lodash');
 
@@ -21,6 +23,8 @@ const PASSWORD = process.env.PASSWORD || 'User';
 const AUTHORIZATION_PATH = 'api/v1/authorize';
 
 const app = express();
+require('express-ws')(app);
+
 app.use(bodyParser.json({
     limit: '50mb',
 }));
@@ -96,14 +100,27 @@ if (PROXY_HOST) {
         console.log('Intercept mode ON');
         plugIn(app, plugins);
     }
-    app.use('/api/*', proxy(target, config));
-    app.use('/notifications/*', proxy(target, config));
+    const wsHandler = (ws, req, next) => {
+        const { originalUrl } = req;
+        const targetUrl = `ws://${PROXY_HOST}:${PROXY_PORT}${originalUrl}`;
+        ws.send('o');
+        const socket = new WebSocket(targetUrl);
+        socket.on('open', (a, b) => {
+            debugger;
+        });
+        socket.on('message', (data) => {
+            debugger;
+            ws.send(data);
+        });
+        socket.on('error', (data) => {
+            debugger;
+        });
+        next();
+    };
 
-    app.on('upgrade', function (req, socket, head) {
-        console.log("proxying upgrade request", req.url);
-        proxy.ws(req, socket, head);
-    });
-    // app.use('ws://', proxy({ target: wsTarget, ws: true }));
+    app.use('/api/*', proxy(target, config));
+    app.ws('/*', wsHandler);
+    app.use('/notifications/*', proxy(target, config));
     app.use('/data/*', proxy(target, config));
     useStatic();
     console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);

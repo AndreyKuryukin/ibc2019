@@ -13,6 +13,7 @@ import { convertDateToUTC0 } from '../../../util/date';
 class Alarms extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
+        notifications: PropTypes.object.isRequired,
     };
 
     static childContextTypes = {
@@ -93,11 +94,17 @@ class Alarms extends React.PureComponent {
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);
                 this.props.flushNotifications(typeMap[this.props.match.params.type]);
-
                 this.setState({ isLoading: false });
             })
             .catch((e) => {
                 console.error(e);
+                this.context.notifications.notify({
+                    title: ls('LOGIN_ERROR_FIELD', 'Ошибка загрузки аварий:'),
+                    message: ls('LOGIN_ERROR_FIELD', 'Данные по авариям не получены'),
+                    type: 'CRITICAL',
+                    code: 'alarms-failed',
+                    timeout: 10000
+                });
                 this.setState({ isLoading: false });
             });
     };

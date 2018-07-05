@@ -4,8 +4,8 @@ export const onNewNotifications = (notifications, topic, count) => ({
     payload: { notifications, topic, count }
 });
 
-export const FLIUSH_NOTIFICATIONS = 'notifications/FLIUSH_NOTIFICATIONS';
+export const FLUSH_NOTIFICATIONS = 'notifications/FLUSH_NOTIFICATIONS';
 export const flush = (topic, path) => ({
-    type: FLIUSH_NOTIFICATIONS,
+    type: FLUSH_NOTIFICATIONS,
     payload: { topic, path }
 });
