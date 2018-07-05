@@ -48,7 +48,15 @@ class Notification extends React.PureComponent {
     };
 
     onWsConnect = (client) => {
-        client.subscribe('/alerts', (message) => this.dispatchNotifications(JSON.parse(message.body), 'alerts'))
+        client.subscribe('/alerts', (message) => {
+            let parsedBody = [];
+            try {
+                parsedBody = JSON.parse(message.body)
+            } catch (e) {
+                console.error(e)
+            }
+            this.dispatchNotifications(parsedBody, 'alerts')
+        })
     };
 
     connectToWebSocket = (token = localStorage.getItem('jwtToken')) => {
