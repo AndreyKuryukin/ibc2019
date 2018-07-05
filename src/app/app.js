@@ -10,7 +10,7 @@ import 'react-widgets/dist/css/react-widgets.css';
 import './scss/style.scss';
 
 import rootReducer from './reducers';
-import Notifications from './components/notification/';
+import Notifications from './components/Notification';
 import App from './containers';
 
 moment.locale('ru');
