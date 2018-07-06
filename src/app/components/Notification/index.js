@@ -38,6 +38,11 @@ class Notification extends React.PureComponent {
 
     notify = (notif) => {
         const notifications = [...this.state.notifications, notif];
+        if (notif.timeout) {
+            setTimeout(() => {
+                this.onNotificationClose(notif.code)
+            }, notif.timeout)
+        }
         this.setState({
             notifications: _.uniqBy(notifications, notific => notific.code)
         });

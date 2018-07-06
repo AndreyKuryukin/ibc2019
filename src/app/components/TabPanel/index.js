@@ -48,27 +48,48 @@ export default class TabPanel extends React.Component {
         }
     }
 
+
+
     setActiveTabRef = (tab, isActive) => {
         if (isActive) {
             this.activeTab = tab;
+            if (tab) {
+                const underlineLeft = this.activeTab.offsetLeft;
+                const { width: underlineWidth } = this.activeTab.getBoundingClientRect();
+                if (this.state.underlineLeft !== underlineLeft && this.state.underlineWidth !== underlineWidth) {
+                    this.setState({
+                        underlineLeft,
+                        underlineWidth,
+                    });
+                }
+            }
         }
     };
 
-    renderTabs = (children = []) =>
+    renderTabTitle = (title, notification) => {
+        return <div className={styles.navTitle}>
+            {title}
+            <span>
+                {notification}
+            </span>
+        </div>
+    };
+
+    renderTabs = (children = [], notification) =>
         children.map((child, index) => child && <NavItem
-            className={classnames({
-                [styles.active]: this.state.activeTabId === child.props.id,
-            })}
-            key={`tab-pane-${child.props.id || index}`}
-        >
-            <NavLink
-                onClick={this.toggle.bind(this, child.props.id || index)}
-                innerRef={tab => this.setActiveTabRef(tab, this.state.activeTabId === child.props.id)}
+                className={classnames({
+                    [styles.active]: this.state.activeTabId === child.props.id,
+                })}
+                key={`tab-pane-${child.props.id || index}`}
             >
-                {child.props.tabtitle || index}
-            </NavLink>
-        </NavItem>
-    );
+                <NavLink
+                    onClick={this.toggle.bind(this, child.props.id || index)}
+                    innerRef={tab => this.setActiveTabRef(tab, this.state.activeTabId === child.props.id)}
+                >
+                    {this.renderTabTitle(child.props.tabtitle || index, child.props.notification)}
+                </NavLink>
+            </NavItem>
+        );
 
     renderTabContent = (children = []) => children.map((child, index) =>
         child && this.state.activeTabId === child.props.id && <TabPane
@@ -79,10 +100,12 @@ export default class TabPanel extends React.Component {
         </TabPane>
     );
 
+
+
     toggle(tab, event) {
         if (this.state.activeTabId !== tab) {
-            const underlineLeft = event.target.offsetLeft;
-            const { width: underlineWidth } = event.target.getBoundingClientRect();
+            const underlineLeft = event.currentTarget.offsetLeft;
+            const { width: underlineWidth } = event.currentTarget.getBoundingClientRect();
             if (this.props.onTabClick) {
                 this.props.onTabClick(tab);
             }
@@ -100,7 +123,8 @@ export default class TabPanel extends React.Component {
                 <div className={styles.navPanel}>
                     <Nav style={navStyle} tabs>
                         {this.renderTabs(this.props.children)}
-                        <div className={styles.underline} style={{ left: this.state.underlineLeft, width: this.state.underlineWidth }} />
+                        <div className={styles.underline}
+                             style={{ left: this.state.underlineLeft, width: this.state.underlineWidth }}/>
                     </Nav>
                 </div>
                 <TabContent activeTab={this.state.activeTabId} className={styles.tabContent}>

@@ -1,12 +1,12 @@
 {
   "name": "js",
-  "version": "0.2.31",
+  "version": "0.2.35-SNAPSHOT",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --config=./jest.config.json",
     "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack --watch\" \"cross-env nodemon dev/server.js\"",
-    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8888 nodemon dev/server.js --intercept\"",
+    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8085 nodemon --inspect dev/server.js --intercept\"",
     "build": "cross-env NODE_ENV=production webpack --bail",
     "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept\"",
     "proxy": "cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept"
@@ -42,6 +42,7 @@
     "eslint-plugin-react": "^7.7.0",
     "express": "^4.16.2",
     "express-http-proxy": "^1.1.0",
+    "express-ws": "^4.0.0",
     "extract-text-webpack-plugin": "^4.0.0-alpha.0",
     "fast-sass-loader": "^1.4.1",
     "img-loader": "^2.0.1",
@@ -58,7 +59,11 @@
     "webpack-dev-server": "^2.11.2",
     "webpack-shell-plugin": "^0.5.0"
   },
+  "browser": {
+    "fs": false
+  },
   "dependencies": {
+    "@stomp/stompjs": "^4.0.6",
     "availity-reactstrap-validation": "^1.4.3",
     "axios": "^0.17.1",
     "body-parser": "^1.18.2",
@@ -92,6 +97,8 @@
     "redux": "^3.7.2",
     "reselect": "^3.0.1",
     "sass-loader-once": "0.0.2",
+    "sockjs": "^0.3.19",
+    "sockjs-client": "^1.1.5",
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.9",
     "xlsx": "^0.13.0"

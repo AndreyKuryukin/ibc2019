@@ -16,12 +16,12 @@ $border-blue: #206A8F;
 $blue: #00aae7;
 $light-blue: #B3D1E0;
 
-$enable-rounded: false;
+$enable-rounded: true;
 
 $theme-colors: map-merge((
-  "primary": $orange,
-  "secondary": $white,
-  "action": $orange,
+        "primary": $orange,
+        "secondary": $white,
+        "action": $orange,
 ), ());
 
 //COMMON
@@ -35,7 +35,6 @@ $calendar-width: 200px;
 $calendar-height: 132px;
 $trigger-width: 22px;
 $calendar-dropdown-padding: 0 12px 12px 12px;
-
 
 //LINK
 $link-color: $white;
@@ -81,7 +80,7 @@ $input-height: 22px;
 $input-border-color: #bfd5df;
 $form-feedback-valid-color: $input-border-color;
 
-  //BUTTONS
+//BUTTONS
 $btn-line-height: 1;
 
 //MODALS
@@ -130,6 +129,11 @@ $dashboard-expected-color: #9ab5c4;
 $filters-pane-background-color: #0c3d5b;
 $filters-pane-separator-color: #0a3755;
 
+//POPOVER
+$popover-bg: $darkest-blue;
+$popover-border-color: $darkest-blue;
+$popover-border-radius: 4px;
+$popover-font-size: 14px;
 
 @import "~bootstrap/scss/functions";
 @import '~bootstrap/scss/variables';
