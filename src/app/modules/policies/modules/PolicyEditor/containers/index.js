@@ -93,7 +93,7 @@ class PolicyEditor extends React.PureComponent {
             condition: () => ({
                 condition: () => ({
                     conditionDuration: {
-                        required: true,
+                        required: _.get(metaData, 'conditionDuration', false),
                         min: 0,
                     },
                     conjunction: () => ({
@@ -128,9 +128,12 @@ class PolicyEditor extends React.PureComponent {
             errors: null,
             policy: {
                 condition: {
-                    conjunction: {
-                        type: 'AND',
-                        conjunctionList: []
+                    condition: {
+                        conditionDuration: 0,
+                        conjunction: {
+                            type: 'AND',
+                            conjunctionList: []
+                        }
                     }
                 },
             },
@@ -179,7 +182,7 @@ class PolicyEditor extends React.PureComponent {
                 const objectTypes = objectTypesResp.data;
                 const kqiList = kqiResp.data;
                 const policy = _.get(policyResp, 'data', false);
-                const update = {objectTypes, kqiList: this.mapKqi(kqiList), loading: false};
+                const update = { objectTypes, kqiList: this.mapKqi(kqiList), loading: false };
                 if (policy) {
                     update.policy = policy;
                 }
@@ -347,6 +350,7 @@ class PolicyEditor extends React.PureComponent {
 
     render() {
         const props = _.omit(this.props, ['policy']);
+        console.log(this.state.policy);
         return (
             <PolicyEditorComponent
                 onSubmit={this.onSubmit}

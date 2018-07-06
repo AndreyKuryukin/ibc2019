@@ -48,9 +48,14 @@ const languageMap = {
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_DAY: 'ежесуточный',
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_WEEK: 'еженедельный',
     ALARMS_KQI_HISTORY_DETAIL_PERIOD_MONTH: 'ежемесячный',
+
     ALARMS_TAB_TITLE_GP: 'ГП',
     ALARMS_TAB_TITLE_CI: 'КИ',
     ALARMS_TAB_TITLE_KQI: 'KQI',
+
+    ALERTS_TYPE_GP: 'ГП',
+    ALERTS_TYPE_KI: 'КИ',
+    ALERTS_TYPE_KQI: 'KQI',
 
 
     PAGE_NOT_FOUND: 'Страница не найдена',

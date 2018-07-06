@@ -1,12 +1,12 @@
-@import '../../scss/vars';
+@import '../../../scss/vars';
 
 .notification {
   display: flex;
   flex-direction: column;
   background: $notifications-background;
   position: absolute;
-  top: 16px;
-  right: 16px;
+  top: 12px;
+  right: 12px;
   z-index: 99999;
   .notificationMessage {
     display: flex;
@@ -28,7 +28,7 @@
       }
     }
     .closeIcon {
-      background: url(../../../resources/img/close.png);
+      background: url(../../../../resources/img/close.png);
       position: absolute;
       right: $notification-margin;
       top: $notification-margin;
@@ -38,7 +38,7 @@
     }
     &.criticalMsg {
       &:before {
-        content: url(../../../resources/img/error.png);
+        content: url(../../../../resources/img/error.png);
         height: 15px;
         width: 15px;
         display: block;
@@ -47,7 +47,7 @@
     }
     &.confirmationMsg {
       &:before {
-        content: url(../../../resources/img/warning.png);
+        content: url(../../../../resources/img/warning.png);
         height: 15px;
         width: 15px;
         display: block;

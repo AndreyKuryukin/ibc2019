@@ -23,6 +23,7 @@ const unitStyle = { margin: '3px 0px 3px 2px' };
 const thresholdFieldStyle = { flexGrow: 1, justifyContent: 'flex-end' };
 
 const defaultCondition = {
+    conditionDuration: 0,
     conjunction: {
         type: 'AND',
         conjunctionList: [],
@@ -198,11 +199,6 @@ class PolicyEditor extends React.PureComponent {
         return moment.duration(Number(secs), 'seconds').asMilliseconds() || '';
     };
 
-    addMac = (mac) => {
-        const scope = this.getPolicyProperty('scope') || [];
-        this.setPolicyProperty('scope', [...scope, mac])
-    };
-
     render() {
         const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
         const { policy, errors, metaData } = this.state;
@@ -320,6 +316,7 @@ class PolicyEditor extends React.PureComponent {
                                 </div>
                                 <div className={styles.policyEditorColumn}>
                                     <Condition
+                                        metaData={metaData}
                                         condition={this.getPolicyProperty('condition')}
                                         parameters={_.get(this.state, 'metaData.parameters')}
                                         onChange={condition => this.setPolicyProperty('condition', condition)}
