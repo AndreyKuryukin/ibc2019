@@ -245,7 +245,7 @@ class App extends React.Component {
         }, []);
     };
 
-    fetchUserSuccess = (user) => this.setState({loggedIn: true}, () => this.onFetchUserSuccess(user));
+    fetchUserSuccess = (user) => this.setState({ loggedIn: true }, () => this.onFetchUserSuccess(user));
 
     onFetchUserSuccess = (user) => {
         const subjectMap = this.getMapedSubjects() || {};

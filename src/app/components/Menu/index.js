@@ -123,7 +123,7 @@ class Menu extends React.Component {
         const { menuItems = [], className, path } = this.props;
         const feature = this.getFeature(path);
         return <div className={classNames(styles.sideMenu, className)}>
-            {menuItems.map((item, index) => this.renderTile(item, index, feature))}
+            {_.isArray(menuItems) && menuItems.map((item, index) => this.renderTile(item, index, feature))}
         </div>
     }
 }
