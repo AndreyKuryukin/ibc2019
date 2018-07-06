@@ -65,10 +65,11 @@ class Amount extends React.Component {
         ];
 
         const {sum} = this.state;
+        const broken = sum.total && (sum.broken / sum.total * 100);
         const totalData = {
             name: ls('TOTAL', 'Всего'),
             totalPart: sum.total,
-            broken: parseFloat((sum.broken / sum.total * 100).toFixed(2)) + '%',
+            broken: parseFloat(broken.toFixed(2)) + '%',
         };
 
         const replaceTexts = (data) => {
