@@ -53,8 +53,8 @@ class Tab extends React.PureComponent {
                 <KQI
                     type={this.props.type}
                     value={this.props.value}
-                    positive={expected > 0}
-                    negative={expected < 0}
+                    positive={this.props.value > expected}
+                    negative={this.props.value < expected}
                 />
                 <div className={styles.dynamics}>
                     {this.renderDynamic(ls('DASHBOARD_PREV_PERIOD', 'Прошлый период:'), previous)}
