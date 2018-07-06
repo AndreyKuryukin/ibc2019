@@ -21,6 +21,7 @@ class Condition extends React.PureComponent {
         condition: PropTypes.object,
         onChange: PropTypes.func,
         errors: PropTypes.object,
+        metaData: PropTypes.object,
         parameters: PropTypes.array,
     };
 
@@ -35,6 +36,7 @@ class Condition extends React.PureComponent {
         super(props);
         this.state = {
             condition: {
+                conditionDuration: 0,
                 conjunction: {
                     type: 'AND',
                     conjunctionList: []
@@ -126,7 +128,7 @@ class Condition extends React.PureComponent {
 
     render() {
         const { errors } = this.state;
-        const { parameters } = this.props;
+        const { parameters, metaData } = this.props;
         const conjError = this.getConjunctionListError(errors);
         const conjList = this.getConditionProperty('conjunction.conjunctionList');
         const showListError = _.isEmpty(conjList) && !_.isEmpty(conjError);
@@ -152,7 +154,7 @@ class Condition extends React.PureComponent {
                         valid={errors && _.isEmpty(_.get(errors, 'conjunction.type', null))}
                     />
                 </Field>
-                <Field
+                {_.get(metaData, 'conditionDuration', false) && <Field
                     id="maxInterval"
                     labelText={`${ls('POLICIES_CONDITION_FIELD_MAX_INTERVAL', 'Максимальный интервал')}`}
                     labelWidth="50%"
@@ -171,7 +173,7 @@ class Condition extends React.PureComponent {
                         maxLength={6}
                     />
                     <span style={unitStyle}>{ls('SECOND_UNIT', 'сек.')}</span>
-                </Field>
+                </Field>}
                 <div className={styles.conditionsWrapper}>
                     <Icon
                         icon="addIcon"
