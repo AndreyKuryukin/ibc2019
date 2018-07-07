@@ -60,8 +60,8 @@ class KQI extends React.PureComponent {
             this.onFetchKQI();
         }
         if (params.configId !== this.state.configId) {
-            this.setState({configId: params.configId});
-            this.onSelectConfig(params.configId)
+            this.setState({ configId: params.configId });
+            this.onSelectConfig(params.configId);
         }
     }
 

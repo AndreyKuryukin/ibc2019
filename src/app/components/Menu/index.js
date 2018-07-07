@@ -26,7 +26,7 @@ class Menu extends React.Component {
     };
 
     static defaultProps = {
-        menuItems: {},
+        menuItems: [],
         notifications: [],
         path: '',
         onClick: () => null

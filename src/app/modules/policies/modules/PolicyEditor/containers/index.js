@@ -16,7 +16,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     static propTypes = {
-        policyId: PropTypes.number,
+        policyId: PropTypes.string,
         scopes: PropTypes.array,
         types: PropTypes.array,
         onFetchPolicySuccess: PropTypes.func,
@@ -26,7 +26,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     static defaultProps = {
-        policyId: null,
+        policyId: '',
         onFetchPolicySuccess: () => null,
         onUpdatePolicySuccess: () => null,
         onCreatePolicySuccess: () => null,
@@ -55,7 +55,7 @@ class PolicyEditor extends React.PureComponent {
                     if (!_.isEmpty(nextProps.policy)) {
                         update.policy = this.decodeConditions(nextProps.policy);
                     }
-                    this.setState(update)
+                    this.setState(update);
                 })
                 .catch((e) => {
                     console.log(e)
@@ -203,7 +203,7 @@ class PolicyEditor extends React.PureComponent {
         this.setState({ loading: true });
         this.fetchPolicyTypes(objectType)
             .then((policyTypes) => {
-                this.setState({ loading: false, policyTypes })
+                this.setState({ loading: false, policyTypes });
             });
     };
 
@@ -350,7 +350,7 @@ class PolicyEditor extends React.PureComponent {
 
     render() {
         const props = _.omit(this.props, ['policy']);
-        console.log(this.state.policy);
+
         return (
             <PolicyEditorComponent
                 onSubmit={this.onSubmit}
@@ -373,12 +373,10 @@ class PolicyEditor extends React.PureComponent {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        policy: state.policies.editor.policy,
-        types: state.policies.types,
-    }
-};
+const mapStateToProps = state => ({
+    policy: state.policies.editor.policy,
+    types: state.policies.types,
+});
 
 const mapDispatchToProps = dispatch => ({
     onFetchTypesSuccess: types => dispatch(fetchTypesSuccess(types)),
