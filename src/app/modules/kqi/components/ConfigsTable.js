@@ -78,7 +78,7 @@ class ConfigsTable extends React.PureComponent {
                         title={ls('KQI_CONFIG_VIEW_TITLE', 'Просмотр')}
                         onClick={(event) => {
                             event.stopPropagation();
-                            this.props.onEditConfig(node.id)
+                            this.props.onEditConfig(node.id);
                         }}
                     />
                 );
@@ -127,7 +127,7 @@ class ConfigsTable extends React.PureComponent {
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}
                 onSelectRow={this.props.onSelectConfig}
-                selected={[String(selected)]}
+                selected={String(selected)}
             />
         );
     }

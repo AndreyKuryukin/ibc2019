@@ -120,7 +120,7 @@ if (PROXY_HOST) {
 
     app.use('/api/*', proxy(target, config));
     // app.ws('/*', wsHandler);
-    app.use('/notifications/*', proxy(target, config));
+    // app.use('/notifications/*', proxy(target, config));
     app.use('/data/*', proxy(target, config));
     useStatic();
     console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);
