@@ -14,7 +14,7 @@ import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 
 const retryIconProps = {
-    title: ls(`REPORTS_REGENERATE`, 'Перестроить')
+    title: ls('REPORTS_REGENERATE', 'Перестроить')
 };
 const iconCellStyle = {
     display: 'flex',
