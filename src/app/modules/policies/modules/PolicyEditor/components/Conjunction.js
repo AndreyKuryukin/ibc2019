@@ -12,7 +12,7 @@ import Field from '../../../../../components/Field';
 class Conjunction extends React.PureComponent {
     static propTypes = {
         conjunction: PropTypes.shape({
-            value: PropTypes.string
+            value: PropTypes.object,
         }),
         parameters: PropTypes.array,
         onChange: PropTypes.func,
@@ -22,7 +22,7 @@ class Conjunction extends React.PureComponent {
 
     static defaultProps = {
         conjunction: {
-            value: {}
+            value: {},
         },
         parameters: [],
         onChange: () => null,
@@ -97,7 +97,7 @@ class Conjunction extends React.PureComponent {
         return (
             <Component
                 name="value"
-                value={_.get(value, 'value')}
+                value={_.get(value, 'value').toString()}
                 valid={errors && _.isEmpty(_.get(errors, 'value', null))}
                 {...params}
             />
@@ -108,11 +108,11 @@ class Conjunction extends React.PureComponent {
         const update = { value: { operator: null, value: '' } };
         const parameterCfg = this.getParamCfgByName(parameters, value);
         if (parameterCfg.type === 'KQI') {
-            update.value.operator = '>'
+            update.value.operator = '>';
         }
         this.setState(update, () => {
-            this.setConjunctionProperty('parameterType', value)
-        })
+            this.setConjunctionProperty('parameterType', value);
+        });
     };
 
     render() {
