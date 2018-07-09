@@ -15,7 +15,7 @@ class TreeView extends React.Component {
                 id: PropTypes.oneOfType([
                     PropTypes.number,
                     PropTypes.string
-                ]).isRequired,
+                ]),
                 name: PropTypes.string,
                 children: PropTypes.array
             })),
