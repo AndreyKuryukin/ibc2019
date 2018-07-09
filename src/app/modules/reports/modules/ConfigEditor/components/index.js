@@ -69,7 +69,7 @@ class ConfigEditor extends React.PureComponent {
             config: {
                 name: '<Имя_шаблона>_Еженедельный_<МРФ>_PDF',
                 template_id: null,
-                type: 'XLS',
+                type: 'XLSX',
                 period: {
                     regularity: '',
                     auto: true,
