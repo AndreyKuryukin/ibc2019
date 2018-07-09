@@ -57,6 +57,14 @@ const languageMap = {
     ALERTS_TYPE_KI: 'КИ',
     ALERTS_TYPE_KQI: 'KQI',
 
+    SUBJECT_USERS: 'Пользователи',
+    SUBJECT_ALARMS: 'Аварии',
+    SUBJECT_POLICY: 'Политики',
+    SUBJECT_KQI: 'KQI',
+    SUBJECT_REPORTS: 'Отчёты',
+    SUBJECT_ROLES: 'Роли',
+    SUBJECT_VIEW: 'Просмотр',
+    SUBJECT_EDIT: 'Редактирование',
 
     PAGE_NOT_FOUND: 'Страница не найдена',
 
