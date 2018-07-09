@@ -34,7 +34,6 @@ class KQI extends React.PureComponent {
         isProjectionsLoading: PropTypes.bool,
         onMount: PropTypes.func,
         onSelectConfig: PropTypes.func,
-        onEditConfig: PropTypes.func,
         onDeleteConfig: PropTypes.func,
     };
 
@@ -44,7 +43,6 @@ class KQI extends React.PureComponent {
         isConfigsLoading: false,
         isProjectionsLoading: false,
         onMount: () => null,
-        onEditConfig: () => null,
         onSelectConfig: null,
         onDeleteConfig: () => null,
     };
@@ -57,6 +55,11 @@ class KQI extends React.PureComponent {
             calculationsSearchText: '',
             selectedKQIConfigId: null,
         };
+    }
+
+    componentDidMount() {
+        const configId = _.get(this.props, 'match.params.configId');
+        configId && this.props.onSelectConfig(configId);
     }
 
     getChildContext() {
@@ -78,6 +81,14 @@ class KQI extends React.PureComponent {
         this.setState({ calculationsSearchText: searchText });
     };
 
+    onCloseCalculator = (configId) => {
+        if (configId) {
+            this.props.onSelectConfig(configId, () => {
+                this.props.history.push(`/kqi/configure/${kqiId}`);
+            });
+        }
+    }
+
     onResultsViewerClose = () => {
         const { params } = this.props.match;
         const configId = params.configId || this.state.selectedKQIConfigId;
@@ -93,7 +104,9 @@ class KQI extends React.PureComponent {
         this.setState({
             selectedKQIConfigId: kqiId,
         }, () => {
-            this.props.onSelectConfig(kqiId);
+            this.props.onSelectConfig(kqiId, () => {
+                this.props.history.push(`/kqi/view/${kqiId}`);
+            });
         });
     };
 
@@ -149,7 +162,7 @@ class KQI extends React.PureComponent {
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={urlKqiId}/>}
                 {isCalculatorActive && <Calculator active={isCalculatorActive}
                                                    projectionId={projectionId}
-                                                   onClose={() => this.props.onSelectConfig(configId)}
+                                                   onClose={() => this.onCloseCalculator}
                 />}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}

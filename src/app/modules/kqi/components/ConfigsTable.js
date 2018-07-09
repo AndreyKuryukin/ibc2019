@@ -78,7 +78,7 @@ class ConfigsTable extends React.PureComponent {
                         title={ls('KQI_CONFIG_VIEW_TITLE', 'Просмотр')}
                         onClick={(event) => {
                             event.stopPropagation();
-                            this.props.onEditConfig(node.id)
+                            this.props.onEditConfig(node.id);
                         }}
                     />
                 );
