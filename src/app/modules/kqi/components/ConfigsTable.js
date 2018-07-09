@@ -127,7 +127,7 @@ class ConfigsTable extends React.PureComponent {
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}
                 onSelectRow={this.props.onSelectConfig}
-                selected={[String(selected)]}
+                selected={String(selected)}
             />
         );
     }

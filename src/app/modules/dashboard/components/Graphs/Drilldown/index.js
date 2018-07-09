@@ -86,6 +86,7 @@ class Drilldown extends React.Component {
     render() {
         return (
             <Table
+                id="drilldown-table"
                 className={styles.drilldownChart}
                 columns={[
                     {

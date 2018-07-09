@@ -37,8 +37,8 @@ class Body extends React.PureComponent {
 
         return (
             <div className={styles.tableBody}>
-                {data.map(node => <div
-                        key={node.id}
+                {data.map((node, index) => <div
+                        key={node.id || `table-${id}_node-${index}`}
                         id={node.id}
                         className={classnames(styles.bodyRow, { [styles.selected]: selected === node.id })}
                         onClick={() => onRowClick(node)}

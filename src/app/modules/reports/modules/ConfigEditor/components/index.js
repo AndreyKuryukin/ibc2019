@@ -192,7 +192,7 @@ class ConfigEditor extends React.PureComponent {
 
     render() {
         const { errors, templates } = this.state;
-console.log(errors);
+
         return (
             <DraggableWrapper>
                 <Modal
@@ -242,7 +242,7 @@ console.log(errors);
                                         <Select
                                             id="template-id"
                                             options={this.mapTemplateOptions(templates)}
-                                            value={this.getConfigProperty('template_id')}
+                                            value={this.getConfigProperty('template_id', '') || ''}
                                             onChange={value => this.setConfigProperty('template_id', value)}
                                             errorMessage={_.get(errors, 'template_id.title')}
                                             placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
@@ -281,7 +281,7 @@ console.log(errors);
                                         <Select
                                             id="mrf"
                                             options={this.mapLocationOptions(this.props.locations)}
-                                            value={this.getConfigProperty('mrf')}
+                                            value={this.getConfigProperty('mrf', '') || ''}
                                             placeholder={ls('REPORTS_CONFIG_EDITOR_MRF_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                                             onChange={value => this.setConfigProperty('mrf', value)}
                                             valid={!_.get(errors, 'mrf', false)}

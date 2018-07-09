@@ -13,7 +13,7 @@ class Login extends React.PureComponent {
         onSubmit: PropTypes.func,
         onInput: PropTypes.func,
         loading: PropTypes.bool,
-        errors: PropTypes.array,
+        errors: PropTypes.object,
         loginFailed: PropTypes.bool
     };
 
