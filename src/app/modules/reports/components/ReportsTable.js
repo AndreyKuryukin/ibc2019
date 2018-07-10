@@ -172,7 +172,7 @@ class ReportsTable extends React.PureComponent {
     remove = (node) => {
         switch (node.type) {
             case 'PDF':
-            case 'XLS':
+            case 'XLSX':
                 this.props.onRemoveResult(node.id, _.last(node.parents))
         }
     };

@@ -10,7 +10,7 @@ const languageMap = {
     KQI_STATUS_SUCCESS: 'Готово',
 
     REPORT_TYPE_PDF: 'PDF',
-    REPORT_TYPE_XLS: 'XLS',
+    REPORT_TYPE_XLSX: 'XLSX',
 
 
     ALARMS_ID_COLUMN: 'ID',

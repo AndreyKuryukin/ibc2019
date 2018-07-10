@@ -174,6 +174,7 @@ class App extends React.Component {
 
     componentDidMount() {
         this.setState({ loading: true });
+        const localToken = localStorage.getItem('jwtToken');
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data || {};
@@ -193,7 +194,7 @@ class App extends React.Component {
                         type: 'CRITICAL',
                         code: 'login-failed'
                     });
-                } else if (e && e.status === 403) {
+                } else if (e && e.status === 403 && localToken) {
                     this.context.notifications.notify({
                         title: ls('LOGIN_ERROR_FIELD', 'Ошибка авторизации:'),
                         message: ls('LOGIN_ERROR_FIELD', 'Войдите в систему'),
