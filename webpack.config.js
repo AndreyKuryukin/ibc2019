@@ -49,9 +49,10 @@ module.exports = {
                 loader: ['babel-loader', {
                     loader: './dev/loaders/i18n',
                     options: {
-                        defaultValues: path.resolve(__dirname, 'src/i18n/default.json'),
-                        output: path.resolve(__dirname, 'build/'),
-                        locales: ['ru']
+                        defaultValuesPath: path.resolve(__dirname, 'src/i18n/defaults'),
+                        outputPath: path.resolve(__dirname, 'build/'),
+                        locales: ['ru', 'en'],
+                        apiKey: 'trnsl.1.1.20180710T115326Z.a4419ef7590ca66a.e485d7ceeeb15926d2afb7fd0878557c487fea9c'
                     }
                 }],
             },

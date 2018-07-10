@@ -9,6 +9,7 @@ import { signInSuccess } from '../actions/index';
 import rest, { signIn } from '../../../rest/index';
 import { ERRORS } from "../../../costants/errors";
 import ls from "i18n";
+import {setLanguageMap} from "i18n";
 import { LOGIN_REQUEST, SIGN_IN_URL } from "../../../costants/login";
 import { validateForm } from "../../../util/validation";
 import { fetchActiveUserSuccess } from "../../../actions/index";
@@ -43,7 +44,7 @@ class Login extends React.PureComponent {
         this.context.notifications.close('login-failed');
     };
 
-    onSubmit = (login, password) => {
+    onSubmit = (login, password, language) => {
         const loginForm = { login, password };
         const errors = validateForm(loginForm, this.validationConfig);
         if (!_.isEmpty(errors)) {
@@ -56,11 +57,16 @@ class Login extends React.PureComponent {
             })
                 .then(() => {
                     this.context.notifications.close('login-failed');
-                    return rest.get('api/v1/user/current');
+                    return Promise.all([
+                        rest.get('api/v1/user/current'),
+                        rest.get(`${language}.json`)
+                    ]);
                 })
-                .then((userResp) => {
+                .then(([userResp, languageResp]) => {
                     this.setState({ loading: false });
                     const user = userResp.data;
+                    const languageMap = languageResp.data;
+                    setLanguageMap(languageMap);
                     this.context.fetchUserSuccess(user);
                     this.props.history.push('/');
                 })
