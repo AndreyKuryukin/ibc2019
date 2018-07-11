@@ -1,24 +1,32 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-import * as _ from "lodash";
-import moment from "moment";
-import { DATE_TIME } from "../../../../../costants/date";
+import _ from 'lodash';
+import ls from 'i18n';
+import Highcharts from 'highcharts';
+import moment from 'moment';
+import { DATE_TIME } from '../../../../../costants/date';
+import styles from './styles';
+
+const DISPLAY_FORMATS = {
+    'millisecond': 'HH:mm:ss',
+    'second': 'HH:mm:ss',
+    'minute': 'HH:mm',
+    'hour': 'DD.MM HH:mm',
+    'day': 'DD.MM HH:mm',
+    'week': 'DD MMM',
+    'month': 'DD MMM',
+    'quarter': 'DD MMM',
+    'year': 'DD.MM.YYYY',
+};
 
 class Graph extends React.PureComponent {
-    static contextTypes = {
-        history: PropTypes.object.isRequired,
-    };
-
     static propTypes = {
-        active: PropTypes.bool,
         data: PropTypes.array,
         projection: PropTypes.object,
         locations: PropTypes.array,
     };
 
     static defaultProps = {
-        active: false,
         data: [],
         projection: {},
         locations: [],
@@ -33,6 +41,12 @@ class Graph extends React.PureComponent {
                 mrf: locationmap
             }
         };
+
+        this.chart = null;
+    }
+
+    componentDidMount() {
+        this.initChart();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -45,26 +59,102 @@ class Graph extends React.PureComponent {
                 }
             });
         }
+        if (this.props.data !== nextProps.data) {
+            this.initChart(nextProps);
+        }
     }
 
-    getColorForResult = (() => {
-        const colorMap = {};
-        return (result, index) => {
-            const getRandomColorHex = () => {
-                const hex = "0123456789ABCDEF";
-                let color = "#";
-                for (let i = 1; i <= 6; i++) {
-                    color += hex[Math.floor(Math.random() * 16)];
-                }
-                return color;
-            };
-            const id = Object.values(result).map(value => _.isArray(value) ? value.length : value).join('_');
-            if (!colorMap[id]) {
-                colorMap[id] = getRandomColorHex();
-            }
-            return colorMap[id];
-        }
-    })();
+    initChart = (props = this.props) => {
+        const options = {
+            dateTimeUnit: this.getUnit(props.projection),
+            chart: {
+                type: 'spline',
+                height: this.container.offsetHeight,
+                width: this.container.offsetWidth,
+            },
+            title: {
+                text: '',
+            },
+            legend: {
+                enabled: !!props.data.length,
+            },
+            tooltip: {
+                backgroundColor: '#082545',
+                borderRadius: 7,
+                borderWidth: 0,
+                style: {
+                    color: 'white',
+                },
+                useHTML: true,
+                shared: true,
+                formatter: this.tooltipFormatter,
+            },
+            plotOptions: {
+                spline: {
+                    marker: {
+                        enabled: true,
+                        radius: 4,
+                        symbol: 'circle',
+                        lineColor: null,
+                        lineWidth: 2,
+                        fillColor: 'white',
+                    },
+                },
+            },
+            xAxis: {
+                type: 'datetime',
+                crosshair: true,
+                lineWidth: 1,
+                lineColor: 'rgba(0, 0, 0, 0.2)',
+                gridLineWidth: 1,
+                gridLineColor: 'rgba(0, 0, 0, 0.05)',
+                tickWidth: 0,
+                labelColor: 'rgba(0, 0, 0, 0.5)',
+                labels: {
+                    formatter: this.xLabelFormatter,
+                },
+            },
+            yAxis: {
+                title: {
+                    text: ls('KQI_PROJECTION_RESULT_TITLE', 'Результат') + ' (%)',
+                },
+                gridLineWidth: 0,
+                lineWidth: 1,
+                lineColor: 'rgba(0, 0, 0, 0.2)',
+                labelColor: 'rgba(0, 0, 0, 0.5)',
+            },
+            series: this.getSeries(props.data),
+        };
+
+        this.chart = new Highcharts.Chart(
+            this.container,
+            options,
+        );
+    };
+
+    xLabelFormatter() {
+        const unit = this.chart.options.dateTimeUnit;
+
+        return moment(this.value).format(DISPLAY_FORMATS[unit]);
+    }
+
+    tooltipFormatter() {
+        return `
+            <span style="font-size: 11px">${moment(this.x).format('DD.MM.YYYY HH:mm:ss')}</span><br>
+            ${this.points.reduce((str, point) => 
+                str + `<span style="color:${point.color}">\u25CF</span>${point.series.name}: <b>${point.y}%</b><br/>`,
+            '')}   
+        `;
+    }
+
+    getSeries(historyData) {
+        return historyData.length ? historyData.map(result => ({
+            name: this.composeGraphLabel(result),
+            data: result.values
+                .map(value => [moment(value.date_time).valueOf(), parseFloat(value.value.toFixed(2))])
+                .sort(([timeA], [timeB]) => timeA - timeB),
+        })) : [{ data: [] }];
+    }
 
     getMapedValueWithDefault = (fieldName, value) => {
         return _.get(this.state.valueMap, `${fieldName}.${value}`, value);
@@ -83,81 +173,18 @@ class Graph extends React.PureComponent {
         return parts
     }, []).join('_');
 
-    mapData = (historyData) => {
-
-        const data = {
-            datasets: historyData.map((result, index) => {
-                const label = this.composeGraphLabel(result);
-                const borderColor = this.getColorForResult(result,index);
-                const data = result.values
-                    .map(value => ({ y: (value.value).toFixed(2), t: moment(value.date_time).toDate() }))
-                    .sort((a,b) => new Date(a.t).getTime() - new Date(b.t).getTime());
-                return { label, data, borderColor, lineTension: 0 }
-            })
-        };
-        return data;
-    };
-
     getUnit = (projection) => {
         const unit = _.get(projection, 'period.regularity', 'HOUR').toLowerCase();
         return unit === 'other' ? 'hour' : unit;
-    }
+    };
 
     render() {
-        const data = this.mapData(this.props.data);
-        const unit = this.getUnit(this.props.projection);
-        const options = {
-            legend: {
-                display: false,
-                position: 'bottom',
-                labels: {
-                    boxWidth: 80,
-                    fontColor: 'black'
-                }
-            },
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                yAxes: [{
-                    ticks: {
-                        beginAtZero: false,
-                        steps: 10,
-                        callback: (value, index, values) => {
-                            return `${value}%`;
-                        }
-                    },
-                    scaleLabel: {
-                        display: true,
-                        labelString: 'Результат (%)'
-                    },
-                }],
-                xAxes: [{
-                    type: 'time',
-                    distribution: 'series',
-                    time: {
-                        displayFormats: {
-                            'millisecond': 'HH:mm:ss',
-                            'second': 'HH:mm:ss',
-                            'minute': 'HH:mm',
-                            'hour': 'DD:MM HH:mm',
-                            'day': 'DD:MM HH:mm',
-                            'week': 'DD MMM',
-                            'month': 'DD MMM',
-                            'quarter': 'DD MMM',
-                            'year': 'DD.MM.YYYY',
-                        },
-                        tooltipFormat: DATE_TIME,
-                        unit
-                    },
-                    ticks: {
-                        autoSkip: true,
-                        source: 'data',
-                        autoSkipPadding: 5,
-                    }
-                }],
-            }
-        };
-        return <Line data={data} options={options}/>;
+        return (
+            <div
+                ref={container => this.container = container}
+                className={styles.kqiResultsViewerGraphContainer}
+            />
+        );
     }
 }
 
