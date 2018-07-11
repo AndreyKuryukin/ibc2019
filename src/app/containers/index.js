@@ -24,6 +24,7 @@ import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
+import Subscriber from "../modules/subscriber/containers/index";
 
 
 const noMatchStyle = {
@@ -128,6 +129,12 @@ class App extends React.Component {
                 link: '/stb-loading',
                 path: "/stb-loading",
                 component: StbLoading
+            },
+            'SUBSCRIBER': {
+                title: 'Абонент',
+                link: '/subscriber',
+                path: "/subscriber",
+                component: Subscriber
             }
         }
     };
@@ -172,9 +179,28 @@ class App extends React.Component {
         return menuOrder.findIndex(item => item === subjA) - menuOrder.findIndex(item => item === subjB);
     };
 
+
+    extractHashParams = (hash = '') => hash.replace('#', '').split('&');
+
+    extractHashToken = params => {
+        const tokenParam = _.find(params, param => param.includes('token'));
+        if (tokenParam) {
+            return decodeURIComponent(tokenParam.split('=')[1]);
+        }
+        return false
+    };
+
+    isEmbedded = (params) => _.findIndex(params, param => param === 'embedded') !== -1;
+
     componentDidMount() {
-        this.setState({ loading: true });
-        const localToken = localStorage.getItem('jwtToken');
+        const hashParams = this.extractHashParams(_.get(this.props, 'location.hash'));
+        const embedded = this.isEmbedded(hashParams);
+        const localToken = this.extractHashToken(hashParams) || localStorage.getItem('jwtToken');
+        console.log(localToken, '   ', embedded);
+        if (embedded) {
+            this.setToken(localToken);
+        }
+        this.setState({ loading: true, embedded });
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data || {};
@@ -307,6 +333,10 @@ class App extends React.Component {
             name: 'POLICY',
             access_level: ['EDIT', 'VIEW']
         },
+        {
+            name: 'SUBSCRIBER',
+            access_level: ['EDIT', 'VIEW']
+        },
     ];
 
     renderRoutes = (subjects = []) => {
@@ -326,13 +356,15 @@ class App extends React.Component {
     render() {
         const { user = {} } = this.props;
         const { subjects } = user;
-        const { loading, loggedIn } = this.state;
+        const { loading, loggedIn, embedded } = this.state;
         const routes = this.renderRoutes(subjects);
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
                 <AlarmsNotifications loggedIn={loggedIn}/>
                 <Preloader active={this.state.loading}>
-                    {!loading && <PageWrapper onLogOut={this.onLogOut}>
+                    {!loading && <PageWrapper onLogOut={this.onLogOut}
+                                              embedded={embedded}
+                    >
                         <Switch>
                             <Redirect from="/" exact to="/dashboard"/>
                             {routes}

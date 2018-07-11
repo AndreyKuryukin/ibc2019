@@ -89,19 +89,20 @@ class PageWrapper extends React.Component {
     };
 
     render() {
+        const hidden = this.state.hidden || _.get(this.props, 'embedded');
         return <div className={classNames(styles.pageWrapper, { [styles.blur]: this.state.blur })}>
             <Menu menuItems={this.props.user.menu}
                   onClick={this.onMenuClick}
-                  className={classNames({ [styles.hidden]: this.state.hidden })}
+                  className={classNames({ [styles.hidden]: hidden })}
                   path={_.get(this.props, 'location.pathname')}
                   notifications={_.get(this.props, 'notifications')}
             />
-            <div className={classNames(styles.workspace, { [styles.withSidebar]: !this.state.hidden })}>
+            <div className={classNames(styles.workspace, { [styles.withSidebar]: !hidden })}>
                 <Navbar color="faded"
                         light
                         className={classNames({
                             [styles.navBar]: true,
-                            [styles.hidden]: this.state.hidden
+                            [styles.hidden]: hidden
                         })}>
                     <div className={styles.pageTitle}>
                         {this.renderTitle(this.state.pageTitle)}
