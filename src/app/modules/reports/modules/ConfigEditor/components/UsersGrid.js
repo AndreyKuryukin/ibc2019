@@ -37,10 +37,10 @@ class UsersGrid extends React.PureComponent {
         };
     }
 
-    static getColumns = memoize(() => [{
+    static getColumns = () => [{
         name: 'name',
         searchable: true,
-    }]);
+    }];
 
     bodyRowRender = (column, node) => (
         <CheckedCell

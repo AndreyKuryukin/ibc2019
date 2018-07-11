@@ -8,52 +8,41 @@ import { OPERATOR_TYPES } from "../constants";
 class Formula extends React.PureComponent {
     static propTypes = {
         config: PropTypes.object,
-        title: PropTypes.string,
     };
 
     static defaultProps = {
         config: PropTypes.object,
-        title: ls('KPI_FORMULA_TITLE', 'Формула вычисления KQI (%)'),
-        numeratorPattern: ls('KPI_NUMERATOR_PATTERN', 'Σ (измерений при которых: {{object_type}}.{{parameter_type}} {{operator_type}} {{level}})'),
-        denominatorPattern: ls('KPI_DENOMINATOR_PATTERN', 'количество измерений {{object_type}}.{{parameter_type}}'),
-        multiplierPattern: ls('KPI_MULTIPLIER_PATTERN', 'Х 100'),
-        keyMap: {
-            object_type: ls('KPI_OBJECT_TYPE', '<Тип объекта>'),
-            parameter_type: ls('KPI_PARAMETER_TYPE', '<Параметр>'),
-            operator_type: ls('KPI_OPERATOR_TYPE', '<Оператор>'),
-            level: ls('KPI_LEVEL', '<Значение>'),
-        }
     };
 
 
-    replaceByPattern = (config, pattern, keyMap = {}) => {
+    replaceByPattern = (config, pattern) => {
         return _.reduce(config, (result, value, key) => {
 
             if (key === 'parameter_type') {
-                return result.replace(`{{${key}}}`, _.get(value, 'name') || keyMap[key])
+                return result.replace(`{{${key}}}`, _.get(value, 'name') || ls(`KPI_${key.toUpperCase()}`, '<>'))
             }
             if (key === 'operator_type') {
-                return result.replace(`{{${key}}}`, OPERATOR_TYPES[value] || keyMap[key])
+                return result.replace(`{{${key}}}`, OPERATOR_TYPES[value] || ls(`KPI_${key.toUpperCase()}`, '<>'))
             }
-           return result.replace(`{{${key}}}`, value || keyMap[key])
+           return result.replace(`{{${key}}}`, value || ls(`KPI_${key.toUpperCase()}`, '<>'))
         }, pattern)
     };
 
     render() {
-        const { config, title, numeratorPattern, denominatorPattern, multiplierPattern, keyMap } = this.props;
+        const { config } = this.props;
         return <div className={styles.kpiFormila}>
-            <div className={styles.kpiConfigTitle}>{title}</div>
+            <div className={styles.kpiConfigTitle}>{ls('KPI_FORMULA_TITLE', 'Формула вычисления KQI (%)')}</div>
             <div className={styles.fractionContainer}>
                 <div className={styles.fractionItself}>
                     <div className={styles.fractionNumerator}>
-                        {this.replaceByPattern(config, numeratorPattern, keyMap)}
+                        {this.replaceByPattern(config, ls('KPI_NUMERATOR_PATTERN', ''))}
                     </div>
                     <div
-                        className={styles.fractionDenominator}>{this.replaceByPattern(config, denominatorPattern, keyMap)}
+                        className={styles.fractionDenominator}>{this.replaceByPattern(config, ls('KPI_DENOMINATOR_PATTERN', ''))}
                     </div>
                 </div>
                 <div
-                    className={styles.fractionMultiplier}>{this.replaceByPattern(config, multiplierPattern, keyMap)}
+                    className={styles.fractionMultiplier}>{this.replaceByPattern(config, ls('KPI_MULTIPLIER_PATTERN', ''))}
                 </div>
             </div>
 

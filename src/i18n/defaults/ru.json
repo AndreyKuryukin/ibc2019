@@ -64,5 +64,13 @@
   "SUBJECT_VIEW": "Просмотр",
   "SUBJECT_EDIT": "Редактирование",
 
-  "PAGE_NOT_FOUND": "Страница не найдена"
+  "PAGE_NOT_FOUND": "Страница не найдена",
+
+  "KPI_NUMERATOR_PATTERN": "Σ (измерений при которых: {{object_type}}.{{parameter_type}} {{operator_type}} {{level}})",
+  "KPI_DENOMINATOR_PATTERN": "количество измерений {{object_type}}.{{parameter_type}}",
+  "KPI_MULTIPLIER_PATTERN": "Х 100",
+  "KPI_PARAMETER_TYPE": "<Параметр>",
+  "KPI_OPERATOR_TYPE": "<Оператор>",
+  "KPI_OBJECT_TYPE": "<Тип объекта>",
+  "KPI_LEVEL": "<Значение>"
 }

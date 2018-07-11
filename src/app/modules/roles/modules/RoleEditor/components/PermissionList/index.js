@@ -48,7 +48,7 @@ class RolesListGrid extends React.PureComponent {
         if (!_.isEmpty(levels)) {
             subj.children = levels.map(lvl => ({ id: `${subj.name.toUpperCase()}.${lvl}`, name: ls(lvl, lvl) }))
         }
-        return subj
+        return subj;
     });
 
     onCheckAll = (value) => {

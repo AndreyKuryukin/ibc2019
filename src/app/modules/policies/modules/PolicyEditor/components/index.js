@@ -261,7 +261,7 @@ class PolicyEditor extends React.PureComponent {
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
                                         <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                            <div style={{ width: '60%' }}>
+                                            <div style={{ width: '55%' }}>
                                                 <Field
                                                     id="cease_duration"
                                                     labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
@@ -286,7 +286,7 @@ class PolicyEditor extends React.PureComponent {
                                                     </div>
                                                 </Field>
                                             </div>
-                                            <div style={{ width: '40%' }}>
+                                            <div style={{ width: '45%' }}>
                                                 {threshold && <Field
                                                     id="cease_value"
                                                     labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}`}

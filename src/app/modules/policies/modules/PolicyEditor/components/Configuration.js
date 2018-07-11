@@ -147,7 +147,7 @@ class Configuration extends React.Component {
 
                 {(threshold || duration) &&
                 <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
-                    <div style={{ width: '60%' }}>
+                    <div style={{ width: '55%' }}>
                         <Field
                             id="rise_duration"
                             required
@@ -171,7 +171,7 @@ class Configuration extends React.Component {
                             </div>
                         </Field>
                     </div>
-                    <div style={{ width: '40%' }}>
+                    <div style={{ width: '45%' }}>
                         {threshold && <Field
                             id="rise_value"
                             required

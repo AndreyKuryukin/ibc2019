@@ -242,7 +242,7 @@ console.log(errors);
                                         <Select
                                             id="template-id"
                                             options={this.mapTemplateOptions(templates)}
-                                            value={this.getConfigProperty('template_id')}
+                                            value={this.getConfigProperty('template_id') || ''}
                                             onChange={value => this.setConfigProperty('template_id', value)}
                                             errorMessage={_.get(errors, 'template_id.title')}
                                             placeholder={ls('REPORTS_CONFIG_EDITOR_TEMPLATE_FIELD_PLACEHOLDER', 'Выберите шаблон отчета')}
@@ -296,13 +296,13 @@ console.log(errors);
                                     errors={_.get(errors, 'period', null)}
                                 />
                                 <Panel
-
                                     title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
                                 >
                                     <Input
                                         type="textarea"
                                         value={this.getConfigProperty('comment')}
                                         onChange={value => this.setConfigProperty('comment', value)}
+                                        placeholder={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_PLACEHOLDER', 'Комментарий')}
                                         rows={6}
                                     />
                                 </Panel></div>

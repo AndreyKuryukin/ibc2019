@@ -81,8 +81,8 @@ class Alarms extends React.PureComponent {
         const queryParams = {
             ...filter,
             type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: convertDateToUTC0(filter.start.getTime()).valueOf(),
-            end: convertDateToUTC0(filter.end.getTime()).valueOf(),
+            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
+            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
         rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {

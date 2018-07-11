@@ -23,7 +23,7 @@ export const DEFAULT_PATH_PARAMETERS = {
 export const FILTERS = [
     {
         id: 'service',
-        title: ls('DASHBOARD_FILTERS_SERVICES_TITLE', 'Сервисы'),
+        defaultTitle: 'Сервисы',
         editable: false,
         options: [
             {
@@ -40,7 +40,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'product',
-        title: ls('DASHBOARD_FILTERS_PRODUCT_TITLE', 'Продукт'),
+        defaultTitle: 'Продукт',
         editable: true,
         type: 'radio',
         options: [
@@ -55,7 +55,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'feature',
-        title: ls('DASHBOARD_FILTERS_SERVICE_TITLE', 'Услуга'),
+        defaultTitle: 'Услуга',
         editable: false,
         options: [
             {
@@ -72,7 +72,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'technology',
-        title: ls('DASHBOARD_FILTERS_TECH_TITLE', 'Технология'),
+        defaultTitle: 'Технология',
         editable: true,
         options: [
             {
