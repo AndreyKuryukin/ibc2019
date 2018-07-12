@@ -36,7 +36,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     static propTypes = {
-        policyId: PropTypes.number,
+        policyId: PropTypes.string,
         policy: PropTypes.object,
         errors: PropTypes.object,
         scopes: PropTypes.array,
@@ -55,7 +55,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     static defaultProps = {
-        policyId: null,
+        policyId: '',
         policy: {},
         errors: null,
         scopes: [],

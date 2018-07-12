@@ -44,7 +44,15 @@ class KIDuration extends React.Component {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
             },
-            yAxis: Chart.DEFAULT_OPTIONS.yAxis,
+            yAxis: {
+                ...Chart.DEFAULT_OPTIONS.yAxis,
+                labels: {
+                    style: {
+                        whiteSpace: 'nowrap',
+                    },
+                    x: -10,
+                },
+            },
             series,
         };
     };

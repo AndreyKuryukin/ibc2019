@@ -210,7 +210,7 @@ class Configuration extends React.Component {
                         id="message"
                         type="textarea"
                         placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Текст сообщения')}
-                        value={_.get(this.state.policy, 'notification_template')}
+                        value={_.get(this.state.policy, 'notification_template', '') || ''}
                         onChange={value => this.setPolicyProperty('notification_template', value)}
                         rows={5}
                         errorMessage={_.get(errors, 'notification_template.title')}
