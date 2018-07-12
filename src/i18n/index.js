@@ -2,9 +2,7 @@ import _ from 'lodash';
 
 let languageMap = {};
 
-const ls = (key, defaultValue) => {
-    return _.get(languageMap, key, defaultValue);
-};
+const ls = (key, defaultValue) => _.get(languageMap, key, defaultValue);
 
 export const setLanguageMap = (map) => {
     languageMap = map

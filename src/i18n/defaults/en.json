@@ -422,5 +422,7 @@
     "STB_LOADING_SIDEMENU_TITLE": "Stb loading",
 
     "DASHBOARD_ITV1": "ITV",
-    "DASHBOARD_ITV2": "ITV 2.0"
+    "DASHBOARD_ITV2": "ITV 2.0",
+    "DASHBOARD_AVERAGE_TITLE": "Average ",
+    "DASHBOARD_BY_MRF_TITLE": " by MRD"
 }
