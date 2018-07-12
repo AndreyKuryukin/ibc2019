@@ -10,7 +10,7 @@ class Filters extends React.Component {
         className: PropTypes.string,
         list: PropTypes.arrayOf(PropTypes.shape({
             id: PropTypes.string.isRequired,
-            defaultTitle: PropTypes.string.isRequired,
+            title: PropTypes.string.isRequired,
             options: PropTypes.array.isRequired,
         })),
         values: PropTypes.objectOf(PropTypes.array),
@@ -63,7 +63,7 @@ class Filters extends React.Component {
                             key={filter.id}
                             name={filter.id}
                             className={styles.dashboardFiltersGroup}
-                            title={ls(`DASHBOARD_FILTERS_${filter.id.toUpperCase()}_TITLE`, filter.defaultTitle)}
+                            title={ls(`DASHBOARD_FILTERS_${filter.id.toUpperCase()}_TITLE`, filter.title)}
                             type={filter.type}
                             options={filter.options}
                             values={values[filter.id] || []}

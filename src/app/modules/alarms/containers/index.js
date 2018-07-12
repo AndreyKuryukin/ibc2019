@@ -10,6 +10,12 @@ import ls from "i18n";
 import { SENDING_ALARM_TYPES } from '../constants';
 import { convertDateToUTC0 } from '../../../util/date';
 
+const TAB_TITLES = {
+    'GP': 'ГП',
+    'CI': 'КИ',
+    'KQI': 'KQI',
+};
+
 class Alarms extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
@@ -71,8 +77,8 @@ class Alarms extends React.PureComponent {
         const type = _.get(this.state, 'type');
         const nextType = _.get(nextProps, 'match.params.type', type);
         if (nextType && type !== nextType) {
-            this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, '')]);
-            this.setState({ type: nextType })
+            this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
+            this.setState({ type: nextType });
         }
     }
 

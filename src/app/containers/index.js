@@ -75,56 +75,56 @@ class App extends React.Component {
                 component: Login
             },
             'LANDING': {
-                title: 'Рабочий стол',
+                title: ls('DASHBOARD_SIDEMENU_TITLE', 'Рабочий стол'),
                 link: '/dashboard',
                 path: '/dashboard/:mode?/:regularity?/:mrfId?/:type?',
                 component: Dashboard,
                 exact: true
             },
             'KQI': {
-                title: 'KPI/KQI',
+                title: ls('KQI_SIDEMENU_TITLE', 'KPI/KQI'),
                 link: '/kqi',
                 path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
                 component: KQI
             },
             'POLICY': {
-                title: 'Политики',
+                title: ls('POLICIES_SIDEMENU_TITLE', 'Политики'),
                 link: '/policies',
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
             'ALARMS': {
-                title: 'Аварии',
+                title: ls('ALARMS_SIDEMENU_TITLE', 'Аварии'),
                 link: '/alarms/ci',
                 path: "/alarms/:type/:id?",
                 component: Alarms
             },
             'REPORTS': {
-                title: 'Отчётность',
+                title: ls('REPORTS_SIDEMENU_TITLE', 'Отчётность'),
                 link: '/reports',
                 path: '/reports/:action?',
                 component: Reports
             },
             'SOURCES': {
-                title: 'Источники',
+                title: ls('SOURCES_SIDEMENU_TITLE', 'Источники'),
                 link: '/sources',
                 path: "/sources",
                 component: Sources
             },
             'USERS': {
-                title: 'Работа с пользователями',
+                title: ls('USERS_SIDEMENU_TITLE', 'Работа с пользователями'),
                 link: '/users-and-roles/users',
                 path: "/users-and-roles/:page/:action?/:id?",
                 component: UsersAndRoles
             },
             'ROLES': {
-                title: 'Работа с пользователями',
+                title: ls('USERS_SIDEMENU_TITLE', 'Работа с пользователями'),
                 link: '/roles',
                 path: "/roles/:action?/:id?",
                 component: UsersAndRoles
             },
             'STB_LOADING': {
-                title: 'Время загрузки STB',
+                title: ls('STB_LOADING_SIDEMENU_TITLE', 'Время загрузки STB'),
                 link: '/stb-loading',
                 path: "/stb-loading",
                 component: StbLoading
