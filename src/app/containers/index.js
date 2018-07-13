@@ -194,11 +194,11 @@ class App extends React.Component {
 
     componentDidMount() {
         const hashParams = this.extractHashParams(_.get(this.props, 'location.hash'));
-        const embedded = this.isEmbedded(hashParams);
-        const localToken = this.extractHashToken(hashParams) || localStorage.getItem('jwtToken');
-        console.log(localToken, '   ', embedded);
-        if (embedded) {
-            this.setToken(localToken);
+        const hashToken = this.extractHashToken(hashParams);
+        const embedded = !!hashToken;
+        const localToken = hashToken || localStorage.getItem('jwtToken');
+        if (hashToken) {
+            this.setToken(hashToken);
         }
         this.setState({ loading: true, embedded });
         rest.get('api/v1/user/current')
@@ -275,9 +275,12 @@ class App extends React.Component {
     fetchUserSuccess = (user) => this.setState({ loggedIn: true }, () => this.onFetchUserSuccess(user));
 
     onFetchUserSuccess = (user) => {
+        const embedded = this.state.embedded;
+
         const subjectMap = this.getMapedSubjects() || {};
         const commonSubjects = this.getCommonSubjects();
-        const totalSubjects = this.mapUserSubjects(user).concat(commonSubjects);
+        const userSubjects = embedded ? this.getEmbdedWhiteList() : this.mapUserSubjects(user);
+        const totalSubjects = userSubjects.concat(commonSubjects);
         const menuOrder = Object.keys(subjectMap);
         user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
         user.menu = user.subjects
@@ -303,6 +306,13 @@ class App extends React.Component {
         this.saveState();
         this.onLogOut()
     };
+
+    getEmbdedWhiteList = () => [
+        {
+            name: 'SUBSCRIBER',
+            access_level: ['EDIT', 'VIEW']
+        },
+    ];
 
     getCommonSubjects = () => [
         {
@@ -331,10 +341,6 @@ class App extends React.Component {
         },
         {
             name: 'POLICY',
-            access_level: ['EDIT', 'VIEW']
-        },
-        {
-            name: 'SUBSCRIBER',
             access_level: ['EDIT', 'VIEW']
         },
     ];
