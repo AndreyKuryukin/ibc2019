@@ -1,0 +1,9 @@
+@import "../../../scss/vars";
+
+.subscriberContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  color: $white;
+}
