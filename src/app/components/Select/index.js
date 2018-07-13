@@ -4,6 +4,7 @@ import { Input } from 'reactstrap';
 import styles from './styles.scss';
 import classnames from "classnames";
 import ls from 'i18n';
+import onClickOutside from "react-onclickoutside";
 
 const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 
@@ -20,11 +21,12 @@ class Select extends React.PureComponent {
 
     constructor() {
         super();
-        this.state = {};
+        this.state = {
+            isOptionsDisplayed: false,
+        };
     }
 
-    onChange = (event) => {
-        const value = event.currentTarget.value;
+    onSelectOption = (value) => {
         if (value === PLACEHOLDER_VALUE) {
             this.setState({ value: '' }, () => {
                 this.props.onChange('');
@@ -50,6 +52,19 @@ class Select extends React.PureComponent {
         return _.isUndefined(propsValue) ? stateValue : propsValue;
     };
 
+    onClick = () => {
+        const actionMethod = this.state.isOptionsDisplayed ? 'blur' : 'focus';
+        this.setState({ isOptionsDisplayed: !this.state.isOptionsDisplayed });
+        this.select[actionMethod]();
+    }
+
+    handleClickOutside = () => {
+        if (this.state.isOptionsDisplayed) {
+            this.setState({ isOptionsDisplayed: false });
+            this.select.blur();
+        }
+    };
+
     render() {
         const { placeholder, errorMessage, options, noEmptyOption, children, valid, ...rest } = this.props;
         const value = this.getValue();
@@ -59,21 +74,42 @@ class Select extends React.PureComponent {
             console.info('Select should not has children')
         }
         return (
-            <div className={styles.selectWrapper}>
+            <div className={styles.selectWrapper} onClick={this.onClick}>
                 {valid === false &&
                 <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
                 <Input type="select" {...rest}
                        value={value}
-                       onChange={this.onChange}
                        className={placeholderClass}
                        invalid={invalid}
+                       innerRef={select => this.select = select}
                 >
                     {!noEmptyOption && this.renderPlaceholder(placeholder)}
                     {this.renderOptions(options)}
                 </Input>
+                <ul
+                    className={styles.optionsList}
+                    style={{
+                        display: this.state.isOptionsDisplayed ? 'flex' : 'none',
+                    }}
+                >
+                    {!noEmptyOption && (
+                        <li
+                            key="options-item-placeholder"
+                            className={styles.placeholder}
+                            onClick={() => this.onSelectOption(PLACEHOLDER_VALUE)}
+                        >{placeholder}</li>
+                    )}
+                    {options.map((opt, index) => (
+                        <li
+                            key={`options-item-${index}`}
+                            onClick={() => this.onSelectOption(opt.value)}
+                            title={opt.title}
+                        >{opt.title}</li>
+                    ))}
+                </ul>
             </div>
         );
     }
 }
 
-export default Select;
+export default onClickOutside(Select);

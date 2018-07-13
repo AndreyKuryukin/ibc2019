@@ -97,7 +97,7 @@ class Conjunction extends React.PureComponent {
         return (
             <Component
                 name="value"
-                value={_.get(value, 'value').toString()}
+                value={_.get(value, 'value', '').toString() || ''}
                 valid={errors && _.isEmpty(_.get(errors, 'value', null))}
                 {...params}
             />
@@ -136,7 +136,7 @@ class Conjunction extends React.PureComponent {
                                 id="parameter"
                                 type="select"
                                 placeholder={ls('POLICY_CONJUNCTION_PARAMETER_PLACEHOLDER', 'Параметр')}
-                                value={parameter}
+                                value={parameter || ''}
                                 options={this.mapParameters(parameters)}
                                 onChange={(value) => this.setParameter(value, parameters)}
                                 valid={errors && _.isEmpty(_.get(errors, 'parameterType', null))}
@@ -147,7 +147,7 @@ class Conjunction extends React.PureComponent {
                         <Select
                             type="select"
                             placeholder={ls('POLICY_CONJUNCTION_OPERATOR_PLACEHOLDER', 'Оператор')}
-                            value={_.get(value, 'operator')}
+                            value={_.get(value, 'operator', '') || ''}
                             options={this.mapOperators(parameters, parameter)}
                             onChange={(value) => this.setConjunctionProperty('operator', value)}
                             valid={errors && _.isEmpty(_.get(errors, 'operator', null))}
