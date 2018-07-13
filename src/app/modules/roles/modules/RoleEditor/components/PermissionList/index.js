@@ -48,7 +48,7 @@ class RolesListGrid extends React.PureComponent {
         if (!_.isEmpty(levels)) {
             subj.children = levels.map(lvl => ({ id: `${subj.name.toUpperCase()}.${lvl}`, name: ls(lvl, lvl) }))
         }
-        return subj
+        return subj;
     });
 
     onCheckAll = (value) => {
@@ -78,7 +78,6 @@ class RolesListGrid extends React.PureComponent {
             }
             checkedPartially = !checked && childrenIds.some(id => this.state.checked.includes(id));
         }
-
         return (
             <CheckedCell
                 id={`role-editor-subjects-grid-${node.id}`}
@@ -86,7 +85,7 @@ class RolesListGrid extends React.PureComponent {
                 style={{ marginLeft: 0 }}
                 value={checked}
                 checkedPartially={checkedPartially}
-                text={node[column.name]}
+                text={ls(`SUBJECT_${node['name'].toUpperCase()}`, node.name)}
             />
         );
     };

@@ -7,7 +7,7 @@
     "test": "jest --config=./jest.config.json",
     "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack --watch\" \"cross-env nodemon dev/server.js\"",
     "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8888 nodemon --inspect dev/server.js --intercept\"",
-    "build": "cross-env NODE_ENV=production webpack --bail",
+    "build": "cross-env NODE_ENV=production node --inspect ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --bail",
     "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept\"",
     "proxy": "cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept"
   },
@@ -28,6 +28,7 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "colors": "^1.3.0",
     "concurrently": "^3.5.1",
     "copy-webpack-plugin": "^4.4.2",
     "cross-env": "^5.1.3",
@@ -45,11 +46,13 @@
     "express-ws": "^4.0.0",
     "extract-text-webpack-plugin": "^4.0.0-alpha.0",
     "fast-sass-loader": "^1.4.1",
+    "google-translate-api": "^2.3.0",
     "img-loader": "^2.0.1",
     "istanbul": "^0.4.5",
     "jest": "^22.4.2",
     "jest-enzyme": "^4.2.0",
     "jest-localstorage-mock": "^2.2.0",
+    "loader-utils": "^1.1.0",
     "node-sass": "^4.7.2",
     "nodemon": "^1.15.1",
     "sass-loader": "^6.0.6",
@@ -57,7 +60,8 @@
     "url-loader": "^0.6.2",
     "webpack-bundle-analyzer": "^2.11.0",
     "webpack-dev-server": "^2.11.2",
-    "webpack-shell-plugin": "^0.5.0"
+    "webpack-shell-plugin": "^0.5.0",
+    "yandex-translate-api": "^1.0.1"
   },
   "browser": {
     "fs": false

@@ -145,6 +145,7 @@ class AlarmsControls extends React.Component {
                                 onChange={value => this.setFilterProperty('start', value)}
                                 format={'DD.MM.YYYY HH:mm'}
                                 time
+                                placeholder={ls('ALARMS_FROM_FILTER_PLACEHOLDER', 'Начало')}
                             />
                         </Field>
                         <Field
@@ -161,6 +162,7 @@ class AlarmsControls extends React.Component {
                                 onChange={value => this.setFilterProperty('end', value)}
                                 format={'DD.MM.YYYY HH:mm'}
                                 time
+                                placeholder={ls('ALARMS_TO_FILTER_PLACEHOLDER', 'Окончание')}
                             />
                         </Field>
                     </div>

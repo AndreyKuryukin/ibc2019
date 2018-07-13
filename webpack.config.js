@@ -3,12 +3,15 @@ const CopyWebpackPlugin = require('copy-webpack-plugin');
 const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
+const i18n = require('./dev/loaders/i18n');
+
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 const plugins = [];
 const devMode = process.env.NODE_ENV === 'development';
 const prodMode = process.env.NODE_ENV === 'production';
+
 
 const PROXY_HOST = process.env.PROXY_HOST;
 const PROXY_PORT = process.env.PROXY_PORT;
@@ -43,7 +46,15 @@ module.exports = {
             // },
             {
                 test: /\.js$/,
-                loader: ['babel-loader'],
+                loader: ['babel-loader', {
+                    loader: './dev/loaders/i18n',
+                    options: {
+                        defaultValuesPath: path.resolve(__dirname, 'src/i18n/defaults'),
+                        outputPath: path.resolve(__dirname, 'build/'),
+                        locales: ['ru', 'en'],
+                        apiKey: 'trnsl.1.1.20180710T115326Z.a4419ef7590ca66a.e485d7ceeeb15926d2afb7fd0878557c487fea9c'
+                    }
+                }],
             },
             {
                 test: /\.scss$/,

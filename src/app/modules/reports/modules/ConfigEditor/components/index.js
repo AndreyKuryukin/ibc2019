@@ -296,13 +296,13 @@ class ConfigEditor extends React.PureComponent {
                                     errors={_.get(errors, 'period', null)}
                                 />
                                 <Panel
-
                                     title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
                                 >
                                     <Input
                                         type="textarea"
                                         value={this.getConfigProperty('comment')}
                                         onChange={value => this.setConfigProperty('comment', value)}
+                                        placeholder={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_PLACEHOLDER', 'Комментарий')}
                                         rows={6}
                                     />
                                 </Panel></div>

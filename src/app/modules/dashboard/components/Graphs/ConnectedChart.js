@@ -34,7 +34,7 @@ class ConnectedChart extends React.Component {
             }
         });
 
-        this.chart.container.addEventListener('mouseout', () => {
+        this.chart.container.addEventListener('mouseleave', () => {
             const chart = getOppositeChart();
 
             if (chart !== undefined) {

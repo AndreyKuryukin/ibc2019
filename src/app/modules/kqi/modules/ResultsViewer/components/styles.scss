@@ -7,7 +7,7 @@
     display: flex;
     flex-grow: 1;
     flex-direction: column;
-    height: 630px;
+    height: 700px;
     .kqiResultsViewerTableContainer {
       display: flex;
       flex-grow: 1;
@@ -25,10 +25,9 @@
     }
     .kqiResultsViewerGraphContainer {
       display: flex;
-      height: 230px;
+      height: 300px;
       margin-top: 5px;
       background: $white;
-      padding: 5px;
     }
   }
 }

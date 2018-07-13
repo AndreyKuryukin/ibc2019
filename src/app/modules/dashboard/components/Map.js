@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import ls from 'i18n';
 import styles from './styles.scss';
 import WidgetWrapper from './WidgetWrapper';
 import RussianMap from './RussianMap';
@@ -77,13 +78,13 @@ class Map extends React.Component {
         if (mrfId === MACRO_RF_ID) {
             return (
                 <span>
-                    {'Средний показатель '}
+                    {ls('DASHBOARD_AVERAGE_TITLE', 'Средний показатель ')}
                     <KQI
                         className={styles.mapTitleKQI}
                         type={type}
                         placeholder={null}
                     />
-                    {' по МРФ'}
+                    {ls('DASHBOARD_BY_MRF_TITLE', ' по МРФ')}
                 </span>
             );
         }

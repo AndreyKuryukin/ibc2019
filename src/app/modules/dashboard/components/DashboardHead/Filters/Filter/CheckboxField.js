@@ -1,11 +1,12 @@
 import React from 'react';
+import ls from 'i18n';
 import Field from '../../../../../../components/Field';
 import Checkbox from '../../../../../../components/Checkbox';
 
 const CheckboxField = (props) => (
     <Field
         id={props.option.value}
-        labelText={props.option.label}
+        labelText={ls(props.option.value, props.option.label)}
         labelAlign="right"
         splitter=""
         style={{ marginTop: 0 }}

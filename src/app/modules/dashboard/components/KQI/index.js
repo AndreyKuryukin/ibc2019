@@ -16,7 +16,7 @@ class KQI extends React.PureComponent {
     };
     static defaultProps = {
         precision: 2,
-        placeholder: ls('NOT_AVAILABLE', 'Н/Д'),
+        placeholder: null,
     };
 
     static parseType(type) {
@@ -56,7 +56,7 @@ class KQI extends React.PureComponent {
                         <span className={styles.units}>%</span>
                     </span>
                 ) : (
-                    <span className={styles.value}>{placeholder}</span>
+                    <span className={styles.value}>{placeholder || ls('NOT_AVAILABLE', 'Н/Д')}</span>
                 )}
             </p>
         );
