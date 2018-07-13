@@ -7,6 +7,7 @@ import Input from '../../../components/Input';
 import _ from 'lodash';
 import ls from '../../../../i18n';
 import styles from './login.scss';
+import Select from "../../../components/Select/index";
 
 class Login extends React.PureComponent {
     static propTypes = {
@@ -38,9 +39,9 @@ class Login extends React.PureComponent {
     }
 
     onSubmit = (e) => {
-        const { login, password } = this.state;
+        const { login, password, language } = this.state;
         e.preventDefault();
-        this.props.onSubmit(login, password);
+        this.props.onSubmit(login, password, language);
     };
 
     inputValue = (value, valuePath) => {
@@ -80,6 +81,11 @@ class Login extends React.PureComponent {
                                 placeholder={ls('LOGIN_PASSWD', 'Пароль')}
                                 onChange={value => this.inputValue(value, 'password')}
                                 valid={_.isEmpty(errors.password)}
+                            />
+                            <Select
+                                options={[{title: 'Русский', value: 'ru'}, {title: 'English', value: 'en'}]}
+                                onChange={value => this.inputValue(value, 'language')}
+                                value={this.state.language}
                             />
 
                             <Button

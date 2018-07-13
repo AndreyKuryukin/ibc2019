@@ -230,6 +230,7 @@ class UserEditor extends React.Component {
                                         name="login"
                                         value={this.getUserProperty('login', '')}
                                         onChange={value => this.setUserProperty('login', value)}
+                                        placeholder={ls('USERS_LOGIN_FIELD_PLACEHOLDER', 'Логин')}
                                         valid={errors && _.isEmpty(errors.login)}
                                         errorMessage={_.get(errors, 'login.title')}
                                     />
@@ -253,6 +254,7 @@ class UserEditor extends React.Component {
                                         onBlur={this.onPasswordBlur}
                                         valid={errors && _.isEmpty(errors.password)}
                                         errorMessage={_.get(errors, 'password.title')}
+                                        placeholder={ls('USERS_PASSWORD_FIELD_PLACEHOLDER', 'Пароль')}
                                     />
                                     <Tooltip placement="right" isOpen={showTooltipFor === 'password'} target="password">
                                         {ls('CAPS_LOCK_IS_ON_TEXT', 'Включен Caps Lock!')}
@@ -277,6 +279,7 @@ class UserEditor extends React.Component {
                                         onBlur={this.onPasswordBlur}
                                         valid={errors && _.isEmpty(errors.confirm)}
                                         errorMessage={_.get(errors, 'confirm.title')}
+                                        placeholder={ls('USERS_CONFIRM_PASSWORD_FIELD_PLACEHOLDER', 'Пароль')}
                                     />
                                     <Tooltip placement="right" isOpen={showTooltipFor === 'confirm'} target="confirm">
                                         {ls('CAPS_LOCK_IS_ON_TEXT', 'Включен Caps Lock!')}
@@ -296,6 +299,7 @@ class UserEditor extends React.Component {
                                         onChange={value => this.setUserProperty('email', value)}
                                         valid={errors && _.isEmpty(errors.email)}
                                         errorMessage={_.get(errors, 'email.title')}
+                                        placeholder={ls('USERS_EMAIL_FIELD_PLACEHOLDER', 'E-mail')}
                                     />
                                 </Field>
                                 <Field
@@ -309,6 +313,7 @@ class UserEditor extends React.Component {
                                         name="name"
                                         value={this.getUserProperty('first_name', '')}
                                         onChange={value => this.setUserProperty('first_name', value)}
+                                        placeholder={ls('USERS_NAME_FIELD_PLACEHOLDER', 'Имя')}
                                     />
                                 </Field>
                                 <Field
@@ -322,6 +327,7 @@ class UserEditor extends React.Component {
                                         name="last-name"
                                         value={this.getUserProperty('last_name', '')}
                                         onChange={value => this.setUserProperty('last_name', value)}
+                                        placeholder={ls('USERS_LAST_NAME_FIELD_PLACEHOLDER', 'Фамилия')}
                                     />
                                 </Field>
                                 <Field
@@ -337,6 +343,7 @@ class UserEditor extends React.Component {
                                         value={this.getUserProperty('phone', '')}
                                         onChange={value => this.setUserProperty('phone', value)}
                                         maxLength={11}
+                                        placeholder={ls('USERS_PHONE_FIELD_PLACEHOLDER', 'Телефон')}
                                     />
                                 </Field>
                             </Form>

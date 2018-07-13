@@ -24,6 +24,7 @@ import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
+import Subscriber from "../modules/subscriber/containers/index";
 
 
 const noMatchStyle = {
@@ -75,59 +76,65 @@ class App extends React.Component {
                 component: Login
             },
             'LANDING': {
-                title: 'Рабочий стол',
+                title: ls('DASHBOARD_SIDEMENU_TITLE', 'Рабочий стол'),
                 link: '/dashboard',
                 path: '/dashboard/:mode?/:regularity?/:mrfId?/:type?',
                 component: Dashboard,
                 exact: true
             },
             'KQI': {
-                title: 'KPI/KQI',
+                title: ls('KQI_SIDEMENU_TITLE', 'KPI/KQI'),
                 link: '/kqi',
                 path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
                 component: KQI
             },
             'POLICY': {
-                title: 'Политики',
+                title: ls('POLICIES_SIDEMENU_TITLE', 'Политики'),
                 link: '/policies',
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
             'ALARMS': {
-                title: 'Аварии',
+                title: ls('ALARMS_SIDEMENU_TITLE', 'Аварии'),
                 link: '/alarms/ci',
                 path: "/alarms/:type/:id?",
                 component: Alarms
             },
             'REPORTS': {
-                title: 'Отчётность',
+                title: ls('REPORTS_SIDEMENU_TITLE', 'Отчётность'),
                 link: '/reports',
                 path: '/reports/:action?',
                 component: Reports
             },
             'SOURCES': {
-                title: 'Источники',
+                title: ls('SOURCES_SIDEMENU_TITLE', 'Источники'),
                 link: '/sources',
                 path: "/sources",
                 component: Sources
             },
             'USERS': {
-                title: 'Работа с пользователями',
+                title: ls('USERS_SIDEMENU_TITLE', 'Работа с пользователями'),
                 link: '/users-and-roles/users',
                 path: "/users-and-roles/:page/:action?/:id?",
                 component: UsersAndRoles
             },
             'ROLES': {
-                title: 'Работа с пользователями',
+                title: ls('USERS_SIDEMENU_TITLE', 'Работа с пользователями'),
                 link: '/roles',
                 path: "/roles/:action?/:id?",
                 component: UsersAndRoles
             },
             'STB_LOADING': {
-                title: 'Время загрузки STB',
+                title: ls('STB_LOADING_SIDEMENU_TITLE', 'Время загрузки STB'),
                 link: '/stb-loading',
                 path: "/stb-loading",
                 component: StbLoading
+            },
+            'SUBSCRIBER': {
+                title: 'Абонент',
+                link: '/subscriber',
+                path: "/subscriber",
+                component: Subscriber
             }
         }
     };
@@ -172,8 +179,28 @@ class App extends React.Component {
         return menuOrder.findIndex(item => item === subjA) - menuOrder.findIndex(item => item === subjB);
     };
 
+
+    extractHashParams = (hash = '') => hash.replace('#', '').split('&');
+
+    extractHashToken = params => {
+        const tokenParam = _.find(params, param => param.includes('token'));
+        if (tokenParam) {
+            return decodeURIComponent(tokenParam.split('=')[1]);
+        }
+        return false
+    };
+
+    isEmbedded = (params) => _.findIndex(params, param => param === 'embedded') !== -1;
+
     componentDidMount() {
-        this.setState({ loading: true });
+        const hashParams = this.extractHashParams(_.get(this.props, 'location.hash'));
+        const hashToken = this.extractHashToken(hashParams);
+        const embedded = !!hashToken;
+        const localToken = hashToken || localStorage.getItem('jwtToken');
+        if (hashToken) {
+            this.setToken(hashToken);
+        }
+        this.setState({ loading: true, embedded });
         rest.get('api/v1/user/current')
             .then((userResp) => {
                 const user = userResp.data || {};
@@ -193,7 +220,7 @@ class App extends React.Component {
                         type: 'CRITICAL',
                         code: 'login-failed'
                     });
-                } else if (e && e.status === 403) {
+                } else if (e && e.status === 403 && localToken) {
                     this.context.notifications.notify({
                         title: ls('LOGIN_ERROR_FIELD', 'Ошибка авторизации:'),
                         message: ls('LOGIN_ERROR_FIELD', 'Войдите в систему'),
@@ -248,9 +275,12 @@ class App extends React.Component {
     fetchUserSuccess = (user) => this.setState({ loggedIn: true }, () => this.onFetchUserSuccess(user));
 
     onFetchUserSuccess = (user) => {
+        const embedded = this.state.embedded;
+
         const subjectMap = this.getMapedSubjects() || {};
         const commonSubjects = this.getCommonSubjects();
-        const totalSubjects = this.mapUserSubjects(user).concat(commonSubjects);
+        const userSubjects = embedded ? this.getEmbdedWhiteList() : this.mapUserSubjects(user);
+        const totalSubjects = userSubjects.concat(commonSubjects);
         const menuOrder = Object.keys(subjectMap);
         user.subjects = _.uniqBy(totalSubjects, sbj => sbj.name.toUpperCase());
         user.menu = user.subjects
@@ -276,6 +306,13 @@ class App extends React.Component {
         this.saveState();
         this.onLogOut()
     };
+
+    getEmbdedWhiteList = () => [
+        {
+            name: 'SUBSCRIBER',
+            access_level: ['EDIT', 'VIEW']
+        },
+    ];
 
     getCommonSubjects = () => [
         {
@@ -325,13 +362,15 @@ class App extends React.Component {
     render() {
         const { user = {} } = this.props;
         const { subjects } = user;
-        const { loading, loggedIn } = this.state;
+        const { loading, loggedIn, embedded } = this.state;
         const routes = this.renderRoutes(subjects);
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
                 <AlarmsNotifications loggedIn={loggedIn}/>
                 <Preloader active={this.state.loading}>
-                    {!loading && <PageWrapper onLogOut={this.onLogOut}>
+                    {!loading && <PageWrapper onLogOut={this.onLogOut}
+                                              embedded={embedded}
+                    >
                         <Switch>
                             <Redirect from="/" exact to="/dashboard"/>
                             {routes}

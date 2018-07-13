@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import ls from 'i18n';
 import styles from './styles.scss';
 import Filter from './Filter';
 
@@ -62,7 +63,7 @@ class Filters extends React.Component {
                             key={filter.id}
                             name={filter.id}
                             className={styles.dashboardFiltersGroup}
-                            title={filter.title}
+                            title={ls(`DASHBOARD_FILTERS_${filter.id.toUpperCase()}_TITLE`, filter.title)}
                             type={filter.type}
                             options={filter.options}
                             values={values[filter.id] || []}

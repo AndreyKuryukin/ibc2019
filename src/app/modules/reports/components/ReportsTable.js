@@ -13,9 +13,6 @@ import { DATE_TIME } from '../../../costants/date';
 import search from '../../../util/search';
 import { convertUTC0ToLocal } from '../../../util/date';
 
-const retryIconProps = {
-    title: ls(`REPORTS_REGENERATE`, 'Перестроить')
-};
 const iconCellStyle = {
     display: 'flex',
     width: '100%',
@@ -101,11 +98,11 @@ class ReportsTable extends React.PureComponent {
     getReportTimeStatus = (report) => {
         switch (report.state) {
             case 'RUNNING': {
-                return `c ${report.start}`;
+                return `${ls('REPORTS_FROM_PREPOSITION', 'с')} ${report.start}`;
             }
             case 'FAILED':
             case 'SUCCESS':
-                return `в ${report.end}`;
+                return `${ls('REPORTS_IN_PREPOSITION', 'в')} ${report.end}`;
             default:
                 return '';
         }
@@ -172,7 +169,7 @@ class ReportsTable extends React.PureComponent {
     remove = (node) => {
         switch (node.type) {
             case 'PDF':
-            case 'XLS':
+            case 'XLSX':
                 this.props.onRemoveResult(node.id, _.last(node.parents))
         }
     };
@@ -196,7 +193,9 @@ class ReportsTable extends React.PureComponent {
                 return state === 'failed' || (node.isLastSuccess && node.isLastSuccess() && state !== 'running') ?
                     <IconCell
                         icon={`icon-retry`}
-                        iconProps={retryIconProps}
+                        iconProps={{
+                            title: ls('REPORTS_REGENERATE', 'Перестроить'),
+                        }}
                         onIconClick={() => this.props.onResultRetry(node.id)}
                         cellStyle={iconCellStyle}
                     /> : ''

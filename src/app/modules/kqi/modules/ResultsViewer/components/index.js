@@ -89,12 +89,11 @@ class ResultsViewer extends React.PureComponent {
                                     expandAll
                                 />
                             </div>
-                            <div className={styles.kqiResultsViewerGraphContainer}>
-                                <Graph data={resHistory}
-                                       locations={this.props.locations}
-                                       projection={this.props.projection}
-                                />
-                            </div>
+                            <Graph
+                                data={resHistory}
+                                locations={this.props.locations}
+                                projection={this.props.projection}
+                            />
                         </div>
                     </ModalBody>
                     <ModalFooter>
