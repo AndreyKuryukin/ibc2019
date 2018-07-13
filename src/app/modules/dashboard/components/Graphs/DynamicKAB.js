@@ -4,13 +4,13 @@ import Highcharts from 'highcharts';
 import Chart from './Chart';
 import moment from 'moment';
 import rest from '../../../../rest';
-import ls from '../../../../../i18n';
+import ls from 'i18n';
 import { REGULARITIES } from '../../constants';
 import { convertUTC0ToLocal } from '../../../../util/date';
 
 const NAMES = {
-    itv1: ls('DASHBOARD_ITV', 'ИТВ'),
-    itv2: ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
+    itv1: 'ИТВ',
+    itv2: 'ИТВ 2.0',
 };
 const STEPS = {
     [REGULARITIES.HOUR]: 3600 * 1000,
@@ -191,7 +191,7 @@ class DynamicKAB extends React.Component {
 
     getSeries() {
         return Object.entries(this.state.data).map(([key, values], i) => ({
-            name: NAMES[key],
+            name: ls(`DASHBOARD_${key.toUpperCase()}`, NAMES[key]),
             data: values.map((item, x) => ({
                 x,
                 y: typeof item.value !== 'number' ? null : Number(item.value.toFixed(2)),

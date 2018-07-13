@@ -97,7 +97,7 @@ class Configurator extends React.PureComponent {
                 this.setConfigProperty('object_type', object_type.type);
             });
         } else {
-            this.setConfigProperty('parameter_type', value, () => {
+            this.setConfigProperty('parameter_type', '', () => {
                 this.setConfigProperty('object_type', type);
             });
         }
@@ -126,7 +126,7 @@ class Configurator extends React.PureComponent {
                 >
                     <ModalHeader
                         className="handle"
-                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', `Конфигурация KQI ${_.get(this.props.config, 'name', '')}`)}</ModalHeader>
+                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI') + _.get(this.props.config, 'name', '')}</ModalHeader>
                     <ModalBody>
                         <div className={styles.configuratorContent}>
                             <Field
@@ -165,7 +165,7 @@ class Configurator extends React.PureComponent {
                             </Field>
                             <Field
                                 id="param"
-                                labelText={ls('KQI_PARAMETER_LABEL', 'Параметр')}
+                                labelText={ls('KQI_CONFIGURATOR_PARAMETER_LABEL', 'Параметр')}
                                 labelWidth="35%"
                                 inputWidth="65%"
                                 required
@@ -185,7 +185,7 @@ class Configurator extends React.PureComponent {
                             </Field>
                             <Field
                                 id="operator"
-                                labelText={ls('KQI_OPERATOR_LABEL', 'Оператор')}
+                                labelText={ls('KQI_CONFIGURATOR_OPERATOR_LABEL', 'Оператор')}
                                 labelWidth="35%"
                                 inputWidth="65%"
                                 required
@@ -202,7 +202,7 @@ class Configurator extends React.PureComponent {
                             </Field>
                             <Field
                                 id="level"
-                                labelText={ls('KQI_LEVEL_LABEL', 'Значение')}
+                                labelText={ls('KQI_CONFIGURATOR_LEVEL_LABEL', 'Значение')}
                                 labelWidth="35%"
                                 inputWidth="65%"
                                 required

@@ -107,6 +107,7 @@ class Manufacture extends React.PureComponent {
                             inputWidth="25%"
                             labelAlign="right"
                             style={allManufacturesFieldStyle}
+                            splitter=""
                         >
                             <Checkbox
                                 id="all-manufactures"

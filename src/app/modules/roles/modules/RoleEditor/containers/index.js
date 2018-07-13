@@ -111,7 +111,10 @@ class RoleEditor extends React.PureComponent {
             rest.get('/api/v1/subject')
                 .then(response => {
                     this.setState({ isLoading: false });
-                    this.props.onFetchSubjectsSuccess(response.data);
+                    this.props.onFetchSubjectsSuccess(this.mapSubjects(response.data));
+                })
+                .catch(() => {
+                    this.setState({ isLoading: false });
                 })
         }
         this.context.pageBlur && this.context.pageBlur(true);

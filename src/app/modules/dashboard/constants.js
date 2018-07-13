@@ -23,12 +23,12 @@ export const DEFAULT_PATH_PARAMETERS = {
 export const FILTERS = [
     {
         id: 'service',
-        title: ls('DASHBOARD_FILTERS_SERVICES_TITLE', 'Сервисы'),
+        title: 'Сервисы',
         editable: false,
         options: [
             {
                 value: 'IPTV',
-                label: ls('IPTV_OTT', 'IPTV/OTT'),
+                label: ls('IPTV', 'IPTV/OTT'),
                 enabled: true,
             // }, {
             //     value: 'INTERNET',
@@ -40,7 +40,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'product',
-        title: ls('DASHBOARD_FILTERS_PRODUCT_TITLE', 'Продукт'),
+        title: 'Продукт',
         editable: true,
         type: 'radio',
         options: [
@@ -50,12 +50,12 @@ export const FILTERS = [
                 enabled: true,
             }, {
                 value: 'ITV2',
-                label: ls('ITV2_0', 'ИТВ 2.0'),
+                label: ls('ITV2', 'ИТВ 2.0'),
             },
         ],
     }, {
         id: 'feature',
-        title: ls('DASHBOARD_FILTERS_SERVICE_TITLE', 'Услуга'),
+        title: 'Услуга',
         editable: false,
         options: [
             {
@@ -72,7 +72,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'technology',
-        title: ls('DASHBOARD_FILTERS_TECH_TITLE', 'Технология'),
+        title: 'Технология',
         editable: true,
         options: [
             {
