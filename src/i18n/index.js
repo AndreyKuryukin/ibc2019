@@ -8,4 +8,6 @@ export const setLanguageMap = (map) => {
     languageMap = map
 }
 
+export const getLanguageMap = () => languageMap;
+
 export default ls;

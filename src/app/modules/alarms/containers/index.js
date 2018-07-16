@@ -105,8 +105,8 @@ class Alarms extends React.PureComponent {
             .catch((e) => {
                 console.error(e);
                 this.context.notifications.notify({
-                    title: ls('LOGIN_ERROR_FIELD', 'Ошибка загрузки аварий:'),
-                    message: ls('LOGIN_ERROR_FIELD', 'Данные по авариям не получены'),
+                    title: ls('ALARMS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
+                    message: ls('ALARMS_GETTING_ERROR_MESSAGE_FIELD', 'Данные по авариям не получены'),
                     type: 'CRITICAL',
                     code: 'alarms-failed',
                     timeout: 10000

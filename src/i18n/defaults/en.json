@@ -37,7 +37,7 @@
     "USERS_PAGE_TITLE": "Users",
     "CLI_TAB_TITLE": "CI",
     "DASHBOARD_CHART_DRILLDOWN_TITLE": "KQI MRD Volga",
-    "ROLES_PAGE_TITLE": "Role",
+    "ROLES_PAGE_TITLE": "Roles",
     "REPORTS_FORMAT_COLUMN_TITLE": "Format",
     "REFRESH_SOURCES_TITLE": "Update sources",
     "KQI_LAST_DATE_COLUMN_TITLE": "Date of the latest calculation",
@@ -236,6 +236,7 @@
     "NEW_ROLE_NAME_LABEL": "Name of role",
     "NEW_ROLE_COPY_SUBJECTS_FROM": "Copy the permissions",
     "REPORT_TEMPLATE_PATTERN": "<Template_name>",
+    "POLICIES_PAGE_TITLE": "Policies",
     "POLICIES_WAITING_TIME_OF_ACCIDENT": "Waiting time of higher accident",
     "REPORTS_CONFIG_EDITOR_MRF_TITLE": "MRD",
     "REPORT_MRF_PATTERN": "<MRD>",
@@ -420,9 +421,14 @@
     "ALARMS_SIDEMENU_TITLE": "Alarms",
     "USERS_SIDEMENU_TITLE": "Users",
     "STB_LOADING_SIDEMENU_TITLE": "Stb loading",
+    "SUBSCRIBER_SIDEMENU_TITLE": "Subscriber",
+    "LOGIN_SIDEMENU_TITLE": "Log out",
 
     "DASHBOARD_ITV1": "ITV",
     "DASHBOARD_ITV2": "ITV 2.0",
     "DASHBOARD_AVERAGE_TITLE": "Average ",
-    "DASHBOARD_BY_MRF_TITLE": " by MRD"
+    "DASHBOARD_BY_MRF_TITLE": " by MRD",
+
+    "ALARMS_GETTING_ERROR_TITLE_FIELD": "Error during loadin alarms:",
+    "ALARMS_GETTING_ERROR_MESSAGE_FIELD": "Alarms data is not received"
 }

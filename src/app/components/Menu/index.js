@@ -107,7 +107,7 @@ class Menu extends React.Component {
                     {this.composeNotificationsCount(notificationCount)}
                 </span>}
             </div>
-            <span className={styles.tileTitle}>{item.title}</span>
+            <span className={styles.tileTitle}>{ls(`${item.id}_SIDEMENU_TITLE`, item.defaultTitle)}</span>
             <Popover placement={'right'}
                      isOpen={this.state.notificationPopup === clearLink}
                      target={`menu-tile-${clearLink}`}

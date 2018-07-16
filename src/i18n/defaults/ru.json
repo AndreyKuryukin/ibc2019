@@ -72,5 +72,16 @@
   "KPI_PARAMETER_TYPE": "<Параметр>",
   "KPI_OPERATOR_TYPE": "<Оператор>",
   "KPI_OBJECT_TYPE": "<Тип объекта>",
-  "KPI_LEVEL": "<Значение>"
+  "KPI_LEVEL": "<Значение>",
+
+  "DASHBOARD_SIDEMENU_TITLE": "Рабочий стол",
+  "KQI_SIDEMENU_TITLE": "KPI/KQI",
+  "POLICIES_SIDEMENU_TITLE": "Политики",
+  "REPORTS_SIDEMENU_TITLE": "Отчётность",
+  "SOURCES_SIDEMENU_TITLE": "Источники",
+  "ALARMS_SIDEMENU_TITLE": "Аварии",
+  "USERS_SIDEMENU_TITLE": "Работа с пользователями",
+  "STB_LOADING_SIDEMENU_TITLE": "Время загрузки STB",
+  "SUBSCRIBER_SIDEMENU_TITLE": "Абонент",
+  "LOGIN_SIDEMENU_TITLE": "Выход"
 }

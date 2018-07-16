@@ -9,6 +9,16 @@ import ls from '../../../../i18n';
 import styles from './login.scss';
 import Select from "../../../components/Select/index";
 
+const LANGUAGES = {
+    RUSSIAN: 'RUSSIAN',
+    ENGLISH: 'ENGLISH'
+};
+
+const LANGUAGE_OPTIONS = [
+    { title: 'Русский', value: LANGUAGES.RUSSIAN },
+    { title: 'English', value: LANGUAGES.ENGLISH }
+];
+
 class Login extends React.PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func,
@@ -27,7 +37,7 @@ class Login extends React.PureComponent {
     constructor(props) {
         super(props);
         this.state = {
-            language: 'ru',
+            language: LANGUAGES.RUSSIAN,
             errors: {}
         };
     }
@@ -83,7 +93,7 @@ class Login extends React.PureComponent {
                                 valid={_.isEmpty(errors.password)}
                             />
                             <Select
-                                options={[{title: 'Русский', value: 'ru'}, {title: 'English', value: 'en'}]}
+                                options={LANGUAGE_OPTIONS}
                                 onChange={value => this.inputValue(value, 'language')}
                                 value={this.state.language}
                             />
