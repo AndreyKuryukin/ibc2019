@@ -2,14 +2,11 @@ import React from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import PropTypes from 'prop-types';
-
-
 import LoginComponent from '../components';
 import { signInSuccess } from '../actions/index';
 import rest, { signIn } from '../../../rest/index';
 import { ERRORS } from "../../../costants/errors";
-import ls from "i18n";
-import {setLanguageMap} from "i18n";
+import ls, { setLanguageMap } from "i18n";
 import { LOGIN_REQUEST, SIGN_IN_URL } from "../../../costants/login";
 import { validateForm } from "../../../util/validation";
 import { fetchActiveUserSuccess } from "../../../actions/index";
@@ -32,6 +29,8 @@ class Login extends React.PureComponent {
     };
 
     componentDidMount() {
+        setLanguageMap(null);
+
         this.context.navBar.hide();
     }
 
@@ -53,21 +52,17 @@ class Login extends React.PureComponent {
             this.setState({ loading: true, errors: {} });
             rest.post(SIGN_IN_URL, {
                 [LOGIN_REQUEST.LOGIN]: login,
-                [LOGIN_REQUEST.PASSWORD]: password
+                [LOGIN_REQUEST.PASSWORD]: password,
+                [LOGIN_REQUEST.LANGUAGE]: language,
             })
                 .then(() => {
                     this.context.notifications.close('login-failed');
-                    return Promise.all([
-                        rest.get('api/v1/user/current'),
-                        rest.get(`${language}.json`)
-                    ]);
+                    return rest.get('api/v1/user/current');
                 })
-                .then(([userResp, languageResp]) => {
-                    this.setState({ loading: false });
+                .then((userResp) => {
                     const user = userResp.data;
-                    const languageMap = languageResp.data;
-                    setLanguageMap(languageMap);
                     this.context.fetchUserSuccess(user);
+                    this.setState({ loading: false });
                     this.props.history.push('/');
                 })
                 .catch((error) => {

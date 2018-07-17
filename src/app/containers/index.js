@@ -3,10 +3,11 @@ import { Redirect, Route, Switch } from "react-router-dom";
 import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import ls from 'i18n';
+import ls, { getLanguageMap, setLanguageMap } from 'i18n';
 import _ from "lodash";
 import momentTz from 'moment-timezone';
-
+import moment from 'moment';
+import momentLocalizer from 'react-widgets-moment';
 import { resetActiveUserSuccess } from '../actions';
 import PageWrapper from '../components/PageWrapper';
 import Preloader from '../components/Preloader';
@@ -26,6 +27,10 @@ import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
 import Subscriber from "../modules/subscriber/containers/index";
 
+const LANGUAGE_SHORTHANDS = {
+    RUSSIAN: 'ru',
+    ENGLISH: 'en'
+};
 
 const noMatchStyle = {
     display: 'flex',
@@ -39,6 +44,8 @@ const noMatchStyle = {
 const NoMatch = () => (
     <div style={noMatchStyle}>{ls('PAGE_NOT_FOUND', 'Страница не найдена')}</div>
 );
+
+let isLanguageMapLoading = false;
 
 class App extends React.Component {
 
@@ -69,69 +76,80 @@ class App extends React.Component {
     getMapedSubjects = () => {
         return {
             'LOGIN': {
-                title: 'Выход',
+                id: 'LOGIN',
+                defaultTitle: 'Выход',
                 link: '/login',
                 path: '/login',
                 exact: true,
                 component: Login
             },
             'LANDING': {
-                title: ls('DASHBOARD_SIDEMENU_TITLE', 'Рабочий стол'),
+                id: 'DASHBOARD',
+                defaultTitle: 'Рабочий стол',
                 link: '/dashboard',
                 path: '/dashboard/:mode?/:regularity?/:mrfId?/:type?',
                 component: Dashboard,
                 exact: true
             },
             'KQI': {
-                title: ls('KQI_SIDEMENU_TITLE', 'KPI/KQI'),
+                id: 'KQI',
+                defaultTitle: 'KPI/KQI',
                 link: '/kqi',
                 path: "/kqi/:action?/:configId?/:projectionId?/:resultId?",
                 component: KQI
             },
             'POLICY': {
-                title: ls('POLICIES_SIDEMENU_TITLE', 'Политики'),
+                id: 'POLICIES',
+                defaultTitle: 'Политики',
                 link: '/policies',
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
             'ALARMS': {
-                title: ls('ALARMS_SIDEMENU_TITLE', 'Аварии'),
+                id: 'ALARMS',
+                defaultTitle: 'Аварии',
                 link: '/alarms/ci',
                 path: "/alarms/:type/:id?",
                 component: Alarms
             },
             'REPORTS': {
-                title: ls('REPORTS_SIDEMENU_TITLE', 'Отчётность'),
+                id: 'REPORTS',
+                defaultTitle: 'Отчётность',
                 link: '/reports',
                 path: '/reports/:action?',
                 component: Reports
             },
             'SOURCES': {
-                title: ls('SOURCES_SIDEMENU_TITLE', 'Источники'),
+                id: 'SOURCES',
+                defaultTitle: 'Источники',
                 link: '/sources',
                 path: "/sources",
                 component: Sources
             },
             'USERS': {
-                title: ls('USERS_SIDEMENU_TITLE', 'Работа с пользователями'),
+                id: 'USERS',
+                defaultTitle: 'Работа с пользователями',
                 link: '/users-and-roles/users',
                 path: "/users-and-roles/:page/:action?/:id?",
                 component: UsersAndRoles
             },
             'ROLES': {
-                title: ls('USERS_SIDEMENU_TITLE', 'Работа с пользователями'),
+                id: 'ROLES',
+                defaultTitle: 'Работа с пользователями',
                 link: '/roles',
                 path: "/roles/:action?/:id?",
                 component: UsersAndRoles
             },
             'STB_LOADING': {
-                title: ls('STB_LOADING_SIDEMENU_TITLE', 'Время загрузки STB'),
+                id: 'STB_LOADING',
+                defaultTitle: 'Время загрузки STB',
                 link: '/stb-loading',
                 path: "/stb-loading",
                 component: StbLoading
             },
             'SUBSCRIBER': {
-                title: 'Абонент',
+                id: 'SUBSCRIBER',
+                defaultTitle: 'Абонент',
                 link: '/subscriber',
                 path: "/subscriber",
                 component: Subscriber
@@ -151,20 +169,36 @@ class App extends React.Component {
         rest.onResponseCode('401', this.navigateLogin);
         rest.onResponseCode('401', this.navigateLogin);
         rest.onResponseCode('403', this.navigateLogin); //todo: Должен быть 401
-        rest.onResponseCode('200', this.refreshToken);
+        rest.onResponseCode('200', this.refreshGlobalSettings);
+
         this.setToken();
-        this.state = { loading: true, loggedIn: false };
+
+        this.state = {
+            loading: true,
+            loggedIn: false,
+            languageLoaded: false,
+        };
     }
 
     onLogOut = () => {
         this.dropToken();
         this.props.history.push('/login');
-        this.setState({ loggedIn: false }, () => this.onFetchUserSuccess({}))
+
+        this.setState({
+            loading: false,
+            loggedIn: false
+        }, () => this.onFetchUserSuccess({}));
+    };
+
+    setLocale = (locale) => {
+        moment.locale(locale);
+        momentLocalizer();
     };
 
     setToken = (token) => {
         const localToken = localStorage.getItem('jwtToken');
-        if (token !== localToken) {
+
+        if ((token || localToken) && token !== localToken) {
             localStorage.setItem('jwtToken', token || localToken);
             rest.setCommonHeader('Authorization', token || localToken);
         }
@@ -209,7 +243,7 @@ class App extends React.Component {
                 } else {
                     setGlobalTimezone(momentTz.tz.guess());
                 }
-                this.setState({ loading: false, loggedIn: true }, () => this.onFetchUserSuccess(user));
+                this.setState({ loading: this.state.loading || false, loggedIn: true }, () => this.onFetchUserSuccess(user));
             })
             .catch((e) => {
                 this.navigateLogin();
@@ -228,7 +262,7 @@ class App extends React.Component {
                         code: 'login-failed'
                     });
                 }
-                this.setState({ loading: false, loggedIn: false }, () => this.onFetchUserSuccess({}));
+                this.setState({ loading: this.state.loading || false, loggedIn: false }, () => this.onFetchUserSuccess({}));
             });
     }
 
@@ -287,16 +321,48 @@ class App extends React.Component {
             .filter(subject => subject.name !== 'LOGIN' && subject.name.toUpperCase() !== 'ROLES')
             .sort((subjA, subjB) => this.menuSorter(subjA.name.toUpperCase(), subjB.name.toUpperCase(), menuOrder))
             .map(subject => ({
-                title: subjectMap[subject.name.toUpperCase()].title,
+                id: subjectMap[subject.name.toUpperCase()].id,
+                defaultTitle: subjectMap[subject.name.toUpperCase()].defaultTitle,
                 link: subjectMap[subject.name.toUpperCase()].link,
             }));
         this.props.onFetchUserSuccess(user);
     };
 
-    refreshToken = (response) => {
-        const token = response.headers[LOGIN_SUCCESS_RESPONSE.AUTH];
+    refreshGlobalSettings = (response) => {
+        const languageMap = getLanguageMap();
+        const token = _.get(response, 'request.responseURL', '').indexOf('/login') !== -1
+            ? response.headers[LOGIN_SUCCESS_RESPONSE.AUTH]
+            : localStorage.getItem('jwtToken');
+
         this.setToken(token);
+
+        if (_.isEmpty(languageMap) && !isLanguageMapLoading) {
+            isLanguageMapLoading = true;
+            this.setState({ loading: true });
+            rest.get('api/v1/user/language/current')
+                .then(response => {
+                    const locale = LANGUAGE_SHORTHANDS[response.data];
+
+                    this.setLocale(locale);
+
+                    return rest.get(`${locale}.json`);
+                })
+                .then(response => {
+                    const map = response.data;
+                    setLanguageMap(map);
+
+                    isLanguageMapLoading = false;
+                    this.setState({ loading: false });
+                })
+                .catch((e) => {
+                    console.error(e);
+
+                    isLanguageMapLoading = false;
+                    this.setState({ loading: false });
+                });
+        }
     };
+
 
     saveState = () => {
         //todo: Сделать сохранение стейта, при протухании токена
@@ -304,7 +370,7 @@ class App extends React.Component {
 
     navigateLogin = () => {
         this.saveState();
-        this.onLogOut()
+        this.onLogOut();
     };
 
     getEmbdedWhiteList = () => [
