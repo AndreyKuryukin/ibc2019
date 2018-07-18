@@ -237,7 +237,7 @@ class Period extends React.PureComponent {
                 </Field>
                 <Field
                     id="end-date"
-                    labelText={ls('REPORTS_CONFIG_EDITOR_START_DATE_FIELD', 'Окончание')}
+                    labelText={ls('REPORTS_CONFIG_EDITOR_END_DATE_FIELD', 'Окончание')}
                     labelWidth="35%"
                     inputWidth="65%"
                     required
