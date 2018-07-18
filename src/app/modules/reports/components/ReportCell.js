@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classnames from "classnames";
 import Icon from '../../../components/Icon/Icon';
 import styles from './styles.scss';
-import classnames from "classnames";
+import rest from '../../../rest';
 
 const iconStyle = { cursor: 'default', flexShrink: 0 };
 
@@ -25,13 +26,12 @@ class ReportCell extends React.PureComponent {
     };
 
     getReportFile = (href) => {
-        const fakeLink = document.createElement('a');
-        const url = href;
-        fakeLink.setAttribute('download', url);
-        fakeLink.setAttribute('href', url);
-        const e = document.createEvent('MouseEvents');
-        e.initEvent('click', true, true);
-        fakeLink.dispatchEvent(e);
+        if (href) {
+            rest.get(href)
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
     };
 
     render() {
