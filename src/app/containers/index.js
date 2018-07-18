@@ -357,7 +357,6 @@ class App extends React.Component {
                 .catch((e) => {
                     console.error(e);
 
-                    isLanguageMapLoading = false;
                     this.setState({ loading: false });
                 });
         }
