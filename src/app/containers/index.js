@@ -330,13 +330,14 @@ class App extends React.Component {
 
     refreshGlobalSettings = (response) => {
         const languageMap = getLanguageMap();
-        const token = _.get(response, 'request.responseURL', '').indexOf('/login') !== -1
+        const isLoginRequest = _.get(response, 'request.responseURL', '').indexOf('/login') !== -1
+        const token = isLoginRequest
             ? response.headers[LOGIN_SUCCESS_RESPONSE.AUTH]
             : localStorage.getItem('jwtToken');
 
         this.setToken(token);
 
-        if (_.isEmpty(languageMap) && !isLanguageMapLoading) {
+        if (_.isEmpty(languageMap) && (isLoginRequest || !isLanguageMapLoading)) {
             isLanguageMapLoading = true;
             this.setState({ loading: true });
             rest.get('api/v1/user/language/current')
