@@ -19,6 +19,19 @@ const LANGUAGE_OPTIONS = [
     { title: 'English', value: LANGUAGES.ENGLISH }
 ];
 
+const PLACEHOLDERS = {
+    [LANGUAGES.RUSSIAN]: {
+        LOGIN: 'Логин',
+        PASSWORD: 'Пароль',
+        LOG_IN: 'ВХОД'
+    },
+    [LANGUAGES.ENGLISH]: {
+        LOGIN: 'Login',
+        PASSWORD: 'Password',
+        LOG_IN: 'LOG IN'
+    }
+};
+
 class Login extends React.PureComponent {
     static propTypes = {
         onSubmit: PropTypes.func,
@@ -79,7 +92,7 @@ class Login extends React.PureComponent {
                         >
                             <Input
                                 value={this.state.login}
-                                placeholder={ls('LOGIN_LOGIN', 'Логин')}
+                                placeholder={_.get(PLACEHOLDERS, `${this.state.language}.LOGIN`, 'Логин')}
                                 onChange={value => this.inputValue(value, 'login')}
                                 valid={_.isEmpty(errors.login)}
                             />
@@ -88,7 +101,7 @@ class Login extends React.PureComponent {
                                 type="password"
                                 id="password"
                                 value={this.state.password}
-                                placeholder={ls('LOGIN_PASSWD', 'Пароль')}
+                                placeholder={_.get(PLACEHOLDERS, `${this.state.language}.PASSWORD`, 'Пароль')}
                                 onChange={value => this.inputValue(value, 'password')}
                                 valid={_.isEmpty(errors.password)}
                             />
@@ -102,7 +115,7 @@ class Login extends React.PureComponent {
                                 type="submit"
                                 color="action"
                             >
-                                {ls('LOGIN_SUBMIT', 'ВХОД')}
+                                {_.get(PLACEHOLDERS, `${this.state.language}.LOG_IN`, 'ВХОД')}
                             </Button>
                         </Form>
                     </Preloader>
