@@ -25,9 +25,27 @@ class ReportCell extends React.PureComponent {
         onRebuildIconClick: () => null,
     };
 
+    fireDownloading = (fileUrl) => {
+        const fakeLink = document.createElement('a');
+        const e = document.createEvent('MouseEvents');
+
+        fakeLink.setAttribute('download', fileUrl);
+        fakeLink.setAttribute('href', fileUrl);
+
+        e.initEvent('click', true, true);
+        fakeLink.dispatchEvent(e);
+    };
+
     getReportFile = (href) => {
         if (href) {
-            rest.get(href)
+            rest.get(href, undefined, undefined, { responseType: 'blob' })
+                .then((response) => {
+                    const fileUrl = URL.createObjectURL(response.data);
+                    if (fileUrl) {
+                        this.fireDownloading(fileUrl);
+                    }
+                    URL.revokeObjectURL(fileUrl);
+                })
                 .catch((e) => {
                     console.error(e);
                 });
