@@ -19,6 +19,15 @@ const infoScheme = [
     'attributes',
 ];
 
+const DEFAULT_TEXTS = {
+    RAISE_TIME: 'Время возникновения',
+    POLICY_NAME: 'Название политики по каталогу',
+    DURATION: 'Длительность',
+    NOTIFICATION_TEXT: 'Текст сообщения',
+    NOTIFIED: 'Выполненные нотификации по открытию',
+    ATTRIBUTES: 'Все сохраняемые атрибуты аварии: (Значения макроподстановок)'
+};
+
 class AlarmsViewer extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -110,7 +119,7 @@ class AlarmsViewer extends React.PureComponent {
                         <div className={styles.alarmsViewerContent}>
                             {infoScheme.map(key => (
                                 <div key={key} className={styles.alarmsViewerRow}>
-                                    <div>{ls(`ALARMS_GROUP_POLICIES_ALARMS_VIEWER_${key.toUpperCase()}`)}</div>
+                                    <div>{ls(`ALARMS_GROUP_POLICIES_ALARMS_VIEWER_${key.toUpperCase()}`, DEFAULT_TEXTS[key.toUpperCase()])}</div>
                                     <div>{this.getAlarmContent(key)}</div>
                                 </div>
                             ))}
