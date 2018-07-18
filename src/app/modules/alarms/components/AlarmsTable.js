@@ -55,7 +55,7 @@ class AlarmsTable extends React.PureComponent {
             searchable: true,
             sortable: true,
         }, {
-            title: ls('ALARMS_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
+            title: ls('ALARMS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
             name: 'notification_status',
             sortable: true,
             width: 250,

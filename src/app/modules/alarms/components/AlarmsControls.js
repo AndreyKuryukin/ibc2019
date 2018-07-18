@@ -68,8 +68,8 @@ class AlarmsControls extends React.Component {
             { wpx: 220 },
             { wpx: 150 },
             { wpx: 150 },
-            { wpx: 150 },
-            { hidden: true },
+            { wpx: 200 },
+            { hidden: true }, // 'timestamp' field should be hidden because it`s used for sorting only
         ];
         var worksheet = XLSX.utils.json_to_sheet(this.props.displayedData);
         const range = XLSX.utils.decode_range(worksheet['!ref']);
