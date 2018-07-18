@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import ls from 'i18n';
 import ReportsComponent from '../components';
 import { fetchReportsSuccess, removeResult } from '../actions';
 import rest from '../../../rest';
@@ -31,7 +32,7 @@ class Reports extends React.PureComponent {
     }
 
     componentDidMount() {
-        this.context.navBar.setPageTitle('Отчёты');
+        this.context.navBar.setPageTitle(ls('PEPORTS_PAGE_TITLE', 'Отчёты'));
         this.fetchReports();
         this.fetchUsers();
     }

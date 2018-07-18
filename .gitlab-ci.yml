@@ -19,6 +19,8 @@ node-build:
   script:
   - apt-get update
   - apt-get install -y libpng-dev
+  - mkdir ./build
+  - chmod 777 ./build
   - npm install
   - npm run build
   - ls -la ./build
