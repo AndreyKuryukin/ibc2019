@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import Chart from './Chart';
 
+let tooltipTimer;
+
 class ConnectedChart extends React.Component {
     static propTypes = {
         id: PropTypes.string.isRequired,
@@ -33,6 +35,12 @@ class ConnectedChart extends React.Component {
 
     addMouseMoveListener = () => {
         this.chart.container.addEventListener('mousemove', this.mouseMoveHandler);
+
+        if (tooltipTimer) {
+            clearTimeout(tooltipTimer);
+        }
+
+        this.setTooltipVisibility('visible');
     };
 
     removeMouseMoveListener = (e) => {
@@ -52,9 +60,19 @@ class ConnectedChart extends React.Component {
             oppositeChart.tooltip.hide();
             oppositeChart.xAxis[0].hideCrosshair();
 
-            this.chart.chart.tooltip.hide();
+            tooltipTimer = setTimeout(() => { this.setTooltipVisibility('hidden'); }, this.props.options.tooltip.hideDelay || 500);
             this.chart.chart.xAxis[0].hideCrosshair();
         }
+    };
+
+    setTooltipVisibility = (visibility) => {
+        // There is a bug when you hover a point and then the legend or header, tooltip doesn't disappear even using tooltip.hide().
+        // So need to hide manually.
+        this.chart.container.querySelectorAll('.highcharts-tooltip').forEach((node) => {
+            if (node.style.visibility !== visibility) {
+                node.style.visibility = visibility;
+            }
+        });
     };
 
     render() {
