@@ -13,7 +13,7 @@
 
   "ALARMS_ID_COLUMN": "ID",
   "ALARMS_POLICY_NAME_COLUMN": "Имя политики",
-  "ALARMS_STATUS_COLUMN": "Статус отправки во внешнюю систему",
+  "ALARMS_NOTIFICATION_STATUS_COLUMN": "Статус отправки во внешнюю систему",
   "ALARMS_EXTERNAL_ID_COLUMN": "ID во внешней системе",
   "ALARMS_RAISE_TIME_COLUMN": "Время возникновения",
   "ALARMS_DURATION_COLUMN": "Длительность",

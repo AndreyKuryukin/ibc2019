@@ -120,7 +120,7 @@
     "DASHBOARD_CHART_KI_SERIES_DURATION": "Duration",
     "ALARMS_DURATION_COLUMN": "Duration",
     "ALARMS_POLICY_NAME_COLUMN": "Name of the policy",
-    "ALARMS_STATUS_COLUMN": "Status send to the external system",
+    "ALARMS_NOTIFICATION_STATUS_COLUMN": "Status send to the external system",
     "ALARMS_RAISE_TIME_COLUMN": "Raise time",
     "ALARMS_ID_COLUMN": "ID",
     "ALARMS_EXTERNAL_ID_COLUMN": "ID in external system",
