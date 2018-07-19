@@ -12,36 +12,50 @@ class ConnectedChart extends React.Component {
 
     chart = null;
 
-    componentDidMount() {
-        const getOppositeChart = () => Highcharts.charts.find(
+    mouseMoveHandler = (e) => {
+        const oppositeChart = Highcharts.charts.find(
             chart => chart !== undefined && chart.options.id === this.props.connectedTo
         );
 
-        this.chart.container.addEventListener('mousemove', (e) => {
-            const chart = getOppositeChart();
+        if (oppositeChart !== undefined) {
+            const event = oppositeChart.pointer.normalize(e);
+            const point = oppositeChart.series[0].searchPoint(event, true);
 
-            if (chart !== undefined) {
-                const event = chart.pointer.normalize(e);
-                const point = chart.series[0].searchPoint(event, true);
-
-                if (point) {
-                    point.onMouseOver();
-                    point.series.chart.xAxis[0].drawCrosshair(
-                        point.series.chart.pointer.normalize(event),
-                        point
-                    );
-                }
+            if (point) {
+                point.onMouseOver();
+                point.series.chart.xAxis[0].drawCrosshair(
+                    point.series.chart.pointer.normalize(event),
+                    point
+                );
             }
-        });
+        }
+    };
 
-        this.chart.container.addEventListener('mouseleave', () => {
-            const chart = getOppositeChart();
+    addMouseMoveListener = () => {
+        this.chart.container.addEventListener('mousemove', this.mouseMoveHandler);
+    };
 
-            if (chart !== undefined) {
-                chart.tooltip.hide();
+    removeMouseMoveListener = (e) => {
+        this.chart.container.removeEventListener('mousemove', this.mouseMoveHandler);
+
+        const oppositeChart = Highcharts.charts.find(
+            chart => chart !== undefined && chart.options.id === this.props.connectedTo
+        );
+
+        const event = oppositeChart.pointer.normalize(e);
+        const point = oppositeChart.series[0].searchPoint(event, true);
+
+        if (oppositeChart !== undefined) {
+            if (point) {
+                point.onMouseOut();
             }
-        });
-    }
+            oppositeChart.tooltip.hide();
+            oppositeChart.xAxis[0].hideCrosshair();
+
+            this.chart.chart.tooltip.hide();
+            this.chart.chart.xAxis[0].hideCrosshair();
+        }
+    };
 
     render() {
         return (
@@ -53,6 +67,15 @@ class ConnectedChart extends React.Component {
                     chart: {
                         ...this.props.options.chart,
                         marginLeft: 50,
+                    },
+                    plotOptions: {
+                        ...this.props.options.plotOptions,
+                        series: {
+                            events: {
+                                mouseOver: this.addMouseMoveListener,
+                                mouseOut: this.removeMouseMoveListener,
+                            },
+                        },
                     },
                 }}
             />
