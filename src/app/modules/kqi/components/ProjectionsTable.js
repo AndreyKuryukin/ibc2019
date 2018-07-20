@@ -41,6 +41,7 @@ export class ProjectionsTable extends React.PureComponent {
         resizable: true,
         searchable: true,
         sortable: true,
+        width: 300,
     }, {
         title: ls('KQI_CREATED_COLUMN_TITLE', 'Дата создания'),
         name: 'creation_date',

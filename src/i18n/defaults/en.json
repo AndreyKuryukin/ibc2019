@@ -155,6 +155,7 @@
     "ROLES_REMOVE_CONFIRM_TITLE": "Confirm the action:",
     "OK": "OK",
     "WITH_SW_GROUPING": "Group by sw version",
+    "KQI_CALCULATOR_TITLE": "KQI Projection",
     "KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL": "Type of technology PD",
     "PASSWORD_NOT_EQUAL": "Passwords do not match",
     "PERIOD_HOUR": "Hourly",
