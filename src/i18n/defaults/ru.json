@@ -6,11 +6,12 @@
   "KQI_STATUS_FAILED": "Ошибка",
   "KQI_STATUS_RUNNING": "В процессе",
   "KQI_STATUS_SUCCESS": "Готово",
+  "KQI_CALCULATOR_TITLE": "Проекция KQI",
 
   "REPORT_TYPE_PDF": "PDF",
   "REPORT_TYPE_XLS": "XLS",
 
-
+  "OK": "ОК",
   "ALARMS_ID_COLUMN": "ID",
   "ALARMS_POLICY_NAME_COLUMN": "Имя политики",
   "ALARMS_NOTIFICATION_STATUS_COLUMN": "Статус отправки во внешнюю систему",
