@@ -23,6 +23,7 @@
   align-items: center;
   justify-content: space-between;
   background: $white;
+  z-index: 1000;
   .alarmsFilterGroups{
     display: flex;
     //flex: 0 0 50%;
