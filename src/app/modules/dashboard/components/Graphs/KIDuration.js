@@ -30,7 +30,7 @@ class KIDuration extends React.Component {
             tooltip: {
                 ...Chart.DEFAULT_OPTIONS.tooltip,
                 shared: true,
-                pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b> сек<br/>',
+                pointFormat: '<span style="color:{point.color}">\u25CF</span> {series.name}: <b>{point.y}</b> ' + ls('MEASURE_UNITS_SECOND', 'сек.') + '<br/>',
             },
             legend: {
                 enabled: false,
