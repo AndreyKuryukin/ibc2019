@@ -136,13 +136,15 @@ class PolicyEditor extends React.PureComponent {
                         }
                     }
                 },
+                scope: [],
             },
             threshold: {
                 raise_value: 0,
                 cease_value: 0,
                 raise_duration: 0,
                 cease_duration: 0,
-            }
+            },
+            alarmsCount: -1,
         };
     }
 
@@ -320,15 +322,30 @@ class PolicyEditor extends React.PureComponent {
         return policy;
     };
 
-    onSubmit = (policyId, policyData) => {
+    validatePolicy = (policyData) => {
         const messages = {
             ceaseLessThanRise: ls('CEASE_LESS_THAN_RISE_ERROR_MESSAGE', 'Интервал агрегации окончания аварии должен быть больше, чем интервал агрегации начала аварии'),
         };
         const validators = {
             ceaseLessThanRise: () => !(_.get(policyData, 'threshold.cease_duration') && _.get(policyData, 'threshold.rise_duration'))
-                || _.get(policyData, 'threshold.cease_duration') >= _.get(policyData, 'threshold.rise_duration'),
+            || _.get(policyData, 'threshold.cease_duration') >= _.get(policyData, 'threshold.rise_duration'),
         };
-        const errors = validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData), messages, validators);
+
+        return validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData), messages, validators);
+    };
+
+    onClose = () => {
+        this.context.history.push('/policies');
+        this.props.onReset();
+    };
+
+    onSubmit = (policyId, policyData) => {
+        const errors = this.validatePolicy(policyData);
+
+        this.setState({
+            loading: true,
+            alarmsCount: -1,
+        });
 
         if (_.isEmpty(errors)) {
             const submit = policyId ? rest.put : rest.post;
@@ -336,16 +353,52 @@ class PolicyEditor extends React.PureComponent {
                 const callback = policyId ? this.props.onUpdatePolicySuccess : this.props.onCreatePolicySuccess;
                 const policy = response.data;
                 callback(policy);
+                this.setState({ loading: false });
                 this.context.history.push('/policies');
                 this.props.onReset();
             };
             const policy = _.set({ ...policyData }, 'condition', this.encodeConditions(policyData));
             policyId && (policy.id = policyId);
             submit('/api/v1/policy', policy)
-                .then(success);
+                .then(success)
+                .catch(e => {
+                    console.error(e);
+                    this.setState({ loading: false });
+                });
         } else {
             this.setState({ errors });
         }
+    };
+
+    onTest = (policyData) => {
+        const errors = this.validatePolicy(policyData);
+
+        if (_.isEmpty(errors)) {
+            this.setState({ loading: true });
+            const queryParams = {
+                stepCount: 5,
+                query: false,
+            };
+            const policy = _.set({ ...policyData }, 'condition', this.encodeConditions(policyData));
+            rest.post('/policy/v1/check', policy, { queryParams })
+                .then((response) => {
+                    this.setState({
+                        alarmsCount: response.data.resultCount,
+                        loading: false,
+                    });
+                })
+                .catch((e) => {
+                    console.error(e);
+
+                    this.setState({ loading: false });
+                });
+        } else {
+            this.setState({ errors });
+        }
+    };
+
+    clearAlarms = () => {
+        this.setState({ alarmsCount: -1 });
     };
 
     render() {
@@ -354,7 +407,10 @@ class PolicyEditor extends React.PureComponent {
         return (
             <PolicyEditorComponent
                 onSubmit={this.onSubmit}
-                onClose={this.props.onReset}
+                onTest={this.onTest}
+                onClose={this.onClose}
+                alarmsCount={this.state.alarmsCount}
+                clearAlarms={this.clearAlarms}
                 policy={this.state.policy}
                 errors={this.state.errors}
                 objectTypes={this.state.objectTypes}

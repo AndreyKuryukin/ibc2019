@@ -10,7 +10,9 @@ class DraggableWrapper extends React.PureComponent {
                 handle=".handle"
                 constrain={constrain(1)}
                 bound="all box"
-                zIndex={100}>
+                zIndex={100}
+                defaultPosition={this.props.defaultPosition}
+            >
                 {this.props.children}
             </Draggable>
         );

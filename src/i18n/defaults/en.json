@@ -433,5 +433,8 @@
     "DASHBOARD_BY_MRF_TITLE": " by MRD",
 
     "ALARMS_GETTING_ERROR_TITLE_FIELD": "Error during loadin alarms:",
-    "ALARMS_GETTING_ERROR_MESSAGE_FIELD": "Alarms data is not received"
+    "ALARMS_GETTING_ERROR_MESSAGE_FIELD": "Alarms data is not received",
+
+    "POLICIES_TEST": "Test",
+    "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?"
 }

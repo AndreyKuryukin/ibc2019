@@ -1,0 +1,27 @@
+@import '../../scss/vars';
+
+.confirmModal {
+  .modal-content {
+    border-radius: 0;
+  }
+  .confirmMessage {
+    color: $white;
+    padding: 8px;
+    display: flex;
+    &:before {
+      content: url(../../../resources/img/warning.png);
+      height: 15px;
+      width: 15px;
+      display: block;
+      margin-right: 8px
+    }
+  }
+  .buttonGroup {
+    display: flex;
+    justify-content: flex-end;
+    padding: 16px 8px 8px;
+    *:not(:last-child) {
+      margin-right: 8px;
+    }
+  }
+}
