@@ -66,28 +66,28 @@ class UsersTable extends React.PureComponent {
             name: 'checked',
             width: 28,
         }] : []), {
-            title: ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Логин'),
+            getTitle: () => ls('USERS_TABLE_LOGIN_COLUMN_TITLE', 'Логин'),
             name: 'login',
             resizable: true,
             searchable: true,
             sortable: true,
             width: 150,
         }, {
-            title: ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
+            getTitle: () => ls('USERS_TABLE_NAME_COLUMN_TITLE', 'Имя'),
             name: 'name',
             resizable: true,
             searchable: true,
             sortable: true,
             width: 150,
         }, {
-            title: ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
+            getTitle: () => ls('USERS_TABLE_EMAIL_COLUMN_TITLE', 'E-mail'),
             name: 'email',
             resizable: true,
             searchable: true,
             sortable: true,
             width: 150,
         }, {
-            title: ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
+            getTitle: () => ls('USERS_TABLE_CELL_PHONE_COLUMN_TITLE', 'Телефон'),
             name: 'phone',
             resizable: true,
             searchable: true,
@@ -96,38 +96,38 @@ class UsersTable extends React.PureComponent {
             minWidth: 100,
             maxWidth: 150,
         }, {
-            title: ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
+            getTitle: () => ls('USERS_TABLE_ROLES_COLUMN_TITLE', 'Роли'),
             name: 'roles',
             resizable: true,
             searchable: true,
             sortable: true,
         }, {
-            title: ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
+            getTitle: () => ls('USERS_TABLE_DIVISIONS_COLUMN_TITLE', 'Подразделение'),
             name: 'division',
             resizable: true,
             searchable: true,
             sortable: true,
         }, {
-            title: ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
+            getTitle: () => ls('USERS_TABLE_NOTIFICATION_GROUP_COLUMN_TITLE', 'Группы'),
             name: 'groups',
             resizable: true,
             searchable: true,
             sortable: true,
         }, {
-            title: ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
+            getTitle: () => ls('USERS_TABLE_CREATED_COLUMN_TITLE', 'Создан'),
             name: 'created',
             searchable: true,
             sortable: true,
             width: 130,
         }, {
-            title: ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
+            getTitle: () => ls('USERS_TABLE_LAST_CONNECTION_COLUMN_TITLE', 'Последний вход'),
             name: 'last_connection',
             resizable: true,
             searchable: true,
             sortable: true,
             width: 130,
         }, {
-            title: ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
+            getTitle: () => ls('USERS_TABLE_ACTIVE_COLUMN_TITLE', 'Активен'),
             name: 'disabled',
             searchable: true,
             sortable: true,
@@ -168,7 +168,7 @@ class UsersTable extends React.PureComponent {
             default:
                 return (
                     <DefaultCell
-                        content={column.title}
+                        content={column.getTitle ? column.getTitle() : ''}
                         sortDirection={sort.by === column.name ? sort.direction : null}
                     />
                 );
