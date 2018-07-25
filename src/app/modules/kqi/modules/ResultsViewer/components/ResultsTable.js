@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import ls from 'i18n';
+import ls, { createLocalizer } from 'i18n';
 import memoize from 'memoizejs';
 import TreeView from '../../../../../components/TreeView';
 import { DefaultCell } from '../../../../../components/Table/Cells';
@@ -134,15 +134,17 @@ class ResultsTable extends React.PureComponent {
     };
 
     static getColumns = memoize(() => [{
-        title: ls('KQI_NAME_COLUMN_TITLE', 'Имя'),
+        getTitle: createLocalizer('KQI_NAME_COLUMN_TITLE', 'Имя'),
         name: 'name',
         searchable: true,
         sortable: true,
+        resizable: true,
     }, {
-        title: ls('KQI_RESULT_COLUMN_TITLE', 'Результат'),
+        getTitle: createLocalizer('KQI_RESULT_COLUMN_TITLE', 'Результат'),
         name: 'result',
         searchable: true,
         sortable: true,
+        resizable: true,
     }
     // , {
     //     title: ls('KQI_WEIGHT_COLUMN_TITLE', 'Вносимый вес'),
@@ -154,7 +156,7 @@ class ResultsTable extends React.PureComponent {
 
     headerRowRender = (column, sort) => (
         <DefaultCell
-            content={column.title}
+            content={column.getTitle ? column.getTitle() : ''}
             sortDirection={sort.by === column.name ? sort.direction : null}
         />
     );
@@ -207,6 +209,7 @@ class ResultsTable extends React.PureComponent {
         const filteredData = searchText ? this.filter(data, columns, searchText) : data;
         return (
             <TreeView
+                id="results-viewer-table"
                 data={filteredData}
                 columns={columns}
                 headerRowRender={this.headerRowRender}

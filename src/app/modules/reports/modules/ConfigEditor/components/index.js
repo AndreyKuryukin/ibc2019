@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import ls from 'i18n';
+import ls, { createLocalizer } from 'i18n';
 import Input from '../../../../../components/Input';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
@@ -25,16 +25,16 @@ const panelStyle = { height: 250 };
 const panelBodyStyle = { padding: 0 };
 
 const REGULARITY_MAP = {
-    'WEEK': ls('WEEKLY', 'Еженедельный'),
-    'DAY': ls('DAILY', 'Ежедневный'),
-    'MONTH': ls('MONTHLY', 'Ежемесячный'),
+    'WEEK': createLocalizer('WEEKLY', 'Еженедельный'),
+    'DAY': createLocalizer('DAILY', 'Ежедневный'),
+    'MONTH': createLocalizer('MONTHLY', 'Ежемесячный'),
 };
 
 const NAME_PATTERNS = {
-    ['TEMPLATE_ID']: ls('REPORT_TEMPLATE_PATTERN', '<Имя_шаблона>'),
-    ['PERIOD.REGULARITY']: ls('REPORT_REGULARITY_PATTERN', '<Период_построения>'),
-    ['TYPE']: ls('REPORT_TYPE_PATTERN', '<Формат>'),
-    ['MRF']: ls('REPORT_MRF_PATTERN', '<МРФ>')
+    ['TEMPLATE_ID']: createLocalizer('REPORT_TEMPLATE_PATTERN', '<Имя_шаблона>'),
+    ['PERIOD.REGULARITY']: createLocalizer('REPORT_REGULARITY_PATTERN', '<Период_построения>'),
+    ['TYPE']: createLocalizer('REPORT_TYPE_PATTERN', '<Формат>'),
+    ['MRF']: createLocalizer('REPORT_MRF_PATTERN', '<МРФ>')
 };
 
 class ConfigEditor extends React.PureComponent {
@@ -109,22 +109,22 @@ class ConfigEditor extends React.PureComponent {
         if (template) {
             name.push(template.name);
         } else {
-            name.push(NAME_PATTERNS['template_id'.toUpperCase()]);
+            name.push(NAME_PATTERNS['template_id'.toUpperCase()]());
         }
 
         if (regularity) {
-            name.push(REGULARITY_MAP[regularity]);
+            REGULARITY_MAP[regularity] && name.push(REGULARITY_MAP[regularity]());
         } else {
-            name.push(NAME_PATTERNS['period.regularity'.toUpperCase()]);
+            name.push(NAME_PATTERNS['period.regularity'.toUpperCase()]());
         }
 
         const mrf = mrfId ? this.props.locations.find(location => location.id === mrfId) : null;
         if (mrf) {
             name.push(mrf.name);
         } else {
-            name.push(NAME_PATTERNS['mrf'.toUpperCase()]);
+            name.push(NAME_PATTERNS['mrf'.toUpperCase()]());
         }
-        name.push(`${type || NAME_PATTERNS['type'.toUpperCase()]}`);
+        name.push(`${type || NAME_PATTERNS['type'.toUpperCase()]()}`);
         return name.join('_');
     };
 

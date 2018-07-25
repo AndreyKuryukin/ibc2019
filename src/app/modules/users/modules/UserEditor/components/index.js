@@ -164,7 +164,7 @@ class UserEditor extends React.Component {
             <Modal
                 isOpen={active}
                 title={userId
-                    ? ls('USER_EDIT_USER', `Редактирование пользователя ${_.get(this.props.user, 'login', '')}`)
+                    ? ls('USER_EDIT_USER', 'Редактирование пользователя') + ' ' + _.get(this.props.user, 'login', '')
                     : ls('USER_ADD_USER', 'Создание пользователя')}
                 onClose={this.onClose}
                 onSubmit={this.onSubmit}

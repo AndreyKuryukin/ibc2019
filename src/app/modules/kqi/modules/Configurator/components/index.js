@@ -126,7 +126,7 @@ class Configurator extends React.PureComponent {
                 >
                     <ModalHeader
                         className="handle"
-                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI') + _.get(this.props.config, 'name', '')}</ModalHeader>
+                        toggle={this.onClose}>{ls('KQI_CONFIGURATOR_TITLE', 'Конфигурация KQI') + ' ' + _.get(this.props.config, 'name', '')}</ModalHeader>
                     <ModalBody>
                         <div className={styles.configuratorContent}>
                             <Field
@@ -174,7 +174,7 @@ class Configurator extends React.PureComponent {
                                     id="param"
                                     options={this.state.paramTypes.map(type => ({
                                         value: type.name,
-                                        title: type.display_name
+                                        title: ls(`KQI_CONFIGURATOR_${type.name.toUpperCase()}_PARAMETER_TITLE`, type.display_name)
                                     }))}
                                     onChange={this.onChangeParameterType}
                                     value={_.get(config, 'parameter_type.name')}
