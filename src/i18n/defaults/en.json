@@ -157,6 +157,7 @@
     "WITH_SW_GROUPING": "Group by sw version",
     "KQI_CALCULATOR_TITLE": "KQI Projection",
     "KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL": "Type of technology PD",
+    "KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE": "Type of last mile technology",
     "PASSWORD_NOT_EQUAL": "Passwords do not match",
     "PERIOD_HOUR": "Hourly",
     "KQI_RESULT_CLOSE_BTN_TITLE": "Close",
@@ -401,7 +402,7 @@
     "KQI_CONFIGURATOR_PARAMETER_LABEL": "Parameter",
     "KQI_CONFIGURATOR_OBJECT_TYPE_LABEL": "Object type",
     "KQI_CONFIGURATOR_OBJECT_TYPE_PLACEHOLDER": "Object type",
-    "KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL": "Type of technology PM",
+    "KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_FIELD_LABEL": "Type of technology LM",
 
     "DASHBOARD_FILTERS_SERVICE_TITLE": "Services",
     "DASHBOARD_FILTERS_FEATURE_TITLE": "Service",

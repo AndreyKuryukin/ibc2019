@@ -12,7 +12,7 @@ import ls from "i18n";
 import Field from "../../../../../components/Field/index";
 import Modal from "../../../../../components/Modal/index";
 
-const permissionsTableStyle = { height: 370 };
+const permissionsTableStyle = { height: 370, zIndex: 0 };
 const permissionsTableBodyStyle = { padding: 0 };
 
 class RoleEditor extends React.PureComponent {
