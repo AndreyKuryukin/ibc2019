@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import moment from 'moment';
@@ -17,6 +17,7 @@ import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 import Preloader from "../../../../../components/Preloader";
 import MacList from "./MacList";
 import KqiList from "./KqiList";
+import Scope from './Scope';
 
 const notAllowedAccidentStyle = { width: '60%' };
 const unitStyle = { margin: '3px 0px 3px 2px' };
@@ -44,6 +45,8 @@ class PolicyEditor extends React.PureComponent {
         objectTypes: PropTypes.array,
         metaData: PropTypes.object,
         policies: PropTypes.array,
+        mrfList: PropTypes.array,
+        rfList: PropTypes.array,
         active: PropTypes.bool,
         onSubmit: PropTypes.func,
         onClose: PropTypes.func,
@@ -63,6 +66,8 @@ class PolicyEditor extends React.PureComponent {
         objectTypes: [],
         metaData: {},
         policies: [],
+        mrfList: [],
+        rfList: [],
         active: false,
         onSubmit: () => null,
         onClose: () => null,
@@ -107,6 +112,7 @@ class PolicyEditor extends React.PureComponent {
         const policy = _.pick(prevPolicy, ['name', 'object_type']);
         policy['object_type'] = objectType;
         policy['condition'] = { condition: defaultCondition };
+        policy['scopes'] = {};
         if (objectType === 'KQI') {
             policy['threshold'] = {
                 cease_duration: 0,
@@ -125,6 +131,7 @@ class PolicyEditor extends React.PureComponent {
         const policy = _.pick(prevPolicy, ['name', 'object_type', 'policy_type', 'threshold']);
         policy['policy_type'] = policy_type;
         policy['condition'] = { condition: defaultCondition };
+        policy['scopes'] = {};
         this.setState({ metaData: {} }, () => {
             this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
@@ -136,18 +143,19 @@ class PolicyEditor extends React.PureComponent {
     setPolicyProperty = (key, value) => {
         const policyValues = _.set({}, key, value);
         let prevPolicy = _.cloneDeep(this.state.policy);
+
         if (key === 'object_type') {
             prevPolicy = this.handleObjectTypeChange(prevPolicy, value);
         }
+
         if (key === 'policy_type') {
             prevPolicy = this.handlePolicyTypeChange(prevPolicy, value);
         }
-        if (key === 'scope_type') {
-            prevPolicy.scope = [];
-        }
+
         if (key === 'allow_accident' && value === false) {
             _.set(policyValues, 'accident', '');
             _.set(policyValues, 'waiting_time', '');
+
         }
         const policy = _.mergeWith(
             prevPolicy,
@@ -156,7 +164,7 @@ class PolicyEditor extends React.PureComponent {
                 if (_.isArray(srcValue)) {
                     return srcValue;
                 } else if (_.isObject(srcValue)) {
-                    return _.merge(objValue, srcValue);
+                    return key !== 'scopes' ? _.merge(objValue, srcValue) : srcValue;
                 } else {
                     return srcValue;
                 }
@@ -170,6 +178,18 @@ class PolicyEditor extends React.PureComponent {
         });
     };
 
+    setPolicyScopes = (scope, value) => {
+        const scopes = { ...this.getPolicyProperty('scopes', {}) };
+
+        if (value) {
+            scopes[value] = [];
+        } else {
+            delete scopes[scope];
+        }
+
+        this.setPolicyProperty('scopes', scopes);
+    };
+
     onClose = () => {
         this.context.history.push('/policies');
         this.props.onClose();
@@ -180,10 +200,6 @@ class PolicyEditor extends React.PureComponent {
             // this.props.onSubmit(this.props.userId, this.state.user);
             this.props.onSubmit(this.props.policyId, this.state.policy);
         }
-    };
-
-    mapScopes = (scopes) => {
-        return scopes.map(scope => ({ value: scope, title: scope }))
     };
 
     mapPolicies = memoize((policies, policyId) =>
@@ -200,7 +216,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     render() {
-        const { active, policyId, scopes, policyTypes, policies, objectTypes } = this.props;
+        const { active, policyId, scopes, policyTypes, policies, objectTypes, kqiList, rfList, mrfList } = this.props;
         const { policy, errors, metaData } = this.state;
         const threshold = _.get(metaData, 'threshold', false);
         const duration = _.get(metaData, 'duration', false);
@@ -226,37 +242,14 @@ class PolicyEditor extends React.PureComponent {
                                         policy={policy}
                                         errors={errors}
                                     />
-                                    <Panel
-                                        title={ls('POLICIES_SCOPE_TITLE', 'Область применения')}
-                                    >
-                                        <Field
-                                            id="scope-type"
-                                            inputWidth="100%"
-                                            splitter=""
-                                        >
-                                            <Select
-                                                id="scope-type"
-                                                type="select"
-                                                placeholder={ls('POLICY_SCOPE_TYPE_PLACEHOLDER', 'Область применения')}
-                                                options={this.mapScopes(scopes)}
-                                                value={this.getPolicyProperty('scope_type')}
-                                                onChange={scope_type => this.setPolicyProperty('scope_type', scope_type)}
-                                            />
-                                        </Field>
-                                        {
-                                            this.getPolicyProperty('scope_type') === 'MAC' && <MacList
-                                                macs={this.getPolicyProperty('scope')}
-                                                onChange={macs => this.setPolicyProperty('scope', macs)}>
-                                            </MacList>
-                                        }
-                                        {
-                                            this.getPolicyProperty('scope_type') === 'KQI_PROJECTION' && <KqiList
-                                                selected={this.getPolicyProperty('scope')}
-                                                onChange={kqis => this.setPolicyProperty('scope', kqis)}
-                                                kqiList={this.props.kqiList}
-                                            />
-                                        }
-                                    </Panel>
+                                    <Scope
+                                        scopeList={scopes}
+                                        kqiList={kqiList}
+                                        mrfList={mrfList}
+                                        rfList={rfList}
+                                        scopes={this.getPolicyProperty('scopes')}
+                                        onChange={scopes => this.setPolicyProperty('scopes', scopes)}
+                                    />
                                     {(threshold || duration) && <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
