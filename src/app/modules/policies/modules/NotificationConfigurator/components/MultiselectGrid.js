@@ -23,10 +23,6 @@ class MultiselectGrid extends React.PureComponent {
         onChange: () => null,
     };
 
-    static getColumns = memoize(() => [{
-        name: 'name',
-    }]);
-
     static mapData = memoize(data => data.map(({ value, name }) => ({
         id: value,
         name,
@@ -65,7 +61,7 @@ class MultiselectGrid extends React.PureComponent {
             <Grid
                 id={id}
                 data={MultiselectGrid.mapData(values)}
-                columns={MultiselectGrid.getColumns()}
+                columns={[{ name: 'name' }]}
                 bodyRowRender={this.bodyRowRender}
                 isAllChecked={isAllChecked}
                 checkedPartially={checkedPartially}
