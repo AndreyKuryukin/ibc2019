@@ -9,7 +9,7 @@ import Grid from '../../../../../components/Grid';
 import styles from './styles.scss';
 import { CheckedCell } from '../../../../../components/Table/Cells';
 
-const panelStyle = { flex: '1 1 0' };
+const panelStyle = { flex: '1 1 0', zIndex: 0 };
 const allManufacturesFieldStyle = { width: 100 };
 const gridCellStyle = { marginLeft: 0 };
 
