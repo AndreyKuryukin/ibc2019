@@ -147,7 +147,7 @@ class RoleEditor extends React.PureComponent {
                 <Modal
                     isOpen={this.props.active}
                     className={styles.roleEditor}
-                    title={roleId ? ls('NEW_ROLE_EDIT', `Редактирование роли ${_.get(this.props.role, 'name', '')}`) : ls('NEW_ROLE_ADD', 'Создание новой роли')}
+                    title={roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') + ' ' + _.get(this.props.role, 'name', '') : ls('NEW_ROLE_ADD', 'Создание новой роли')}
                     submitTitle={roleId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}
                     cancelTitle={ls('CANCEL', 'Отмена')}
                     onClose={this.onClose}

@@ -4,6 +4,12 @@ import cn from 'classnames';
 import styles from './styles.scss';
 import ls from 'i18n';
 
+const DEFAULT_INDEXES_BY_TYPE = {
+    KAB: 'аб',
+    KGS: 'гс',
+    KSPD: 'спд',
+};
+
 class KQI extends React.PureComponent {
     static propTypes = {
         className: PropTypes.string,
@@ -20,10 +26,14 @@ class KQI extends React.PureComponent {
     };
 
     static parseType(type) {
-        if (type === 'KAB') return ['К', 'аб'];
-        if (type === 'KGS') return ['К', 'гс'];
-        if (type === 'KSPD') return ['К', 'спд'];
-        return [null, null];
+        switch(type) {
+            case 'KAB':
+            case 'KGS':
+            case 'KSPD':
+                return [ls('DASHBOARD_PARAMETER_LETTER', 'К'), ls(`DASHBOARD_${type}_TYPE_INDEX`, DEFAULT_INDEXES_BY_TYPE[type])];
+            default:
+                return [null, null];
+        }
     };
 
     render() {
