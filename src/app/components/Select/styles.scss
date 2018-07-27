@@ -38,8 +38,10 @@
   list-style: none;
   z-index: 10;
   padding-left: 0;
+  max-height: 200px;
+  overflow: auto;
   li {
-    flex-grow: 1;
+    flex: 1 0;
     padding: 0 8px;
     overflow: hidden;
     text-overflow: ellipsis;

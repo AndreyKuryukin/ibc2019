@@ -136,7 +136,7 @@ class PolicyEditor extends React.PureComponent {
                         }
                     }
                 },
-                scope: [],
+                scopes: {},
             },
             threshold: {
                 raise_value: 0,
@@ -144,6 +144,8 @@ class PolicyEditor extends React.PureComponent {
                 raise_duration: 0,
                 cease_duration: 0,
             },
+            mrfList: [],
+            rfList: [],
             alarmsCount: -1,
         };
     }
@@ -168,10 +170,18 @@ class PolicyEditor extends React.PureComponent {
 
     mapKqi = (kqiList = []) => kqiList.map(kqi => ({ id: String(kqi.id), name: kqi.name }));
 
+    mapLocations = (locations = []) => locations.reduce((result, { id, name, rf }) => ({
+        mrfList: [...result.mrfList, { id, name }],
+        rfList: [...result.rfList, ...rf],
+    }), { mrfList: [], rfList: [] });
+
     fetchBasicData = () => {
-        const requests = [];
-        requests.push(rest.get('/api/v1/kqi/projection/'));
-        requests.push(rest.get('/api/v1/policy/objectTypes'));
+        const requests = [
+            rest.get('/api/v1/kqi/projection/'),
+            rest.get('/api/v1/policy/objectTypes'),
+            rest.get('/api/v1/common/location'),
+        ];
+
         if (this.props.policyId) {
             const urlParams = {
                 policyId: this.props.policyId,
@@ -180,14 +190,24 @@ class PolicyEditor extends React.PureComponent {
         }
         this.setState({ loading: true });
         Promise.all(requests)
-            .then(([kqiResp, objectTypesResp, policyResp]) => {
+            .then(([kqiResp, objectTypesResp, locationResp, policyResp]) => {
                 const objectTypes = objectTypesResp.data;
                 const kqiList = kqiResp.data;
                 const policy = _.get(policyResp, 'data', false);
-                const update = { objectTypes, kqiList: this.mapKqi(kqiList), loading: false };
+                const { mrfList, rfList } = this.mapLocations(locationResp.data);
+
+                const update = {
+                    objectTypes,
+                    kqiList: this.mapKqi(kqiList),
+                    mrfList,
+                    rfList,
+                    loading: false,
+                };
+
                 if (policy) {
                     update.policy = policy;
                 }
+
                 this.setState(update, () => {
                     if (policyResp) {
                         this.props.onFetchPolicySuccess(policy);
@@ -316,7 +336,7 @@ class PolicyEditor extends React.PureComponent {
                 _.set(condition, 'conjunction.conjunctionList', conjunctionList);
                 _.set(policy, 'condition.condition', condition);
             } catch (e) {
-                console.log(e)
+                console.error(e);
             }
         }
         return policy;
@@ -359,6 +379,7 @@ class PolicyEditor extends React.PureComponent {
             };
             const policy = _.set({ ...policyData }, 'condition', this.encodeConditions(policyData));
             policyId && (policy.id = policyId);
+
             submit('/api/v1/policy', policy)
                 .then(success)
                 .catch(e => {
@@ -423,6 +444,8 @@ class PolicyEditor extends React.PureComponent {
                 updatePolicy={this.updatePolicy}
                 scopes={this.state.scopeTypes}
                 kqiList={this.state.kqiList}
+                mrfList={this.state.mrfList}
+                rfList={this.state.rfList}
                 {...props}
             />
         );
