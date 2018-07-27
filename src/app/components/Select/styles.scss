@@ -3,6 +3,7 @@
 .selectWrapper {
   position: relative;
   select {
+    line-height: 14px;
     pointer-events: none;
     -moz-appearance: none;
     -webkit-appearance:none;
@@ -22,6 +23,7 @@
 
 .errorMark {
   right: 15px !important;
+  border: none !important;
 }
 .optionsList {
   position: absolute;

@@ -60,7 +60,7 @@ class KIDuration extends React.Component {
     getSeries() {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
-            data: this.props.data.map(city => city.duration),
+            data: this.props.data.map(city => Math.floor(city.duration/1000)),
         }];
     }
     getCategories() {

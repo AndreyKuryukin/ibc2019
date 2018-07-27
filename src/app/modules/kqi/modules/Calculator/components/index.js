@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
-import ls from 'i18n';
+import ls, { createLocalizer } from 'i18n';
 import _ from 'lodash';
 import { createSelector } from 'reselect';
 import moment from 'moment';
@@ -41,38 +41,38 @@ const NAME_PATTERN_SEQUENCE = [
 ];
 
 const period = {
-    HOUR: ls('PERIOD_HOUR', 'Ежечасный'),
-    DAY: ls('PERIOD_DAY', 'Ежедневный'),
-    WEEK: ls('PERIOD_WEEK', 'Еженедельный'),
-    OTHER: ls('PERIOD_OTHER', ''),
+    HOUR: createLocalizer('PERIOD_HOUR', 'Ежечасный'),
+    DAY: createLocalizer('PERIOD_DAY', 'Ежедневный'),
+    WEEK: createLocalizer('PERIOD_WEEK', 'Еженедельный'),
+    OTHER: createLocalizer('PERIOD_OTHER', ''),
 };
 
 const last_mile_technology_grouping = {
-    true: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПМ'),
+    true: createLocalizer('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПМ'),
 };
 
 const last_inch_technology_grouping = {
-    true: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПД'),
+    true: createLocalizer('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПД'),
 };
 
 const manufacturer_grouping = {
-    true: ls('WITH_MANUFACTURER_GROUPING', 'С группировкой по производителю оборудования'),
+    true: createLocalizer('WITH_MANUFACTURER_GROUPING', 'С группировкой по производителю оборудования'),
 };
 
 const equipment_type_grouping = {
-    SELF: ls('WITH_TECHNOLOGY_GROUPING', 'С группировкой по типу оборудования'),
-    HW: ls('WITH_HW_GROUPING', 'С группировкой по hw версии'),
-    SW: ls('WITH_SW_GROUPING', 'С группировкой по sw версии'),
+    SELF: createLocalizer('WITH_TECHNOLOGY_GROUPING', 'С группировкой по типу оборудования'),
+    HW: createLocalizer('WITH_HW_GROUPING', 'С группировкой по hw версии'),
+    SW: createLocalizer('WITH_SW_GROUPING', 'С группировкой по sw версии'),
 };
 
 const abonent_group_grouping = {
-    SELF: ls('WITH_ABONENT_GROUPS_GROUPING', 'С группировкой по группам абонентов'),
-    ABONENT: ls('WITH_ABONENT_GROUPING', 'Формировать список абонентов'),
+    SELF: createLocalizer('WITH_ABONENT_GROUPS_GROUPING', 'С группировкой по группам абонентов'),
+    ABONENT: createLocalizer('WITH_ABONENT_GROUPING', 'Формировать список абонентов'),
 };
 
 const location_grouping = {
-    RF: ls('WITH_RF_GROUPING', 'С группировкой по РФ'),
-    MRF: ls('WITH_MRF_GROUPING', 'С группировкой по МРФ'),
+    RF: createLocalizer('WITH_RF_GROUPING', 'С группировкой по РФ'),
+    MRF: createLocalizer('WITH_MRF_GROUPING', 'С группировкой по МРФ'),
 };
 
 
@@ -110,7 +110,7 @@ class Calculator extends React.PureComponent {
         const end_date = moment(start_date).endOf('day').toDate();
         this.state = {
             config: {
-                name: period.DAY,
+                name: period.DAY(),
                 period: {
                     start_date,
                     end_date,
@@ -187,10 +187,12 @@ class Calculator extends React.PureComponent {
                     const entity = _.find(map, item => String(item.id) === String(id));
                     itemName = entity && entity.name;
                 } else if (_.isObject(map)) {
-                    itemName = map[String(id).toUpperCase()];
-                    itemName = itemName === undefined ? map[String(id).toLowerCase()] : itemName;
+                    const mapValue = map[String(id).toUpperCase()] || map[String(id).toLowerCase()];
+                    itemName = !_.isFunction(mapValue)
+                        ? (_.isString(mapValue) && mapValue)
+                        : mapValue();
                 }
-                return itemName !== undefined ? itemName : id;
+                return _.isString(itemName) ? itemName : id;
             };
             if (!_.isEmpty(value)) {
                 if (_.isArray(value)) {

@@ -36,48 +36,47 @@ export class ProjectionsTable extends React.PureComponent {
     };
 
     static getColumns = memoize(hasEditAccess => [{
-        title: ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции'),
+        getTitle: () => ls('KQI_PROJECTIONS_COLUMN_TITLE', 'Проекции'),
         name: 'name',
         resizable: true,
         searchable: true,
         sortable: true,
         width: 300,
     }, {
-        title: ls('KQI_CREATED_COLUMN_TITLE', 'Дата создания'),
+        getTitle: () => ls('KQI_CREATED_COLUMN_TITLE', 'Дата создания'),
         name: 'creation_date',
         resizable: true,
         searchable: true,
         sortable: true,
     }, {
-        title: ls('KQI_AUTHOR_COLUMN_TITLE', 'Автор'),
+        getTitle: () => ls('KQI_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',
         resizable: true,
         searchable: true,
         sortable: true,
     }, {
-        title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество'),
+        getTitle: () => ls('KQI_COUNT_COLUMN_TITLE', 'Количество'),
         name: 'count',
         searchable: true,
         sortable: true,
         width: 80
     }, {
-        title: ls('KQI_LAST_DATE_COLUMN_TITLE', 'Дата последнего вычисления'),
+        getTitle: () => ls('KQI_LAST_DATE_COLUMN_TITLE', 'Дата последнего вычисления'),
         name: 'last_calc_date',
         resizable: true,
         searchable: true,
         sortable: true,
         width: 200,
     }, {
-        title: ls('KQI_STATUS_COLUMN_TITLE', 'Статус последнего вычисления'),
+        getTitle: () => ls('KQI_STATUS_COLUMN_TITLE', 'Статус последнего вычисления'),
         name: 'status',
         resizable: true,
         width: 200
     }, {
-        title: ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
+        getTitle: () => ls('KQI_AUTOCOUNT_COLUMN_TITLE', 'Автовычисление'),
         name: 'auto',
         width: 110,
     }, ...(hasEditAccess ? [{
-        title: '',
         name: 'edit',
         width: 40,
     }] : [])]);
@@ -103,7 +102,7 @@ export class ProjectionsTable extends React.PureComponent {
 
     headerRowRender = (column, sort) => (
         <DefaultCell
-            content={column.title}
+            content={column.getTitle ? column.getTitle() : ''}
             sortDirection={sort.by === column.name ? sort.direction : null}
         />
     );

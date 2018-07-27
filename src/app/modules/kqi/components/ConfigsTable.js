@@ -33,7 +33,7 @@ class ConfigsTable extends React.PureComponent {
     };
 
     static getColumns = memoize(hasEditAccess => [{
-        title: ls('KQI_NAME_COLUMN_TITLE', 'Название'),
+        getTitle: () => ls('KQI_NAME_COLUMN_TITLE', 'Название'),
         name: 'name',
         resizable: true,
         searchable: true,
@@ -42,21 +42,20 @@ class ConfigsTable extends React.PureComponent {
             type: 'text',
         },
     }, {
-        title: ls('KQI_COUNT_COLUMN_TITLE', 'Количество проекций'),
+        title: () => ls('KQI_COUNT_COLUMN_TITLE', 'Количество проекций'),
         name: 'projection_count',
         resizable: true,
         searchable: true,
         sortable: true,
         width: 150,
     }, {
-        title: '',
         name: 'view',
         width: 40,
     }]);
 
     headerRowRender = (column, sort) => (
         <DefaultCell
-            content={column.title}
+            content={column.getTitle ? column.getTitle() : ''}
             sortDirection={sort.by === column.name ? sort.direction : null}
         />
     );

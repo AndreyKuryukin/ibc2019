@@ -15,6 +15,7 @@ import Condition from './Condition';
 import styles from './styles.scss';
 import DraggableWrapper from "../../../../../components/DraggableWrapper/index";
 import Preloader from "../../../../../components/Preloader";
+import ConfirmDialog from '../../../../../components/ConfirmDialog';
 import MacList from "./MacList";
 import KqiList from "./KqiList";
 import Scope from './Scope';
@@ -48,13 +49,16 @@ class PolicyEditor extends React.PureComponent {
         mrfList: PropTypes.array,
         rfList: PropTypes.array,
         active: PropTypes.bool,
+        alarmsCount: PropTypes.number,
         onSubmit: PropTypes.func,
+        onTest: PropTypes.func,
         onClose: PropTypes.func,
         onMount: PropTypes.func,
         updatePolicy: PropTypes.func,
         fetchObjectTypes: PropTypes.func,
         fetchPolicyTypes: PropTypes.func,
         fetchMetaData: PropTypes.func,
+        clearAlarms: PropTypes.func,
     };
 
     static defaultProps = {
@@ -69,13 +73,16 @@ class PolicyEditor extends React.PureComponent {
         mrfList: [],
         rfList: [],
         active: false,
+        alarmsCount: 0,
         onSubmit: () => null,
+        onTest: () => null,
         onClose: () => null,
         onMount: () => null,
         updatePolicy: () => null,
         fetchObjectTypes: () => null,
         fetchPolicyTypes: () => null,
-        fetchMetaData: () => null
+        fetchMetaData: () => null,
+        clearAlarms: () => null,
     };
 
     constructor(props) {
@@ -155,7 +162,6 @@ class PolicyEditor extends React.PureComponent {
         if (key === 'allow_accident' && value === false) {
             _.set(policyValues, 'accident', '');
             _.set(policyValues, 'waiting_time', '');
-
         }
         const policy = _.mergeWith(
             prevPolicy,
@@ -178,27 +184,21 @@ class PolicyEditor extends React.PureComponent {
         });
     };
 
-    setPolicyScopes = (scope, value) => {
-        const scopes = { ...this.getPolicyProperty('scopes', {}) };
-
-        if (value) {
-            scopes[value] = [];
-        } else {
-            delete scopes[scope];
-        }
-
-        this.setPolicyProperty('scopes', scopes);
-    };
-
-    onClose = () => {
-        this.context.history.push('/policies');
-        this.props.onClose();
-    };
-
     onSubmit = () => {
         if (typeof this.props.onSubmit === 'function') {
             // this.props.onSubmit(this.props.userId, this.state.user);
             this.props.onSubmit(this.props.policyId, this.state.policy);
+        }
+    };
+
+    onTest = () => {
+        if (typeof this.props.onTest === 'function') {
+            const policy = this.props.policyId ? {
+                id: this.props.policyId,
+                ...this.state.policy,
+            } : this.state.policy;
+
+            this.props.onTest(policy);
         }
     };
 
@@ -221,15 +221,16 @@ class PolicyEditor extends React.PureComponent {
         const threshold = _.get(metaData, 'threshold', false);
         const duration = _.get(metaData, 'duration', false);
         const modalTitle = policyId
-            ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
+            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику') + ' ' +  _.get(this.props.policy, 'name', '')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
-            <DraggableWrapper>
+            <Fragment>
+                <DraggableWrapper>
                 <Modal
                     isOpen={active}
                     className={styles.policyEditor}
                 >
-                    <ModalHeader toggle={this.onClose} className="handle">{modalTitle}</ModalHeader>
+                    <ModalHeader toggle={this.props.onClose} className="handle">{modalTitle}</ModalHeader>
                     <ModalBody>
                         <Preloader active={this.props.loading}>
                             <div className={styles.policyEditorContent}>
@@ -244,12 +245,13 @@ class PolicyEditor extends React.PureComponent {
                                     />
                                     <Scope
                                         scopeList={scopes}
-                                        kqiList={kqiList}
+                                    kqiList={kqiList}
                                         mrfList={mrfList}
-                                        rfList={rfList}
-                                        scopes={this.getPolicyProperty('scopes')}
-                                        onChange={scopes => this.setPolicyProperty('scopes', scopes)}
-                                    />
+                                            rfList={rfList}
+                                            scopes={this.getPolicyProperty('scopes')}
+                                                onChange={scopes => this.setPolicyProperty('scopes', scopes)}
+                                            />
+
                                     {(threshold || duration) && <Panel
                                         title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
                                     >
@@ -324,94 +326,109 @@ class PolicyEditor extends React.PureComponent {
                                     className={styles.accidentsPanel}
                                 >
 
-                                    {_.get(this.props, 'metaData.channel_suppression', false) &&
-                                    <Field
-                                        id="exclude-tv"
-                                        labelText={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
-                                        labelWidth="97%"
-                                        inputWidth="3%"
-                                        labelAlign="right"
-                                        splitter=""
-                                        title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
-                                    >
-                                        <Checkbox
-                                            id="exclude-tv"
-                                            checked={this.getPolicyProperty('channel_suppression')}
-                                            onChange={value => this.setPolicyProperty('channel_suppression', value)}
-                                        />
-                                    </Field>}
-                                    {
-                                        _.get(this.props, 'metaData.hierarchy_suppression', false) &&
+                                        {_.get(this.props, 'metaData.channel_suppression', false) &&
                                         <Field
-                                            id="allow-accident"
-                                            labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}`}
+                                            id="exclude-tv"
+                                            labelText={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
                                             labelWidth="97%"
                                             inputWidth="3%"
                                             labelAlign="right"
                                             splitter=""
-                                            title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
+                                            title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
                                         >
                                             <Checkbox
+                                                id="exclude-tv"
+                                                checked={this.getPolicyProperty('channel_suppression')}
+                                                onChange={value => this.setPolicyProperty('channel_suppression', value)}
+                                            />
+                                        </Field>}
+                                        {
+                                            _.get(this.props, 'metaData.hierarchy_suppression', false) &&
+                                            <Field
                                                 id="allow-accident"
-                                                checked={this.getPolicyProperty('allow_accident')}
-                                                onChange={value => this.setPolicyProperty('allow_accident', value)}
-                                            />
-                                        </Field>}
-                                    {
-                                        _.get(this.props, 'metaData.hierarchy_suppression', false) &&
-                                        <Field
-                                            id="not-allowed-accident"
-                                            inputWidth="100%"
-                                            splitter=""
-                                            style={notAllowedAccidentStyle}
-                                        >
-                                            <Select
-                                                id="not-allowed-accident"
-                                                type="select"
-                                                placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
-                                                options={this.mapPolicies(policies, policyId)}
-                                                value={this.getPolicyProperty('accident')}
-                                                onChange={value => this.setPolicyProperty('accident', value)}
-                                                disabled={!this.getPolicyProperty('allow_accident')}
-                                            />
-                                        </Field>}
-                                    {
-                                        _.get(this.props, 'metaData.hierarchy_suppression', false) &&
-                                        <Field
-                                            id="waiting-time"
-                                            labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
-                                            labelWidth="81%"
-                                            inputWidth="85px"
-                                            style={notAllowedAccidentStyle}
-                                        >
-                                            <div style={{ display: 'flex' }}>
-                                                <Input
-                                                    id="waiting-time"
-                                                    type="number"
-                                                    name="waiting-time"
-                                                    placeholder="0"
-                                                    value={this.getPolicyProperty('waiting_time')}
-                                                    onChange={value => this.setPolicyProperty('waiting_time', value)}
-                                                    disabled={!this.getPolicyProperty('allow_accident')}
-                                                    maxLength={6}
+                                                labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}`}
+                                                labelWidth="97%"
+                                                inputWidth="3%"
+                                                labelAlign="right"
+                                                splitter=""
+                                                title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
+                                            >
+                                                <Checkbox
+                                                    id="allow-accident"
+                                                    checked={this.getPolicyProperty('allow_accident')}
+                                                    onChange={value => this.setPolicyProperty('allow_accident', value)}
                                                 />
-                                                <span
-                                                    style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
-                                            </div>
-                                        </Field>
+                                            </Field>}
+                                        {
+                                            _.get(this.props, 'metaData.hierarchy_suppression', false) &&
+                                            <Field
+                                                id="not-allowed-accident"
+                                                inputWidth="100%"
+                                                splitter=""
+                                                style={notAllowedAccidentStyle}
+                                            >
+                                                <Select
+                                                    id="not-allowed-accident"
+                                                    type="select"
+                                                    placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
+                                                    options={this.mapPolicies(policies, policyId)}
+                                                    value={this.getPolicyProperty('accident')}
+                                                    onChange={value => this.setPolicyProperty('accident', value)}
+                                                    disabled={!this.getPolicyProperty('allow_accident')}
+                                                />
+                                            </Field>}
+                                        {
+                                            _.get(this.props, 'metaData.hierarchy_suppression', false) &&
+                                            <Field
+                                                id="waiting-time"
+                                                labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
+                                                labelWidth="81%"
+                                                inputWidth="85px"
+                                                style={notAllowedAccidentStyle}
+                                            >
+                                                <div style={{ display: 'flex' }}>
+                                                    <Input
+                                                        id="waiting-time"
+                                                        type="number"
+                                                        name="waiting-time"
+                                                        placeholder="0"
+                                                        value={this.getPolicyProperty('waiting_time')}
+                                                        onChange={value => this.setPolicyProperty('waiting_time', value)}
+                                                        disabled={!this.getPolicyProperty('allow_accident')}
+                                                        maxLength={6}
+                                                    />
+                                                    <span
+                                                        style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                                </div>
+                                            </Field>
+                                        }
+                                    </Panel>
                                     }
-                                </Panel>
-                                }
-                            </div>
-                        </Preloader>
-                    </ModalBody>
-                    <ModalFooter>
-                        <Button outline color="action"
-                                onClick={this.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                        <Button color="action" onClick={this.onSubmit}>{ls('POLICIES_SUBMIT', 'Сохранить')}</Button>
-                    </ModalFooter>
-                </Modal>
-            </DraggableWrapper>
+                                </div>
+                            </Preloader>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button outline color="action"
+                                    onClick={this.props.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
+                            <Button color="action" onClick={this.onTest}>{ls('POLICIES_TEST', 'Тестирование')}</Button>
+                        </ModalFooter>
+                    </Modal>
+                </DraggableWrapper>
+                {this.props.alarmsCount !== -1 && (
+                    <ConfirmDialog
+                        active={this.props.alarmsCount !== -1}
+                        defaultY={200}
+                        className={styles.testPolicyConfirm}
+                        message={ls(
+                            'POLICIES_TEST_CONFIRMATION_TEXT',
+                            'При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?'
+                        ).replace('{count}', this.props.alarmsCount)}
+                        okButtonTitle={ls('CONTINUE', 'Продолжить')}
+                        cancelButtonAction={this.props.clearAlarms}
+                        okButtonAction={this.onSubmit}
+                    />
+                )}
+            </Fragment>
         );
     }
 }

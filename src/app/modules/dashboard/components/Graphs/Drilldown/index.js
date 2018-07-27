@@ -90,13 +90,13 @@ class Drilldown extends React.Component {
                 className={styles.drilldownChart}
                 columns={[
                     {
-                        title: ls('DASHBOARD_CHART_DRILLDOWN_COLUMN_NAME_TITLE', 'Показатель'),
+                        getTitle: () => ls('DASHBOARD_CHART_DRILLDOWN_COLUMN_NAME_TITLE', 'Показатель'),
                         name: 'name',
                     }, {
-                        title: ls('DASHBOARD_ITV', 'ИТВ'),
+                        getTitle: () => ls('DASHBOARD_ITV', 'ИТВ'),
                         name: 'itv1',
                     }, {
-                        title: ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
+                        getTitle: () => ls('DASHBOARD_ITV2_0', 'ИТВ 2.0'),
                         name: 'itv2',
                     }
                 ]}

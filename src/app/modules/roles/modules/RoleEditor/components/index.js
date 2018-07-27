@@ -12,7 +12,7 @@ import ls from "i18n";
 import Field from "../../../../../components/Field/index";
 import Modal from "../../../../../components/Modal/index";
 
-const permissionsTableStyle = { height: 370 };
+const permissionsTableStyle = { height: 370, zIndex: 0 };
 const permissionsTableBodyStyle = { padding: 0 };
 
 class RoleEditor extends React.PureComponent {
@@ -147,7 +147,7 @@ class RoleEditor extends React.PureComponent {
                 <Modal
                     isOpen={this.props.active}
                     className={styles.roleEditor}
-                    title={roleId ? ls('NEW_ROLE_EDIT', `Редактирование роли ${_.get(this.props.role, 'name', '')}`) : ls('NEW_ROLE_ADD', 'Создание новой роли')}
+                    title={roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') + ' ' + _.get(this.props.role, 'name', '') : ls('NEW_ROLE_ADD', 'Создание новой роли')}
                     submitTitle={roleId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}
                     cancelTitle={ls('CANCEL', 'Отмена')}
                     onClose={this.onClose}
