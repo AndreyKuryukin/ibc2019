@@ -226,184 +226,184 @@ class PolicyEditor extends React.PureComponent {
         return (
             <Fragment>
                 <DraggableWrapper>
-                <Modal
-                    isOpen={active}
-                    className={styles.policyEditor}
-                >
-                    <ModalHeader toggle={this.props.onClose} className="handle">{modalTitle}</ModalHeader>
-                    <ModalBody>
-                        <Preloader active={this.props.loading}>
-                            <div className={styles.policyEditorContent}>
-                                <div className={styles.policyEditorColumn}>
-                                    <Configuration
-                                        setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
-                                        policyTypes={policyTypes}
-                                        objectTypes={objectTypes}
-                                        metaData={metaData}
-                                        policy={policy}
-                                        errors={errors}
-                                    />
-                                    <Scope
-                                        scopeList={scopes}
-                                    kqiList={kqiList}
-                                        mrfList={mrfList}
+                    <Modal
+                        isOpen={active}
+                        className={styles.policyEditor}
+                    >
+                        <ModalHeader toggle={this.props.onClose} className="handle">{modalTitle}</ModalHeader>
+                        <ModalBody>
+                            <Preloader active={this.props.loading}>
+                                <div className={styles.policyEditorContent}>
+                                    <div className={styles.policyEditorColumn}>
+                                        <Configuration
+                                            setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
+                                            policyTypes={policyTypes}
+                                            objectTypes={objectTypes}
+                                            metaData={metaData}
+                                            policy={policy}
+                                            errors={errors}
+                                        />
+                                        <Scope
+                                            scopeList={scopes}
+                                            kqiList={kqiList}
+                                            mrfList={mrfList}
                                             rfList={rfList}
                                             scopes={this.getPolicyProperty('scopes')}
-                                                onChange={scopes => this.setPolicyProperty('scopes', scopes)}
-                                            />
-
-                                    {(threshold || duration) && <Panel
-                                        title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
-                                    >
-                                        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
-                                            <div style={{ width: '55%' }}>
+                                            onChange={scopes => this.setPolicyProperty('scopes', scopes)}
+                                        />
+                                        {(threshold || duration) && (
+                                            <Panel
+                                                title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
+                                            >
+                                                <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                                    <div style={{ width: '55%' }}>
+                                                        <Field
+                                                            id="cease_duration"
+                                                            labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
+                                                            labelWidth="60%"
+                                                            inputWidth="85px"
+                                                            required
+                                                        >
+                                                            <div style={{ display: 'flex' }}>
+                                                                <Input
+                                                                    id="cease_duration"
+                                                                    type="number"
+                                                                    name="cease_duration"
+                                                                    placeholder="0"
+                                                                    valid={_.isEmpty(_.get(errors, 'threshold.cease_duration'))}
+                                                                    value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
+                                                                    onChange={value => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(value))}
+                                                                    maxLength={6}
+                                                                    errorMessage={_.get(errors, 'threshold.cease_duration.title')}
+                                                                />
+                                                                <span
+                                                                    style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
+                                                            </div>
+                                                        </Field>
+                                                    </div>
+                                                    <div style={{ width: '45%' }}>
+                                                        {threshold && <Field
+                                                            id="cease_value"
+                                                            labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}`}
+                                                            labelWidth="35%"
+                                                            inputWidth="85px"
+                                                            style={thresholdFieldStyle}
+                                                            required
+                                                        >
+                                                            <div style={{ display: 'flex' }}>
+                                                                <Input
+                                                                    id="cease_value"
+                                                                    type="number"
+                                                                    name="cease_value"
+                                                                    placeholder="0"
+                                                                    valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
+                                                                    value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
+                                                                    onChange={value => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(value))}
+                                                                    maxLength={6}
+                                                                />
+                                                                <span
+                                                                    style={unitStyle}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
+                                                            </div>
+                                                        </Field>}
+                                                    </div>
+                                                </div>
+                                            </Panel>
+                                        )}
+                                    </div>
+                                    <div className={styles.policyEditorColumn}>
+                                        <Condition
+                                            metaData={metaData}
+                                            condition={this.getPolicyProperty('condition')}
+                                            parameters={_.get(this.state, 'metaData.parameters')}
+                                            onChange={condition => this.setPolicyProperty('condition', condition)}
+                                            errors={errors && _.get(errors, 'condition.condition')}
+                                        />
+                                    </div>
+                                    {!_.isEmpty(this.state.metaData) &&
+                                    (_.get(this.props, 'metaData.channel_suppression', false) ||
+                                        _.get(this.props, 'metaData.hierarchy_suppression', false)) && (
+                                        <Panel
+                                            title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
+                                            className={styles.accidentsPanel}
+                                        >
+                                            {_.get(this.props, 'metaData.channel_suppression', false) && (
                                                 <Field
-                                                    id="cease_duration"
-                                                    labelText={ls('POLICIES_ADD', 'Интервал агрегации')}
-                                                    labelWidth="60%"
+                                                    id="exclude-tv"
+                                                    labelText={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
+                                                    labelWidth="97%"
+                                                    inputWidth="3%"
+                                                    labelAlign="right"
+                                                    splitter=""
+                                                    title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
+                                                >
+                                                    <Checkbox
+                                                        id="exclude-tv"
+                                                        checked={this.getPolicyProperty('channel_suppression')}
+                                                        onChange={value => this.setPolicyProperty('channel_suppression', value)}
+                                                    />
+                                                </Field>
+                                            )}
+                                            {_.get(this.props, 'metaData.hierarchy_suppression', false) && (
+                                                <Field
+                                                    id="allow-accident"
+                                                    labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}`}
+                                                    labelWidth="97%"
+                                                    inputWidth="3%"
+                                                    labelAlign="right"
+                                                    splitter=""
+                                                    title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
+                                                >
+                                                    <Checkbox
+                                                        id="allow-accident"
+                                                        checked={this.getPolicyProperty('allow_accident')}
+                                                        onChange={value => this.setPolicyProperty('allow_accident', value)}
+                                                    />
+                                                </Field>
+                                            )}
+                                            {_.get(this.props, 'metaData.hierarchy_suppression', false) && (
+                                                <Field
+                                                    id="not-allowed-accident"
+                                                    inputWidth="100%"
+                                                    splitter=""
+                                                    style={notAllowedAccidentStyle}
+                                                >
+                                                    <Select
+                                                        id="not-allowed-accident"
+                                                        type="select"
+                                                        placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
+                                                        options={this.mapPolicies(policies, policyId)}
+                                                        value={this.getPolicyProperty('accident')}
+                                                        onChange={value => this.setPolicyProperty('accident', value)}
+                                                        disabled={!this.getPolicyProperty('allow_accident')}
+                                                    />
+                                                </Field>
+                                            )}
+                                            {_.get(this.props, 'metaData.hierarchy_suppression', false) && (
+                                                <Field
+                                                    id="waiting-time"
+                                                    labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
+                                                    labelWidth="81%"
                                                     inputWidth="85px"
-                                                    required
+                                                    style={notAllowedAccidentStyle}
                                                 >
                                                     <div style={{ display: 'flex' }}>
                                                         <Input
-                                                            id="cease_duration"
+                                                            id="waiting-time"
                                                             type="number"
-                                                            name="cease_duration"
+                                                            name="waiting-time"
                                                             placeholder="0"
-                                                            valid={_.isEmpty(_.get(errors, 'threshold.cease_duration'))}
-                                                            value={this.getSeconds(this.getPolicyProperty('threshold.cease_duration'))}
-                                                            onChange={value => this.setPolicyProperty('threshold.cease_duration', this.getMilliSeconds(value))}
+                                                            value={this.getPolicyProperty('waiting_time')}
+                                                            onChange={value => this.setPolicyProperty('waiting_time', value)}
+                                                            disabled={!this.getPolicyProperty('allow_accident')}
                                                             maxLength={6}
-                                                            errorMessage={_.get(errors, 'threshold.cease_duration.title')}
                                                         />
                                                         <span
                                                             style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
                                                     </div>
                                                 </Field>
-                                            </div>
-                                            <div style={{ width: '45%' }}>
-                                                {threshold && <Field
-                                                    id="cease_value"
-                                                    labelText={`${ls('POLICIES_POLICY_FIELD_CEASE_VALUE', 'Порог')}`}
-                                                    labelWidth="35%"
-                                                    inputWidth="85px"
-                                                    style={thresholdFieldStyle}
-                                                    required
-                                                >
-                                                    <div style={{ display: 'flex' }}>
-                                                        <Input
-                                                            id="cease_value"
-                                                            type="number"
-                                                            name="cease_value"
-                                                            placeholder="0"
-                                                            valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
-                                                            value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
-                                                            onChange={value => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(value))}
-                                                            maxLength={6}
-                                                        />
-                                                        <span
-                                                            style={unitStyle}>{ls('TRESHOLD_UNIT', 'ед.')}</span>
-                                                    </div>
-                                                </Field>}
-                                            </div>
-                                        </div>
-                                    </Panel>}
-                                </div>
-                                <div className={styles.policyEditorColumn}>
-                                    <Condition
-                                        metaData={metaData}
-                                        condition={this.getPolicyProperty('condition')}
-                                        parameters={_.get(this.state, 'metaData.parameters')}
-                                        onChange={condition => this.setPolicyProperty('condition', condition)}
-                                        errors={errors && _.get(errors, 'condition.condition')}
-                                    />
-                                </div>
-                                {!_.isEmpty(this.state.metaData) &&
-                                (_.get(this.props, 'metaData.channel_suppression', false) ||
-                                    _.get(this.props, 'metaData.hierarchy_suppression', false)) &&
-                                <Panel
-                                    title={ls('POLICIES_END_OF_ACCIDENT_TITLE', 'Окончание аварии')}
-                                    className={styles.accidentsPanel}
-                                >
-
-                                        {_.get(this.props, 'metaData.channel_suppression', false) &&
-                                        <Field
-                                            id="exclude-tv"
-                                            labelText={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
-                                            labelWidth="97%"
-                                            inputWidth="3%"
-                                            labelAlign="right"
-                                            splitter=""
-                                            title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
-                                        >
-                                            <Checkbox
-                                                id="exclude-tv"
-                                                checked={this.getPolicyProperty('channel_suppression')}
-                                                onChange={value => this.setPolicyProperty('channel_suppression', value)}
-                                            />
-                                        </Field>}
-                                        {
-                                            _.get(this.props, 'metaData.hierarchy_suppression', false) &&
-                                            <Field
-                                                id="allow-accident"
-                                                labelText={`${ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}`}
-                                                labelWidth="97%"
-                                                inputWidth="3%"
-                                                labelAlign="right"
-                                                splitter=""
-                                                title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
-                                            >
-                                                <Checkbox
-                                                    id="allow-accident"
-                                                    checked={this.getPolicyProperty('allow_accident')}
-                                                    onChange={value => this.setPolicyProperty('allow_accident', value)}
-                                                />
-                                            </Field>}
-                                        {
-                                            _.get(this.props, 'metaData.hierarchy_suppression', false) &&
-                                            <Field
-                                                id="not-allowed-accident"
-                                                inputWidth="100%"
-                                                splitter=""
-                                                style={notAllowedAccidentStyle}
-                                            >
-                                                <Select
-                                                    id="not-allowed-accident"
-                                                    type="select"
-                                                    placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
-                                                    options={this.mapPolicies(policies, policyId)}
-                                                    value={this.getPolicyProperty('accident')}
-                                                    onChange={value => this.setPolicyProperty('accident', value)}
-                                                    disabled={!this.getPolicyProperty('allow_accident')}
-                                                />
-                                            </Field>}
-                                        {
-                                            _.get(this.props, 'metaData.hierarchy_suppression', false) &&
-                                            <Field
-                                                id="waiting-time"
-                                                labelText={ls('POLICIES_WAITING_TIME_OF_ACCIDENT', 'Время ожидания вышестоящей аварии')}
-                                                labelWidth="81%"
-                                                inputWidth="85px"
-                                                style={notAllowedAccidentStyle}
-                                            >
-                                                <div style={{ display: 'flex' }}>
-                                                    <Input
-                                                        id="waiting-time"
-                                                        type="number"
-                                                        name="waiting-time"
-                                                        placeholder="0"
-                                                        value={this.getPolicyProperty('waiting_time')}
-                                                        onChange={value => this.setPolicyProperty('waiting_time', value)}
-                                                        disabled={!this.getPolicyProperty('allow_accident')}
-                                                        maxLength={6}
-                                                    />
-                                                    <span
-                                                        style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
-                                                </div>
-                                            </Field>
-                                        }
-                                    </Panel>
-                                    }
+                                            )}
+                                        </Panel>
+                                    )}
                                 </div>
                             </Preloader>
                         </ModalBody>
