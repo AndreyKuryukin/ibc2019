@@ -84,5 +84,8 @@
   "USERS_SIDEMENU_TITLE": "Работа с пользователями",
   "STB_LOADING_SIDEMENU_TITLE": "Время загрузки STB",
   "SUBSCRIBER_SIDEMENU_TITLE": "Абонент",
-  "LOGIN_SIDEMENU_TITLE": "Выход"
+  "LOGIN_SIDEMENU_TITLE": "Выход",
+
+  "POLICIES_TEST": "Тестирование",
+  "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?"
 }

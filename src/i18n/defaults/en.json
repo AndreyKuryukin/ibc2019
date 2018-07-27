@@ -451,5 +451,8 @@
     "KQI_CONFIGURATOR_BUFOVERRUNS_PARAMETER_TITLE": "Buffer overruns",
 
     "WITH_RF_GROUPING": "Grouped by RF",
-    "WITH_MRF_GROUPING": "Grouped by MRD"
+    "WITH_MRF_GROUPING": "Grouped by MRD",
+
+    "POLICIES_TEST": "Test",
+    "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?"
 }
