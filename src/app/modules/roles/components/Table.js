@@ -49,7 +49,7 @@ class RolesTable extends React.PureComponent {
             width: 28,
         }] : []),
         {
-            title: ls('ROLES_NAME', 'Имя роли'),
+            getTitle: () => ls('ROLES_NAME', 'Имя роли'),
             name: 'name',
             resizable: true,
             searchable: true,
@@ -63,7 +63,7 @@ class RolesTable extends React.PureComponent {
         //     sortable: true,
         // },
         {
-            title: ls('ROLES_DESCRIPTION', 'Описание'),
+            getTitle: () => ls('ROLES_DESCRIPTION', 'Описание'),
             name: 'description',
             resizable: true,
             searchable: true,
@@ -90,7 +90,7 @@ class RolesTable extends React.PureComponent {
             default:
                 return (
                     <DefaultCell
-                        content={column.title}
+                        content={column.getTitle ? column.getTitle() : ''}
                         sortDirection={sortDirection}
                     />
                 );
