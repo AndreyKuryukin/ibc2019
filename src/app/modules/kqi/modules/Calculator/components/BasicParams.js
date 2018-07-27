@@ -49,6 +49,7 @@ class BasicParams extends React.PureComponent {
                             id="name"
                             value={_.get(config, 'name')}
                             onChange={value => this.props.onChange('name', value)}
+                            placeholder={ls('KQI_CALCULATOR_NAME_FIELD_PLACEHOLDER', 'Название')}
                             valid={errors && _.isEmpty(errors.name)}
                             errorMessage={_.get(errors, 'name.title')}
                             disabled={disabled}

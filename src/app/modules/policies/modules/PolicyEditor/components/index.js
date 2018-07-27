@@ -227,7 +227,7 @@ class PolicyEditor extends React.PureComponent {
         const threshold = _.get(metaData, 'threshold', false);
         const duration = _.get(metaData, 'duration', false);
         const modalTitle = policyId
-            ? ls('POLICIES_EDIT_POLICY_TITLE', `Редактировать политику ${_.get(this.props.policy, 'name', '')}`)
+            ? ls('POLICIES_EDIT_POLICY_TITLE', 'Редактировать политику') + ' ' +  _.get(this.props.policy, 'name', '')
             : ls('POLICIES_CREATE_POLICY_TITLE', 'Создать политику');
         return (
             <Fragment>

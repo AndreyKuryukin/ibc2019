@@ -33,60 +33,59 @@ class PoliciesTable extends React.PureComponent {
 
     getColumns = memoize(() => [
         {
-            title: '',
             name: 'has_notifications',
             sortable: false,
             searchable: false,
             width: 32
         },
         {
-            title: ls('POLICIES_NAME_COLUMN_TITLE', 'Имя политики'),
+            getTitle: () => ls('POLICIES_NAME_COLUMN_TITLE', 'Имя политики'),
             name: 'name',
             resizable: true,
             sortable: true,
             searchable: true,
         },
         {
-            title: ls('POLICIES_OBJECT_COLUMN_TITLE', 'Объект'),
+            getTitle: () => ls('POLICIES_OBJECT_COLUMN_TITLE', 'Объект'),
             name: 'object_type',
             resizable: true,
             sortable: true,
             searchable: true,
         },
         {
-            title: ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
+            getTitle: () => ls('POLICIES_AGREGATION_COLUMN_TITLE', 'Функция агрегации'),
             name: 'policy_type',
             resizable: true,
             sortable: true,
             searchable: true,
         },
         // {
-        //     title: ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
+        //     getTitle: () => ls('POLICIES_AGGREGATION_INTERVAL_COLUMN_TITLE', 'Интервал агрегации'),
         //     name: 'aggregation_interval',
         //     sortable: true,
         //     searchable: true,
         //     columns: [{
-        //         title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
+        //         getTitle: () => ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
         //         name: 'rise_duration',
         //     }, {
-        //         title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
+        //         getTitle: () => ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
         //         name: 'cease_duration',
         //     }],
         // }, {
-        //     title: ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
+        //     getTitle: () => ls('POLICIES_THRESHOLD_COLUMN_TITLE', 'Порог'),
         //     name: 'threshold',
         //     sortable: true,
         //     searchable: true,
         //     columns: [{
-        //         title: ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
+        //         getTitle: () => ls('POLICIES_RISE_COLUMN_TITLE', 'Вызов, сек.'),
         //         name: 'rise_value',
         //     }, {
-        //         title: ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
+        //         getTitle: () => ls('POLICIES_CEASE_COLUMN_TITLE', 'Окончание, сек.'),
         //         name: 'cease_value',
         //     }],
         // },
         // {
-        //     title: ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
+        //     getTitle: () => ls('POLICIES_SCOPE_COLUMN_TITLE', 'Область действия'),
         //     name: 'scope',
         //     sortable: true,
         //     searchable: true,
@@ -116,7 +115,7 @@ class PoliciesTable extends React.PureComponent {
             case 'threshold':
                 return (
                     <PolicyCell
-                        title={column.title}
+                        title={column.getTitle ? column.getTitle() : ''}
                         name="threshold"
                         columns={column.columns}
                         sort={sort}
@@ -126,7 +125,7 @@ class PoliciesTable extends React.PureComponent {
             default:
                 return (
                     <DefaultCell
-                        content={column.title}
+                        content={column.getTitle ? column.getTitle() : ''}
                         sortDirection={sortDirection}
                     />
                 );

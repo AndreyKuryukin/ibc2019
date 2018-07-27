@@ -35,13 +35,13 @@ class AlarmsTable extends React.PureComponent {
 
     static getColumns = memoize(() => ([
         {
-            title: ls('ALARMS_ID_COLUMN', 'ID'),
+            getTitle: () => ls('ALARMS_ID_COLUMN', 'ID'),
             name: 'id',
             resizable: true,
             searchable: true,
             sortable: true,
         }, {
-            title: ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
+            getTitle: () => ls('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
             name: 'external_id',
             resizable: true,
             searchable: true,
@@ -49,30 +49,30 @@ class AlarmsTable extends React.PureComponent {
             searchable: true,
             width: 150,
         }, {
-            title: ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
+            getTitle: () => ls('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
             name: 'policy_name',
             resizable: true,
             searchable: true,
             sortable: true,
         }, {
-            title: ls('ALARMS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
+            getTitle: () => ls('ALARMS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
             name: 'notification_status',
             sortable: true,
             width: 250,
         }, {
-            title: ls('ALARMS_RAISE_TIME_COLUMN', 'Время возникновения'),
+            getTitle: () => ls('ALARMS_RAISE_TIME_COLUMN', 'Время возникновения'),
             name: 'raise_time',
             searchable: true,
             sortable: true,
             width: 150,
         }, {
-            title: ls('ALARMS_DURATION_COLUMN', 'Длительность'),
+            getTitle: () => ls('ALARMS_DURATION_COLUMN', 'Длительность'),
             name: 'duration',
             searchable: true,
             sortable: true,
             width: 100,
         }, {
-            title: ls('ALARMS_OBJECT_COLUMN', 'Объект'),
+            getTitle: () => ls('ALARMS_OBJECT_COLUMN', 'Объект'),
             name: 'object',
             resizable: true,
             searchable: true,
@@ -82,7 +82,7 @@ class AlarmsTable extends React.PureComponent {
 
     headerRowRender = (column, sort) => (
         <DefaultCell
-            content={column.title}
+            content={column.getTitle ? column.getTitle() : ''}
             sortDirection={sort.by === column.name ? sort.direction : null}
         />
     );

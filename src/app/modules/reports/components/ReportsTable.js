@@ -43,54 +43,52 @@ class ReportsTable extends React.PureComponent {
     };
 
     static getColumns = memoize(hasEditAccess => [{
-        title: ls('REPORTS_NAME_COLUMN_TITLE', 'Название отчёта'),
+        getTitle: () => ls('REPORTS_NAME_COLUMN_TITLE', 'Название отчёта'),
         name: 'name',
         resizable: true,
         sortable: true,
         searchable: true,
         width: 500
     }, {
-        title: ls('REPORTS_CREATED_COLUMN_TITLE', 'Создан'),
+        getTitle: () => ls('REPORTS_CREATED_COLUMN_TITLE', 'Создан'),
         name: 'end',
         resizable: true,
         sortable: true,
         searchable: true,
         width: 130
     }, {
-        title: '',
         name: 'retry',
         width: 40
     }, {
-        title: ls('REPORTS_STATE_COLUMN_TITLE', 'Состояние'),
+        getTitle: () => ls('REPORTS_STATE_COLUMN_TITLE', 'Состояние'),
         name: 'state',
         width: 75
     }, {
-        title: ls('REPORTS_FORMAT_COLUMN_TITLE', 'Формат'),
+        getTitle: () => ls('REPORTS_FORMAT_COLUMN_TITLE', 'Формат'),
         name: 'type',
         sortable: true,
         searchable: true,
         width: 60
     }, {
-        title: ls('REPORTS_AUTHOR_COLUMN_TITLE', 'Автор'),
+        getTitle: () => ls('REPORTS_AUTHOR_COLUMN_TITLE', 'Автор'),
         name: 'author',
         resizable: true,
         sortable: true,
         searchable: true,
     }, {
-        title: ls('REPORTS_COMMENT_COLUMN_TITLE', 'Комментарий'),
+        getTitle: () => ls('REPORTS_COMMENT_COLUMN_TITLE', 'Комментарий'),
         name: 'comment',
         resizable: true,
         sortable: true,
         searchable: true,
     }, {
-        title: ls('REPORTS_RECEIVERS_COLUMN_TITLE', 'Получат отчёт'),
+        getTitle: () => ls('REPORTS_RECEIVERS_COLUMN_TITLE', 'Получат отчёт'),
         name: 'notify',
         resizable: true,
         sortable: true,
         searchable: true,
         width: 200
     }, ...(hasEditAccess ? [{
-        title: '',
         name: 'delete',
         width: 25
     }] : [])]);
@@ -161,7 +159,7 @@ class ReportsTable extends React.PureComponent {
 
     headerRowRender = (column, sort) => (
         <DefaultCell
-            content={column.title}
+            content={column.getTitle ? column.getTitle() : ''}
             sortDirection={sort.by === column.name ? sort.direction : null}
         />
     );
