@@ -114,6 +114,7 @@ class PolicyEditor extends React.PureComponent {
         const policy = _.pick(prevPolicy, ['name', 'object_type']);
         policy['object_type'] = objectType;
         policy['condition'] = { condition: defaultCondition };
+        policy['scope'] = [];
         if (objectType === 'KQI') {
             policy['threshold'] = {
                 cease_duration: 0,
@@ -126,10 +127,7 @@ class PolicyEditor extends React.PureComponent {
             this.props.fetchPolicyTypes(policy.object_type);
         });
 
-        return {
-            ...prevPolicy,
-            ...policy,
-        };
+        return policy;
     };
 
     handlePolicyTypeChange = (prevPolicy, policy_type) => {
@@ -137,14 +135,12 @@ class PolicyEditor extends React.PureComponent {
 
         policy['policy_type'] = policy_type;
         policy['condition'] = { condition: defaultCondition };
+        policy['scope'] = [];
         this.setState({ metaData: {} }, () => {
             this.props.fetchMetaData(policy.object_type, policy.policy_type);
         });
 
-        return {
-            ...prevPolicy,
-            ...policy,
-        };
+        return policy;
     };
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
