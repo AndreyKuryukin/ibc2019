@@ -3,6 +3,9 @@
   "REPORTS_STATUS_RUNNING": "В процессе",
   "REPORTS_STATUS_SUCCESS": "Готово",
 
+  "REPORTS_REALTIME_GROUP_NAME": "Оперативный отчёт",
+  "REPORTS_STATISTICS_GROUP_NAME": "Статистический отчёт",
+
   "KQI_STATUS_FAILED": "Ошибка",
   "KQI_STATUS_RUNNING": "В процессе",
   "KQI_STATUS_SUCCESS": "Готово",
