@@ -21,7 +21,7 @@ class RussianMap extends React.PureComponent {
                 <MacroMap
                     plan={plan}
                     kqi={kqi}
-                    padding={0}
+                    padding={15}
                     buildLink={buildLink}
                 />
             );
@@ -33,7 +33,7 @@ class RussianMap extends React.PureComponent {
                 type={type}
                 plan={plan}
                 kqi={kqi}
-                padding={0}
+                padding={15}
             />
         );
     }

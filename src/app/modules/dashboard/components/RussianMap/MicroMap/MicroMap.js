@@ -130,8 +130,8 @@ class MicroMap extends React.PureComponent {
                                 ))}
                             </svg>
                             {list.map(region => {
-                                const left = region.pointCoords[0] / width * 100 + '%';
-                                const top = region.pointCoords[1] / height * 100 + '%';
+                                const left = (region.pointCoords[0] + paddingH) / width * 100 + '%';
+                                const top = (region.pointCoords[1] + paddingV) / height * 100 + '%';
 
                                 return (
                                     <RegionInfo
