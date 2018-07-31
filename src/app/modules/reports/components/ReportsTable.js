@@ -148,7 +148,7 @@ class ReportsTable extends React.PureComponent {
 
     mapGroups = group => ({
         id: group.type,
-        name: group.type,
+        name: ls(`REPORTS_${group.type}_GROUP_NAME`, group.type),
         children: _.get(group, 'templates', []).map(this.mapTemplate)
     });
 
