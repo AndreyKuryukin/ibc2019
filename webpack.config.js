@@ -21,6 +21,7 @@ if (prodMode) {
 }
 
 if (devMode) {
+    plugins.push(new webpack.LoaderOptionsPlugin({ options: {} }));
     plugins.push(new BundleAnalyzerPlugin());
 }
 
@@ -34,16 +35,12 @@ module.exports = {
     devtool: devMode && 'inline-sourcemap',
     module: {
         rules: [
-            // {
-            //     enforce: 'pre',
-            //     test: /\.js$/,
-            //     exclude: /node_modules/,
-            //     loader: 'eslint-loader',
-            //     options: {
-            //         emitWarning: true,
-            //         quiet: true,
-            //     },
-            // },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader',
+            },
             {
                 test: /\.js$/,
                 loader: ['babel-loader', {
@@ -114,4 +111,7 @@ module.exports = {
             allChunks: true,
         })
     ],
+    stats: {
+        children: false,
+    }
 };

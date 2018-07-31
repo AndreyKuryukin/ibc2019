@@ -24,9 +24,9 @@ const loadDefaults = (() => {
                 const defaultsFile = path.resolve(defaultValuesPath, `${locale}.json`);
                 try {
                     defaults = JSON.parse(fs.readFileSync(defaultsFile));
-                    console.log(`i18n:  Defaults loaded from ${defaultsFile}`.green);
+                    // console.log(`i18n:  Defaults loaded from ${defaultsFile}`.green);
                 } catch (e) {
-                    console.log(`i18n:  Error loading defaults (file: ${defaultsFile}) Composing new language map`.cyan);
+                    // console.log(`i18n:  Error loading defaults (file: ${defaultsFile}) Composing new language map`.cyan);
                 }
                 I18N_MAP[locale] = defaults || {};
             });
@@ -72,11 +72,11 @@ const afterComplete = (() => {
         if (!subscribed) {
             Compilation.hooks.finishModules.tap('Saving translations', () => {
                 counter.callback(() => {
-                    console.log('i18n:  Saving translations'.yellow);
+                    // console.log('i18n:  Saving translations'.yellow);
                     locales.forEach(locale => {
                         try {
                             const json = JSON.stringify(I18N_MAP[locale], undefined, 4);
-                            console.log(`i18n:  Emitting ${output}/${locale}.json`.cyan);
+                            // console.log(`i18n:  Emitting ${output}/${locale}.json`.cyan);
                             fs.writeFileSync(`${output}/${locale}.json`, json)
                         } catch (e) {
                             console.error(e);
@@ -93,7 +93,7 @@ const spreadTranslations = (locale, key, value, fileName) => {
     const targetKey = `${locale}.${key}`;
     const targetValue = _.get(I18N_MAP, targetKey);
     if (targetValue && targetValue !== value) {
-        console.log(`i18n:  ${key}          already has value for ${locale.toUpperCase()} locale   (${fileName})`.yellow)
+        // console.log(`i18n:  ${key}          already has value for ${locale.toUpperCase()} locale   (${fileName})`.yellow)
     } else {
         translate(value, locale)
             .then((translatedValue) => {
@@ -114,7 +114,7 @@ const setTranslation = (pair, fileName, locales = []) => {
     const key = pair[0];
     const value = pair[1];
     if (_.isEmpty(key) || _.isEmpty(value)) {
-        console.log(`i18n:          Suspicious ls() call in        ${fileName}         ${key}:${value}`.yellow)
+        // console.log(`i18n:          Suspicious ls() call in        ${fileName}         ${key}:${value}`.yellow)
     } else {
         locales.forEach(locale => {
             spreadTranslations(locale, key, value, fileName);
