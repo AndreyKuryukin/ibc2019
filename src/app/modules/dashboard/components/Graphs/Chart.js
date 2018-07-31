@@ -13,7 +13,7 @@ class Chart extends React.PureComponent {
         title: {
             style: {
                 color: '#02486e',
-                fontSize: 18,
+                fontSize: '18px',
             },
             align: 'left',
         },
@@ -25,6 +25,7 @@ class Chart extends React.PureComponent {
                 color: 'white',
             },
             useHTML: true,
+            shadow: false,
         },
         plotOptions: {
             spline: {

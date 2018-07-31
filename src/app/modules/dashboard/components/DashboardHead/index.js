@@ -1,13 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import cn from 'classnames';
-import {Button} from 'reactstrap';
+import {Collapse, Button, ButtonGroup as ReactstrapButtonGroup} from 'reactstrap';
 import styles from './styles.scss';
 import ButtonGroup from './ButtonGroup';
 import Filters from './Filters';
 import ls from '../../../../../i18n';
 import {REGULARITIES, VIEW_MODE, DEFAULT_PATH_PARAMETERS} from '../../constants';
 import LocationDropdown from './LocationDropdown';
+
+const filterButtonStyle = {
+    marginLeft: 10,
+};
 
 class DashboardHead extends React.Component {
     static propTypes = {
@@ -56,6 +60,7 @@ class DashboardHead extends React.Component {
             id: mode,
             text: DashboardHead.localizeViewMode(mode),
             value: mode,
+            icon: mode,
             href: this.props.buildLink(
                 mode === VIEW_MODE.MAP ? {
                     mode,
@@ -99,21 +104,26 @@ class DashboardHead extends React.Component {
                     value={this.props.regularity}
                     options={this.getRegularityOptions()}
                 />
-                <Button
-                    color="secondary"
-                    style={{
-                        marginLeft: 10,
-                    }}
-                    outline={!this.props.isFiltersExpanded}
-                    onClick={this.onFiltersButtonClick}
-                >{ls('FILTERS', 'Фильтры')}</Button>
-
-                {this.props.isFiltersExpanded && <Filters
-                    className={styles.filters}
-                    list={this.props.filters}
-                    values={this.props.filterValues}
-                    onChange={this.props.onFilterChange}
-                />}
+                <ReactstrapButtonGroup>
+                    <Button
+                        color="secondary"
+                        className="dropdown-toggle"
+                        style={filterButtonStyle}
+                        outline={!this.props.isFiltersExpanded}
+                        onClick={this.onFiltersButtonClick}
+                    >{ls('FILTERS', 'Фильтры')}</Button>
+                </ReactstrapButtonGroup>
+                <Collapse
+                    className={styles.filtersCollapse}
+                    isOpen={this.props.isFiltersExpanded}
+                >
+                    <Filters
+                        className={styles.filters}
+                        list={this.props.filters}
+                        values={this.props.filterValues}
+                        onChange={this.props.onFilterChange}
+                    />
+                </Collapse>
             </div>
         );
     }

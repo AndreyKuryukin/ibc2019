@@ -19,6 +19,7 @@ $tile-height: 104px;
     width: $tile-width;
     height: $tile-height;
     overflow: hidden;
+    transition: opacity 0.2s linear;
     .notificationCount {
       position: absolute;
       font-weight: bold;
@@ -48,12 +49,8 @@ $tile-height: 104px;
       color: #ffffff;
     }
     &:not(.activeTile):hover {
-      //background-color: $menu-grey;
+      opacity: 0.7;
       cursor: pointer;
-      .iconBlock, .tileTitle {
-        opacity: 0.5;
-        cursor: pointer !important;
-      }
     }
     &.activeTile {
       background-color: $darkest-blue;
@@ -61,7 +58,6 @@ $tile-height: 104px;
         cursor: default;
       }
     }
-
   }
 }
 

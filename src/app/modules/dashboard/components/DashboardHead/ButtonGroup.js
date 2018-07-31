@@ -35,6 +35,7 @@ class ButtonGroup extends React.Component {
         return (
             <Button
                 key={option.id}
+                className={option.icon ? 'icon-btn ' + `dashboard-${option.icon}-icon` : ''}
                 color={color}
                 outline={option.value !== value}
                 style={{ textDecoration: 'none' }}

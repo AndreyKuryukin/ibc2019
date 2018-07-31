@@ -18,6 +18,11 @@ const STEPS = {
     [REGULARITIES.WEEK]: 7 * 24 * 3600 * 1000,
 };
 
+const COLORS = [
+    '#377dc4',
+    '#fc3737',
+];
+
 class DynamicKAB extends React.Component {
     static propTypes = {
         regularity: PropTypes.oneOf(Object.values(REGULARITIES)).isRequired,
@@ -118,6 +123,15 @@ class DynamicKAB extends React.Component {
         }
     }
 
+    chartRender() {
+        const legendPoints = this.container.querySelectorAll('.highcharts-legend .highcharts-point');
+
+        legendPoints.forEach((point) => {
+            const strokeColor = point.getAttribute('stroke');
+            point.setAttribute('fill', strokeColor);
+        });
+    }
+
     getPlotLines() {
         if (this.props.regularity !== REGULARITIES.HOUR) return undefined;
 
@@ -136,15 +150,17 @@ class DynamicKAB extends React.Component {
         return {
             chart: {
                 type: 'spline',
+                events: {
+                    render: this.chartRender,
+                },
             },
             title: {
                 ...Chart.DEFAULT_OPTIONS.title,
                 text: ls('DASHBOARD_CHART_DYNAMIC_KAB_TITLE', 'Динамика Каб'),
             },
-            colors: [
-                '#377dc4',
-                '#fc3737',
-            ],
+            legend: {
+                symbolWidth: 10,
+            },
             tooltip: {
                 ...Chart.DEFAULT_OPTIONS.tooltip,
                 shared: true,
@@ -197,6 +213,14 @@ class DynamicKAB extends React.Component {
                 y: typeof item.value !== 'number' ? null : Number(item.value.toFixed(2)),
                 timestamp: item.timestamp,
             })),
+            color: COLORS[i],
+            marker: {
+                states: {
+                    hover: {
+                        fillColor: COLORS[i],
+                    },
+                },
+            }
         }));
     }
     getCategories() {

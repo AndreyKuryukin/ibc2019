@@ -16,6 +16,7 @@
     "MIN_ERROR_MESSAGE": "Value is less than minimum",
     "PVR": "PVR",
     "VOD": "VOD",
+    "MRF": "MRD",
     "STB_LOADING_SW_VERSION_COLUMN_TITLE": "Version",
     "SEARCH_PLACEHOLDER": "Search",
     "STB_LOADING_REPORT_INTERVAL_TITLE": "Period of report:",
