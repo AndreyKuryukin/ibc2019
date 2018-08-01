@@ -15,6 +15,8 @@ const counter = new CounterClass();
 let I18N_MAP = {};
 let translator;
 
+let defaultsLoaded = {};
+
 const loadDefaults = (() => {
     let loaded = false;
     return (defaultValuesPath, locales) => {
@@ -24,6 +26,7 @@ const loadDefaults = (() => {
                 const defaultsFile = path.resolve(defaultValuesPath, `${locale}.json`);
                 try {
                     defaults = JSON.parse(fs.readFileSync(defaultsFile));
+                    defaultsLoaded[locale] = true;
                     console.log(`i18n:  Defaults loaded from ${defaultsFile}`.green);
                 } catch (e) {
                     console.log(`i18n:  Error loading defaults (file: ${defaultsFile}) Composing new language map`.cyan);
@@ -72,11 +75,11 @@ const afterComplete = (() => {
         if (!subscribed) {
             Compilation.hooks.finishModules.tap('Saving translations', () => {
                 counter.callback(() => {
-                    console.log('i18n:  Saving translations'.yellow);
+                    console.log('i18n:          Saving translations'.yellow);
                     locales.forEach(locale => {
                         try {
                             const json = JSON.stringify(I18N_MAP[locale], undefined, 4);
-                            console.log(`i18n:  Emitting ${output}/${locale}.json`.cyan);
+                            console.log(`i18n:          Emitting ${output}/${locale}.json`.cyan);
                             fs.writeFileSync(`${output}/${locale}.json`, json)
                         } catch (e) {
                             console.error(e);
@@ -91,13 +94,18 @@ const afterComplete = (() => {
 
 const spreadTranslations = (locale, key, value, fileName) => {
     const targetKey = `${locale}.${key}`;
-    const targetValue = _.get(I18N_MAP, targetKey);
-    if (targetValue && targetValue !== value) {
-        console.log(`i18n:  ${key}          already has value for ${locale.toUpperCase()} locale   (${fileName})`.yellow)
+    const targetValue = _.get(I18N_MAP, `${targetKey}`, false);
+    if (targetValue) {
+        if (!defaultsLoaded[locale]) {
+            console.log(`i18n:  ${key}          already has value for ${locale.toUpperCase()} locale   (${fileName})`.yellow)
+        }
     } else {
+        if (locale !== 'ru' && defaultsLoaded[locale]) {
+            console.log(`i18n:          No translation for ${key} ${locale.toUpperCase()} (${fileName})      applying yandex translation`.yellow)
+        }
         translate(value, locale)
             .then((translatedValue) => {
-                _.set(I18N_MAP, targetKey, translatedValue);
+                _.set(I18N_MAP, `${targetKey}`, translatedValue);
                 counter.decrease();
             })
             .catch((e) => {
