@@ -19,6 +19,7 @@ class ConfigBlock extends React.PureComponent {
         id: PropTypes.string.isRequired,
         children: PropTypes.node,
         config: PropTypes.object,
+        configs: PropTypes.array,
         onRemove: PropTypes.func,
         onChangeInstance: PropTypes.func,
         onChangeParameters: PropTypes.func,
@@ -27,17 +28,21 @@ class ConfigBlock extends React.PureComponent {
     static defaultProps = {
         children: null,
         config: null,
+        configs: [],
         onRemove: () => null,
         onChangeInstance: () => null,
         onChangeParameters: () => null,
     };
 
-    static mapOptions = memoize(opts => opts.map(opt => ({
-        value: opt.instance_id,
-        title: opt.name,
-    })));
+    static mapOptions = (opts, configs, instanceId) =>
+        opts.filter(opt => opt.instance_id === instanceId || configs.findIndex(cfg => cfg.instance_id === opt.instance_id) === -1)
+        .map((opt) => ({
+            value: opt.instance_id,
+            title: opt.name,
+        }));
 
     onChangeInstance = (instanceId) => {
+        console.log(this.props.configs);
         this.props.onChangeInstance(instanceId);
     };
 
@@ -52,9 +57,9 @@ class ConfigBlock extends React.PureComponent {
     };
 
     render() {
-        const { config, onRemove } = this.props;
+        const { config, configs, onRemove } = this.props;
         const errors = _.get(config, 'errors');
-
+        const instanceId = _.get(config, 'instance_id');
         return (
             <div className={styles.configBlock}>
                 <div className={styles.configContentRow}>
@@ -72,7 +77,8 @@ class ConfigBlock extends React.PureComponent {
                             >
                                 <Select
                                     id={`${this.props.id}_instance`}
-                                    options={ConfigBlock.mapOptions(_.get(config, 'instances', []))}
+                                    options={ConfigBlock.mapOptions(_.get(config, 'instances', []), configs, instanceId)}
+                                    noEmptyOption
                                     value={_.get(config, 'instance_id', '') || ''}
                                     onChange={this.onChangeInstance}
                                     placeholder={ls('POLICIES_CONFIGURATOR_INSTANCE_FIELD_PLACEHOLDER', 'Инстанс')}
