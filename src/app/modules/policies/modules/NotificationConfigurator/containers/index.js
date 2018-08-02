@@ -78,10 +78,11 @@ class NotificationConfigurator extends React.PureComponent {
         if (this.props.policyId) {
             let isAllFieldsValid = true;
             const validatedNotifications = notifications.reduce((result, notification) => {
-                isAllFieldsValid = isAllFieldsValid && !!notification.instance_id;
-                const paramsMetaData = _.get(_.find(adapters, {adapter_id: notification.adapter_id}), 'parameters', []);
+                const adapter = _.find(adapters, { adapter_id: notification.adapter_id });
+                const paramsMetaData = _.get(adapter, 'parameters', []);
                 const parameters = notification.parameters.map(param => {
                     const paramMetaData = _.find(paramsMetaData, paramMeta => paramMeta.uid === param.uid);
+                    //todo: Сделать формирование кофига для валидации
                     const errors = validateForm({ [param.uid]: _.get(param, 'value.0', '') }, { [param.uid]: { required: !!_.get(paramMetaData, 'required') } });
                     isAllFieldsValid = isAllFieldsValid && _.isEmpty(errors);
 
@@ -93,7 +94,11 @@ class NotificationConfigurator extends React.PureComponent {
 
                 return [...result, {
                     ...notification,
-                    errors: !notification.instance_id ? validateForm({ instance_id: notification.instance_id }, { instance_id: { required: true } }) : null,
+                    errors: !_.isEmpty(adapter.instances) && !notification.instance_id ?
+                        validateForm(
+                            { instance_id: notification.instance_id },
+                            { instance_id: { required: true } })
+                        : null,
                     parameters,
                 }];
             }, []);
