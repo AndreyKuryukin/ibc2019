@@ -31,7 +31,8 @@ class Select extends React.PureComponent {
             this.setState({ value: '' }, () => {
                 this.props.onChange('');
             });
-        } else {
+            // Если будут баги, можно удалить if после else
+        } else if (this.getValue() !== value) {
             this.setState({ value: value }, () => {
                 this.props.onChange(value);
             });

@@ -2,7 +2,6 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import ls from 'i18n';
-import memoize from 'memoizejs';
 import Select from '../../../../../components/Select';
 import Field from '../../../../../components/Field';
 import ParameterField from './ParameterField';
@@ -34,12 +33,20 @@ class ConfigBlock extends React.PureComponent {
         onChangeParameters: () => null,
     };
 
-    static mapOptions = (opts, configs, instanceId) =>
-        opts.filter(opt => opt.instance_id === instanceId || configs.findIndex(cfg => cfg.instance_id === opt.instance_id) === -1)
-        .map((opt) => ({
-            value: opt.instance_id,
-            title: opt.name,
-        }));
+    static mapOptions = (config, configs) => {
+        const opts = _.get(config, 'instances', []);
+        const instanceId = _.get(config, 'instance_id');
+        const adapterId = _.get(config, 'adapter_id');
+        return opts.filter(opt => {
+            const specificConfigs = configs.filter(cfg => cfg.adapter_id === adapterId);
+            return opt.instance_id === instanceId || specificConfigs.findIndex(cfg => cfg.instance_id === opt.instance_id) === -1
+        })
+            .map((opt) => ({
+                value: opt.instance_id,
+                title: opt.name,
+            }));
+
+    };
 
     onChangeInstance = (instanceId) => {
         console.log(this.props.configs);
@@ -59,7 +66,6 @@ class ConfigBlock extends React.PureComponent {
     render() {
         const { config, configs, onRemove } = this.props;
         const errors = _.get(config, 'errors');
-        const instanceId = _.get(config, 'instance_id');
         return (
             <div className={styles.configBlock}>
                 <div className={styles.configContentRow}>
@@ -77,7 +83,7 @@ class ConfigBlock extends React.PureComponent {
                             >
                                 <Select
                                     id={`${this.props.id}_instance`}
-                                    options={ConfigBlock.mapOptions(_.get(config, 'instances', []), configs, instanceId)}
+                                    options={ConfigBlock.mapOptions(config, configs)}
                                     noEmptyOption
                                     value={_.get(config, 'instance_id', '') || ''}
                                     onChange={this.onChangeInstance}

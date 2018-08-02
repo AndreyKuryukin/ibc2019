@@ -149,8 +149,7 @@ class NotificationConfigurator extends React.PureComponent {
             _.chain(this.state.configs)
                 .values()
                 .map(cfg => ({
-                    adapter_id: cfg.adapter_id,
-                    instance_id: cfg.instance_id,
+                    ...cfg,
                     parameters: cfg.parameters.map(param => ({
                         uid: param.uid,
                         ...(_.isUndefined(param.value) ? { value: [] } : { value: _.isArray(param.value) ? param.value : [param.value] }),
