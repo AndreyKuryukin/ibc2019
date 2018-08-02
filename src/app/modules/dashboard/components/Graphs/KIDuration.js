@@ -20,6 +20,18 @@ class KIDuration extends React.Component {
         return {
             chart: {
                 type: 'column',
+                events: {
+                    render: function() {
+                        const series = _.get(this, 'series.0.data');
+                        series.forEach(item => {
+                            const { dataLabel, shapeArgs } = item;
+
+                            dataLabel.attr({
+                                x: dataLabel.alignAttr.x - (5 + shapeArgs.width / 2),
+                            });
+                        });
+                    },
+                }
             },
             title: {
                 text: '',
@@ -76,8 +88,6 @@ class KIDuration extends React.Component {
                     fontWeight: '500',
                     textOutline: 0,
                 },
-                x: -35,
-                y: -10,
                 useHTML: true,
             },
         }];
@@ -98,6 +108,7 @@ class KIDuration extends React.Component {
     render() {
         return (
             <ConnectedChart
+                ref={chart => this.chart = chart}
                 id="KIDuration"
                 connectedTo="KICount"
                 options={this.getChartOptions()}

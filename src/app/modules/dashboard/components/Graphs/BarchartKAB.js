@@ -4,6 +4,7 @@ import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
 import {MACRO_RF_ID} from '../../constants';
+import styles from './styles.scss';
 
 class BarchartKAB extends React.Component {
     static propTypes = {
@@ -33,6 +34,10 @@ class BarchartKAB extends React.Component {
                 ...Chart.DEFAULT_OPTIONS.title,
                 text: ls('DASHBOARD_CHART_BARCHART_KAB_TITLE', 'Каб ИТВ МРФ Волга в проекции по региональным филиалам'),
             },
+            legend: {
+                labelFormatter: this.legendLabelFormatter,
+                useHTML: true,
+            },
             tooltip: {
                 ...Chart.DEFAULT_OPTIONS.tooltip,
                 shared: true,
@@ -52,6 +57,9 @@ class BarchartKAB extends React.Component {
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories: this.getCategories(),
+                labels: {
+                    enabled: false,
+                },
             },
             yAxis: {
                 ...Chart.DEFAULT_OPTIONS.yAxis,
@@ -59,7 +67,10 @@ class BarchartKAB extends React.Component {
                 min: this.getMin(),
             },
             plotOptions: {
-                column: Chart.DEFAULT_OPTIONS.plotOptions.column,
+                column: {
+                    ...Chart.DEFAULT_OPTIONS.plotOptions.column,
+                    maxPointWidth: 5,
+                },
             },
             series: this.getSeries(),
         };
@@ -79,6 +90,16 @@ class BarchartKAB extends React.Component {
             .catch(console.error);
     }
 
+    legendLabelFormatter() {
+        if (this.index === 1) {
+            return this.name +
+                `<span class="${styles.criticalLegendPoint}"></span>` +
+                ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_CRITICAL', 'Текущий период хуже предыдущего');
+        } else {
+            return this.name;
+        }
+    }
+
     getSeries() {
         const previousColor = '#082545';
         const normalColor = '#7cc032';
@@ -86,7 +107,6 @@ class BarchartKAB extends React.Component {
 
         const previousName = ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_PREVIOUS', 'Предыдущий период');
         const normalName = ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_NORMAL', 'Текущий период лучше предыдущего');
-        const criticalName = ls('DASHBOARD_CHART_BARCHART_KAB_LEGEND_CRITICAL', 'Текущий период хуже предыдущего');
 
         const cut = number => typeof number === 'number'
             ? parseFloat(number.toFixed(2))
@@ -106,18 +126,41 @@ class BarchartKAB extends React.Component {
             current: cut(item.current),
         }));
 
+        const dataLabels = {
+            enabled: true,
+            rotation: 270,
+            inside: true,
+            overflow: 'none',
+            crop: false,
+            color: '#666',
+            align: 'left',
+            verticalAlign: 'bottom',
+            style: {
+                fontWeight: '500',
+                textOutline: 0,
+            },
+            x: -10,
+            y: -10,
+            useHTML: true,
+        };
+
         return [
             {
                 name: previousName,
                 data: previousData,
                 color: previousColor,
+                dataLabels: {
+                    ...dataLabels,
+                    formatter: this.previousDataLabelsFormatter
+                },
             }, {
                 name: normalName,
                 data: normalData,
                 color: normalColor,
-            }, {
-                name: criticalName,
-                color: criticalColor,
+                dataLabels: {
+                    ...dataLabels,
+                    formatter: this.normalDataLabelsFormatter
+                },
             },
         ];
     }
@@ -129,6 +172,16 @@ class BarchartKAB extends React.Component {
 
         return Math.max(0, min - (100 - min) * 0.1);
     }
+
+    previousDataLabelsFormatter() {
+        return this.x;
+    };
+
+    normalDataLabelsFormatter() {
+        const allSeries = this.series.chart.series;
+
+        return !allSeries[0].visible ? this.x : null;
+    };
 
     render() {
         return <Chart options={this.getChartOptions()} />;

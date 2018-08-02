@@ -1,0 +1,11 @@
+.criticalLegendPoint {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  margin: 0 7px 0 15px;
+  border-radius: 8px;
+  background: #fc3737;
+}
+.highcharts-legend-item-hidden .criticalLegendPoint {
+  background: #ccc;
+}
