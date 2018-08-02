@@ -27,9 +27,6 @@ class KICount extends React.Component {
                 ...Chart.DEFAULT_OPTIONS.title,
                 text: ls('DASHBOARD_CHART_KI_TITLE', 'Статистика КИ МРФ Волга в проекции по региональным филиалам'),
             },
-            colors: [
-                '#fc3737',
-            ],
             tooltip: Chart.DEFAULT_OPTIONS.tooltip,
             legend: {
                 enabled: false,
@@ -61,6 +58,14 @@ class KICount extends React.Component {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_COUNT', 'Количество'),
             data: this.props.data.map(city => city.count),
+            color: '#fc3737',
+            marker: {
+                states: {
+                    hover: {
+                        fillColor: '#fc3737',
+                    },
+                },
+            }
         }];
     }
     getCategories() {

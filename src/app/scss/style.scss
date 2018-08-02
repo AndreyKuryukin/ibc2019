@@ -16,6 +16,12 @@ body {
   overflow-y: hidden;
   line-height: 1rem;
   font-weight: normal !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+svg {
+  font-family: Tahoma, Arial, sans-serif !important;
 }
 
 .app-root {

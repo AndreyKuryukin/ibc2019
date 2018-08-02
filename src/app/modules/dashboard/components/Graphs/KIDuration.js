@@ -43,6 +43,7 @@ class KIDuration extends React.Component {
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
+                labels: {enabled: false},
             },
             yAxis: {
                 ...Chart.DEFAULT_OPTIONS.yAxis,
@@ -61,14 +62,37 @@ class KIDuration extends React.Component {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
             data: this.props.data.map(city => Math.floor(city.duration/1000)),
+            dataLabels: {
+                enabled: true,
+                rotation: 270,
+                inside: true,
+                overflow: 'none',
+                crop: false,
+                color: '#666',
+                align: 'left',
+                verticalAlign: 'bottom',
+                formatter: this.dataLabelsFormatter,
+                style: {
+                    fontWeight: '500',
+                    textOutline: 0,
+                },
+                x: -35,
+                y: -10,
+                useHTML: true,
+            },
         }];
     }
+
     getCategories() {
         const categories = [];
         for (const city of this.props.data) {
             categories.push(city.name);
         }
         return categories;
+    }
+
+    dataLabelsFormatter() {
+        return this.y ? this.x : '';
     }
 
     render() {

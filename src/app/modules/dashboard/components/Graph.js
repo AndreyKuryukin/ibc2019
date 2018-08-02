@@ -8,7 +8,7 @@ import Amount from './Graphs/Amount';
 import KI from './Graphs/KI';
 import ls from '../../../../i18n';
 
-class Graph extends React.Component {
+class Graph extends React.PureComponent {
     static propTypes = {
         regularity: PropTypes.string.isRequired,
         mrfId: PropTypes.string.isRequired,
