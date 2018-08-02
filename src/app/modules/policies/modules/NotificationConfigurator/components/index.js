@@ -103,14 +103,11 @@ class NotificationConfigurator extends React.PureComponent {
         const config = _.get(this.state.configs, `${configId}`);
 
         if (config) {
-            const configs = {
-                ..._.omit({ ...this.state.configs }, `${configId}`),
-
-                [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: {
-                    ...config,
-                    instance_id: instanceId,
-                },
-            };
+            const configs = _.reduce(this.state.configs, (result, cfg, key) =>
+                key !== configId
+                    ? { ...result, [key]: { ...cfg } }
+                    : { ...result, [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: { ...cfg, instance_id: instanceId }},
+                {});
 
             this.setState({
                 configs,
