@@ -88,9 +88,12 @@ class Conjunction extends React.PureComponent {
         } else {
             params.type = 'text';
             params.onChange = (value) => this.setConjunctionProperty('value', value);
+
             if (paramCfg.type === 'integer' || paramCfg.type === 'KQI') {
                 params.maxLength = 6;
+                params.max = paramCfg.type === 'KQI' ? 100 : undefined;
                 params.type = 'number';
+                params.decimal = paramCfg.type === 'KQI' ? 2 : 0;
             }
         }
 
