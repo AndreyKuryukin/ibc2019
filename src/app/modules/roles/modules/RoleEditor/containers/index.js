@@ -148,6 +148,7 @@ class RoleEditor extends React.PureComponent {
                 const role = response.data;
                 callback(role);
                 this.context.history.push('/users-and-roles/roles');
+                this.props.resetRolesEditor();
             };
             const role = {
                 ..._.pick(roleData, ['id', 'name', 'description']),
