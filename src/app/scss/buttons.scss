@@ -59,24 +59,42 @@ $secondary-btn-text-color: #02486e;
   border-left: none;
   border-top: 0;
 }
-.btn-outline-secondary.dropdown-toggle {
-  &:hover::after {
-    border-bottom: 1px solid $secondary-btn-text-color;
-    border-right: 1px solid $secondary-btn-text-color;
-  }
-  &:active::after {
-    border-bottom: 1px solid $secondary-btn-text-color;
-    border-right: 1px solid $secondary-btn-text-color;
-  }
+.show > .btn-outline-secondary.dropdown-toggle::after,
+.btn-secondary.dropdown-toggle::after,
+.btn-outline-secondary.dropdown-toggle:active::after,
+.btn-outline-secondary.dropdown-toggle:hover::after {
+  border-bottom: 1px solid $secondary-btn-text-color;
+  border-right: 1px solid $secondary-btn-text-color;
+}
+.show > .btn-outline-secondary.dropdown-toggle,
+.btn-secondary.dropdown-toggle,
+.show > .btn-outline-secondary.dropdown-toggle:active,
+.btn-secondary.dropdown-toggle:active,
+.btn-outline-secondary.dropdown-toggle:active {
+  color: $secondary-btn-text-color !important;
+}
+.icon-btn {
+  display: flex;
 }
 .icon-btn:before {
   display: inline-block;
   content: '';
   margin-right: 8px;
 }
+
 .icon-btn.dashboard-map-icon:before {
   @include iconBuilder(16px, 16px, 'map.svg');
 }
+
 .icon-btn.dashboard-graph-icon:before {
   @include iconBuilder(16px, 16px, 'graph.svg');
+}
+
+.icon-btn.dashboard-filter-icon:before {
+  @include iconBuilder(16px, 16px, 'filter.svg');
+}
+.btn-secondary.icon-btn.dashboard-filter-icon:before,
+.icon-btn.dashboard-filter-icon:active:before,
+.icon-btn.dashboard-filter-icon:hover:before {
+  @include iconBuilder(16px, 16px, 'filter-hover.svg');
 }

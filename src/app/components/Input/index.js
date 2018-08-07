@@ -17,14 +17,16 @@ const propTypes = {
     className: PropTypes.string,
     cssModule: PropTypes.object,
     value: PropTypes.string,
-    allowDecimal: PropTypes.bool,
+    decimal: PropTypes.number,
+    maxLength: PropTypes.number,
+    max: PropTypes.number,
     allowNegative: PropTypes.bool,
 };
 
 const defaultProps = {
     type: 'text',
     value: '',
-    allowDecimal: false,
+    decimal: 0,
     allowNegative: false,
 };
 
@@ -47,14 +49,31 @@ class Input extends React.Component {
         }
     }
 
-    onChange = (e) => {
-        let value = e.target.value;
-        const { type, allowNegative } = this.props;
+    propagateNumberValue = (value, decimal, maxLength, max) => {
+        if (decimal) {
+            const decimalValue = Number(Number(value).toFixed(decimal));
+            const valueEqualsNumber = (String(decimalValue) === value);
+
+            let valueIsValid = (new RegExp(`^\\d{0,${maxLength}}(\\.?\\d{0,${decimal}})?$`)).test(value);
+
+            if (typeof max === 'number') {
+                valueIsValid = valueIsValid && (decimalValue <= max);
+            }
+            valueIsValid && this.setState({ value }, () => {
+                valueEqualsNumber && this.props.onChange(decimalValue);
+            });
+
+        } else {
+            this.setState({ value }, () => this.props.onChange(Number(value)));
+        }
+    };
+
+    onChange = (value) => {
+        const { type, allowNegative, decimal, maxLength, max } = this.props;
         const isValidValue = type !== 'number' || ((value === '-' && allowNegative) || !isNaN(+value));
 
         if (isValidValue) {
-            value = type === 'number' ? Number(value) : value;
-            this.setState({ value }, () => {
+            type === 'number' ? this.propagateNumberValue(value, decimal, maxLength, max) : this.setState({ value }, () => {
                 this.props.onChange(value);
             });
         }
@@ -62,9 +81,9 @@ class Input extends React.Component {
 
 
     validateNumKey = (e) => {
-        const { allowDecimal, allowNegative } = this.props;
+        const { decimal, allowNegative } = this.props;
         let isKeyAllowed = e.charCode >= 48 && e.charCode <= 57;
-        if (allowDecimal) {
+        if (decimal) {
             isKeyAllowed = isKeyAllowed || e.charCode === 46;
         }
         if (allowNegative) {
@@ -147,19 +166,19 @@ class Input extends React.Component {
             attributes.onKeyPress = this.validateNumKey;
         }
 
-        delete attributes.allowDecimal;
+        delete attributes.decimal;
         delete attributes.allowNegative;
 
         return (
             <div style={style} className={className}>
                 {valid === false && <div className={'fieldInvalid'} title={errorMessage}/>}
-            <Tag
-                {...attributes}
-                value={this.state.value}
-                ref={innerRef}
-                className={classes}
-                onChange={this.onChange}
-            />
+                <Tag
+                    {...attributes}
+                    value={this.state.value}
+                    ref={innerRef}
+                    className={classes}
+                    onChange={event => this.onChange(event.target.value)}
+                />
             </div>
         );
     }

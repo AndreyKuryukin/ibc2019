@@ -4,6 +4,7 @@ import roles from '../modules/roles/reducers';
 import login from '../modules/login/reducers';
 import users from '../modules/users/reducers';
 import user from './user';
+import app from './app';
 import policies from '../modules/policies/reducers';
 import kqi from '../modules/kqi/reducers';
 import reports from '../modules/reports/reducers';
@@ -12,6 +13,7 @@ import alarms from '../modules/alarms/reducers';
 import notifications from '../modules/notifications/reducers';
 
 export default combineReducers({
+    app,
     login,
     roles,
     users,

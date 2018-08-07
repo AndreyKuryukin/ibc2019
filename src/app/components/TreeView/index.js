@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
+import memoize from 'memoizejs';
 import classnames from 'classnames';
 import { naturalSort } from '../../util/sort';
 import Table from '../Table';
@@ -48,8 +49,13 @@ class TreeView extends React.Component {
         }
     }
 
-    sort = (data, columnName, direction, parents = []) =>
-        naturalSort(data, [direction], node => [_.get(node, `${columnName}`, '')])
+    getColumnConfig = memoize((columnName) => {
+        _.find(this.props.columns, (clmn) => clmn.name === columnName)
+    });
+
+    sort = (data, columnName, direction, parents = []) => {
+        const extractor = _.get(this.getColumnConfig(columnName), 'extractor', node => [_.get(node, `${columnName}`, '')]);
+        return naturalSort(data, [direction], extractor)
             .reduce((result, nextNode, index, array) => {
                     const node = {
                         ...nextNode,
@@ -62,6 +68,8 @@ class TreeView extends React.Component {
                         : [...result, node];
                 },
                 []);
+    };
+
 
     mapData = (data, parents = []) =>
         data.map((originNode, index) => ({

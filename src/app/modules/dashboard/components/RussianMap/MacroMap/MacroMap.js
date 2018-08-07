@@ -5,6 +5,7 @@ import styles from '../styles.scss';
 import data from './data';
 import RegionShape from '../RegionShape';
 import RegionInfo from './RegionInfo';
+import Info from './Info';
 
 class MacroMap extends React.PureComponent {
     static propTypes = {
@@ -112,11 +113,11 @@ class MacroMap extends React.PureComponent {
                                     />
                                 ))}
                             </svg>
-                            {list.map(region => {
+                            {list.reduce((result, region) => {
                                 const relativeLeft = region.nameCoords[0] / width * 100 + '%';
                                 const relativeTop = region.nameCoords[1] / height * 100 + '%';
 
-                                return (
+                                const newResult = [...result, (
                                     <RegionInfo
                                         key={region.id}
                                         id={region.id}
@@ -132,8 +133,29 @@ class MacroMap extends React.PureComponent {
                                         onMouseEnter={this.onMouseEnter}
                                         onMouseLeave={this.onMouseLeave}
                                     />
-                                );
-                            })}
+                                )];
+
+                                return region.extra
+                                    ? newResult.concat(region.extra.map((info, i) => {
+                                            const leftCoord = info.coords[0] / width * 100 + '%';
+                                            const topCoord = info.coords[1] / height * 100 + '%';
+
+                                            return (
+                                                <Info
+                                                    key={region.id + '-' + i}
+                                                    name={info.name}
+                                                    coords={{
+                                                        left: `calc(${paddingH}px + ${leftCoord})`,
+                                                        top: `calc(${paddingV}px + ${topCoord})`,
+                                                    }}
+                                                    kqi={kqi[region.id]}
+                                                    plan={plan}
+                                                    showPoint
+                                                />
+                                            );
+                                        }))
+                                    : newResult;
+                            }, [])}
                         </div>
                     </div>
                 </div>

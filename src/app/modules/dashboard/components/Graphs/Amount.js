@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Highcharts from 'highcharts';
 import PatternFill from 'highcharts/modules/pattern-fill';
+import _ from 'lodash';
 import Chart from './Chart';
 import rest from '../../../../rest';
 import ls from '../../../../../i18n';
@@ -105,6 +106,23 @@ class Amount extends React.Component {
                             'font-size': options.size,
                             align: 'center',
                         }).add());
+                    },
+                    render: function() {
+                        const { chartWidth, chartHeight } = this;
+
+                        const cx = chartWidth / 2;
+                        const cy = chartHeight / 2;
+
+                        hoverTextOptions.forEach((option, i) => {
+                            const textNode = instance.texts[i];
+
+                            if (typeof textNode !== undefined) {
+                                textNode.attr({
+                                    x: cx,
+                                    y: cy + option.offset,
+                                });
+                            }
+                        });
                     },
                 },
             },

@@ -16,6 +16,7 @@ module.exports = {
         "default-case": "off",
 
         "comma-dangle": ["error", "always-multiline"], // http://eslint.org/docs/rules/comma-dangle#always-multiline
+        "consistent-return": ["error", { "treatUndefinedAsUnspecified": true }], // https://eslint.org/docs/rules/consistent-return
         "space-before-function-paren": ["error", { "anonymous": "always", "named": "never" }], // http://eslint.org/docs/rules/space-before-function-paren
         "radix": ["error", "as-needed"], // http://eslint.org/docs/rules/radix#as-needed
 
@@ -25,6 +26,7 @@ module.exports = {
         "class-methods-use-this": [0],
         "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }], // http://eslint.org/docs/rules/no-plusplus
         "no-confusing-arrow": "off",
+        "no-multi-spaces": ["error", { "ignoreEOLComments": true }], // https://eslint.org/docs/rules/no-multi-spaces
         "new-cap": [2, { "capIsNewExceptionPattern" : "^Immutable\\.." }],
         "import/prefer-default-export": "off",
         "react/sort-comp": "off",

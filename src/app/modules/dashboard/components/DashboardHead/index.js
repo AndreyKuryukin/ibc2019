@@ -107,7 +107,7 @@ class DashboardHead extends React.Component {
                 <ReactstrapButtonGroup>
                     <Button
                         color="secondary"
-                        className="dropdown-toggle"
+                        className="dropdown-toggle icon-btn dashboard-filter-icon"
                         style={filterButtonStyle}
                         outline={!this.props.isFiltersExpanded}
                         onClick={this.onFiltersButtonClick}
