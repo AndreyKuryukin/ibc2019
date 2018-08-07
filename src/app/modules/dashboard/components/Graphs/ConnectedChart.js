@@ -66,7 +66,7 @@ class ConnectedChart extends React.Component {
     };
 
     setTooltipVisibility = (visibility) => {
-        // There is a bug when you hover a point and then the legend or header, tooltip doesn't disappear even using tooltip.hide().
+        // There is a bug when you hover a point and then the legend, header or yAxis/xAxis, tooltip doesn't disappear even using tooltip.hide().
         // So need to hide manually.
         this.chart.container.querySelectorAll('.highcharts-tooltip').forEach((node) => {
             if (node.style.visibility !== visibility) {

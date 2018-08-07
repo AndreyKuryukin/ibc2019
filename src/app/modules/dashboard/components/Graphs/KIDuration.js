@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import _ from 'lodash';
 import Chart from './Chart';
 import ConnectedChart from './ConnectedChart';
 import ls from '../../../../../i18n';
 
 class KIDuration extends React.Component {
     static propTypes = {
+        mrfId: PropTypes.string,
+        regularity: PropTypes.string.isRequired,
         data: PropTypes.arrayOf(PropTypes.shape({
             name: PropTypes.string.isRequired,
             count: PropTypes.number,
@@ -13,14 +17,21 @@ class KIDuration extends React.Component {
         })).isRequired,
     };
 
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    };
+
     getChartOptions() {
         const series = this.getSeries();
         const categories = this.getCategories();
 
         return {
+            owner: this,
             chart: {
                 type: 'column',
                 events: {
+                    click: this.onClick,
+                },
                     render: function() {
                         const series = _.get(this, 'series.0.data');
                         series.forEach(item => {
@@ -90,6 +101,9 @@ class KIDuration extends React.Component {
                 },
                 useHTML: true,
             },
+            events: {
+                click: this.onClick,
+            },
         }];
     }
 
@@ -99,6 +113,30 @@ class KIDuration extends React.Component {
             categories.push(city.name);
         }
         return categories;
+    }
+
+    onClick(e) {
+        const instance = this.pointer ? this : this.chart;
+        const event = instance.pointer.normalize(e);
+        const point = instance.series[0].searchPoint(event, true);
+
+        if (point) {
+            const { owner } = instance.options;
+            const interval = owner.props.regularity.toLowerCase();
+            const start = moment().subtract(1, interval).startOf(interval).valueOf();
+
+            owner.context.history.push({
+                pathname: '/alarms/ci',
+                search: _.reduce({
+                    rf: owner.props.data[point.index].id,
+                    mrf: owner.props.mrfId,
+                    start,
+                    end: moment(start).endOf(interval).valueOf(),
+                    current: true,
+                    historical: true,
+                }, (searchString, v, k) => !searchString ? `?${k}=${v}` : searchString + `&${k}=${v}`, ''),
+            });
+        }
     }
 
     dataLabelsFormatter() {
