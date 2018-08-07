@@ -55,7 +55,8 @@ class ReportsTable extends React.PureComponent {
         resizable: true,
         sortable: true,
         searchable: true,
-        width: 130
+        width: 130,
+        extractor: node => new Date(node.create_end_time).getTime()
     }, {
         name: 'retry',
         width: 40
@@ -112,6 +113,7 @@ class ReportsTable extends React.PureComponent {
         path: report.file_path,
         start: report.create_start_time ? convertUTC0ToLocal(report.create_start_time).format(DATE_TIME) : '',
         end: report.create_end_time ? convertUTC0ToLocal(report.create_end_time).format(DATE_TIME) : '',
+        create_end_time: report.create_end_time,
         state: report.state,
         type: config.type,
         nodeType: 'report',
