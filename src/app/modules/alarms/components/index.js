@@ -26,6 +26,7 @@ class Alarms extends React.PureComponent {
         locations: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlarms: PropTypes.func,
+        onExportXLSX: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
@@ -36,6 +37,7 @@ class Alarms extends React.PureComponent {
         locations: [],
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
+        onExportXLSX: () => null,
         isLoading: false,
     };
 
@@ -66,6 +68,7 @@ class Alarms extends React.PureComponent {
             locations,
             onChangeFilter,
             onFetchAlarms,
+            onExportXLSX,
             isLoading,
         } = this.props;
         const { params = {} } = match;
@@ -91,6 +94,7 @@ class Alarms extends React.PureComponent {
                             locations={locations}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
+                            onExportXLSX={onExportXLSX}
                             isLoading={isLoading}
                         />
                     )}
@@ -110,6 +114,7 @@ class Alarms extends React.PureComponent {
                             locations={locations}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
+                            onExportXLSX={onExportXLSX}
                             isLoading={isLoading}
                         />
                     )}
@@ -129,6 +134,7 @@ class Alarms extends React.PureComponent {
                             locations={locations}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
+                            onExportXLSX={onExportXLSX}
                             isLoading={isLoading}
                         />
                     )}

@@ -23,14 +23,12 @@ class AlarmsTable extends React.PureComponent {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
-        onDisplayedDataChanged: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
-        onDisplayedDataChanged: () => null,
     };
 
     static getColumns = memoize(() => ([
@@ -143,10 +141,8 @@ class AlarmsTable extends React.PureComponent {
 
     customSortFunction = (data, columnName, direction) => {
         const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
-        const sortedData = naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
-        this.props.onDisplayedDataChanged(sortedData);
 
-        return sortedData;
+        return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
     };
 
     filter = (data, searchableColumns, searchText) => data.filter(node => searchableColumns.find(column => search(node[column.name], searchText)));
