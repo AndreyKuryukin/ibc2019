@@ -53,4 +53,14 @@
     width: 100%;
     margin-top: 23px;
   }
+
+  .btn-primary,
+  .btn-outline-primary {
+    border-color: rgba(255, 128, 0, 0.5);
+  }
+
+  .btn-secondary,
+  .btn-outline-secondary {
+    border-color: rgba(255, 255, 255, 0.5);
+  }
 }

@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import cn from 'classnames';
 import styles from '../styles.scss';
 import ls from 'i18n';
+import Info from './Info';
 
 class RegionInfo extends React.PureComponent {
     static propTypes = {
@@ -37,22 +38,14 @@ class RegionInfo extends React.PureComponent {
         } = this.props;
 
         return (
-            <div
-                className={cn(styles.mrfinfo, {
-                    [styles.positive]: plan < kqi,
-                    [styles.negative]: plan > kqi,
-                })}
-                style={coords}
-                onMouseEnter={this.onMouseEnter}
-                onMouseLeave={this.onMouseLeave}
-            >
-                <span className="name">{name}</span>
-                {kqi === undefined ? (
-                    <span className={styles.value}>{ls('NOT_AVAILABLE', 'Н/Д')}</span>
-                ) : (
-                    <span className="value">{kqi.toFixed(2)} <span>%</span></span>
-                )}
-            </div>
+            <Info
+                name={name}
+                coords={coords}
+                kqi={kqi}
+                plan={plan}
+                mouseEnter={this.onMouseEnter}
+                mouseLeave={this.onMouseLeave}
+            />
         );
     }
 

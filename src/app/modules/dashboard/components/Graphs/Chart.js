@@ -112,6 +112,7 @@ class Chart extends React.PureComponent {
             this.container,
             {
                 ...options,
+                credits: { enabled: false },
                 chart: {
                     ...options.chart,
                     width,
