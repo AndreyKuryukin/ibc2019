@@ -79,6 +79,7 @@ class Policies extends React.Component {
                     active={isEditorActive}
                     policyId={policyId}
                     policies={data}
+                    fetchPolicies={fetchPolicies}
                 />}
                 {(isConfiguratorActive || isConfiguratorViewActive) && <NotificationConfigurator
                     active={(isConfiguratorActive || isConfiguratorViewActive)}
