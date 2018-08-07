@@ -63,7 +63,8 @@ class Alarms extends React.PureComponent {
         const queryParams = getQueryParams(props.location);
         if (!_.isEmpty(queryParams)) {
             const filter = this.mapFilterValues(queryParams, props);
-            props.onChangeFilter(filter)
+            props.onChangeFilter(filter);
+            this.onFetchAlarms(filter);
         }
     }
 
@@ -104,8 +105,7 @@ class Alarms extends React.PureComponent {
             start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
-        setQueryParams(queryParams, this.props.history, this.props.location);
-        rest.get('/api/v1/alerts', {}, { queryParams })
+         rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {
                 const typeMap = {
                     'gp': 'gp',
@@ -130,6 +130,11 @@ class Alarms extends React.PureComponent {
             });
     };
 
+    fetchAlarms = (filter) => {
+        setQueryParams(filter, this.props.history, this.props.location);
+        this.onFetchAlarms(filter)
+    };
+
     render() {
         return (
             <AlarmsComponent
@@ -140,7 +145,7 @@ class Alarms extends React.PureComponent {
                 locations={this.props.locations}
                 onChangeFilter={this.props.onChangeFilter}
                 notifications={this.props.notifications}
-                onFetchAlarms={this.onFetchAlarms}
+                onFetchAlarms={this.fetchAlarms}
                 isLoading={this.state.isLoading}
             />
         );
