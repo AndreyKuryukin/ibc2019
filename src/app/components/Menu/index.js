@@ -22,14 +22,16 @@ class Menu extends React.Component {
         onClick: PropTypes.func,
         className: PropTypes.string,
         path: PropTypes.string,
-        notifications: PropTypes.object
+        notifications: PropTypes.object,
+        app: PropTypes.object
     };
 
     static defaultProps = {
         menuItems: [],
         notifications: [],
         path: '',
-        onClick: () => null
+        onClick: () => null,
+        app: {}
     };
 
     constructor(props) {
@@ -120,10 +122,13 @@ class Menu extends React.Component {
     };
 
     render() {
-        const { menuItems = [], className, path } = this.props;
+        const { menuItems = [], className, path, app } = this.props;
         const feature = this.getFeature(path);
         return <div className={classNames(styles.sideMenu, className)}>
             {_.isArray(menuItems) && menuItems.map((item, index) => this.renderTile(item, index, feature))}
+            <div className={classNames(styles.appVersion)}>
+                {`FE: v. ${app.version}`}
+            </div>
         </div>
     }
 }
