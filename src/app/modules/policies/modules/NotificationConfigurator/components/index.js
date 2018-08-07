@@ -103,19 +103,17 @@ class NotificationConfigurator extends React.PureComponent {
         const config = _.get(this.state.configs, `${configId}`);
 
         if (config) {
-            const configs = {
-                ..._.omit({ ...this.state.configs }, `${configId}`),
-                [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: {
-                    ...config,
-                    instance_id: instanceId,
-                },
-            }
+            const configs = _.reduce(this.state.configs, (result, cfg, key) =>
+                key !== configId
+                    ? { ...result, [key]: { ...cfg } }
+                    : { ...result, [`${_.get(config, 'adapter_id', '')}_${instanceId}`]: { ...cfg, instance_id: instanceId }},
+                {});
 
             this.setState({
                 configs,
             });
         }
-    }
+    };
 
     onChangeConfigParameters = (configId, parameters) => {
         const config = _.get(this.state.configs, `${configId}`);
@@ -133,7 +131,7 @@ class NotificationConfigurator extends React.PureComponent {
                 configs,
             });
         }
-    }
+    };
 
     onClose = () => {
         this.context.history.push('/policies');
@@ -144,23 +142,21 @@ class NotificationConfigurator extends React.PureComponent {
         this.setState({
             configs: _.omit(this.state.configs, configId),
         });
-    }
+    };
 
     onSubmit = () => {
         const notificationsConfigs =
             _.chain(this.state.configs)
                 .values()
                 .map(cfg => ({
-                    adapter_id: cfg.adapter_id,
-                    instance_id: cfg.instance_id,
+                    ...cfg,
                     parameters: cfg.parameters.map(param => ({
                         uid: param.uid,
-                        value: _.isArray(param.value) ? param.value : [param.value],
+                        ...(_.isUndefined(param.value) ? { value: [] } : { value: _.isArray(param.value) ? param.value : [param.value] }),
                     })),
                 }))
                 .value();
-
-        this.props.onSubmit(Object.values(this.state.configs));
+        this.props.onSubmit(notificationsConfigs);
     };
 
     render() {
@@ -177,7 +173,8 @@ class NotificationConfigurator extends React.PureComponent {
                     </ModalHeader>
                     <ModalBody>
                         <Preloader active={isLoading}>
-                            <div className={classnames(styles.notificationConfiguratorContent, {[styles.viewMode]: view})}>
+                            <div
+                                className={classnames(styles.notificationConfiguratorContent, { [styles.viewMode]: view })}>
                                 <Field
                                     labelText={ls('POLICIES_CONFIGURATOR_POLICY_FIELD_LABEL', 'Политика')}
                                     inputWidth={'80%'}
@@ -193,11 +190,12 @@ class NotificationConfigurator extends React.PureComponent {
                                         selectedConfigsKeys={selectedConfigsKeys}
                                     />
                                     <div className={styles.configs}>
-                                        {_.map(this.state.configs, (config, key) => (
+                                        {_.map(this.state.configs, (config, key, configs) => (
                                             config && <ConfigBlock
                                                 id={key}
                                                 key={key}
                                                 config={config}
+                                                configs={Object.values(configs)}
                                                 onChangeInstance={this.onChangeConfigInstance.bind(this, key)}
                                                 onChangeParameters={this.onChangeConfigParameters.bind(this, key)}
                                                 onRemove={this.onConfigRemove.bind(this, key)}
@@ -209,7 +207,8 @@ class NotificationConfigurator extends React.PureComponent {
                         </Preloader>
                     </ModalBody>
                     <ModalFooter>
-                        {!view && <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>}
+                        {!view &&
+                        <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>}
                         {!view && <Button color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>}
                         {view && <Button color="action" onClick={this.onClose}>{ls('OK', 'Закрыть')}</Button>}
                     </ModalFooter>

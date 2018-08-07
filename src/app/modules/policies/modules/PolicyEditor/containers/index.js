@@ -397,7 +397,7 @@ class PolicyEditor extends React.PureComponent {
         if (_.isEmpty(errors)) {
             this.setState({ loading: true });
             const queryParams = {
-                stepCount: 5,
+                stepCount: 3,
                 query: false,
             };
             const policy = _.set({ ...policyData }, 'condition', this.encodeConditions(policyData));

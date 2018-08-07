@@ -74,13 +74,16 @@ class NotificationConfigurator extends React.PureComponent {
         }
     };
 
-    onSubmit = (notifications) => {
+    onSubmit = (notifications, adapters) => {
         if (this.props.policyId) {
             let isAllFieldsValid = true;
             const validatedNotifications = notifications.reduce((result, notification) => {
-                isAllFieldsValid = isAllFieldsValid && !!notification.instance_id;
+                const adapter = _.find(adapters, { adapter_id: notification.adapter_id });
+                const paramsMetaData = _.get(adapter, 'parameters', []);
                 const parameters = notification.parameters.map(param => {
-                    const errors = validateForm({ [param.uid]: _.get(param, 'value.0', '') }, { [param.uid]: { required: !!param.required } });
+                    const paramMetaData = _.find(paramsMetaData, paramMeta => paramMeta.uid === param.uid);
+                    //todo: Сделать формирование кофига для валидации
+                    const errors = validateForm({ [param.uid]: _.get(param, 'value.0', '') }, { [param.uid]: { required: !!_.get(paramMetaData, 'required') } });
                     isAllFieldsValid = isAllFieldsValid && _.isEmpty(errors);
 
                     return {
@@ -91,7 +94,11 @@ class NotificationConfigurator extends React.PureComponent {
 
                 return [...result, {
                     ...notification,
-                    errors: !notification.instance_id ? validateForm({ instance_id: notification.instance_id }, { instance_id: { required: true } }) : null,
+                    errors: !_.isEmpty(adapter.instances) && !notification.instance_id ?
+                        validateForm(
+                            { instance_id: notification.instance_id },
+                            { instance_id: { required: true } })
+                        : null,
                     parameters,
                 }];
             }, []);
@@ -126,7 +133,7 @@ class NotificationConfigurator extends React.PureComponent {
                 adapters={this.props.adapters}
                 notifications={this.state.notifications}
                 policyName={this.state.policyName}
-                onSubmit={this.onSubmit}
+                onSubmit={notification => this.onSubmit(notification, this.props.adapters)}
                 onMount={this.onMount}
                 isLoading={this.state.isLoading}
             />
