@@ -92,6 +92,7 @@ class PageWrapper extends React.Component {
         const hidden = this.state.hidden || _.get(this.props, 'embedded');
         return <div className={classNames(styles.pageWrapper, { [styles.blur]: this.state.blur })}>
             <Menu menuItems={this.props.user.menu}
+                  app={this.props.app}
                   onClick={this.onMenuClick}
                   className={classNames({ [styles.hidden]: hidden })}
                   path={_.get(this.props, 'location.pathname')}
@@ -110,7 +111,10 @@ class PageWrapper extends React.Component {
                     <div className={styles.rightPanel}>
                         <span className={styles.userlink}
                               onClick={this.onUserNameClick}
-                        >{this.getUserName(this.props.user)}</span>
+                        >
+                            {this.getUserName(this.props.user)}
+                        </span>
+
                         <Icon
                             icon="logout-icon"
                             onClick={this.props.onLogOut}
@@ -128,6 +132,7 @@ class PageWrapper extends React.Component {
 
 const mapStateToProps = state => ({
     user: state.user,
+    app: state.app,
     notifications: _.get(state, 'notifications')
 });
 
