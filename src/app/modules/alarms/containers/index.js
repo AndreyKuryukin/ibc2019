@@ -8,7 +8,8 @@ import rest from '../../../rest';
 import AlarmsComponent from '../components';
 import ls from "i18n";
 import { SENDING_ALARM_TYPES } from '../constants';
-import { convertDateToUTC0 } from '../../../util/date';
+import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
+import { getQueryParams, setQueryParams } from "../../../util/state";
 
 const TAB_TITLES = {
     'GP': 'ГП',
@@ -56,10 +57,14 @@ class Alarms extends React.PureComponent {
 
     constructor(props) {
         super(props);
-
         this.state = {
             isLoading: false,
         };
+        const queryParams = getQueryParams(props.location);
+        if (!_.isEmpty(queryParams)) {
+            const filter = this.mapFilterValues(queryParams, props);
+            props.onChangeFilter(filter)
+        }
     }
 
     componentDidMount() {
@@ -82,6 +87,15 @@ class Alarms extends React.PureComponent {
         }
     }
 
+    mapFilterValues = (filter, props) => ({
+        ...filter,
+        type: SENDING_ALARM_TYPES[props.match.params.type],
+        start: filter.start && convertUTC0ToLocal(Number(filter.start)).toDate(),
+        end: filter.end && convertUTC0ToLocal(Number(filter.end)).toDate(),
+        current: filter.current === 'true',
+        historical: filter.historical === 'true',
+    });
+
     onFetchAlarms = (filter) => {
         this.setState({ isLoading: true });
         const queryParams = {
@@ -90,13 +104,14 @@ class Alarms extends React.PureComponent {
             start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
+        setQueryParams(queryParams, this.props.history, this.props.location);
         rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {
-            const typeMap = {
-                'gp': 'gp',
-                'kqi': 'kqi',
-                'ci': 'ki'
-            };
+                const typeMap = {
+                    'gp': 'gp',
+                    'kqi': 'kqi',
+                    'ci': 'ki'
+                };
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);
                 this.props.flushNotifications(typeMap[this.props.match.params.type]);
