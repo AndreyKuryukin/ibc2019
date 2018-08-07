@@ -41,8 +41,16 @@ class KI extends React.Component {
     render() {
         return (
             <div style={{ width: '100%', maxWidth: '100%', overflow: 'hidden', flexShrink: 1, flexGrow: 1, flexBasis: '100%' }}>
-                <KICount data={this.state.data} />
-                <KIDuration data={this.state.data} />
+                <KICount
+                    data={this.state.data}
+                    mrfId={this.props.mrfId}
+                    regularity={this.props.regularity}
+                />
+                <KIDuration
+                    data={this.state.data}
+                    mrfId={this.props.mrfId}
+                    regularity={this.props.regularity}
+                />
             </div>
         );
     }
