@@ -37,17 +37,13 @@ class AlarmsContent extends React.PureComponent {
         };
     };
 
-    componentDidMount() {
-        this.props.onFetchAlarms(this.props.filter);
-    }
-
     onApplyFilter = () => {
         this.props.onFetchAlarms(this.props.filter);
     };
 
     onDisplayedDataChanged = (displayedData) => {
         this.setState({ displayedData });
-    }
+    };
 
     render() {
         const {
