@@ -68,7 +68,7 @@ class ResultsViewer extends React.PureComponent {
                         className="handle"
                         toggle={this.props.onClose}
                     >
-                        {ls('KQI_RESULTS_VIEWER_TITLE', `Результаты вычисления KQI ${_.get(this.props.projection, 'name', '')}`)}
+                        {ls('KQI_RESULTS_VIEWER_TITLE', 'Результаты вычисления KQI') + ' ' + `${_.get(this.props.projection, 'name', '')}`}
                     </ModalHeader>
                     <ModalBody>
                         <div className={styles.kqiResultsViewerContent}>
