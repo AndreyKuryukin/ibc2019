@@ -123,6 +123,8 @@ class KIDuration extends React.Component {
                     mrf: owner.props.mrfId,
                     start,
                     end: moment(start).endOf(interval).valueOf(),
+                    current: true,
+                    historical: true,
                 }, (searchString, v, k) => !searchString ? `?${k}=${v}` : searchString + `&${k}=${v}`, ''),
             });
         }
