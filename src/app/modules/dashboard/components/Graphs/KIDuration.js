@@ -31,8 +31,7 @@ class KIDuration extends React.Component {
                 type: 'column',
                 events: {
                     click: this.onClick,
-                },
-                    render: function() {
+                    render: function () {
                         const series = _.get(this, 'series.0.data');
                         series.forEach(item => {
                             const { dataLabel, shapeArgs } = item;
@@ -42,7 +41,7 @@ class KIDuration extends React.Component {
                             });
                         });
                     },
-                }
+                },
             },
             title: {
                 text: '',
@@ -66,7 +65,7 @@ class KIDuration extends React.Component {
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
-                labels: {enabled: false},
+                labels: { enabled: false },
             },
             yAxis: {
                 ...Chart.DEFAULT_OPTIONS.yAxis,
@@ -84,7 +83,7 @@ class KIDuration extends React.Component {
     getSeries() {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
-            data: this.props.data.map(city => Math.floor(city.duration/1000)),
+            data: this.props.data.map(city => Math.floor(city.duration / 1000)),
             dataLabels: {
                 enabled: true,
                 rotation: 270,
