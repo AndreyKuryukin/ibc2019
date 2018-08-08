@@ -117,10 +117,17 @@ class Alarms extends React.PureComponent {
             type: SENDING_ALARM_TYPES[this.props.match.params.type],
             start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
+            limit: 65000,
         };
 
         rest.get('/api/v1/alerts', {}, { queryParams }) // change url
             .then((response) => {
+                if (!response.data.length) {
+                    this.setState({ isLoading: false });
+
+                    return;
+                }
+
                 const workbook = XLSX.utils.book_new();
                 const worksheetCols = [
                     { wpx: 250 },
