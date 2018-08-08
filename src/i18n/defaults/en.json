@@ -458,5 +458,5 @@
     "WITH_MRF_GROUPING": "Grouped by MRD",
 
     "POLICIES_TEST": "Test",
-    "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?"
+    "POLICIES_TEST_CONFIRMATION_TEXT": "When you create a policy with the specified thresholds, you will see {count} crashes. Are you sure you want to create this policy?"
 }
