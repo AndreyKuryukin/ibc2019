@@ -157,6 +157,7 @@ class Period extends React.PureComponent {
                         splitter=""
                     >
                         <Radio
+                            itemId="kqi_projections_hour_radio"
                             id="hour-interval"
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.HOUR}
@@ -173,6 +174,7 @@ class Period extends React.PureComponent {
                         style={intervalFieldStyle}
                     >
                         <Radio
+                            itemId="kqi_projections_day_radio"
                             id="day-interval"
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.DAY}
@@ -189,6 +191,7 @@ class Period extends React.PureComponent {
                         style={intervalFieldStyle}
                     >
                         <Radio
+                            itemId="kqi_projections_week_radio"
                             id="week-interval"
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.WEEK}
@@ -204,6 +207,7 @@ class Period extends React.PureComponent {
                         style={intervalFieldStyle}
                     >
                         <Radio
+                            itemId="kqi_projections_other_radio"
                             id="other-interval"
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.OTHER}
@@ -212,6 +216,7 @@ class Period extends React.PureComponent {
                         />
                     </Field>
                     <DateTimePicker
+                        itemId="kqi_projections_start"
                         value={this.state.start}
                         max={this.state.end}
                         onChange={this.onStartChange}
@@ -222,6 +227,7 @@ class Period extends React.PureComponent {
                         disabled={disabled}
                     />
                     <DateTimePicker
+                        itemId="kqi_projections_end"
                         value={this.state.end}
                         min={this.state.start}
                         onChange={this.onEndChange}
@@ -266,6 +272,7 @@ class Period extends React.PureComponent {
                     splitter=""
                 >
                     <Checkbox
+                        itemId="kqi_projections_auto_check"
                         id="auto-checkbox"
                         checked={this.props.isAutoGen}
                         onChange={this.props.onAutoGenChange}

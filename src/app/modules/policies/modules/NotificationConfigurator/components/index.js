@@ -54,6 +54,12 @@ class NotificationConfigurator extends React.PureComponent {
     }
 
     componentDidMount() {
+        const closeBtn = document.querySelector(`.${styles.notificationConfigurator} .close`);
+
+        if (closeBtn) {
+            closeBtn.setAttribute('itemId', 'policies_configurator_close');
+        }
+
         this.props.onMount();
     }
 
@@ -208,9 +214,9 @@ class NotificationConfigurator extends React.PureComponent {
                     </ModalBody>
                     <ModalFooter>
                         {!view &&
-                        <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>}
-                        {!view && <Button color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>}
-                        {view && <Button color="action" onClick={this.onClose}>{ls('OK', 'Закрыть')}</Button>}
+                        <Button itemId="policies_configurator_cancel" outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>}
+                        {!view  && <Button itemId="policies_configurator_ok" color="action" onClick={this.onSubmit}>{ls('SUBMIT', 'Сохранить')}</Button>}
+                        {view && <Button itemId="policies_configurator_close_button"  color="action" onClick={this.onClose}>{ls('CLOSE', 'Закрыть')}</Button>}
                     </ModalFooter>
                 </Modal>
             </DraggableWrapper>

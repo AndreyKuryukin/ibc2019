@@ -56,6 +56,7 @@ class Technology extends React.PureComponent {
                     style={fieldStyle}
                 >
                     <Select
+                        itemId="kqi_projections_technology_field"
                         id={this.props.id}
                         placeholder={ls('KQI_CALCULATOR_TECHNOLOGY_PLACEHOLDER', 'Выберите технологию')}
                         options={this.props.technologies}
@@ -66,16 +67,17 @@ class Technology extends React.PureComponent {
                 </Field>
                 <div className={styles.groupingBlock}>
                     <Field
-                    id={`${this.props.id}-grouping`}
-                    labelText={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии')}
+                        id={`${this.props.id}-grouping`}
+                        labelText={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_GROUPING_FIELD_LABEL', 'С группировкой по используемой технологии')}
 
-                    inputWidth={25}
-                    labelWidth={405}
-                    labelAlign="right"
-                    splitter=""
-                    style={fieldStyle}
-                >
+                        inputWidth={25}
+                        labelWidth={405}
+                        labelAlign="right"
+                        splitter=""
+                        style={fieldStyle}
+                    >
                     <Checkbox
+                        itemId="kqi_projections_technology_grouping_check"
                         id={`${this.props.id}-grouping`}
                         checked={_.get(this.props, 'groupingValue', this.state.isGroupingChecked)}
                         onChange={this.onGroupingCheck}

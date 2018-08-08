@@ -9,6 +9,7 @@ class Radio extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
         name: PropTypes.string.isRequired,
+        itemId: PropTypes.string,
         disabled: PropTypes.bool,
         checked: PropTypes.bool,
         className: PropTypes.string,
@@ -17,6 +18,7 @@ class Radio extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         disabled: false,
         checked: false,
         className: '',
@@ -32,7 +34,7 @@ class Radio extends React.PureComponent {
     }
 
     render() {
-        const { id, name, style, checked, className, disabled } = this.props;
+        const { id, name, style, checked, className, disabled, itemId } = this.props;
         const classNames = classnames(
             styles.radioInput,
             className,
@@ -40,6 +42,7 @@ class Radio extends React.PureComponent {
         return (
             <div className={styles.radioWrapper}>
                 <Input
+                    itemId={itemId}
                     id={id}
                     name={name}
                     type="radio"

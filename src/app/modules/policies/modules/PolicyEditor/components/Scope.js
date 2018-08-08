@@ -44,6 +44,7 @@ class Scope extends React.PureComponent {
             case 'TECH':
                 return (
                     <ScopeList
+                        itemId="policies_tech_scope"
                         id="scope-list-tech"
                         placeholder={ls('POLICY_TECH_LIST_PLACEHOLDER', 'Выберите технологию')}
                         options={TECH_OPTIONS}
@@ -53,6 +54,7 @@ class Scope extends React.PureComponent {
             case 'MRF':
                 return (
                     <ScopeList
+                        itemId="policies_mrf_scope"
                         id="scope-list-mrf"
                         placeholder={ls('POLICY_MRF_LIST_PLACEHOLDER', 'Выберите МРФ')}
                         options={this.mapLocationLists(this.props.mrfList)}
@@ -62,8 +64,9 @@ class Scope extends React.PureComponent {
             case 'RF':
                 return (
                     <ScopeList
-                        id="scope-list-mrf"
-                        placeholder={ls('POLICY_MRF_LIST_PLACEHOLDER', 'Выберите РФ')}
+                        itemId="policies_rf_scope"
+                        id="scope-list-rf"
+                        placeholder={ls('POLICY_RF_LIST_PLACEHOLDER', 'Выберите РФ')}
                         options={this.mapLocationLists(this.props.rfList)}
                         {...commonProps}
                     />
@@ -71,6 +74,7 @@ class Scope extends React.PureComponent {
             case 'MAC':
                 return (
                     <MacList
+                        itemId="policies_mac_scope"
                         macs={values}
                         onChange={commonProps.onChange}
                     />
@@ -78,6 +82,7 @@ class Scope extends React.PureComponent {
             case 'KQI_PROJECTION':
                 return (
                     <KqiList
+                        itemId="policies_kqi_scope"
                         selected={values}
                         onChange={commonProps.onChange}
                         kqiList={this.props.kqiList}
@@ -118,6 +123,7 @@ class Scope extends React.PureComponent {
                         splitter=""
                     >
                         <Select
+                            itemId="policies_scope_field"
                             id="scope"
                             type="select"
                             placeholder={ls('POLICY_SCOPE_TYPE_PLACEHOLDER', 'Область применения')}

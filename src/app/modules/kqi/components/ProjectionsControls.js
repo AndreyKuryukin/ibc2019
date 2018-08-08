@@ -33,12 +33,14 @@ class ProjectionsControls extends React.PureComponent {
             <div className={styles.kqiControls}>
                 {this.context.hasAccess('KQI', 'EDIT') && <div className={styles.buttonsGroup}>
                     <Icon
+                        itemId="kqi_projections_add"
                         icon="addIcon"
                         onClick={this.onCalculate}
                         title={ls('ADD_KQI_PROJECTION_TITLE', 'Добавить проекцию KQI')}
                     />
                 </div>}
                 <Input
+                    itemId="kqi_projections_search_field"
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}
                     onChange={this.onSearchTextChange}

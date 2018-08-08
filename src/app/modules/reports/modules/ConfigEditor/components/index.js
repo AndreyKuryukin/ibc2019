@@ -85,6 +85,12 @@ class ConfigEditor extends React.PureComponent {
     }
 
     componentDidMount() {
+        const closeBtn = document.querySelector(`.${styles.configEditor} .close`);
+
+        if (closeBtn) {
+            closeBtn.setAttribute('itemId', 'reports_close');
+        }
+
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
         }
@@ -216,6 +222,7 @@ class ConfigEditor extends React.PureComponent {
                                     >
                                         {!this.state.config.period.auto ? (
                                             <Input
+                                                itemId="reports_name_field"
                                                 id="config-name"
                                                 name="config-name"
                                                 value={this.getConfigProperty('name')}
@@ -240,6 +247,7 @@ class ConfigEditor extends React.PureComponent {
                                         required
                                     >
                                         <Select
+                                            itemId="reports_template_field"
                                             id="template-id"
                                             options={this.mapTemplateOptions(templates)}
                                             value={this.getConfigProperty('template_id', '') || ''}
@@ -279,6 +287,7 @@ class ConfigEditor extends React.PureComponent {
                                         required
                                     >
                                         <Select
+                                            itemId="reports_mrf_field"
                                             id="mrf"
                                             options={this.mapLocationOptions(this.props.locations)}
                                             value={this.getConfigProperty('mrf', '') || ''}
@@ -299,6 +308,7 @@ class ConfigEditor extends React.PureComponent {
                                     title={ls('REPORTS_CONFIG_EDITOR_ROLE_COMMENT_TITLE', 'Комментарий')}
                                 >
                                     <Input
+                                        itemId="reports_comment_field"
                                         type="textarea"
                                         value={this.getConfigProperty('comment')}
                                         onChange={value => this.setConfigProperty('comment', value)}
@@ -322,8 +332,8 @@ class ConfigEditor extends React.PureComponent {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>
-                        <Button color="action" onClick={this.onSubmit}>{ls('REPORT_EDITOR_SUBMIT', 'Создать')}</Button>
+                        <Button itemId="reports_cancel" outline color="action" onClick={this.onClose}>{ls('CANCEL', 'Отмена')}</Button>
+                        <Button itemId="reports_ok" color="action" onClick={this.onSubmit}>{ls('REPORT_EDITOR_SUBMIT', 'Создать')}</Button>
                     </ModalFooter>
                 </Modal>
             </DraggableWrapper>

@@ -33,6 +33,7 @@ const NativeInput = props => {
 class ChipList extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
+        itemId: PropTypes.string,
         addTitle: PropTypes.string,
         inputPlaceholder: PropTypes.string,
         onChange: PropTypes.func,
@@ -49,6 +50,7 @@ class ChipList extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         addTitle: '',
         value: '',
         inputPlaceholder: '',
@@ -91,6 +93,7 @@ class ChipList extends React.PureComponent {
         return <div className={styles.chipListContainer}>
             <div className={styles.inputContainer}>
                 <InputCmp
+                    itemId={this.props.itemId ? `${this.props.itemId}_field` : ''}
                     id={this.props.id}
                     options={this.props.options}
                     placeholder={this.props.placeholder}
@@ -100,6 +103,7 @@ class ChipList extends React.PureComponent {
                     onChange={this.onChange}
                 />
                 <Icon
+                    itemId={this.props.itemId ? `${this.props.itemId}_add` : ''}
                     disabled={_.isEmpty(value)}
                     icon="addIcon"
                     onClick={() => this.onAdd(this.state.value)}

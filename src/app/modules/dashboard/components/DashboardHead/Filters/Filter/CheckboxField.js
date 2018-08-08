@@ -16,6 +16,7 @@ const CheckboxField = (props) => (
         }}
     >
         <Checkbox
+            itemId={`${props.id}_${props.option.value.toLowerCase()}_check`}
             id={props.option.value}
             checked={props.values.includes(props.option.value)}
             onChange={props.onChange}

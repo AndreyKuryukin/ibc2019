@@ -47,6 +47,12 @@ class Configurator extends React.PureComponent {
     }
 
     componentDidMount() {
+        const closeBtn = document.querySelector(`.${styles.kqiConfigurator} .close`);
+
+        if (closeBtn) {
+            closeBtn.setAttribute('itemId', 'kqi_configs_close');
+        }
+
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
         }
@@ -137,6 +143,7 @@ class Configurator extends React.PureComponent {
                                 required
                             >
                                 <Input
+                                    itemId="kqi_configs_name_field"
                                     id="name"
                                     disabled={disableForm}
                                     value={config.name}
@@ -154,6 +161,7 @@ class Configurator extends React.PureComponent {
                                 required
                             >
                                 <Select
+                                    itemId="kqi_configs_object_type_field"
                                     id="object-type"
                                     options={this.props.objectTypes.map(obj => ({ title: obj.type, value: obj.type }))}
                                     disabled={disableForm}
@@ -171,6 +179,7 @@ class Configurator extends React.PureComponent {
                                 required
                             >
                                 <Select
+                                    itemId="kqi_configs_param_field"
                                     id="param"
                                     options={this.state.paramTypes.map(type => ({
                                         value: type.name,
@@ -191,6 +200,7 @@ class Configurator extends React.PureComponent {
                                 required
                             >
                                 <Select
+                                    itemId="kqi_configs_operator_field"
                                     id="operator"
                                     options={Configurator.mapObjectToOptions(OPERATOR_TYPES)}
                                     onChange={value => this.setConfigProperty('operator_type', value)}
@@ -208,6 +218,7 @@ class Configurator extends React.PureComponent {
                                 required
                             >
                                 <Input
+                                    itemId="kqi_configs_value_field"
                                     id="level"
                                     type="number"
                                     value={config.level}
@@ -226,11 +237,11 @@ class Configurator extends React.PureComponent {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={this.onClose}>
+                        <Button itemId="kqi_configs_cancel" outline color="action" onClick={this.onClose}>
                             {ls('CANCEL', 'Отмена')}
                         </Button>
                         {
-                            !disableForm && <Button color="action" onClick={this.onSubmit}>
+                            !disableForm && <Button itemId="kqi_configs_ok" color="action" onClick={this.onSubmit}>
                                 {ls('OK', 'OK')}
                             </Button>
                         }

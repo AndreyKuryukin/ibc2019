@@ -35,12 +35,14 @@ class UsersAndRoles extends React.PureComponent {
             >
                 {(hasAccess('USERS', 'EDIT') || hasAccess('USERS', 'VIEW')) && <Users
                     id="/users"
+                    itemId="users_tab"
                     tabtitle={ls('USERS_TAB_TITLE', 'Пользователи')}
                     history={this.props.history}
                     match={this.props.match}
                 />}
                 <Roles
                     id="/roles"
+                    itemId="roles_tab"
                     tabtitle={ls('ROLES_TAB_TITLE', 'Роли')}
                     history={this.props.history}
                     match={this.props.match}

@@ -159,6 +159,7 @@ class Period extends React.PureComponent {
                         splitter=""
                     >
                         <Radio
+                            itemId="reports_day_radio"
                             id="day-interval"
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.DAY}
@@ -175,6 +176,7 @@ class Period extends React.PureComponent {
                         splitter=""
                     >
                         <Radio
+                            itemId="reports_week_radio"
                             id="week-interval"
                             name="time-interval"
                             checked={this.state.interval === INTERVALS.WEEK}
@@ -192,6 +194,7 @@ class Period extends React.PureComponent {
                             splitter=""
                         >
                             <Radio
+                                itemId="reports_month_radio"
                                 id="month-interval"
                                 name="time-interval"
                                 checked={this.state.interval === INTERVALS.MONTH}
@@ -208,6 +211,7 @@ class Period extends React.PureComponent {
                             splitter=""
                         >
                             <Radio
+                                itemId="reports_other_radio"
                                 id="other-interval"
                                 name="time-interval"
                                 checked={this.state.interval === INTERVALS.OTHER}
@@ -225,6 +229,8 @@ class Period extends React.PureComponent {
                     required
                 >
                     <DateTimePicker
+                        id="start-date"
+                        itemId="reports_start"
                         value={this.state.start}
                         max={this.state.end}
                         onChange={this.onStartChange}
@@ -243,6 +249,8 @@ class Period extends React.PureComponent {
                     required
                 >
                     <DateTimePicker
+                        id="start-date"
+                        itemId="reports_end"
                         value={this.state.end}
                         min={this.state.start}
                         onChange={this.onEndChange}
@@ -263,6 +271,7 @@ class Period extends React.PureComponent {
                     splitter=""
                 >
                     <Checkbox
+                        itemId="reports_autogen_check"
                         id="auto-checkbox"
                         checked={this.state.isAutoChecked}
                         onChange={this.onAutoCheck}

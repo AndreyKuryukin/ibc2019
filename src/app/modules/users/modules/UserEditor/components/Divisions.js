@@ -90,6 +90,7 @@ class Divisions extends React.Component {
             >
                 <Grid
                     id="user-editor-divisions-grid"
+                    itemId="users_divisions"
                     data={filteredData}
                     columns={[
                         {

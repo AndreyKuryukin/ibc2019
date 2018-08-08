@@ -80,6 +80,7 @@ class Location extends React.PureComponent {
                     style={fieldStyle}
                 >
                     <Select
+                        itemId="kqi_projections_location_field"
                         id="location"
                         options={this.props.locationOptions}
                         onChange={this.props.onLocationChange}
@@ -97,6 +98,7 @@ class Location extends React.PureComponent {
                         labelAlign="right"
                     >
                         <Checkbox
+                            itemId="kqi_projections_location_grouping_check"
                             id="location-grouping-check"
                             checked={this.state.isGroupingChecked || locationGrouping && locationGrouping !== 'NONE'}
                             onChange={this.onGroupingCheck}
@@ -104,6 +106,7 @@ class Location extends React.PureComponent {
                         />
                     </Field>
                     <Select
+                        itemId="kqi_projections_location_grouping_field"
                         id="location-grouping"
                         disabled={!this.state.isGroupingChecked || disabled}
                         options={_.get(config, 'location') ? [this.props.groupingOptions[0]] : this.props.groupingOptions}

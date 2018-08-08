@@ -110,6 +110,7 @@ class Manufacture extends React.PureComponent {
                             splitter=""
                         >
                             <Checkbox
+                                itemId="kqi_projections_manufactures_check"
                                 id="all-manufactures"
                                 checked={isAllChecked}
                                 checkedPartially={checkedPartially}
@@ -138,10 +139,10 @@ class Manufacture extends React.PureComponent {
                     splitter=""
                     style={{
                         justifyContent: 'flex-end'
-
                     }}
                 >
                     <Checkbox
+                        itemId="kqi_projections_manufactures_grouping_check"
                         id="manufacture-grouping"
                         checked={this.props.isGroupingChecked}
                         onChange={this.props.onGroupingChange}

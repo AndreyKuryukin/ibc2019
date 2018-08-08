@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import DraggableWrapper from '../DraggableWrapper';
 import styles from './styles.scss';
 
-const ConfirmDialog = ({ active, defaultX, defaultY, className, message, cancelButtonTitle, okButtonTitle, cancelButtonAction, okButtonAction }) => (
+const ConfirmDialog = ({ active, defaultX, defaultY, itemId, className, message, cancelButtonTitle, okButtonTitle, cancelButtonAction, okButtonAction }) => (
     <DraggableWrapper
         defaultPosition={{ x: defaultX, y: defaultY }}
     >
@@ -16,8 +16,8 @@ const ConfirmDialog = ({ active, defaultX, defaultY, className, message, cancelB
         >
             <div className={classNames(styles.confirmMessage, 'handle')}>{message}</div>
             <div className={styles.buttonGroup}>
-                <Button outline color="action" onClick={cancelButtonAction}>{cancelButtonTitle}</Button>
-                <Button color="action" onClick={okButtonAction}>{okButtonTitle}</Button>
+                <Button itemId={itemId ? `${itemId}_cancel` : ''} outline color="action" onClick={cancelButtonAction}>{cancelButtonTitle}</Button>
+                <Button itemId={itemId ? `${itemId}_confirm` : ''} color="action" onClick={okButtonAction}>{okButtonTitle}</Button>
             </div>
         </Modal>
     </DraggableWrapper>
@@ -27,6 +27,7 @@ ConfirmDialog.propTypes = {
     active: PropTypes.bool,
     defaultX: PropTypes.number,
     defaultY: PropTypes.number,
+    itemId: PropTypes.string,
     className: PropTypes.string,
     message: PropTypes.string,
     cancelButtonTitle: PropTypes.string,
@@ -39,6 +40,7 @@ ConfirmDialog.defaultProps = {
     active: false,
     defaultX: 0,
     defaultY: 0,
+    itemId: '',
     className: '',
     message: '',
     cancelButtonTitle: ls('CANCEL', 'Отмена'),

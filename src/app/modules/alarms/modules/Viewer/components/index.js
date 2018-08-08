@@ -46,6 +46,12 @@ class AlarmsViewer extends React.PureComponent {
     };
 
     componentDidMount() {
+        const closeBtn = document.querySelector(`.${styles.alarmsViewer} .close`);
+
+        if (closeBtn) {
+            closeBtn.setAttribute('itemId', 'alarms_close');
+        }
+
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
         }

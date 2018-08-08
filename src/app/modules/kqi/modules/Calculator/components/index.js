@@ -130,6 +130,14 @@ class Calculator extends React.PureComponent {
         };
     }
 
+    componentDidMount() {
+        const closeBtn = document.querySelector(`.${styles.kqiCalculator} .close`);
+
+        if (closeBtn) {
+            closeBtn.setAttribute('itemId', 'kqi_projections_close');
+        }
+    }
+
     componentWillReceiveProps(nextProps) {
         if (this.state.errors !== nextProps.errors) {
             this.setState({ errors: nextProps.errors });
@@ -444,10 +452,10 @@ class Calculator extends React.PureComponent {
                         </div>
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={this.onClose}>
+                        <Button itemId="kqi_projections_cancel" outline color="action" onClick={this.onClose}>
                             {ls('CANCEL', 'Отмена')}
                         </Button>
-                        <Button color="action" onClick={this.onSubmit}>
+                        <Button  itemId="kqi_projections_ok" color="action" onClick={this.onSubmit}>
                             {ls('OK', 'OK')}
                         </Button>
                     </ModalFooter>

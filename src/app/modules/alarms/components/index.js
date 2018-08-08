@@ -78,6 +78,7 @@ class Alarms extends React.PureComponent {
             >
                 <div
                     id={CLIENTS_INCIDENTS_ALARMS}
+                    itemId="alarms_ci_tab"
                     tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
                     style={tabStyle}
                     notification={this.composeNotificationCount(_.get(this.props, 'notifications.ki'))}
@@ -97,6 +98,7 @@ class Alarms extends React.PureComponent {
                 </div>
                 <div
                     id={GROUP_POLICIES_ALARMS}
+                    itemId="alarms_gp_tab"
                     tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
                     style={tabStyle}
                     notification={this.composeNotificationCount(_.get(this.props, 'notifications.gp'))}
@@ -116,6 +118,7 @@ class Alarms extends React.PureComponent {
                 </div>
                 <div
                     id={KQI_ALARMS}
+                    itemId="alarms_kqi_tab"
                     tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
                     style={tabStyle}
                     notification={this.composeNotificationCount(_.get(this.props, 'notifications.kqi'))}

@@ -47,6 +47,7 @@ class BasicParams extends React.PureComponent {
                             {_.get(config, 'name')}
                         </DisplayField> : <Input
                             id="name"
+                            itemId="kqi_projections_name_field"
                             value={_.get(config, 'name')}
                             onChange={value => this.props.onChange('name', value)}
                             placeholder={ls('KQI_CALCULATOR_NAME_FIELD_PLACEHOLDER', 'Название')}
@@ -79,6 +80,7 @@ class BasicParams extends React.PureComponent {
                     required
                 >
                     <Select
+                        itemId="kqi_projections_kqi_field"
                         id="kqi"
                         placeholder={ls('KQI_CALCULATOR_KQI_FIELD_PLACEHOLDER', 'Выберите KQI')}
                         options={kqiOptions}

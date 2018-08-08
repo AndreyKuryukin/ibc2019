@@ -105,12 +105,14 @@ class Users extends React.Component {
                 <div className={styles.controlsWrapper}>
                     {this.context.hasAccess('USERS', 'EDIT') && <Fragment>
                         <Icon
+                            itemId="users_add"
                             icon="addIcon"
                             onClick={this.onAdd}
                             style={iconStyle}
                             title={ls('ADD_USER_TITLE', 'Добавить пользователя')}
                         />
                         <Icon
+                            itemId="users_delete"
                             icon="deleteIcon"
                             onClick={this.onDelete}
                             style={iconStyle}
@@ -118,21 +120,25 @@ class Users extends React.Component {
                         />
                     </Fragment>}
                     <Icon
+                        itemId="users_block"
                         icon="lockIcon"
                         onClick={this.onLock}
                         title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
                     />
                     <Icon
+                        itemId="users_unlock"
                         icon="unlockIcon"
                         onClick={this.onUnlock}
                         title={ls('UNLOCK_USER_TITLE', 'Разблокировать пользователя')}
                     />
                     <Icon
+                        itemId="users_create_group"
                         icon="groupIcon"
                         style={groupIconStyle}
                         title={ls('CREATE_USER_GROUP_TITLE', 'Создать группу пользователей')}
                     />
                     <Input
+                        itemId="users_search_field"
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.search}
                         onChange={this.onSearchTextChange}

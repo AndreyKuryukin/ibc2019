@@ -7,6 +7,7 @@ import Chip from "../../../../../components/Chip/Chip";
 
 class MacList extends React.PureComponent {
     static propTypes = {
+        itemId: PropTypes.string,
         title: PropTypes.string,
         separator: PropTypes.string,
         onChange: PropTypes.func,
@@ -14,6 +15,7 @@ class MacList extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         title: '',
         separator: ':',
         onChange: () => null,
@@ -66,6 +68,7 @@ class MacList extends React.PureComponent {
 
     render() {
         return <ChipList
+            itemId={this.props.itemId}
             id="policy-mac-addresses"
             onChange={this.makeMac}
             onAdd={this.addMac}

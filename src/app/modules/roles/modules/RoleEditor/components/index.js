@@ -145,6 +145,7 @@ class RoleEditor extends React.PureComponent {
 
         return (
                 <Modal
+                    itemId="roles"
                     isOpen={this.props.active}
                     className={styles.roleEditor}
                     title={roleId ? ls('NEW_ROLE_EDIT', 'Редактирование роли') + ' ' + _.get(this.props.role, 'name', '') : ls('NEW_ROLE_ADD', 'Создание новой роли')}
@@ -166,6 +167,7 @@ class RoleEditor extends React.PureComponent {
                                 >
                                     <Input
                                         id="name"
+                                        itemId="roles_name_field"
                                         value={role.name || ''}
                                         onChange={value => this.setRoleProperty('name', value)}
                                         valid={errors && _.isEmpty(errors.name)}
@@ -183,6 +185,7 @@ class RoleEditor extends React.PureComponent {
                                 >
                                     <Select
                                         id="permissions-source"
+                                        itemId="roles_source_field"
                                         type="select"
                                         value={this.state.selectedRoleId}
                                         options={this.getSourceOptions(filteredSourceOptions)}
@@ -205,6 +208,7 @@ class RoleEditor extends React.PureComponent {
                                 title={ls('ROLE_COMMENT_PANEL_TITLE', 'Описание')}
                             >
                                 <Input
+                                    itemId="roles_description"
                                     type="textarea"
                                     value={role.description || ''}
                                     onChange={value => this.setRoleProperty('description', value)}

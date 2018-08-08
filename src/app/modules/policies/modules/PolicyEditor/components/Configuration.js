@@ -98,6 +98,7 @@ class Configuration extends React.Component {
                     required
                 >
                     <Input
+                        itemId="policies_name_field"
                         id="name"
                         name="name"
                         placeholder={ls('POLICY_NAME_PLACEHOLDER', 'Имя')}
@@ -116,6 +117,7 @@ class Configuration extends React.Component {
                     required
                 >
                     <Select
+                        itemId="policies_object_field"
                         id="object"
                         type="select"
                         placeholder={ls('POLICY_OBJECT_TYPE_PLACEHOLDER', 'Тип объекта')}
@@ -134,6 +136,7 @@ class Configuration extends React.Component {
                     inputWidth="50%"
                 >
                     <Select
+                        itemId="policies_aggregation_field"
                         id="aggregation"
                         type="select"
                         placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Функция агрегации')}
@@ -157,6 +160,7 @@ class Configuration extends React.Component {
                         >
                             <div style={{ display: 'flex' }}>
                                 <Input
+                                    itemId="policies_rise_duration_field"
                                     id="rise_duration"
                                     type="number"
                                     name="rise_duration"
@@ -182,6 +186,7 @@ class Configuration extends React.Component {
                         >
                             <div style={{ display: 'flex' }}>
                                 <Input
+                                    itemId="policies_rise_value_field"
                                     id="rise_value"
                                     type="number"
                                     name="rise_value"
@@ -207,6 +212,7 @@ class Configuration extends React.Component {
                     style={textareaStyle}
                 >
                     <Input
+                        itemId="policies_message_field"
                         id="message"
                         type="textarea"
                         placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Текст сообщения')}

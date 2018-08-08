@@ -12,6 +12,7 @@ class BackLink extends React.PureComponent {
     render() {
         return (
             <Link
+                itemId="dashboard_back"
                 className={styles.backLink}
                 to={this.props.to}
             >

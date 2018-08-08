@@ -34,6 +34,7 @@ class ButtonGroup extends React.Component {
 
         return (
             <Button
+                itemId={`dashboard_${option.id.toLowerCase()}_button`}
                 key={option.id}
                 className={option.icon ? 'icon-btn ' + `dashboard-${option.icon}-icon` : ''}
                 color={color}
