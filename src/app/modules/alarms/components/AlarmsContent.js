@@ -31,6 +31,10 @@ class AlarmsContent extends React.PureComponent {
         isLoading: false,
     };
 
+    componentDidMount() {
+        this.props.onFetchAlarms(this.props.filter);
+    }
+
     onApplyFilter = () => {
         this.props.onFetchAlarms(this.props.filter);
     };
