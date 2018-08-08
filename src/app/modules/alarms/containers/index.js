@@ -11,6 +11,7 @@ import AlarmsComponent from '../components';
 import ls from 'i18n';
 import { SENDING_ALARM_TYPES } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
+import { getQueryParams, setQueryParams } from "../../../util/state";
 
 const TAB_TITLES = {
     'GP': 'ГП',
@@ -62,6 +63,13 @@ class Alarms extends React.PureComponent {
         this.state = {
             isLoading: false,
         };
+
+        const queryParams = getQueryParams(props.location);
+        if (!_.isEmpty(queryParams)) {
+            const filter = this.mapFilterValues(queryParams, props);
+            props.onChangeFilter(filter);
+            this.onFetchAlarms(filter);
+        }
     }
 
     componentDidMount() {
@@ -83,6 +91,15 @@ class Alarms extends React.PureComponent {
             this.setState({ type: nextType });
         }
     }
+
+    mapFilterValues = (filter, props) => ({
+        ...filter,
+        type: SENDING_ALARM_TYPES[props.match.params.type],
+        start: filter.start && convertUTC0ToLocal(Number(filter.start)).toDate(),
+        end: filter.end && convertUTC0ToLocal(Number(filter.end)).toDate(),
+        current: filter.current === 'true',
+        historical: filter.historical === 'true',
+    });
 
     getReadableDuration = (milliseconds = 0) =>
         ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
@@ -189,7 +206,22 @@ class Alarms extends React.PureComponent {
                 this.props.flushNotifications(typeMap[this.props.match.params.type]);
                 this.setState({ isLoading: false });
             })
-            .catch(this.onFetchingAlarmsError);
+            .catch((e) => {
+                console.error(e);
+                this.context.notifications.notify({
+                    title: ls('ALARMS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
+                    message: ls('ALARMS_GETTING_ERROR_MESSAGE_FIELD', 'Данные по авариям не получены'),
+                    type: 'CRITICAL',
+                    code: 'alarms-failed',
+                    timeout: 10000
+                });
+                this.setState({ isLoading: false });
+            });
+    };
+
+    fetchAlarms = (filter) => {
+        setQueryParams(filter, this.props.history, this.props.location);
+        this.onFetchAlarms(filter)
     };
 
     render() {
@@ -202,7 +234,7 @@ class Alarms extends React.PureComponent {
                 locations={this.props.locations}
                 onChangeFilter={this.props.onChangeFilter}
                 notifications={this.props.notifications}
-                onFetchAlarms={this.onFetchAlarms}
+                onFetchAlarms={this.fetchAlarms}
                 onExportXLSX={this.onExportXLSX}
                 isLoading={this.state.isLoading}
             />

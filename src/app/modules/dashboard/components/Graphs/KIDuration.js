@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import _ from 'lodash';
 import Chart from './Chart';
 import ConnectedChart from './ConnectedChart';
 import ls from '../../../../../i18n';
 
 class KIDuration extends React.Component {
     static propTypes = {
+        mrfId: PropTypes.string,
+        regularity: PropTypes.string.isRequired,
         data: PropTypes.arrayOf(PropTypes.shape({
             name: PropTypes.string.isRequired,
             count: PropTypes.number,
@@ -13,13 +17,31 @@ class KIDuration extends React.Component {
         })).isRequired,
     };
 
+    static contextTypes = {
+        history: PropTypes.object.isRequired,
+    };
+
     getChartOptions() {
         const series = this.getSeries();
         const categories = this.getCategories();
 
         return {
+            owner: this,
             chart: {
                 type: 'column',
+                events: {
+                    click: this.onClick,
+                    render: function () {
+                        const series = _.get(this, 'series.0.data');
+                        series.forEach(item => {
+                            const { dataLabel, shapeArgs } = item;
+
+                            dataLabel.attr({
+                                x: dataLabel.alignAttr.x - (5 + shapeArgs.width / 2),
+                            });
+                        });
+                    },
+                },
             },
             title: {
                 text: '',
@@ -43,7 +65,7 @@ class KIDuration extends React.Component {
             xAxis: {
                 ...Chart.DEFAULT_OPTIONS.xAxis,
                 categories,
-                labels: {enabled: false},
+                labels: { enabled: false },
             },
             yAxis: {
                 ...Chart.DEFAULT_OPTIONS.yAxis,
@@ -61,7 +83,7 @@ class KIDuration extends React.Component {
     getSeries() {
         return [{
             name: ls('DASHBOARD_CHART_KI_SERIES_DURATION', 'Длительность'),
-            data: this.props.data.map(city => Math.floor(city.duration/1000)),
+            data: this.props.data.map(city => Math.floor(city.duration / 1000)),
             dataLabels: {
                 enabled: true,
                 rotation: 270,
@@ -76,9 +98,10 @@ class KIDuration extends React.Component {
                     fontWeight: '500',
                     textOutline: 0,
                 },
-                x: -35,
-                y: -10,
                 useHTML: true,
+            },
+            events: {
+                click: this.onClick,
             },
         }];
     }
@@ -91,6 +114,30 @@ class KIDuration extends React.Component {
         return categories;
     }
 
+    onClick(e) {
+        const instance = this.pointer ? this : this.chart;
+        const event = instance.pointer.normalize(e);
+        const point = instance.series[0].searchPoint(event, true);
+
+        if (point) {
+            const { owner } = instance.options;
+            const interval = owner.props.regularity.toLowerCase();
+            const start = moment().subtract(1, interval).startOf(interval).valueOf();
+
+            owner.context.history.push({
+                pathname: '/alarms/ci',
+                search: _.reduce({
+                    rf: owner.props.data[point.index].id,
+                    mrf: owner.props.mrfId,
+                    start,
+                    end: moment(start).endOf(interval).valueOf(),
+                    current: true,
+                    historical: true,
+                }, (searchString, v, k) => !searchString ? `?${k}=${v}` : searchString + `&${k}=${v}`, ''),
+            });
+        }
+    }
+
     dataLabelsFormatter() {
         return this.y ? this.x : '';
     }
@@ -98,6 +145,7 @@ class KIDuration extends React.Component {
     render() {
         return (
             <ConnectedChart
+                ref={chart => this.chart = chart}
                 id="KIDuration"
                 connectedTo="KICount"
                 options={this.getChartOptions()}

@@ -1,4 +1,5 @@
 @import "../../../../scss/vars";
+@import "../../../../scss/images";
 
 $region-initial-color: #02486E;
 $region-active-color: #063D5C;
@@ -133,6 +134,11 @@ $animation-duration: 0.15s;
           span {
             font-size: 14px;
           }
+        }
+        &.point {
+          display: inline-block;
+          margin: 5px 10px;
+          @include iconBuilder(11px, 11px, 'red-star.png');
         }
       }
       &.positive span.value {

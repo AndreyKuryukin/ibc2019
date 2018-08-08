@@ -9,6 +9,7 @@ import rest from '../../../rest';
 
 class Dashboard extends React.PureComponent {
     static propTypes = {
+        history: PropTypes.object.isRequired,
         match: PropTypes.shape({
             params: PropTypes.shape({
                 mode: PropTypes.string,
@@ -18,14 +19,25 @@ class Dashboard extends React.PureComponent {
             }).isRequired,
         }).isRequired,
     };
+
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
+    };
+
+    static childContextTypes = {
+        history: PropTypes.object.isRequired,
     };
 
     state = {
         aggregated: null,
         locations: [],
     };
+
+    getChildContext() {
+        return {
+            history: this.props.history,
+        };
+    }
 
     componentDidMount() {
         this.context.navBar.setPageTitle([ls('DASHBOARD_PAGE_TITLE', 'Рабочий стол')]);

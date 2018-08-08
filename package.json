@@ -6,8 +6,8 @@
   "scripts": {
     "test": "jest --config=./jest.config.json",
     "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack --watch\" \"cross-env nodemon dev/server.js\"",
-    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8888 nodemon --inspect dev/server.js --intercept\"",
-    "build": "cross-env NODE_ENV=production node --inspect ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --bail",
+    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8888 nodemon dev/server.js --intercept\"",
+    "build": "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --bail",
     "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept\"",
     "proxy": "cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept"
   },
@@ -87,6 +87,7 @@
     "path": "^0.12.7",
     "postcss-loader": "^2.1.1",
     "prop-types": "^15.6.1",
+    "query-string": "^6.1.0",
     "react": "^16.2.0",
     "react-chartjs-2": "^2.7.0",
     "react-dom": "^16.2.0",

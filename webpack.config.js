@@ -4,6 +4,7 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const i18n = require('./dev/loaders/i18n');
+const FE_VERSION = require('./package.json').version;
 
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -21,6 +22,7 @@ if (prodMode) {
 }
 
 if (devMode) {
+    plugins.push(new webpack.LoaderOptionsPlugin({ options: {} }));
     plugins.push(new BundleAnalyzerPlugin());
 }
 
@@ -34,16 +36,12 @@ module.exports = {
     devtool: devMode && 'inline-sourcemap',
     module: {
         rules: [
-            // {
-            //     enforce: 'pre',
-            //     test: /\.js$/,
-            //     exclude: /node_modules/,
-            //     loader: 'eslint-loader',
-            //     options: {
-            //         emitWarning: true,
-            //         quiet: true,
-            //     },
-            // },
+            {
+                enforce: 'pre',
+                test: /\.js$/,
+                exclude: /node_modules/,
+                loader: 'eslint-loader',
+            },
             {
                 test: /\.js$/,
                 loader: ['babel-loader', {
@@ -112,6 +110,12 @@ module.exports = {
         ]),
         new ExtractTextPlugin('styles.css', {
             allChunks: true,
+        }),
+        new webpack.DefinePlugin({
+            'FE_VERSION' : JSON.stringify(FE_VERSION),
         })
     ],
+    stats: {
+        children: false,
+    }
 };

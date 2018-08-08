@@ -6,7 +6,7 @@ const loaderUtils = require("loader-utils");
 
 const CounterClass = require('../util/Counter');
 
-const LS_FUNC_CALL_REGEXP = /[^A-Za-z0-9а-яА-Я]ls\(.*?\)/g;
+const LS_FUNC_CALL_REGEXP = /[^A-Za-z0-9а-яА-Я]ls\((.|\n|\r)*?\)/g;
 const SUB_STRINGS_REGEXP = /('|")(.*?)('|")/g;
 const QUOTES_REGEXP = /'|"/g;
 

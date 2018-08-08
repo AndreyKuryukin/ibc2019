@@ -5,9 +5,11 @@ import classNames from 'classnames';
 import { Navbar } from 'reactstrap';
 import _ from 'lodash';
 import { withRouter } from 'react-router-dom';
+import ls from 'i18n';
 import styles from './styles.scss';
 import Menu from "../Menu/index";
 import Icon from '../Icon/Icon';
+import rest from "../../rest/index";
 
 const logoutIconStyle = { marginLeft: 20 };
 
@@ -88,10 +90,40 @@ class PageWrapper extends React.Component {
         this.props.history.push('/');
     };
 
+
+    fireDownloading = (fileUrl) => {
+        const fakeLink = document.createElement('a');
+        const e = document.createEvent('MouseEvents');
+
+        fakeLink.setAttribute('download', this.props.text);
+        fakeLink.setAttribute('href', fileUrl);
+
+        e.initEvent('click', true, true);
+        fakeLink.dispatchEvent(e);
+    };
+
+    //
+    // getUserManual = (href) => {
+    //     if (href) {
+    //         rest.get(href, undefined, undefined, { responseType: 'blob' })
+    //             .then((response) => {
+    //                 const fileUrl = URL.createObjectURL(response.data);
+    //                 if (fileUrl) {
+    //                     this.fireDownloading(fileUrl);
+    //                 }
+    //                 URL.revokeObjectURL(fileUrl);
+    //             })
+    //             .catch((e) => {
+    //                 console.error(e);
+    //             });
+    //     }
+    // };
+
     render() {
         const hidden = this.state.hidden || _.get(this.props, 'embedded');
         return <div className={classNames(styles.pageWrapper, { [styles.blur]: this.state.blur })}>
             <Menu menuItems={this.props.user.menu}
+                  app={this.props.app}
                   onClick={this.onMenuClick}
                   className={classNames({ [styles.hidden]: hidden })}
                   path={_.get(this.props, 'location.pathname')}
@@ -110,7 +142,17 @@ class PageWrapper extends React.Component {
                     <div className={styles.rightPanel}>
                         <span className={styles.userlink}
                               onClick={this.onUserNameClick}
-                        >{this.getUserName(this.props.user)}</span>
+                        >
+                            {this.getUserName(this.props.user)}
+                        </span>
+
+                        <Icon
+                            icon="help-icon"
+                            title={ls('LOAD_USER_MANUAL_TITLE', 'Загрузить руководство пользователя')}
+                            onClick={() => this.fireDownloading('user_manual.pdf')}
+                            style={logoutIconStyle}
+                        />
+
                         <Icon
                             icon="logout-icon"
                             onClick={this.props.onLogOut}
@@ -128,6 +170,7 @@ class PageWrapper extends React.Component {
 
 const mapStateToProps = state => ({
     user: state.user,
+    app: state.app,
     notifications: _.get(state, 'notifications')
 });
 

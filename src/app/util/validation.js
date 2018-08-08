@@ -24,13 +24,14 @@ const defaultMessages = {
 const validateValue = (value, config, customValidators) =>
     _.reduce(config, (result, testValue, validatorName) => {
         const validator = _.get(validators, validatorName, customValidators[validatorName]);
+        const res = { ...result };
         if (_.isFunction(validator)) {
             const isValid = validator(value, testValue);
             if (!isValid) {
-                result[validatorName] = isValid;
+                res[validatorName] = isValid;
             }
         }
-        return result;
+        return res;
     }, {});
 
 const mapErrors = (valueResult, messages) =>
@@ -47,55 +48,58 @@ const mapErrors = (valueResult, messages) =>
 export const validateForm = (form, config, messages = {}, customValidators = {}, prefix) =>
     _.reduce(config, (result, valueConfig, fieldName) => {
         const value = _.get(form, fieldName);
+        const res = { ...result };
         if (_.isFunction(valueConfig)) {
             const cfg = valueConfig();
             const subForm = _.get(form, fieldName);
             const formPrefix = [prefix, fieldName].join('.');
             const subFormResult = validateForm(subForm, cfg, messages, customValidators, formPrefix);
             if (!_.isEmpty(subFormResult)) {
-                result[fieldName] = subFormResult;
+                res[fieldName] = subFormResult;
             }
-            return result;
+            return res;
         }
 
         if (_.isArray(valueConfig)) {
             const [selfConfig, elemConfig] = valueConfig;
             const selfResult = validateValue(value, selfConfig, { ...validators, ...customValidators });
             if (!_.isEmpty(selfResult)) {
-                result[fieldName] = mapErrors(selfResult, { ...defaultMessages, ...messages });
+                res[fieldName] = mapErrors(selfResult, { ...defaultMessages, ...messages });
             } else {
                 const subFormsResult = value.reduce((subforms, subForm, index) => {
                     const subformErrors = validateForm(subForm, elemConfig, messages, customValidators);
+                    const subformsRes = [...subforms];
+
                     if (!_.isEmpty(subformErrors)) {
-                        subforms[index] = subformErrors;
+                        subformsRes[index] = subformErrors;
                     }
 
-                    return subforms;
+                    return subformsRes;
                 }, []);
 
                 if (!_.isEmpty(subFormsResult)) {
-                    result[fieldName] = subFormsResult;
+                    res[fieldName] = subFormsResult;
                 }
             }
 
-            return result;
+            return res;
         }
 
         const valueResult = validateValue(value, valueConfig, { ...validators, ...customValidators });
         const errorMessages = mapErrors(valueResult, { ...defaultMessages, ...messages });
         if (!_.isEmpty(errorMessages)) {
-            result[fieldName] = errorMessages;
+            res[fieldName] = errorMessages;
         }
-        return result;
+        return res;
     }, {});
 
 export const handleErrors = (errorConfig, errors = []) => _.reduce(errors, (result, error = {}) => {
-    const { code, type, description } = error;
+    const { code, type } = error;
     const errorCfg = _.get(errorConfig, code, {});
     const { title, path, severity } = errorCfg;
-    let err = {};
+    const err = {};
     if (path) {
-        _.set(err, path, { title, severity, type })
+        _.set(err, path, { title, severity, type });
     }
-    return _.merge(result, err)
+    return _.merge(result, err);
 }, {});
