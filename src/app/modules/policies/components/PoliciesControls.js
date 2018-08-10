@@ -34,12 +34,14 @@ class PoliciesControls extends React.PureComponent {
             <div className={styles.policiesControls}>
                 {this.context.hasAccess('POLICY', 'EDIT') && <div className={styles.buttonGroup}>
                     <Icon
+                        itemId="policies_add"
                         icon="addIcon"
                         onClick={this.onAdd}
                         title={ls('ADD_POLICY_TITLE', 'Добавить политику')}
                     />
                 </div>}
                 <Input
+                    itemId="policies_search_field"
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}
                     onChange={this.onSearchTextChange}

@@ -83,6 +83,7 @@ export default class TabPanel extends React.Component {
                 key={`tab-pane-${child.props.id || index}`}
             >
                 <NavLink
+                    itemId={child.props.itemId}
                     onClick={this.toggle.bind(this, child.props.id || index)}
                     innerRef={tab => this.setActiveTabRef(tab, this.state.activeTabId === child.props.id)}
                 >

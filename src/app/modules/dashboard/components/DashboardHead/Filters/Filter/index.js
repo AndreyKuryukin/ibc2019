@@ -41,6 +41,7 @@ class Filter extends React.Component {
                         />
                     ) : (
                         <CheckboxField
+                            id={`dashboard_filter_${name}`}
                             key={option.value}
                             option={option}
                             values={values}

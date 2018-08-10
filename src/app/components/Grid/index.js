@@ -13,6 +13,7 @@ import styles from './styles.scss';
 class Grid extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
+        itemId: PropTypes.string,
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
         isAllChecked: PropTypes.bool,
@@ -28,6 +29,7 @@ class Grid extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         data: [],
         columns: [],
         isAllChecked: false,
@@ -55,6 +57,7 @@ class Grid extends React.PureComponent {
             noSearch,
             disabled,
             style,
+            itemId,
             ...rest
         } = this.props;
 
@@ -69,11 +72,13 @@ class Grid extends React.PureComponent {
                 <div className={styles.gridControls}>
                     {!noCheckAll && <Checkbox
                         id={`${id}-all`}
+                        itemId={`${itemId}_check`}
                         onChange={onCheckAll}
                         checked={isAllChecked}
                         checkedPartially={checkedPartially}
                     />}
                     {!noSearch && <Input
+                        itemId={`${itemId}_search_field`}
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.gridSearch}
                         onChange={onSearchTextChange}

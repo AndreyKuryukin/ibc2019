@@ -8,12 +8,14 @@ import search from '../../../../../util/search';
 
 class RolesGrid extends React.PureComponent {
     static propTypes = {
+        itemId: PropTypes.string,
         data: PropTypes.array,
         checked: PropTypes.array,
         onCheck: PropTypes.func
     };
 
     static defaultProps = {
+        itemId: '',
         onCheck: () => null,
     };
 
@@ -75,7 +77,7 @@ class RolesGrid extends React.PureComponent {
 
     render() {
         const { checked, searchText } = this.state;
-        const { data } = this.props;
+        const { data, itemId } = this.props;
         const columns = RolesGrid.getColumns();
         const checkedPartially = data.length !== 0 && checked.length > 0 && checked.length < this.props.data.length;
         const isAllChecked = !checkedPartially && data.length !== 0 && checked.length === data.length;
@@ -84,6 +86,7 @@ class RolesGrid extends React.PureComponent {
         return (
             <Grid
                 id={this.props.id}
+                itemId={itemId}
                 style={{maxWidth: 200}}
                 data={filteredData}
                 columns={columns}

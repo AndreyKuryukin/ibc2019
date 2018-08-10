@@ -70,6 +70,7 @@ class Equipment extends React.PureComponent {
                     inputWidth="68%"
                 >
                     <Select
+                        itemId="kqi_projections_equipment_field"
                         id="equipment-type"
                         options={this.props.equipmentsList}
                         placeholder={ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_PLACEHOLDER', 'Тип оборудования')}
@@ -85,6 +86,7 @@ class Equipment extends React.PureComponent {
                     inputWidth="68%"
                 >
                     <Select
+                        itemId="kqi_projections_equipment_grouping_field"
                         id="self-equipment-type"
                         options={this.getGropingOptions()}
                         value={_.get(this.props, 'groupingValue', this.state.grouping) || ''}

@@ -8,6 +8,7 @@ import styles from './styles.scss';
 class Checkbox extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
+        itemId: PropTypes.string,
         disabled: PropTypes.bool,
         checked: PropTypes.bool,
         checkedPartially: PropTypes.bool,
@@ -17,6 +18,7 @@ class Checkbox extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         disabled: false,
         checked: false,
         checkedPartially: false,
@@ -32,7 +34,7 @@ class Checkbox extends React.PureComponent {
     };
 
     render() {
-        const { id, style, checked, checkedPartially, className, disabled } = this.props;
+        const { id, style, checked, checkedPartially, className, disabled, itemId } = this.props;
         const classNames = classnames(
             styles.checkboxInput,
             className,
@@ -42,6 +44,7 @@ class Checkbox extends React.PureComponent {
             <div className={styles.checkboxWrapper}>
                 <Input
                     id={id}
+                    itemId={itemId}
                     type="checkbox"
                     style={this.props.style}
                     onChange={this.onChange}

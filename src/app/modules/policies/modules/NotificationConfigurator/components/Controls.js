@@ -81,6 +81,7 @@ class Controls extends React.PureComponent {
         return (
             <div className={styles.configsControls}>
                 <Icon
+                    itemId="policies_configurator_add_adapter"
                     title={ls('POLICIES_NOTIFICATIONS_ADD_ADAPTER', 'Добавить адаптер')}
                     icon="addIcon"
                     disabled={isAddButtonDisabled}
@@ -93,6 +94,7 @@ class Controls extends React.PureComponent {
                     splitter=""
                 >
                     <Select
+                        itemId="policies_configurator_adapter_field"
                         id="adapter"
                         options={Controls.mapOptions(adapters)}
                         value={selectedAdapter}
@@ -108,6 +110,7 @@ class Controls extends React.PureComponent {
                     style={instanceFieldStyle}
                 >
                     <Select
+                        itemId="policies_configurator_instance_field"
                         id="instance"
                         options={instanceOptions}
                         value={selectedInstance}

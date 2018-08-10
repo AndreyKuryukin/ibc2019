@@ -95,6 +95,12 @@ class PolicyEditor extends React.PureComponent {
     }
 
     componentDidMount() {
+        const closeBtn = document.querySelector(`.${styles.policyEditor} .close`);
+
+        if (closeBtn) {
+            closeBtn.setAttribute('itemId', 'policies_close');
+        }
+
         if (typeof this.props.onMount === 'function') {
             this.props.onMount();
         }
@@ -266,6 +272,7 @@ class PolicyEditor extends React.PureComponent {
                                                         >
                                                             <div style={{ display: 'flex' }}>
                                                                 <Input
+                                                                    itemId="policies_cease_duration"
                                                                     id="cease_duration"
                                                                     type="number"
                                                                     name="cease_duration"
@@ -292,6 +299,7 @@ class PolicyEditor extends React.PureComponent {
                                                         >
                                                             <div style={{ display: 'flex' }}>
                                                                 <Input
+                                                                    itemId="policies_cease_value"
                                                                     id="cease_value"
                                                                     type="number"
                                                                     name="cease_value"
@@ -337,6 +345,7 @@ class PolicyEditor extends React.PureComponent {
                                                     title={ls('POLICIES_EXCLUDE_TV_CHANNELS_FIELD', 'Исключать данные по ТВ каналам, на которых фиксировались ошибки на ГС/ЦГС')}
                                                 >
                                                     <Checkbox
+                                                        itemId="policies_exclude_tv_check"
                                                         id="exclude-tv"
                                                         checked={this.getPolicyProperty('channel_suppression')}
                                                         onChange={value => this.setPolicyProperty('channel_suppression', value)}
@@ -354,6 +363,7 @@ class PolicyEditor extends React.PureComponent {
                                                     title={ls('POLICIES_ALLOW_ACCIDENT_FIELD', 'Не поднимать аварию при наличии следующих типов аварий на вышестоящих элементах')}
                                                 >
                                                     <Checkbox
+                                                        itemId="policies_allow_accident_check"
                                                         id="allow-accident"
                                                         checked={this.getPolicyProperty('allow_accident')}
                                                         onChange={value => this.setPolicyProperty('allow_accident', value)}
@@ -368,6 +378,7 @@ class PolicyEditor extends React.PureComponent {
                                                     style={notAllowedAccidentStyle}
                                                 >
                                                     <Select
+                                                        itemId="policies_not_allowed_accident_field"
                                                         id="not-allowed-accident"
                                                         type="select"
                                                         placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
@@ -388,6 +399,7 @@ class PolicyEditor extends React.PureComponent {
                                                 >
                                                     <div style={{ display: 'flex' }}>
                                                         <Input
+                                                            itemId="policies_waiting_time_field"
                                                             id="waiting-time"
                                                             type="number"
                                                             name="waiting-time"
@@ -408,14 +420,18 @@ class PolicyEditor extends React.PureComponent {
                             </Preloader>
                         </ModalBody>
                         <ModalFooter>
-                            <Button outline color="action"
-                                    onClick={this.props.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                            <Button color="action" onClick={this.onTest}>{policyId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}</Button>
+                            <Button
+                                itemId="policies_cancel"
+                                outline
+                                color="action"
+                                onClick={this.props.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
+                            <Button itemId="policies_ok" color="action" onClick={this.onTest}>{policyId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}</Button>
                         </ModalFooter>
                     </Modal>
                 </DraggableWrapper>
                 {this.props.alarmsCount !== -1 && (
                     <ConfirmDialog
+                        itemId="policies_test"
                         active={this.props.alarmsCount !== -1}
                         defaultY={200}
                         className={styles.testPolicyConfirm}

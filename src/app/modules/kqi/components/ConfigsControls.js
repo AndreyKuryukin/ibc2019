@@ -33,12 +33,14 @@ class ConfigsControls extends React.PureComponent {
             <div className={styles.kqiControls}>
                 {this.context.hasAccess('KQI', 'EDIT') && <div className={styles.buttonsGroup}>
                     <Icon
+                        itemId="kqi_configs_add"
                         icon="kqiAdd"
                         onClick={this.onConfigure}
                         title={ls('ADD_KQI_CALCULATION_TITLE', 'Добавить KQI')}
                     />
                 </div>}
                 <Input
+                    itemId="kqi_configs_search_field"
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}
                     onChange={this.onSearchTextChange}

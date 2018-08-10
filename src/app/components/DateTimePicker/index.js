@@ -12,6 +12,7 @@ class DateTimePicker extends React.PureComponent {
     static MAX_DATE = new Date(2099, 11, 31);
 
     static propsTypes = {
+        itemId: PropTypes.string,
         inputWidth: PropTypes.number,
         min: PropTypes.instanceOf(Date),
         max: PropTypes.instanceOf(Date),
@@ -21,6 +22,7 @@ class DateTimePicker extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         inputWidth: DateTimePicker.DEFAULT_INPUT_WIDTH,
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
@@ -34,6 +36,20 @@ class DateTimePicker extends React.PureComponent {
         this.state = {
             show: false,
         };
+    }
+
+    componentDidMount() {
+        if (this.props.itemId) {
+            const [dateBtn, timeBtn] = document.querySelectorAll(`.${this.props.itemId} .rw-btn-select`);
+
+            if (dateBtn) {
+                dateBtn.setAttribute('itemId', `${this.props.itemId}_select_date`);
+            }
+
+            if (timeBtn) {
+                timeBtn.setAttribute('itemId', `${this.props.itemId}_select_time`);
+            }
+        }
     }
 
     transitionClass = (inputProps) => {
@@ -70,11 +86,14 @@ class DateTimePicker extends React.PureComponent {
             min,
             max,
             valid,
+            itemId,
+            id,
             ...rest
         } = this.props;
 
         const width = (inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH) + (+date + +time)*DateTimePicker.DEFAULT_TRIGGER_WIDTH;
         const inputProps = {
+            itemId: `${itemId}_field`,
             style: {
                 width: inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH,
             },
@@ -84,7 +103,7 @@ class DateTimePicker extends React.PureComponent {
         const invalid = valid !== null && !valid;
 
         return <Picker popupTransition={this.transitionClass(inputProps)}
-                       className={invalid ? 'invalid' : ''}
+                       className={classnames(itemId, { 'invalid': invalid })}
                        inputProps={inputProps}
                        style={{ width }}
                        onToggle={this.onToggle}

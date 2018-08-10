@@ -7,6 +7,7 @@ import Chip from "../../../../../components/Chip/Chip";
 
 class KqiList extends React.PureComponent {
     static propTypes = {
+        itemId: PropTypes.string,
         title: PropTypes.string,
         separator: PropTypes.string,
         onChange: PropTypes.func,
@@ -18,6 +19,7 @@ class KqiList extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         title: '',
         separator: ':',
         onChange: () => null,
@@ -88,6 +90,7 @@ class KqiList extends React.PureComponent {
     render() {
         const { selected = [], kqiListById = {}, kqiList = [] } = this.state;
         return <ChipList
+            itemId={this.props.itemId}
             id="policy-kqi-list"
             options={this.mapOptions(kqiList, selected)}
             onChange={id => this.select(kqiListById[id])}

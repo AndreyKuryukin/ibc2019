@@ -92,6 +92,7 @@ class Menu extends React.Component {
         const notificationCount = clearLink === 'alarms' ? _.get(this.props, `notifications.${'alerts'}.count`, 0) : 0;
         const notifications = clearLink === 'alarms' ? _.omit(_.get(this.props, `notifications.${'alerts'}`, {}), ['count']) : {};
         return (<div
+            itemId={`menu_${clearLink}`}
             id={`menu-tile-${clearLink}`}
             onClick={() => this.onItemClick(item)}
             key={index}

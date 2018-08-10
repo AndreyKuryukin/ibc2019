@@ -91,6 +91,7 @@ class UsersGrid extends React.PureComponent {
 
         return (
             <Grid
+                itemId="reports_users"
                 id="report-user-grid"
                 data={filteredData}
                 columns={columns}

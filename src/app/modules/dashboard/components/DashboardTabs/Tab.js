@@ -65,14 +65,14 @@ class Tab extends React.PureComponent {
     }
 
     render() {
-        const { href } = this.props;
+        const { href, type } = this.props;
 
         if (href === null) {
             return this.renderContent();
         }
 
         return (
-            <Link to={href} className={styles.tabLink}>{this.renderContent()}</Link>
+            <Link itemId={`dashboard_${type.toLowerCase()}_tab`} to={href} className={styles.tabLink}>{this.renderContent()}</Link>
         );
     }
 }

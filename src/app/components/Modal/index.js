@@ -6,6 +6,7 @@ import DraggableWrapper from "../DraggableWrapper/index";
 class Modal extends React.PureComponent {
     static propTypes = {
         isOpen: PropTypes.bool,
+        itemId: PropTypes.string,
         title: PropTypes.string,
         className: PropTypes.string,
         onSubmit: PropTypes.func,
@@ -15,6 +16,7 @@ class Modal extends React.PureComponent {
 
     static defaultProps = {
         isOpen: false,
+        itemId: '',
         title: '',
         className: '',
         size: '',
@@ -22,10 +24,21 @@ class Modal extends React.PureComponent {
         onClose: () => null,
     };
 
+    componentDidMount() {
+        if (this.props.className) {
+            const closeBtn = document.querySelector(`.${this.props.className} .close`);
+
+            if (closeBtn) {
+                closeBtn.setAttribute('itemId', `${this.props.itemId}_close`);
+            }
+        }
+    }
+
     render() {
         const {
             isOpen,
             title,
+            itemId,
             onSubmit,
             onClose,
             className,
@@ -41,8 +54,8 @@ class Modal extends React.PureComponent {
                         {this.props.children}
                     </ModalBody>
                     <ModalFooter>
-                        <Button outline color="action" onClick={onClose}>{cancelTitle || 'Cancel'}</Button>
-                        <Button color="action" onClick={onSubmit}>{submitTitle || 'OK'}</Button>
+                        <Button itemId={`${itemId}_cancel`} outline color="action" onClick={onClose}>{cancelTitle || 'Cancel'}</Button>
+                        <Button itemId={`${itemId}_ok`} color="action" onClick={onSubmit}>{submitTitle || 'OK'}</Button>
                     </ModalFooter>
                 </ReactstrapModal>
             </DraggableWrapper>

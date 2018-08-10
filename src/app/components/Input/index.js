@@ -5,6 +5,7 @@ import { mapToCssModules } from 'reactstrap/lib/utils';
 import ls from "i18n";
 
 const propTypes = {
+    itemId: PropTypes.string,
     children: PropTypes.node,
     type: PropTypes.string,
     size: PropTypes.string,
@@ -24,6 +25,7 @@ const propTypes = {
 };
 
 const defaultProps = {
+    itemId: '',
     type: 'text',
     value: '',
     decimal: 0,

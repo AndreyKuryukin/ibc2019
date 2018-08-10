@@ -56,6 +56,7 @@ class RolesControls extends React.PureComponent {
             <div className={styles.rolesControls}>
                 {this.context.hasAccess('ROLES', 'EDIT') && <div className={styles.buttonGroup}>
                     <Icon
+                        itemId="roles_add"
                         icon="addIcon"
                         onClick={this.onAdd}
                         title={ls('ADD_ROLE_TITLE', 'Добавить роль')}
@@ -66,6 +67,7 @@ class RolesControls extends React.PureComponent {
                         onToggle={this.triggerDelete}
                         trigger={
                             <Icon
+                                itemId="roles_delete"
                                 icon={this.state.removeConfirmOpen ? 'deleteIconHover' : 'deleteIcon'}
                                 onClick={this.triggerDelete}
                                 title={ls('DELETE_ROLE_TITLE', 'Удалить роль')}
@@ -78,18 +80,20 @@ class RolesControls extends React.PureComponent {
                             {ls('ROLES_REMOVE_CONFIRM_MESSAGE', 'Удаление роли')}
                         </div>
                         <div className={styles.buttonWrapper}>
-                            <Button outline color="action" onClick={this.triggerDelete}>
+                            <Button itemId="roles_delete_cancel" outline color="action" onClick={this.triggerDelete}>
                                 {ls('CANCEL', 'Отмена')}
                             </Button>
-                            <Button color="action" onClick={this.onRemove}>
+                            <Button itemId="roles_delete_confirm" color="action" onClick={this.onRemove}>
                                 {ls('REMOVE', 'Удалить')}
                             </Button>
                         </div>
                     </Dropdown>
                 </div>}
-                <Input placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
-                       className={styles.rolesSearch}
-                       onChange={this.onSearchTextChange}
+                <Input
+                    itemId="roles_search_field"
+                    placeholder={ls('SERCH_PLACEHOLDER', 'Поиск')}
+                    className={styles.rolesSearch}
+                    onChange={this.onSearchTextChange}
                 />
             </div>
         );

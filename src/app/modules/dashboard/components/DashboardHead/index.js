@@ -106,6 +106,7 @@ class DashboardHead extends React.Component {
                 />
                 <ReactstrapButtonGroup>
                     <Button
+                        itemId="dashboard_filter_button"
                         color="secondary"
                         className="dropdown-toggle icon-btn dashboard-filter-icon"
                         style={filterButtonStyle}

@@ -144,6 +144,7 @@ class Condition extends React.PureComponent {
                     inputWidth="50%"
                 >
                     <Select
+                        itemId="policies_operator"
                         id="operator"
                         required
                         type="select"
@@ -163,6 +164,7 @@ class Condition extends React.PureComponent {
                     className={styles.fieldWithUnit}
                 >
                     <Input
+                        itemId="policies_max_interval"
                         id="maxInterval"
                         type="number"
                         name="maxInterval"
@@ -176,6 +178,7 @@ class Condition extends React.PureComponent {
                 </Field>}
                 <div className={styles.conditionsWrapper}>
                     <Icon
+                        itemId="policies_add_condition"
                         icon="addIcon"
                         onClick={this.addConjunction}
                         title={ls('ADD_POLICY_CONDITION_TITLE', 'Добавить условие')}

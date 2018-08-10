@@ -8,6 +8,7 @@ import Chip from '../../../../../components/Chip/Chip';
 class ScopeList extends React.PureComponent {
     static propTypes = {
         id: PropTypes.string.isRequired,
+        itemId: PropTypes.string,
         placeholder: PropTypes.string,
         options: PropTypes.array,
         values: PropTypes.array,
@@ -15,6 +16,7 @@ class ScopeList extends React.PureComponent {
     };
 
     static defaultProps = {
+        itemId: '',
         placeholder: '',
         options: [],
         values: [],
@@ -56,11 +58,12 @@ class ScopeList extends React.PureComponent {
     };
 
     render() {
-        const { id, placeholder, options, values } = this.props;
+        const { id, placeholder, options, values, itemId } = this.props;
         const { value } = this.state;
 
         return (
             <ChipList
+                itemId={itemId}
                 id={id}
                 options={this.filterOptions(options)}
                 onChange={this.onChange}

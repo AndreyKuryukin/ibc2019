@@ -162,6 +162,7 @@ class UserEditor extends React.Component {
 
         return (
             <Modal
+                itemId="users"
                 isOpen={active}
                 title={userId
                     ? ls('USER_EDIT_USER', 'Редактирование пользователя') + ' ' + _.get(this.props.user, 'login', '')
@@ -189,6 +190,7 @@ class UserEditor extends React.Component {
                             >
                                 <Radio
                                     id="custom"
+                                    itemId="users_custom_radio"
                                     type="radio"
                                     name="authentication-mode"
                                     checked={!this.getUserProperty('ldap_auth')}
@@ -205,6 +207,7 @@ class UserEditor extends React.Component {
                             >
                                 <Radio
                                     id="ldap"
+                                    itemId="users_ldap_radio"
                                     type="radio"
                                     name="authentication-mode"
                                     checked={this.getUserProperty('ldap_auth')}
@@ -227,6 +230,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="login"
+                                        itemId="users_login_field"
                                         name="login"
                                         value={this.getUserProperty('login', '')}
                                         onChange={value => this.setUserProperty('login', value)}
@@ -244,6 +248,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="password"
+                                        itemId="users_password_field"
                                         name="password"
                                         type="password"
                                         value={this.getUserProperty('password', '')}
@@ -269,6 +274,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="confirm"
+                                        itemId="users_confirm_field"
                                         name="confirm"
                                         type="password"
                                         value={this.getUserProperty('confirm', '')}
@@ -294,6 +300,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="email"
+                                        itemId="users_email_field"
                                         name="email"
                                         value={this.getUserProperty('email', '')}
                                         onChange={value => this.setUserProperty('email', value)}
@@ -310,6 +317,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="name"
+                                        itemId="users_name_field"
                                         name="name"
                                         value={this.getUserProperty('first_name', '')}
                                         onChange={value => this.setUserProperty('first_name', value)}
@@ -324,6 +332,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="last-name"
+                                        itemId="users_last_name_field"
                                         name="last-name"
                                         value={this.getUserProperty('last_name', '')}
                                         onChange={value => this.setUserProperty('last_name', value)}
@@ -338,6 +347,7 @@ class UserEditor extends React.Component {
                                 >
                                     <Input
                                         id="phone"
+                                        itemId="users_phone_field"
                                         type="number"
                                         name="phone"
                                         value={this.getUserProperty('phone', '')}
@@ -356,6 +366,7 @@ class UserEditor extends React.Component {
                         >
                             <RolesGrid
                                 id="user-editor-roles-grid"
+                                itemId="users_roles"
                                 data={rolesList}
                                 checked={this.getUserProperty('roles', [])}
                                 onCheck={checked => this.setUserProperty('roles', checked)}
@@ -376,6 +387,7 @@ class UserEditor extends React.Component {
                         >
                             <RolesGrid
                                 data={groupsList}
+                                itemId="users_groups"
                                 id="edit-user-groups"
                                 checked={this.getUserProperty('groups', [])}
                                 onCheck={checked => this.setUserProperty('groups', checked)}

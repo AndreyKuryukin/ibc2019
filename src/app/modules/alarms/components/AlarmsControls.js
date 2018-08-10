@@ -113,6 +113,7 @@ class AlarmsControls extends React.Component {
                             splitter=""
                         >
                             <DatePicker
+                                itemId="alarms_start"
                                 value={this.getFilterProperty('start')}
                                 inputWidth={115}
                                 onChange={value => this.setFilterProperty('start', value)}
@@ -122,13 +123,14 @@ class AlarmsControls extends React.Component {
                             />
                         </Field>
                         <Field
-                            id="alarms-filter-start"
+                            id="alarms-filter-end"
                             labelText={ls('ALARMS_END_FILTER', 'по')}
                             inputWidth={160}
                             labelWidth={110}
                             splitter=""
                         >
                             <DatePicker
+                                itemId="alarms_end"
                                 min={this.getFilterProperty('start')}
                                 value={this.getFilterProperty('end')}
                                 inputWidth={115}
@@ -148,6 +150,7 @@ class AlarmsControls extends React.Component {
                             splitter=""
                         >
                             <Select
+                                itemId="alarms_mrf"
                                 id="mrf-filter"
                                 options={AlarmsControls.mapOptions(locations)}
                                 value={this.getFilterProperty('mrf', '')}
@@ -163,6 +166,7 @@ class AlarmsControls extends React.Component {
                             splitter=""
                         >
                             <Select
+                                itemId="alarms_rf"
                                 id="region-filter"
                                 options={this.getRfOptions()}
                                 value={this.getFilterProperty('rf', '')}
@@ -180,6 +184,7 @@ class AlarmsControls extends React.Component {
                             splitter=""
                         >
                             <Checkbox
+                                itemId="alarms_current_check"
                                 id="current-checkbox-filter"
                                 checked={this.getFilterProperty('current', false)}
                                 onChange={value => this.setFilterProperty('current', value)}
@@ -198,6 +203,7 @@ class AlarmsControls extends React.Component {
                                 onToggle={() => null}
                                 trigger={
                                     <Checkbox
+                                        itemId="alarms_historical_check"
                                         id="historical-checkbox-filter"
                                         checked={this.getFilterProperty('historical', false)}
                                         onChange={this.getFilterProperty('historical', false)
@@ -212,10 +218,10 @@ class AlarmsControls extends React.Component {
                                     {ls('ALARMS_HISTORICAL_WARNING_MESSAGE', 'Загрузка архивных аварий может занять длительное время')}
                                 </div>
                                 <div className={styles.buttonWrapper}>
-                                    <Button outline color="action" onClick={this.onTriggerHistoricalDropdown}>
+                                    <Button itemId="alarms_cancel_historical" outline color="action" onClick={this.onTriggerHistoricalDropdown}>
                                         {ls('CANCEL', 'Отмена')}
                                     </Button>
-                                    <Button color="action" onClick={this.checkHistorical}>
+                                    <Button itemId="alarms_confirm_historical" color="action" onClick={this.checkHistorical}>
                                         {ls('CONTINUE', 'Продолжить')}
                                     </Button>
                                 </div>
@@ -223,15 +229,16 @@ class AlarmsControls extends React.Component {
                         </Field>
                     </div>
                     <div className={styles.alarmsFilterGroup}>
-                        <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
+                        <Button itemId="alarms_apply" className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
                             {ls('ALARMS_APPLY_FILTER', 'Применить')}
                         </Button>
-                        <Button className={styles.applyButton} color="action" onClick={this.props.onExportXLSX}>
+                        <Button itemId="alarms_export" className={styles.applyButton} color="action" onClick={this.props.onExportXLSX}>
                             {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
                         </Button>
                     </div>
                 </div>
                 <Input
+                    itemId="alarms_search_field"
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}
                     onChange={this.onSearchTextChange}

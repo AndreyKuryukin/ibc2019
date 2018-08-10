@@ -103,6 +103,7 @@ class RolesListGrid extends React.PureComponent {
         const filteredData = this.state.searchText ? this.filter(subjectsData, this.state.searchText) : subjectsData;
         return (
             <Grid
+                itemId="roles_permissions"
                 id="role-editor-subjects-grid"
                 data={filteredData}
                 columns={[

@@ -140,14 +140,17 @@ class PageWrapper extends React.Component {
                         {this.renderTitle(this.state.pageTitle)}
                     </div>
                     <div className={styles.rightPanel}>
-                        <span className={styles.userlink}
-                              onClick={this.onUserNameClick}
+                        <span
+                            itemId="header_user_name"
+                            className={styles.userlink}
+                            onClick={this.onUserNameClick}
                         >
                             {this.getUserName(this.props.user)}
                         </span>
 
                         <Icon
                             icon="help-icon"
+                            itemId="header_load_manual"
                             title={ls('LOAD_USER_MANUAL_TITLE', 'Загрузить руководство пользователя')}
                             onClick={() => this.fireDownloading('user_manual.pdf')}
                             style={logoutIconStyle}
@@ -155,6 +158,7 @@ class PageWrapper extends React.Component {
 
                         <Icon
                             icon="logout-icon"
+                            itemId="header_logout"
                             onClick={this.props.onLogOut}
                             style={logoutIconStyle}
                         />

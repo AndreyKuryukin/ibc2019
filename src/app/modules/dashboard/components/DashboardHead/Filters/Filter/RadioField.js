@@ -16,6 +16,7 @@ const RadioField = (props) => (
         }}
     >
         <Radio
+            itemId={`${props.name}_${props.option.value.toLowerCase()}_radio`}
             id={props.option.value}
             name={props.name}
             checked={props.values.includes(props.option.value)}
