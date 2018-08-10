@@ -26,6 +26,7 @@ class Configuration extends React.Component {
     static propTypes = {
         policy: PropTypes.object,
         setPolicyProperty: PropTypes.func,
+        getThresholds: PropTypes.func,
         policyTypes: PropTypes.array,
         objectTypes: PropTypes.array,
         errors: PropTypes.object,
@@ -35,6 +36,7 @@ class Configuration extends React.Component {
     static defaultProps = {
         policy: null,
         setPolicyProperty: () => null,
+        getThresholds: () => null,
         policyTypes: [],
         objectTypes: [],
         errors: PropTypes.object,
@@ -202,8 +204,8 @@ class Configuration extends React.Component {
                                     name="rise_value"
                                     placeholder="0"
                                     valid={_.isEmpty(_.get(errors, 'threshold.rise_value'))}
-                                    value={this.getSeconds(_.get(this.state.policy, 'threshold.rise_value', ''))}
-                                    onChange={value => this.setPolicyProperty('threshold.rise_value', this.getMilliSeconds(value))}
+                                    value={this.props.getThresholds('threshold.rise_value', '')}
+                                    onChange={value => this.setPolicyProperty('threshold.rise_value', value)}
                                     maxLength={6}
                                     errorMessage={_.get(errors, 'threshold.rise_value.title')}
                                 />

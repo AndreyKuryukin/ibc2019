@@ -169,6 +169,11 @@ class PolicyEditor extends React.PureComponent {
             _.set(policyValues, 'accident', '');
             _.set(policyValues, 'waiting_time', '');
         }
+
+        if ((key === 'threshold.cease_value' || key === 'threshold.rise_value') && _.get(prevPolicy, 'object_type', '') !== 'STB') {
+            _.set(policyValues, key, this.getMilliSeconds(value));
+        }
+
         const policy = _.mergeWith(
             prevPolicy,
             policyValues,
@@ -188,6 +193,13 @@ class PolicyEditor extends React.PureComponent {
         }, () => {
             this.props.updatePolicy(policy);
         });
+    };
+
+    getThresholds = (thresholdKey, defaultValue) => {
+        const { policy } = this.state;
+        const value = _.get(policy, thresholdKey, defaultValue);
+
+        return _.get(policy, 'object_type', '') === 'STB' ? value : this.getSeconds(value);
     };
 
     onSubmit = () => {
@@ -243,6 +255,7 @@ class PolicyEditor extends React.PureComponent {
                                     <div className={styles.policyEditorColumn}>
                                         <Configuration
                                             setPolicyProperty={(key, value) => this.setPolicyProperty(key, value)}
+                                            getThresholds={this.getThresholds}
                                             policyTypes={policyTypes}
                                             objectTypes={objectTypes}
                                             metaData={metaData}
@@ -305,8 +318,8 @@ class PolicyEditor extends React.PureComponent {
                                                                     name="cease_value"
                                                                     placeholder="0"
                                                                     valid={_.isEmpty(_.get(errors, 'threshold.cease_value'))}
-                                                                    value={this.getSeconds(this.getPolicyProperty('threshold.cease_value'))}
-                                                                    onChange={value => this.setPolicyProperty('threshold.cease_value', this.getMilliSeconds(value))}
+                                                                    value={this.getThresholds('threshold.cease_value', '')}
+                                                                    onChange={value => this.setPolicyProperty('threshold.cease_value', value)}
                                                                     maxLength={6}
                                                                 />
                                                                 <span
