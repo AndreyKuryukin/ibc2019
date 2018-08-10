@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import ls from '../../i18n';
+import { createLocalizer } from '../../i18n';
 
 const validators = {
     required: (value, testValue) => {
@@ -14,11 +14,11 @@ const validators = {
 };
 
 const defaultMessages = {
-    required: ls('REQUIRED_ERROR_MESSAGE', 'Это поле обязательно для заполнения'),
-    min: ls('MIN_ERROR_MESSAGE', 'Значение меньше минимального'),
-    max: ls('MAX_ERROR_MESSAGE', 'Значение больше максимального'),
-    notEmpty: ls('NOT_EMPTY_ERROR_MESSAGE', 'Значение не должно быть пустым'),
-    match: ls('MATCH_ERROR_MESSAGE', 'Проверьте правильность введённого значения'),
+    required: createLocalizer('REQUIRED_ERROR_MESSAGE', 'Это поле обязательно для заполнения'),
+    min: createLocalizer('MIN_ERROR_MESSAGE', 'Значение меньше минимального'),
+    max: createLocalizer('MAX_ERROR_MESSAGE', 'Значение больше максимального'),
+    notEmpty: createLocalizer('NOT_EMPTY_ERROR_MESSAGE', 'Значение не должно быть пустым'),
+    match: createLocalizer('MATCH_ERROR_MESSAGE', 'Проверьте правильность введённого значения'),
 };
 
 const validateValue = (value, config, customValidators) =>
@@ -40,7 +40,11 @@ const mapErrors = (valueResult, messages) =>
             const title = _.get(messages, validatorName, '');
             const severity = 'CRITICAL';
             const type = 'VALIDATION';
-            return { type, title, severity };
+            return {
+                type,
+                title: _.isFunction(title) ? title() : title,
+                severity
+            };
         }
         return result;
     }, {});

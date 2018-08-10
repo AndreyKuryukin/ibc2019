@@ -12,6 +12,16 @@ const unitStyle = { margin: '3px 0px 3px 2px' };
 const textareaStyle = { marginTop: 10 };
 const thresholdFieldStyle = { flexGrow: 1, justifyContent: 'flex-end' };
 
+const SCOPE_TYPES_NAMES_MAP = {
+    SMART_SPY_SIMPLE: 'Без функции агрегации',
+    SMART_SPY_ACC_DEVICE: 'Количество STB на оборудовании доступа',
+    SMART_SPY_AGG_DEVICE: 'Количество STB на оборудовании агрегации',
+    SMART_SPY_PE_DEVICE: 'Количество STB на оборудовании PE',
+    SMART_SPY_PRC_ACC_DEVICE: '% STB на оборудовании доступа',
+    SMART_SPY_PRC_AGG_DEVICE: '% STB на оборудовании агрегации',
+    SMART_SPY_PRC_PE_DEVICE: '% STB на оборудовании PE'
+};
+
 class Configuration extends React.Component {
     static propTypes = {
         policy: PropTypes.object,
@@ -68,7 +78,7 @@ class Configuration extends React.Component {
     };
 
     mapTypes = (types) => {
-        return types.map(type => ({ value: type, title: type }))
+        return types.map(type => ({ value: type, title: SCOPE_TYPES_NAMES_MAP[type] || '' }))
     };
 
     getSeconds = (mills) => {
@@ -138,7 +148,7 @@ class Configuration extends React.Component {
                     <Select
                         id="aggregation"
                         type="select"
-                        placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Функция агрегации')}
+                        placeholder={ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Функция агрегации')}
                         options={this.mapTypes(policyTypes)}
                         value={_.get(this.state.policy, 'policy_type') || ''}
                         onChange={policy_type => this.setPolicyProperty('policy_type', policy_type)}
@@ -211,7 +221,7 @@ class Configuration extends React.Component {
                     <Input
                         id="message"
                         type="textarea"
-                        placeholder={ls('POLICY_AGGREGATION_PLACEHOLDER', 'Текст сообщения')}
+                        placeholder={ls('POLICIES_POLICY_FIELD_MESSAGE', 'Текст сообщения')}
                         value={_.get(this.state.policy, 'notification_template', '') || ''}
                         onChange={value => this.setPolicyProperty('notification_template', value)}
                         rows={5}
