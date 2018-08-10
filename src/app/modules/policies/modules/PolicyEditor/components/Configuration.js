@@ -105,8 +105,8 @@ class Configuration extends React.Component {
                 <Field
                     id="name"
                     labelText={`${ls('POLICIES_POLICY_FIELD_NAME', 'Имя')}`}
-                    labelWidth="50%"
-                    inputWidth="50%"
+                    labelWidth="30%"
+                    inputWidth="70%"
                     required
                 >
                     <Input
@@ -124,8 +124,8 @@ class Configuration extends React.Component {
                 <Field
                     id="object"
                     labelText={`${ls('POLICIES_CONDITION_FIELD_OBJECT_TYPE', 'Тип объекта')}`}
-                    labelWidth="50%"
-                    inputWidth="50%"
+                    labelWidth="30%"
+                    inputWidth="70%"
                     required
                 >
                     <Select
@@ -144,8 +144,8 @@ class Configuration extends React.Component {
                     id="aggregation"
                     required
                     labelText={`${ls('POLICIES_POLICY_FIELD_AGGREGATION', 'Фукнция агрегации')}`}
-                    labelWidth="50%"
-                    inputWidth="50%"
+                    labelWidth="30%"
+                    inputWidth="70%"
                 >
                     <Select
                         itemId="policies_aggregation_field"

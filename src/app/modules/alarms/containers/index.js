@@ -220,7 +220,13 @@ class Alarms extends React.PureComponent {
     };
 
     fetchAlarms = (filter) => {
-        setQueryParams(filter, this.props.history, this.props.location);
+        const queryParams = {
+            ...filter,
+            type: SENDING_ALARM_TYPES[this.props.match.params.type],
+            start: filter.start && convertDateToUTC0(filter.start.getTime()).unix() * 1000,
+            end: filter.end && convertDateToUTC0(filter.end.getTime()).unix() * 1000,
+        };
+        setQueryParams(queryParams, this.props.history, this.props.location);
         this.onFetchAlarms(filter)
     };
 
