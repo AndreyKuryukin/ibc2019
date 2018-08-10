@@ -160,6 +160,7 @@
     "KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL": "Type of technology PD",
     "KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE": "Type of last mile technology",
     "PASSWORD_NOT_EQUAL": "Passwords do not match",
+    "PASSWORD_VALIDATION": "Password must contain at least 8 characters, at least 1 number, 1 special character and 1 uppercase letter",
     "PERIOD_HOUR": "Hourly",
     "PERIOD_DAY": "Daily",
     "PERIOD_WEEK": "Weekly",

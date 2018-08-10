@@ -50,7 +50,8 @@ class UserEditor extends React.PureComponent {
             },
             password: {
                 required: !this.props.userId,
-                passwordEqual: true
+                passwordEqual: true,
+                isPasswordValid: true,
             },
             confirm: {
                 required: !this.props.userId,
@@ -78,16 +79,18 @@ class UserEditor extends React.PureComponent {
                 }
                 this.props.onFetchRolesSuccess(roles);
                 this.props.onFetchGroupsSuccess(groups);
-
             });
     };
 
     onSubmit = (userId, userData) => {
+        const passwordRegex = new RegExp('^(?=.*[A-Z])(?=.*[0-9])(?=.*[!@_#\$%\^&\*])(?=.{8,})');
         const customValidators = {
-            passwordEqual: (value, testValue) => userData.password === userData.confirm
+            isPasswordValid: () => this.props.userId ? (userData.password.length === 0 || passwordRegex.test(userData.password)) : passwordRegex.test(userData.password),
+            passwordEqual: () => userData.password === userData.confirm,
         };
         const customErrorMessages = {
-            passwordEqual: ls('PASSWORD_NOT_EQUAL', 'Пароли не совпадают')
+            isPasswordValid: ls('PASSWORD_VALIDATION', 'Пароль должен быть не короче 8 символов, содержать минимум одну цифру, один спецсимвол, одну заглавную букву'),
+            passwordEqual: ls('PASSWORD_NOT_EQUAL', 'Пароли не совпадают'),
         };
         const errors = validateForm(userData, this.validationConfig, customErrorMessages, customValidators);
         if (_.isEmpty(errors)) {
