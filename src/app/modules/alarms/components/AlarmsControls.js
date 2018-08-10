@@ -19,6 +19,7 @@ class AlarmsControls extends React.Component {
     static propTypes = {
         onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
+        onExportXLSX: PropTypes.func,
         locations: PropTypes.array,
         filter: PropTypes.shape({
             start: PropTypes.instanceOf(Date),
@@ -28,14 +29,13 @@ class AlarmsControls extends React.Component {
             current: PropTypes.bool,
             historical: PropTypes.bool,
         }),
-        displayedData: PropTypes.array,
     };
 
     static defaultProps = {
         onChangeFilter: () => null,
         onApplyFilter: () => null,
+        onExportXLSX: () => null,
         locations: [],
-        displayedData: [],
         filter: null,
     };
 
@@ -57,33 +57,6 @@ class AlarmsControls extends React.Component {
         const isHistoricalConfirmOpenChanged = this.state.isHistoricalConfirmOpen !== nextState.isHistoricalConfirmOpen;
 
         return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
-    }
-
-    formAndLoadXLSX = () => {
-        const workbook = XLSX.utils.book_new();
-        const worksheetCols = [
-            { wpx: 250 },
-            { wpx: 250 },
-            { wpx: 300 },
-            { wpx: 220 },
-            { wpx: 150 },
-            { wpx: 150 },
-            { wpx: 200 },
-            { hidden: true }, // 'timestamp' field should be hidden because it`s used for sorting only
-        ];
-        var worksheet = XLSX.utils.json_to_sheet(this.props.displayedData);
-        const range = XLSX.utils.decode_range(worksheet['!ref']);
-        worksheet['!cols'] = worksheetCols;
-        for (let col = range.s.c; col <= range.e.c; ++col) {
-            var address = XLSX.utils.encode_col(col) + '1';
-            worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
-        }
-        XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
-
-        XLSX.writeFile(workbook, 'Alarms.xlsx', {
-            type: 'base64',
-            bookType: 'xlsx',
-        });
     }
 
     getFilterProperty = (key, defaultValue) => _.get(this.props.filter, key, defaultValue);
@@ -253,7 +226,7 @@ class AlarmsControls extends React.Component {
                         <Button className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
                             {ls('ALARMS_APPLY_FILTER', 'Применить')}
                         </Button>
-                        <Button className={styles.applyButton} color="action" onClick={this.formAndLoadXLSX}>
+                        <Button className={styles.applyButton} color="action" onClick={this.props.onExportXLSX}>
                             {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
                         </Button>
                     </div>

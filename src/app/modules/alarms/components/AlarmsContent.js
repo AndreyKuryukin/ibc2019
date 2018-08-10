@@ -16,6 +16,7 @@ class AlarmsContent extends React.PureComponent {
         locations: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlarms: PropTypes.func,
+        onExportXLSX: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
@@ -26,23 +27,20 @@ class AlarmsContent extends React.PureComponent {
         mrfOptions: [],
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
+        onExportXLSX: () => null,
         isLoading: false,
     };
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            displayedData: [],
-        };
-    };
+    componentDidMount() {
+        this.props.onFetchAlarms(this.props.filter);
+    }
 
     onApplyFilter = () => {
         this.props.onFetchAlarms(this.props.filter);
     };
 
-    onDisplayedDataChanged = (displayedData) => {
-        this.setState({ displayedData });
+    onExportXLSX = () => {
+        this.props.onExportXLSX(this.props.filter);
     };
 
     render() {
@@ -65,15 +63,14 @@ class AlarmsContent extends React.PureComponent {
                     filter={filter}
                     onChangeFilter={onChangeFilter}
                     onApplyFilter={this.onApplyFilter}
+                    onExportXLSX={this.onExportXLSX}
                     locations={locations}
-                    displayedData={this.state.displayedData}
                 />
                 <AlarmsTable
                     type={type}
                     data={data}
                     preloader={isLoading}
                     searchText={_.get(filter, 'searchText', '')}
-                    onDisplayedDataChanged={this.onDisplayedDataChanged}
                 />
                 {isAlarmsViewerActive && <AlarmsViewer alarmId={alarmId} active={isAlarmsViewerActive} type={type} />}
             </div>
