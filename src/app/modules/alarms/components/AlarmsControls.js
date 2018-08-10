@@ -114,6 +114,7 @@ class AlarmsControls extends React.Component {
                         >
                             <DatePicker
                                 itemId="alarms_start"
+                                max={this.getFilterProperty('end')}
                                 value={this.getFilterProperty('start')}
                                 inputWidth={115}
                                 onChange={value => this.setFilterProperty('start', value)}
