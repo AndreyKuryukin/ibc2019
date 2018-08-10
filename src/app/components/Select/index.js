@@ -75,7 +75,7 @@ class Select extends React.PureComponent {
             console.info('Select should not has children')
         }
         return (
-            <div className={styles.selectWrapper} onClick={this.onClick}>
+            <div className={styles.selectWrapper} onClick={() => !rest.disabled && this.onClick()}>
                 {valid === false &&
                 <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
                 <Input type="select" {...rest}
