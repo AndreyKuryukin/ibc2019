@@ -410,7 +410,7 @@ class PolicyEditor extends React.PureComponent {
                         <ModalFooter>
                             <Button outline color="action"
                                     onClick={this.props.onClose}>{ls('NEW_ROLE_CANCEL', 'Отмена')}</Button>
-                            <Button color="action" onClick={this.onTest}>{ls('POLICIES_CREATE', 'Создать')}</Button>
+                            <Button color="action" onClick={this.onTest}>{policyId ? ls('SAVE', 'Сохранить') : ls('CREATE', 'Создать')}</Button>
                         </ModalFooter>
                     </Modal>
                 </DraggableWrapper>

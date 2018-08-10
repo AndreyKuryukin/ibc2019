@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import ls from 'i18n';
 import PolicyEditorComponent from '../components';
-import { createPolicy, fetchPolicySuccess, resetPolicyEditor, updatePolicy } from '../actions';
+import { fetchPolicySuccess, resetPolicyEditor } from '../actions';
 import { fetchScopesSuccess, fetchTypesSuccess } from '../../../actions'
 import rest from '../../../../../rest';
 import * as _ from "lodash";
@@ -19,6 +19,7 @@ class PolicyEditor extends React.PureComponent {
         policyId: PropTypes.string,
         scopes: PropTypes.array,
         types: PropTypes.array,
+        fetchPolicies: PropTypes.func,
         onFetchPolicySuccess: PropTypes.func,
         onUpdatePolicySuccess: PropTypes.func,
         onCreatePolicySuccess: PropTypes.func,
@@ -27,6 +28,7 @@ class PolicyEditor extends React.PureComponent {
 
     static defaultProps = {
         policyId: '',
+        fetchPolicies: () => null,
         onFetchPolicySuccess: () => null,
         onUpdatePolicySuccess: () => null,
         onCreatePolicySuccess: () => null,
@@ -370,9 +372,9 @@ class PolicyEditor extends React.PureComponent {
         if (_.isEmpty(errors)) {
             const submit = policyId ? rest.put : rest.post;
             const success = (response) => {
-                const callback = policyId ? this.props.onUpdatePolicySuccess : this.props.onCreatePolicySuccess;
                 const policy = response.data;
-                callback(policy);
+
+                this.props.fetchPolicies();
                 this.setState({ loading: false });
                 this.context.history.push('/policies');
                 this.props.onReset();
@@ -461,8 +463,6 @@ const mapDispatchToProps = dispatch => ({
     onFetchTypesSuccess: types => dispatch(fetchTypesSuccess(types)),
     onFetchScopesSuccess: scopes => dispatch(fetchScopesSuccess(scopes)),
     onFetchPolicySuccess: policy => dispatch(fetchPolicySuccess(policy)),
-    onUpdatePolicySuccess: policy => dispatch(updatePolicy(policy)),
-    onCreatePolicySuccess: policy => dispatch(createPolicy(policy)),
     onReset: () => dispatch(resetPolicyEditor()),
 });
 
