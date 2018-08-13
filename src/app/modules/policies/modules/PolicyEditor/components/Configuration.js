@@ -19,7 +19,13 @@ const SCOPE_TYPES_NAMES_MAP = {
     SMART_SPY_PE_DEVICE: 'Количество STB на оборудовании PE',
     SMART_SPY_PRC_ACC_DEVICE: '% STB на оборудовании доступа',
     SMART_SPY_PRC_AGG_DEVICE: '% STB на оборудовании агрегации',
-    SMART_SPY_PRC_PE_DEVICE: '% STB на оборудовании PE'
+    SMART_SPY_PRC_PE_DEVICE: '% STB на оборудовании PE',
+    VB_UNICAST_SIMPLE: 'Без функции агрегации',
+    VB_UNICAST_CHANNEL_COUNT: 'количество unicast-каналов на анализаторе',
+    VB_MULTICAST_SIMPLE: 'Без функции агрегации',
+    VB_MULTICAST_CHANNEL_COUNT: 'количество mcast-каналов на анализаторе',
+    OTT_SIMPLE: 'Без функции агрегации',
+    KQI_SIMPLE: 'Без функции агрегации (edited)',
 };
 
 class Configuration extends React.Component {
@@ -78,7 +84,8 @@ class Configuration extends React.Component {
     };
 
     mapTypes = (types) => {
-        return types.map(type => ({ value: type, title: SCOPE_TYPES_NAMES_MAP[type] || '' }))
+        console.log(types)
+        return types.map(type => ({ value: type, title: SCOPE_TYPES_NAMES_MAP[type] || type }))
     };
 
     getSeconds = (mills) => {
