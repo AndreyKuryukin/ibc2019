@@ -154,7 +154,7 @@ class ReportsTable extends React.PureComponent {
     mapTemplate = template => ({
         id: template.id,
         nodeType: 'template',
-        name: TEMPLATE_NAMES_MAP[template.type] || '',
+        name: TEMPLATE_NAMES_MAP[template.name] || '',
         children: _.get(template, 'report_config', []).map(this.mapConfig),
     });
 
