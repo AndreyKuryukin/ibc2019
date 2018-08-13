@@ -20,6 +20,7 @@ class AlarmsControls extends React.Component {
         onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
         onExportXLSX: PropTypes.func,
+        onFilterAlarms: PropTypes.func,
         locations: PropTypes.array,
         filter: PropTypes.shape({
             start: PropTypes.instanceOf(Date),
@@ -35,6 +36,7 @@ class AlarmsControls extends React.Component {
         onChangeFilter: () => null,
         onApplyFilter: () => null,
         onExportXLSX: () => null,
+        onFilterAlarms: () => null,
         locations: [],
         filter: null,
     };
@@ -88,10 +90,6 @@ class AlarmsControls extends React.Component {
 
     onApplyFilter = () => {
         this.props.onApplyFilter(this.props.filter);
-    };
-
-    onSearchTextChange = (value) => {
-        this.setFilterProperty('searchText', value);
     };
 
     onTriggerHistoricalDropdown = () => {
@@ -242,7 +240,7 @@ class AlarmsControls extends React.Component {
                     itemId="alarms_search_field"
                     placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                     className={styles.search}
-                    onChange={this.onSearchTextChange}
+                    onChange={this.props.onFilterAlarms}
                 />
             </div>
         );

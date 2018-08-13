@@ -137,52 +137,52 @@ class Alarms extends React.PureComponent {
             limit: 65000,
         };
 
-        rest.get('/api/v1/alerts', {}, { queryParams }) // change url
-            .then((response) => {
-                if (!response.data.length) {
-                    this.setState({ isLoading: false });
-
-                    return;
-                }
-
-                const workbook = XLSX.utils.book_new();
-                const worksheetCols = [
-                    { wpx: 250 },
-                    { wpx: 250 },
-                    { wpx: 300 },
-                    { wpx: 220 },
-                    { wpx: 150 },
-                    { wpx: 150 },
-                    { wpx: 200 },
-                ];
-                const worksheet = XLSX.utils.json_to_sheet(response.data.map(node => ({
-                    id: node.id.toString(),
-                    external_id: node.external_id || '',
-                    policy_name: node.policy_name,
-                    notification_status: node.notification_status || '',
-                    raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
-                    duration: this.getReadableDuration(node.duration),
-                    object: node.object || '',
-                })));
-                const range = XLSX.utils.decode_range(worksheet['!ref']);
-
-                worksheet['!cols'] = worksheetCols;
-
-                for (let col = range.s.c; col <= range.e.c; ++col) {
-                    var address = XLSX.utils.encode_col(col) + '1';
-                    worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
-                }
-
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
-                XLSX.writeFile(workbook, 'Alarms.xlsx', {
-                    type: 'base64',
-                    bookType: 'xlsx',
-                });
-
+        const success = (response) => {
+            if (!response.data.length) {
                 this.setState({ isLoading: false });
-            })
-            .catch(this.onFetchingAlarmsError);
-    }
+
+                return;
+            }
+
+            const workbook = XLSX.utils.book_new();
+            const worksheetCols = [
+                { wpx: 250 },
+                { wpx: 250 },
+                { wpx: 300 },
+                { wpx: 220 },
+                { wpx: 150 },
+                { wpx: 150 },
+                { wpx: 200 },
+            ];
+            const worksheet = XLSX.utils.json_to_sheet(response.data.map(node => ({
+                id: node.id.toString(),
+                external_id: node.external_id || '',
+                policy_name: node.policy_name,
+                notification_status: node.notification_status || '',
+                raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
+                duration: this.getReadableDuration(node.duration),
+                object: node.object || '',
+            })));
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+
+            worksheet['!cols'] = worksheetCols;
+
+            for (let col = range.s.c; col <= range.e.c; ++col) {
+                var address = XLSX.utils.encode_col(col) + '1';
+                worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
+            }
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
+            XLSX.writeFile(workbook, 'Alarms.xlsx', {
+                type: 'base64',
+                bookType: 'xlsx',
+            });
+
+            this.setState({ isLoading: false });
+        };
+
+        this.handleAlarmsFetching(queryParams, success);
+    };
 
     onFetchAlarms = (filter) => {
         this.setState({ isLoading: true });
@@ -194,29 +194,47 @@ class Alarms extends React.PureComponent {
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
 
+        const success = (response) => {
+            const typeMap = {
+                'gp': 'gp',
+                'kqi': 'kqi',
+                'ci': 'ki'
+            };
+            const alarms = response.data;
+            this.props.onFetchAlarmsSuccess(alarms);
+            this.props.flushNotifications(typeMap[this.props.match.params.type]);
+            this.setState({ isLoading: false });
+        };
+
+        this.handleAlarmsFetching(queryParams, success);
+    };
+
+    onFilterAlarms = _.debounce((filter, searchText) => {
+        this.setState({ isLoading: true });
+
+        const queryParams = {
+            ...filter,
+            type: SENDING_ALARM_TYPES[this.props.match.params.type],
+            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
+            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
+            filter: searchText,
+        };
+
+        const success = (response) => {
+            const alarms = response.data;
+
+            this.props.onFetchAlarmsSuccess(alarms);
+
+            this.setState({ isLoading: false });
+        };
+
+        this.handleAlarmsFetching(queryParams, success);
+    }, 700);
+
+    handleAlarmsFetching = (queryParams, success) => {
         rest.get('/api/v1/alerts', {}, { queryParams })
-            .then((response) => {
-                const typeMap = {
-                    'gp': 'gp',
-                    'kqi': 'kqi',
-                    'ci': 'ki'
-                };
-                const alarms = response.data;
-                this.props.onFetchAlarmsSuccess(alarms);
-                this.props.flushNotifications(typeMap[this.props.match.params.type]);
-                this.setState({ isLoading: false });
-            })
-            .catch((e) => {
-                console.error(e);
-                this.context.notifications.notify({
-                    title: ls('ALARMS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
-                    message: ls('ALARMS_GETTING_ERROR_MESSAGE_FIELD', 'Данные по авариям не получены'),
-                    type: 'CRITICAL',
-                    code: 'alarms-failed',
-                    timeout: 10000
-                });
-                this.setState({ isLoading: false });
-            });
+            .then(success)
+            .catch(this.onFetchingAlarmsError);
     };
 
     fetchAlarms = (filter) => {
@@ -227,7 +245,7 @@ class Alarms extends React.PureComponent {
             end: filter.end && convertDateToUTC0(filter.end.getTime()).unix() * 1000,
         };
         setQueryParams(queryParams, this.props.history, this.props.location);
-        this.onFetchAlarms(filter)
+        this.onFetchAlarms(filter);
     };
 
     render() {
@@ -242,6 +260,7 @@ class Alarms extends React.PureComponent {
                 notifications={this.props.notifications}
                 onFetchAlarms={this.fetchAlarms}
                 onExportXLSX={this.onExportXLSX}
+                onFilterAlarms={this.onFilterAlarms}
                 isLoading={this.state.isLoading}
             />
         );

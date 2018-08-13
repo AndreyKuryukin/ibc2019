@@ -17,6 +17,7 @@ class AlarmsContent extends React.PureComponent {
         onChangeFilter: PropTypes.func,
         onFetchAlarms: PropTypes.func,
         onExportXLSX: PropTypes.func,
+        onFilterAlarms: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
@@ -28,6 +29,7 @@ class AlarmsContent extends React.PureComponent {
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
         onExportXLSX: () => null,
+        onFilterAlarms: () => null,
         isLoading: false,
     };
 
@@ -41,6 +43,10 @@ class AlarmsContent extends React.PureComponent {
 
     onExportXLSX = () => {
         this.props.onExportXLSX(this.props.filter);
+    };
+
+    onFilterAlarms = (searchText) => {
+        this.props.onFilterAlarms(this.props.filter, searchText);
     };
 
     render() {
@@ -62,6 +68,7 @@ class AlarmsContent extends React.PureComponent {
                 <AlarmsControls
                     filter={filter}
                     onChangeFilter={onChangeFilter}
+                    onFilterAlarms={this.onFilterAlarms}
                     onApplyFilter={this.onApplyFilter}
                     onExportXLSX={this.onExportXLSX}
                     locations={locations}
