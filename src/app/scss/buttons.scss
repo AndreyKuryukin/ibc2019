@@ -7,9 +7,11 @@ $primary-btn-text-color: $white;
 .btn-primary {
   color: $primary-btn-text-color;
 
-  &:hover,
-  &:active {
+  &:hover {
     color: $primary-btn-text-color;
+  }
+  &:active {
+    color: #fff !important;
   }
   &:focus {
     box-shadow: none;
@@ -18,9 +20,11 @@ $primary-btn-text-color: $white;
 .btn-outline-primary {
   color: $primary-btn-text-color;
 
-  &:hover,
-  &:active {
+  &:hover {
     color: $primary-btn-text-color;
+  }
+  &:active {
+    color: #fff !important;
   }
 }
 $secondary: map-get($theme-colors, 'secondary');
@@ -49,22 +53,26 @@ $secondary-btn-text-color: #02486e;
     padding: 8.5px 12px;
   }
 }
+.dropdown-toggle {
+  display: flex;
+  align-items: center;
+}
 .dropdown-toggle::after {
-  width: 8px;
-  height: 8px;
-  margin-left: 8px;
-  transform: rotate(45deg);
-  border-bottom: 1px solid #fff;
-  border-right: 1px solid #fff;
-  border-left: none;
-  border-top: 0;
+  content: '';
+  margin-left: 5px;
+  -webkit-transition: -webkit-transform 0.5s;
+  transition: transform 0.5s;
+  border: none;
+  @include iconBuilder(10px, 5px, 'arrow-white.svg');
+}
+.dropdown-toggle[aria-expanded=true]::after {
+  transform: rotate(180deg);
 }
 .show > .btn-outline-secondary.dropdown-toggle::after,
 .btn-secondary.dropdown-toggle::after,
 .btn-outline-secondary.dropdown-toggle:active::after,
 .btn-outline-secondary.dropdown-toggle:hover::after {
-  border-bottom: 1px solid $secondary-btn-text-color;
-  border-right: 1px solid $secondary-btn-text-color;
+  @include iconBuilder(10px, 5px, 'arrow-blue.svg');
 }
 .show > .btn-outline-secondary.dropdown-toggle,
 .btn-secondary.dropdown-toggle,
@@ -79,7 +87,7 @@ $secondary-btn-text-color: #02486e;
 .icon-btn:before {
   display: inline-block;
   content: '';
-  margin-right: 8px;
+  margin-right: 5px;
 }
 
 .icon-btn.dashboard-map-icon:before {
@@ -94,7 +102,17 @@ $secondary-btn-text-color: #02486e;
   @include iconBuilder(16px, 16px, 'filter.svg');
 }
 .btn-secondary.icon-btn.dashboard-filter-icon:before,
-.icon-btn.dashboard-filter-icon:active:before,
-.icon-btn.dashboard-filter-icon:hover:before {
-  @include iconBuilder(16px, 16px, 'filter-hover.svg');
+.btn-secondary.icon-btn.dashboard-filter-icon:active:before,
+.btn-secondary.icon-btn.dashboard-filter-icon:hover:before,
+.btn-outline-secondary.icon-btn.dashboard-filter-icon:active:before,
+.btn-outline-secondary.icon-btn.dashboard-filter-icon:hover:before {
+  @include iconBuilder(16px, 16px, 'filter-hover-blue.svg');
+}
+.btn-primary.icon-btn.dashboard-filter-icon:before,
+.btn-primary.icon-btn.dashboard-filter-icon:active:before,
+.btn-primary.icon-btn.dashboard-filter-icon:hover:before,
+.btn-outline-primary.icon-btn.dashboard-filter-icon:before,
+.btn-outline-primary.icon-btn.dashboard-filter-icon:active:before,
+.btn-outline-primary.icon-btn.dashboard-filter-icon:hover:before {
+  @include iconBuilder(16px, 16px, 'filter-hover-white.svg');
 }

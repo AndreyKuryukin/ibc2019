@@ -126,6 +126,9 @@ class Amount extends React.Component {
                     },
                 },
             },
+            legend: {
+                align: 'left',
+            },
             title: {
                 ...Chart.DEFAULT_OPTIONS.title,
                 text: ls('DASHBOARD_CHART_AMOUNT_TITLE', 'Количество STB ИТВ МРФ Волга'),
