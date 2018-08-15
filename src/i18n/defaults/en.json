@@ -347,8 +347,8 @@
     "REPORTS_STATUS_RUNNING": "Running",
     "REPORTS_STATUS_SUCCESS": "Success",
 
-    "REPORTS_REALTIME_GROUP_NAME": "Realtime report",
-    "REPORTS_STATISTICS_GROUP_NAME": "Statistics report",
+    "REPORTS_OPERATIVE_GROUP_NAME": "Realtime report",
+    "REPORTS_STATISTIC_GROUP_NAME": "Statistics report",
 
     "KQI_STATUS_FAILED": "Failed",
     "KQI_STATUS_RUNNING": "Running",
