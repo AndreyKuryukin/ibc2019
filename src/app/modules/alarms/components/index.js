@@ -21,7 +21,7 @@ class Alarms extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         filter: PropTypes.object,
-        alarms: PropTypes.array,
+        alarms: PropTypes.object,
         policies: PropTypes.array,
         notifications: PropTypes.object,
         locations: PropTypes.array,
@@ -34,7 +34,7 @@ class Alarms extends React.PureComponent {
 
     static defaultProps = {
         filter: null,
-        alarms: [],
+        alarms: {},
         notifications: {},
         locations: [],
         policies: [],

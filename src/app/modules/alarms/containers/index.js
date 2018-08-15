@@ -33,7 +33,7 @@ class Alarms extends React.PureComponent {
 
     static propTypes = {
         filter: PropTypes.object,
-        alarms: PropTypes.array,
+        alarms: PropTypes.object,
         locations: PropTypes.array,
         policies: PropTypes.array,
         onFetchAlarmsSuccess: PropTypes.func,
@@ -44,7 +44,7 @@ class Alarms extends React.PureComponent {
 
     static defaultProps = {
         filter: null,
-        alarms: [],
+        alarms: {},
         locations: [],
         policies: [],
         onFetchAlarmsSuccess: () => null,
@@ -136,7 +136,7 @@ class Alarms extends React.PureComponent {
         delete queryParams.filter;
 
         const success = (response) => {
-            if (!response.data.length) {
+            if (!response.data.alarms.length) {
                 this.setState({ isLoading: false });
 
                 return;
@@ -152,7 +152,7 @@ class Alarms extends React.PureComponent {
                 { wpx: 150 },
                 { wpx: 200 },
             ];
-            const worksheet = XLSX.utils.json_to_sheet(response.data.map(node => ({
+            const worksheet = XLSX.utils.json_to_sheet(response.data.alarms.map(node => ({
                 id: node.id.toString(),
                 external_id: node.external_id || '',
                 policy_name: node.policy_name,
