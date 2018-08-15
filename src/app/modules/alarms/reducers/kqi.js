@@ -5,6 +5,7 @@ import {
 import { FILTER_FIELDS } from '../constants';
 
 const initialState = {
+    [FILTER_FIELDS.AUTO_REFRESH]: false,
     [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
     [FILTER_FIELDS.END]: moment().toDate(),
     [FILTER_FIELDS.RF]: '',

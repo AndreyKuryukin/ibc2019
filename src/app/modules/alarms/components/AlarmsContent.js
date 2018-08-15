@@ -6,14 +6,20 @@ import AlarmsTable from './AlarmsTable';
 import AlarmsControls from './AlarmsControls';
 import AlarmsViewer from '../modules/Viewer/containers';
 import { ALARMS_TYPES } from '../constants';
+import { getQueryParams } from "../../../util/state";
 
 class AlarmsContent extends React.PureComponent {
+    static contextTypes = {
+        location: PropTypes.object.isRequired,
+    };
+
     static propTypes = {
         type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
         params: PropTypes.object,
         filter: PropTypes.object,
         alarms: PropTypes.array,
         locations: PropTypes.array,
+        policies: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlarms: PropTypes.func,
         onExportXLSX: PropTypes.func,
@@ -25,6 +31,7 @@ class AlarmsContent extends React.PureComponent {
         params: null,
         filter: null,
         alarms: [],
+        policies: [],
         mrfOptions: [],
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
@@ -34,7 +41,20 @@ class AlarmsContent extends React.PureComponent {
     };
 
     componentDidMount() {
-        this.props.onFetchAlarms(this.props.filter);
+        const queryParams = getQueryParams(this.context.location);
+        let filter = this.props.filter;
+
+        if (!_.isEmpty(queryParams)) {
+            filter = {
+                ...queryParams,
+                start: new Date(+queryParams.start),
+                end: new Date(+queryParams.end),
+            };
+
+            this.props.onChangeFilter(filter);
+        }
+
+        this.props.onFetchAlarms(filter);
     }
 
     onApplyFilter = () => {
@@ -56,6 +76,7 @@ class AlarmsContent extends React.PureComponent {
             filter,
             alarms: data,
             locations,
+            policies,
             onChangeFilter,
             isLoading,
         } = this.props;
@@ -72,6 +93,7 @@ class AlarmsContent extends React.PureComponent {
                     onApplyFilter={this.onApplyFilter}
                     onExportXLSX={this.onExportXLSX}
                     locations={locations}
+                    policies={policies}
                 />
                 <AlarmsTable
                     type={type}

@@ -11,10 +11,12 @@ export const SENDING_ALARM_TYPES = {
 };
 
 export const FILTER_FIELDS = {
+    AUTO_REFRESH: 'auto_refresh',
     START: 'start',
     END: 'end',
     RF: 'rf',
     MRF: 'mrf',
+    POLICY_ID: 'policyId',
     CURRENT: 'current',
     HISTORICAL: 'historical'
 };

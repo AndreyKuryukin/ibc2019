@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Button } from 'reactstrap';
 import ls from 'i18n';
 import _ from 'lodash';
+import moment from 'moment';
 import memoize from 'memoizejs';
 import XLSX from 'xlsx';
 import Field from '../../../components/Field';
@@ -12,8 +13,12 @@ import Checkbox from '../../../components/Checkbox';
 import DatePicker from '../../../components/DateTimePicker';
 import Dropdown from '../../../components/Dropdown';
 import styles from './styles.scss';
+import { FILTER_FIELDS } from '../constants';
 
-// const datePickerStyle = { marginTop: 5 };
+const DATE_PICKER_DEFAULT_STYLE = {
+    color: '#aaa',
+    fontStyle: 'italic',
+};
 
 class AlarmsControls extends React.Component {
     static propTypes = {
@@ -22,6 +27,7 @@ class AlarmsControls extends React.Component {
         onExportXLSX: PropTypes.func,
         onFilterAlarms: PropTypes.func,
         locations: PropTypes.array,
+        policies: PropTypes.array,
         filter: PropTypes.shape({
             start: PropTypes.instanceOf(Date),
             end: PropTypes.instanceOf(Date),
@@ -38,6 +44,7 @@ class AlarmsControls extends React.Component {
         onExportXLSX: () => null,
         onFilterAlarms: () => null,
         locations: [],
+        policies: [],
         filter: null,
     };
 
@@ -47,6 +54,8 @@ class AlarmsControls extends React.Component {
         super(props);
 
         this.state = {
+            hasDatePickersDefaultStyle: false,
+            isDatePickersValid: true,
             isHistoricalConfirmOpen: false,
         };
     }
@@ -61,6 +70,16 @@ class AlarmsControls extends React.Component {
         return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
     }
 
+    componentWillReceiveProps(nextProps) {
+        if (!nextProps.filter.start && !nextProps.filter.end) {
+            this.setState({ isDatePickersValid: nextProps.filter.auto_refresh !== this.props.filter.auto_refresh });
+        }
+
+        if (this.props.filter.auto_refresh && !nextProps.filter.auto_refresh) {
+            this.setState({ hasDatePickersDefaultStyle: true });
+        }
+    }
+
     getFilterProperty = (key, defaultValue) => _.get(this.props.filter, key, defaultValue);
     setFilterProperty = (property, value) => {
         const { filter } = this.props;
@@ -71,6 +90,18 @@ class AlarmsControls extends React.Component {
 
         if (property === 'mrf') {
             _.set(newFilter, 'rf', '');
+        }
+
+        if ((property === 'start' || property === 'end')) {
+            this.setState({
+                hasDatePickersDefaultStyle: false,
+                isDatePickersValid: true,
+            });
+        }
+
+        if (property === 'auto_refresh' && !value) {
+            _.set(newFilter, 'start', moment().subtract(1, 'hours').toDate());
+            _.set(newFilter, 'end', moment().toDate());
         }
 
         this.props.onChangeFilter(newFilter);
@@ -97,11 +128,27 @@ class AlarmsControls extends React.Component {
     }
 
     render() {
-        const { locations } = this.props;
+        const { locations, policies } = this.props;
 
         return (
             <div className={styles.alarmsControls}>
                 <div className={styles.alarmsFilterGroups}>
+                    <div className={styles.alarmsFilterGroup}>
+                        <Field
+                            id="auto-refresh-filter"
+                            labelText={ls('ALARMS_AUTO_REFRESH_FILTER', 'Автообновление')}
+                            inputWidth={12}
+                            labelAlign="right"
+                            splitter=""
+                        >
+                            <Checkbox
+                                itemId="alarms_auto_refresh_check"
+                                id="auto-refresh-filter"
+                                checked={this.getFilterProperty('auto_refresh', false)}
+                                onChange={value => this.setFilterProperty('auto_refresh', value)}
+                            />
+                        </Field>
+                    </div>
                     <div className={styles.alarmsFilterGroup}>
                         <Field
                             id="alarms-filter-start"
@@ -118,7 +165,11 @@ class AlarmsControls extends React.Component {
                                 onChange={value => this.setFilterProperty('start', value)}
                                 format={'DD.MM.YYYY HH:mm'}
                                 time
+                                disabled={this.getFilterProperty('auto_refresh', false)}
+                                inputStyle={this.state.hasDatePickersDefaultStyle ? DATE_PICKER_DEFAULT_STYLE : null}
                                 placeholder={ls('ALARMS_FROM_FILTER_PLACEHOLDER', 'Начало')}
+                                valid={this.state.isDatePickersValid}
+                                title={!this.state.isDatePickersValid && 'Одно из полей дат начала и окончания должно быть заполнено'}
                             />
                         </Field>
                         <Field
@@ -136,7 +187,11 @@ class AlarmsControls extends React.Component {
                                 onChange={value => this.setFilterProperty('end', value)}
                                 format={'DD.MM.YYYY HH:mm'}
                                 time
+                                disabled={this.getFilterProperty('auto_refresh', false)}
+                                inputStyle={this.state.hasDatePickersDefaultStyle ? DATE_PICKER_DEFAULT_STYLE : null}
                                 placeholder={ls('ALARMS_TO_FILTER_PLACEHOLDER', 'Окончание')}
+                                valid={this.state.isDatePickersValid}
+                                title={!this.state.isDatePickersValid && 'Одно из полей дат начала и окончания должно быть заполнено'}
                             />
                         </Field>
                     </div>
@@ -170,7 +225,24 @@ class AlarmsControls extends React.Component {
                                 options={this.getRfOptions()}
                                 value={this.getFilterProperty('rf', '')}
                                 onChange={value => this.setFilterProperty('rf', value)}
+                                disabled={!this.getFilterProperty('mrf', '')}
                                 placeholder={ls('ALARMS_REGION_FILTER_PLACEHOLDER', 'Регион')}
+                            />
+                        </Field>
+                        <Field
+                            id="policy-filter"
+                            labelText={ls('ALARMS_POLICY_FILTER', 'Фильтр по политике')}
+                            inputWidth={300}
+                            labelWidth={120}
+                            splitter=""
+                        >
+                            <Select
+                                itemId="alarms_policy"
+                                id="policy-filter"
+                                options={AlarmsControls.mapOptions(policies)}
+                                value={this.getFilterProperty('policyId', '')}
+                                onChange={value => this.setFilterProperty('policyId', value)}
+                                placeholder={ls('ALARMS_POLICY_FILTER_PLACEHOLDER', 'Политика')}
                             />
                         </Field>
                     </div>

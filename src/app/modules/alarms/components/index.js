@@ -22,6 +22,7 @@ class Alarms extends React.PureComponent {
         history: PropTypes.object.isRequired,
         filter: PropTypes.object,
         alarms: PropTypes.array,
+        policies: PropTypes.array,
         notifications: PropTypes.object,
         locations: PropTypes.array,
         onChangeFilter: PropTypes.func,
@@ -36,6 +37,7 @@ class Alarms extends React.PureComponent {
         alarms: [],
         notifications: {},
         locations: [],
+        policies: [],
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
         onExportXLSX: () => null,
@@ -68,6 +70,7 @@ class Alarms extends React.PureComponent {
             filter,
             alarms,
             locations,
+            policies,
             onChangeFilter,
             onFetchAlarms,
             onExportXLSX,
@@ -96,6 +99,7 @@ class Alarms extends React.PureComponent {
                             filter={filter}
                             alarms={alarms}
                             locations={locations}
+                            policies={policies}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
                             onExportXLSX={onExportXLSX}
@@ -118,6 +122,7 @@ class Alarms extends React.PureComponent {
                             filter={filter}
                             alarms={alarms}
                             locations={locations}
+                            policies={policies}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
                             onExportXLSX={onExportXLSX}
@@ -140,6 +145,7 @@ class Alarms extends React.PureComponent {
                             filter={filter}
                             alarms={alarms}
                             locations={locations}
+                            policies={policies}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
                             onExportXLSX={onExportXLSX}

@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment';
-import { fetchAlarmsSuccess, fetchMrfSuccess, FILTER_ACTIONS } from '../actions';
+import { fetchAlarmsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS } from '../actions';
 import { flush } from '../../notifications/actions';
 import rest from '../../../rest';
 import AlarmsComponent from '../components';
@@ -35,8 +35,10 @@ class Alarms extends React.PureComponent {
         filter: PropTypes.object,
         alarms: PropTypes.array,
         locations: PropTypes.array,
+        policies: PropTypes.array,
         onFetchAlarmsSuccess: PropTypes.func,
         onFetchLocationsSuccess: PropTypes.func,
+        onFetchPoliciesSuccess: PropTypes.func,
         onChangeFilter: PropTypes.func,
     };
 
@@ -44,8 +46,10 @@ class Alarms extends React.PureComponent {
         filter: null,
         alarms: [],
         locations: [],
+        policies: [],
         onFetchAlarmsSuccess: () => null,
         onFetchLocationsSuccess: () => null,
+        onFetchPoliciesSuccess: () => null,
         onChangeFilter: () => null,
     };
 
@@ -63,20 +67,13 @@ class Alarms extends React.PureComponent {
         this.state = {
             isLoading: false,
         };
-
-        const queryParams = getQueryParams(props.location);
-        if (!_.isEmpty(queryParams)) {
-            const filter = this.mapFilterValues(queryParams, props);
-            props.onChangeFilter(filter);
-            this.onFetchAlarms(filter);
-        }
     }
 
     componentDidMount() {
-        rest.get('/api/v1/common/location')
-            .then((response) => {
-                const mrf = response.data;
-                this.props.onFetchLocationsSuccess(mrf);
+        Promise.all([rest.get('/api/v1/common/location'), rest.get('/api/v1/policy')])
+            .then(([locationResponse, policyResponse]) => {
+                this.props.onFetchLocationsSuccess(locationResponse.data);
+                this.props.onFetchPoliciesSuccess(policyResponse.data);
             })
             .catch((e) => {
                 console.error(e);
@@ -90,16 +87,10 @@ class Alarms extends React.PureComponent {
             this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
             this.setState({ type: nextType });
         }
+        if (nextProps.filter.auto_refresh && !this.props.filter.auto_refresh) {
+            console.log('Активировать веб-сокет');
+        }
     }
-
-    mapFilterValues = (filter, props) => ({
-        ...filter,
-        type: SENDING_ALARM_TYPES[props.match.params.type],
-        start: filter.start && convertUTC0ToLocal(Number(filter.start)).toDate(),
-        end: filter.end && convertUTC0ToLocal(Number(filter.end)).toDate(),
-        current: filter.current === 'true',
-        historical: filter.historical === 'true',
-    });
 
     getReadableDuration = (milliseconds = 0) =>
         ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
@@ -136,6 +127,8 @@ class Alarms extends React.PureComponent {
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
             limit: 65000,
         };
+
+        delete queryParams.auto_refresh;
 
         const success = (response) => {
             if (!response.data.length) {
@@ -194,6 +187,8 @@ class Alarms extends React.PureComponent {
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
 
+        delete queryParams.auto_refresh;
+
         const success = (response) => {
             const typeMap = {
                 'gp': 'gp',
@@ -220,6 +215,8 @@ class Alarms extends React.PureComponent {
             filter: searchText,
         };
 
+        delete queryParams.auto_refresh;
+
         const success = (response) => {
             const alarms = response.data;
 
@@ -244,6 +241,8 @@ class Alarms extends React.PureComponent {
             start: filter.start && convertDateToUTC0(filter.start.getTime()).unix() * 1000,
             end: filter.end && convertDateToUTC0(filter.end.getTime()).unix() * 1000,
         };
+        delete queryParams.auto_refresh;
+
         setQueryParams(queryParams, this.props.history, this.props.location);
         this.onFetchAlarms(filter);
     };
@@ -255,6 +254,7 @@ class Alarms extends React.PureComponent {
                 match={this.props.match}
                 filter={this.props.filter}
                 alarms={this.props.alarms}
+                policies={this.props.policies}
                 locations={this.props.locations}
                 onChangeFilter={this.props.onChangeFilter}
                 notifications={this.props.notifications}
@@ -270,12 +270,14 @@ class Alarms extends React.PureComponent {
 const mapStateToProps = (state, props) => ({
     filter: _.get(state, `alarms.${props.match.params.type}`, null),
     alarms: state.alarms.alarms,
+    policies: state.alarms.policies,
     locations: state.alarms.mrf,
     notifications: _.get(state, 'notifications.alerts')
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
+    onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
     onFetchAlarmsSuccess: alarms => dispatch(fetchAlarmsSuccess(alarms)),
     onChangeFilter: filter => _.isFunction(FILTER_ACTIONS[props.match.params.type]) ? dispatch(FILTER_ACTIONS[props.match.params.type](filter)) : null,
     flushNotifications: type => dispatch(flush('alerts', type))

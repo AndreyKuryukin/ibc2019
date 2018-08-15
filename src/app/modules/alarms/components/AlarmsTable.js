@@ -152,7 +152,7 @@ class AlarmsTable extends React.PureComponent {
         const columns = AlarmsTable.getColumns();
         const mappedData = this.mapData(data);
         const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
-
+        console.log('Table render');
         return (
             <Table
                 id="alarms-table"
@@ -162,6 +162,7 @@ class AlarmsTable extends React.PureComponent {
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={preloader}
+                showStatistics
             />
         );
     }
