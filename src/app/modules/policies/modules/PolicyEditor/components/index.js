@@ -25,7 +25,7 @@ const unitStyle = { margin: '3px 0px 3px 2px' };
 const thresholdFieldStyle = { flexGrow: 1, justifyContent: 'flex-end' };
 
 const defaultCondition = {
-    conditionDuration: 0,
+    conditionDuration: '',
     conjunction: {
         type: 'AND',
         conjunctionList: [],
@@ -153,7 +153,7 @@ class PolicyEditor extends React.PureComponent {
 
     getPolicyProperty = (key, defaultValue) => _.get(this.state.policy, key, defaultValue);
 
-    setPolicyProperty = (key, value) => {
+    setPolicyProperty = (key, value, errorKey) => {
         const policyValues = _.set({}, key, value);
         let prevPolicy = _.cloneDeep(this.state.policy);
 
@@ -189,7 +189,7 @@ class PolicyEditor extends React.PureComponent {
         );
 
         this.setState({
-            errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : this.state.errors,
+            errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : _.omit(this.state.errors, errorKey ? 'condition.condition.' + errorKey : ''),
         }, () => {
             this.props.updatePolicy(policy);
         });
@@ -336,7 +336,7 @@ class PolicyEditor extends React.PureComponent {
                                             metaData={metaData}
                                             condition={this.getPolicyProperty('condition')}
                                             parameters={_.get(this.state, 'metaData.parameters')}
-                                            onChange={condition => this.setPolicyProperty('condition', condition)}
+                                            onChange={(condition, errorKey) => this.setPolicyProperty('condition', condition, errorKey)}
                                             errors={errors && _.get(errors, 'condition.condition')}
                                         />
                                     </div>
