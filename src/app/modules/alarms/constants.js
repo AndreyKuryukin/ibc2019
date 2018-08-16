@@ -18,5 +18,6 @@ export const FILTER_FIELDS = {
     MRF: 'mrf',
     POLICY_ID: 'policyId',
     CURRENT: 'current',
-    HISTORICAL: 'historical'
+    HISTORICAL: 'historical',
+    FILTER: 'filter',
 };

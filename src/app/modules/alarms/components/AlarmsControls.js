@@ -22,6 +22,8 @@ const DATE_PICKER_DEFAULT_STYLE = {
 
 class AlarmsControls extends React.Component {
     static propTypes = {
+        current: PropTypes.number,
+        total: PropTypes.number,
         onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
         onExportXLSX: PropTypes.func,
@@ -39,6 +41,8 @@ class AlarmsControls extends React.Component {
     };
 
     static defaultProps = {
+        current: 0,
+        total: 0,
         onChangeFilter: () => null,
         onApplyFilter: () => null,
         onExportXLSX: () => null,
@@ -128,7 +132,7 @@ class AlarmsControls extends React.Component {
     }
 
     render() {
-        const { locations, policies } = this.props;
+        const { locations, policies, current, total } = this.props;
 
         return (
             <div className={styles.alarmsControls}>
@@ -308,12 +312,15 @@ class AlarmsControls extends React.Component {
                         </Button>
                     </div>
                 </div>
-                <Input
-                    itemId="alarms_search_field"
-                    placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
-                    className={styles.search}
-                    onChange={this.props.onFilterAlarms}
-                />
+                <div className={styles.alarmsFilterGroup}>
+                    <Input
+                        itemId="alarms_search_field"
+                        placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
+                        className={styles.search}
+                        onChange={value => this.setFilterProperty('filter', value)}
+                    />
+                    <div className={styles.statistics}>{current + '/' + total}</div>
+                </div>
             </div>
         );
     }

@@ -48,6 +48,12 @@
   .search {
     width: 20em;
   }
+  .statistics {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+  }
 }
 .warningMsg {
   width: 225px;

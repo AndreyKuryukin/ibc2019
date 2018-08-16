@@ -8,6 +8,7 @@ const initialState = {
     [FILTER_FIELDS.END]: moment().toDate(),
     [FILTER_FIELDS.RF]: '',
     [FILTER_FIELDS.MRF]: '',
+    [FILTER_FIELDS.FILTER]: '',
     [FILTER_FIELDS.CURRENT]: true,
     [FILTER_FIELDS.HISTORICAL]: false,
 };

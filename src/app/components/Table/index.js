@@ -18,7 +18,6 @@ class Table extends React.Component {
 
     static propTypes = {
         id: PropTypes.string.isRequired,
-        total: PropTypes.number,
         data: PropTypes.arrayOf(PropTypes.object),
         columns: PropTypes.arrayOf(PropTypes.object),
         className: PropTypes.string,
@@ -27,11 +26,9 @@ class Table extends React.Component {
         customSortFunction: PropTypes.func,
         onSelectRow: PropTypes.func,
         preloader: PropTypes.bool,
-        showStatistics: PropTypes.bool,
     };
 
     static defaultProps = {
-        total: 0,
         data: [],
         columns: [],
         className: '',
@@ -40,7 +37,6 @@ class Table extends React.Component {
         bodyRowRender: () => null,
         customSortFunction: null,
         onSelectRow: null,
-        showStatistics: false,
     };
 
     static getDefaultSortBy(columns) {
@@ -159,8 +155,6 @@ class Table extends React.Component {
             bodyRowRender,
             className,
             preloader,
-            total,
-            showStatistics,
         } = this.props;
         const { data = [], selected, sort } = this.state;
 
@@ -183,9 +177,6 @@ class Table extends React.Component {
                         onRowClick={this.onRowClick}
                         bodyRowRender={bodyRowRender}
                     />
-                    {showStatistics && <div className={styles.tableStatistics}>
-                        {`${data.length}/${total}`}
-                    </div>}
                 </div>
             </Preloader>
         );

@@ -103,6 +103,14 @@ class Alarms extends React.PureComponent {
             return `${result}${nextPart}`;
         }, '');
 
+    onChangeFilter = (filter) => {
+        if (this.props.filter.filter !== filter.filter) {
+            this.onFilterAlarms(filter, this.props.onChangeFilter.bind(this, filter));
+        } else {
+            this.props.onChangeFilter(filter);
+        }
+    };
+
     onFetchingAlarmsError = (e) => {
         console.error(e);
 
@@ -115,20 +123,17 @@ class Alarms extends React.PureComponent {
         });
 
         this.setState({ isLoading: false });
-    }
+    };
 
     onExportXLSX = (filter) => {
         this.setState({ isLoading: true });
 
         const queryParams = {
-            ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
+            ...this.prepareFilter(filter),
             limit: 65000,
         };
 
-        delete queryParams.auto_refresh;
+        delete queryParams.filter;
 
         const success = (response) => {
             if (!response.data.length) {
@@ -180,14 +185,8 @@ class Alarms extends React.PureComponent {
     onFetchAlarms = (filter) => {
         this.setState({ isLoading: true });
 
-        const queryParams = {
-            ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
-        };
-
-        delete queryParams.auto_refresh;
+        const queryParams = this.prepareFilter(filter);
+        delete queryParams.filter;
 
         const success = (response) => {
             const typeMap = {
@@ -204,47 +203,50 @@ class Alarms extends React.PureComponent {
         this.handleAlarmsFetching(queryParams, success);
     };
 
-    onFilterAlarms = _.debounce((filter, searchText) => {
+    onFilterAlarms = _.debounce((filter, callback) => {
         this.setState({ isLoading: true });
 
-        const queryParams = {
-            ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
-            filter: searchText,
-        };
-
-        delete queryParams.auto_refresh;
+        const queryParams = this.prepareFilter(filter);
 
         const success = (response) => {
             const alarms = response.data;
 
             this.props.onFetchAlarmsSuccess(alarms);
-
+            callback();
             this.setState({ isLoading: false });
         };
 
-        this.handleAlarmsFetching(queryParams, success);
+        this.handleAlarmsFetching(queryParams, success, callback);
     }, 700);
 
-    handleAlarmsFetching = (queryParams, success) => {
+    handleAlarmsFetching = (queryParams, success, error) => {
         rest.get('/api/v1/alerts', {}, { queryParams })
             .then(success)
-            .catch(this.onFetchingAlarmsError);
+            .catch((e) => {
+                this.onFetchingAlarmsError(e);
+                _.isFunction(error) && error(e);
+            });
     };
 
     fetchAlarms = (filter) => {
-        const queryParams = {
-            ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).unix() * 1000,
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).unix() * 1000,
-        };
-        delete queryParams.auto_refresh;
+        const queryParams = this.prepareFilter(filter);
+        delete queryParams.filter;
 
         setQueryParams(queryParams, this.props.history, this.props.location);
         this.onFetchAlarms(filter);
+    };
+
+    prepareFilter = (filter) => {
+        const preparedFilter = {
+            ...filter,
+            type: SENDING_ALARM_TYPES[this.props.match.params.type],
+            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
+            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
+        };
+
+        delete preparedFilter.auto_refresh;
+
+        return preparedFilter;
     };
 
     render() {
@@ -256,7 +258,7 @@ class Alarms extends React.PureComponent {
                 alarms={this.props.alarms}
                 policies={this.props.policies}
                 locations={this.props.locations}
-                onChangeFilter={this.props.onChangeFilter}
+                onChangeFilter={this.onChangeFilter}
                 notifications={this.props.notifications}
                 onFetchAlarms={this.fetchAlarms}
                 onExportXLSX={this.onExportXLSX}

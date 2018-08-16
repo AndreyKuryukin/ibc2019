@@ -25,14 +25,12 @@ class AlarmsTable extends React.PureComponent {
     static propTypes = {
         type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
         data: PropTypes.array,
-        total: PropTypes.number,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
     };
 
     static defaultProps = {
         data: [],
-        total: 0,
         searchText: '',
         preloader: false,
     };
@@ -137,6 +135,7 @@ class AlarmsTable extends React.PureComponent {
                     <LinkCell
                         href={`/alarms/${this.props.type}/${node.id}`}
                         content={node[column.name]}
+                        highlightedText={this.props.searchText}
                     />
                 );
             case 'notification_status': {
@@ -157,6 +156,7 @@ class AlarmsTable extends React.PureComponent {
                 return (
                     <DefaultCell
                         content={node[column.name]}
+                        highlightedText={this.props.searchText}
                     />
                 );
         }
@@ -173,7 +173,7 @@ class AlarmsTable extends React.PureComponent {
             return `${result}${nextPart}`;
         }, '');
 
-    mapData = memoize(data => data.map(node => ({
+    mapData = data => data.map(node => ({
         id: node.id.toString(),
         external_id: node.external_id || '',
         policy_name: node.policy_name,
@@ -187,7 +187,7 @@ class AlarmsTable extends React.PureComponent {
         mac: node.mac || '',
         status: node.status || '',
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
-    })));
+    }));
 
     customSortFunction = (data, columnName, direction) => {
         const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
@@ -195,25 +195,21 @@ class AlarmsTable extends React.PureComponent {
         return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
     };
 
-    filter = (data, searchableColumns, searchText) => data.filter(node => searchableColumns.find(column => search(node[column.name], searchText)));
-
     render() {
         const { data, searchText, preloader, total } = this.props;
         const columns = AlarmsTable.getColumns(this.context.match.params.type);
         const mappedData = this.mapData(data);
-        const filteredData = searchText ? this.filter(mappedData, columns.filter(col => col.searchable), searchText) : mappedData;
-        console.log('Table render');
+
         return (
             <Table
                 id="alarms-table"
-                data={filteredData}
+                data={mappedData}
                 columns={columns}
                 customSortFunction={this.customSortFunction}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={preloader}
                 showStatistics
-                total={total}
             />
         );
     }

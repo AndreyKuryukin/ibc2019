@@ -53,8 +53,8 @@ class Alarms extends React.PureComponent {
 
     onTabClick = (tabId) => {
         this.props.history.push(`/alarms/${tabId}`);
-        const {filter} = this.props;
-        this.props.onChangeFilter({...filter, searchText: ''})
+        const { filter } = this.props;
+        this.props.onChangeFilter(filter);
     };
 
     composeNotificationCount = (notifications) => {
