@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment';
-import { fetchAlarmsSuccess, fetchMrfSuccess, FILTER_ACTIONS } from '../actions';
+import { fetchAlarmsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS } from '../actions';
 import { flush } from '../../notifications/actions';
 import rest from '../../../rest';
 import AlarmsComponent from '../components';
@@ -33,19 +33,23 @@ class Alarms extends React.PureComponent {
 
     static propTypes = {
         filter: PropTypes.object,
-        alarms: PropTypes.array,
+        alarms: PropTypes.object,
         locations: PropTypes.array,
+        policies: PropTypes.array,
         onFetchAlarmsSuccess: PropTypes.func,
         onFetchLocationsSuccess: PropTypes.func,
+        onFetchPoliciesSuccess: PropTypes.func,
         onChangeFilter: PropTypes.func,
     };
 
     static defaultProps = {
         filter: null,
-        alarms: [],
+        alarms: {},
         locations: [],
+        policies: [],
         onFetchAlarmsSuccess: () => null,
         onFetchLocationsSuccess: () => null,
+        onFetchPoliciesSuccess: () => null,
         onChangeFilter: () => null,
     };
 
@@ -63,20 +67,13 @@ class Alarms extends React.PureComponent {
         this.state = {
             isLoading: false,
         };
-
-        const queryParams = getQueryParams(props.location);
-        if (!_.isEmpty(queryParams)) {
-            const filter = this.mapFilterValues(queryParams, props);
-            props.onChangeFilter(filter);
-            this.onFetchAlarms(filter);
-        }
     }
 
     componentDidMount() {
-        rest.get('/api/v1/common/location')
-            .then((response) => {
-                const mrf = response.data;
-                this.props.onFetchLocationsSuccess(mrf);
+        Promise.all([rest.get('/api/v1/common/location'), rest.get('/api/v1/policy')])
+            .then(([locationResponse, policyResponse]) => {
+                this.props.onFetchLocationsSuccess(locationResponse.data);
+                this.props.onFetchPoliciesSuccess(policyResponse.data);
             })
             .catch((e) => {
                 console.error(e);
@@ -90,16 +87,10 @@ class Alarms extends React.PureComponent {
             this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
             this.setState({ type: nextType });
         }
+        if (nextProps.filter.auto_refresh && !this.props.filter.auto_refresh) {
+            console.log('Активировать веб-сокет');
+        }
     }
-
-    mapFilterValues = (filter, props) => ({
-        ...filter,
-        type: SENDING_ALARM_TYPES[props.match.params.type],
-        start: filter.start && convertUTC0ToLocal(Number(filter.start)).toDate(),
-        end: filter.end && convertUTC0ToLocal(Number(filter.end)).toDate(),
-        current: filter.current === 'true',
-        historical: filter.historical === 'true',
-    });
 
     getReadableDuration = (milliseconds = 0) =>
         ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
@@ -111,6 +102,14 @@ class Alarms extends React.PureComponent {
 
             return `${result}${nextPart}`;
         }, '');
+
+    onChangeFilter = (filter) => {
+        if (this.props.filter.filter !== filter.filter) {
+            this.onFilterAlarms(filter, this.props.onChangeFilter.bind(this, filter));
+        } else {
+            this.props.onChangeFilter(filter);
+        }
+    };
 
     onFetchingAlarmsError = (e) => {
         console.error(e);
@@ -124,110 +123,130 @@ class Alarms extends React.PureComponent {
         });
 
         this.setState({ isLoading: false });
-    }
+    };
 
     onExportXLSX = (filter) => {
         this.setState({ isLoading: true });
 
         const queryParams = {
-            ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
+            ...this.prepareFilter(filter),
             limit: 65000,
         };
 
-        rest.get('/api/v1/alerts', {}, { queryParams }) // change url
-            .then((response) => {
-                if (!response.data.length) {
-                    this.setState({ isLoading: false });
+        delete queryParams.filter;
 
-                    return;
-                }
-
-                const workbook = XLSX.utils.book_new();
-                const worksheetCols = [
-                    { wpx: 250 },
-                    { wpx: 250 },
-                    { wpx: 300 },
-                    { wpx: 220 },
-                    { wpx: 150 },
-                    { wpx: 150 },
-                    { wpx: 200 },
-                ];
-                const worksheet = XLSX.utils.json_to_sheet(response.data.map(node => ({
-                    id: node.id.toString(),
-                    external_id: node.external_id || '',
-                    policy_name: node.policy_name,
-                    notification_status: node.notification_status || '',
-                    raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
-                    duration: this.getReadableDuration(node.duration),
-                    object: node.object || '',
-                })));
-                const range = XLSX.utils.decode_range(worksheet['!ref']);
-
-                worksheet['!cols'] = worksheetCols;
-
-                for (let col = range.s.c; col <= range.e.c; ++col) {
-                    var address = XLSX.utils.encode_col(col) + '1';
-                    worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
-                }
-
-                XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
-                XLSX.writeFile(workbook, 'Alarms.xlsx', {
-                    type: 'base64',
-                    bookType: 'xlsx',
-                });
-
+        const success = (response) => {
+            if (!response.data.alarms.length) {
                 this.setState({ isLoading: false });
-            })
-            .catch(this.onFetchingAlarmsError);
-    }
+
+                return;
+            }
+
+            const workbook = XLSX.utils.book_new();
+            const worksheetCols = [
+                { wpx: 250 },
+                { wpx: 250 },
+                { wpx: 300 },
+                { wpx: 220 },
+                { wpx: 150 },
+                { wpx: 150 },
+                { wpx: 200 },
+            ];
+            const worksheet = XLSX.utils.json_to_sheet(response.data.alarms.map(node => ({
+                id: node.id.toString(),
+                external_id: node.external_id || '',
+                policy_name: node.policy_name,
+                notification_status: node.notification_status || '',
+                raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
+                duration: this.getReadableDuration(node.duration),
+                object: node.object || '',
+            })));
+            const range = XLSX.utils.decode_range(worksheet['!ref']);
+
+            worksheet['!cols'] = worksheetCols;
+
+            for (let col = range.s.c; col <= range.e.c; ++col) {
+                var address = XLSX.utils.encode_col(col) + '1';
+                worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
+            }
+
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
+            XLSX.writeFile(workbook, 'Alarms.xlsx', {
+                type: 'base64',
+                bookType: 'xlsx',
+            });
+
+            this.setState({ isLoading: false });
+        };
+
+        this.handleAlarmsFetching(queryParams, success);
+    };
 
     onFetchAlarms = (filter) => {
         this.setState({ isLoading: true });
 
-        const queryParams = {
+        const queryParams = this.prepareFilter(filter);
+        delete queryParams.filter;
+
+        const success = (response) => {
+            const typeMap = {
+                'gp': 'GROUP_AGGREGATION',
+                'kqi': 'KPIKQI',
+                'ci': 'SIMPLE'
+            };
+            const alarms = response.data;
+            this.props.onFetchAlarmsSuccess(alarms);
+            this.props.flushNotifications(typeMap[this.props.match.params.type]);
+            this.setState({ isLoading: false });
+        };
+
+        this.handleAlarmsFetching(queryParams, success);
+    };
+
+    onFilterAlarms = _.debounce((filter, callback) => {
+        this.setState({ isLoading: true });
+
+        const queryParams = this.prepareFilter(filter);
+
+        const success = (response) => {
+            const alarms = response.data;
+
+            this.props.onFetchAlarmsSuccess(alarms);
+            callback();
+            this.setState({ isLoading: false });
+        };
+
+        this.handleAlarmsFetching(queryParams, success, callback);
+    }, 700);
+
+    handleAlarmsFetching = (queryParams, success, error) => {
+        rest.get('/api/v1/alerts', {}, { queryParams })
+            .then(success)
+            .catch((e) => {
+                this.onFetchingAlarmsError(e);
+                _.isFunction(error) && error(e);
+            });
+    };
+
+    fetchAlarms = (filter) => {
+        const queryParams = this.prepareFilter(filter);
+        delete queryParams.filter;
+
+        setQueryParams(queryParams, this.props.history, this.props.location);
+        this.onFetchAlarms(filter);
+    };
+
+    prepareFilter = (filter) => {
+        const preparedFilter = {
             ...filter,
             type: SENDING_ALARM_TYPES[this.props.match.params.type],
             start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
 
-        rest.get('/api/v1/alerts', {}, { queryParams })
-            .then((response) => {
-                const typeMap = {
-                    'gp': 'GROUP_AGGREGATION',
-                    'kqi': 'KPIKQI',
-                    'ci': 'SIMPLE'
-                };
-                const alarms = response.data;
-                this.props.onFetchAlarmsSuccess(alarms);
-                this.props.flushNotifications(typeMap[this.props.match.params.type]);
-                this.setState({ isLoading: false });
-            })
-            .catch((e) => {
-                console.error(e);
-                this.context.notifications.notify({
-                    title: ls('ALARMS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
-                    message: ls('ALARMS_GETTING_ERROR_MESSAGE_FIELD', 'Данные по авариям не получены'),
-                    type: 'CRITICAL',
-                    code: 'alarms-failed',
-                    timeout: 10000
-                });
-                this.setState({ isLoading: false });
-            });
-    };
+        delete preparedFilter.auto_refresh;
 
-    fetchAlarms = (filter) => {
-        const queryParams = {
-            ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).unix() * 1000,
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).unix() * 1000,
-        };
-        setQueryParams(queryParams, this.props.history, this.props.location);
-        this.onFetchAlarms(filter)
+        return preparedFilter;
     };
 
     render() {
@@ -237,11 +256,13 @@ class Alarms extends React.PureComponent {
                 match={this.props.match}
                 filter={this.props.filter}
                 alarms={this.props.alarms}
+                policies={this.props.policies}
                 locations={this.props.locations}
-                onChangeFilter={this.props.onChangeFilter}
+                onChangeFilter={this.onChangeFilter}
                 notifications={this.props.notifications}
                 onFetchAlarms={this.fetchAlarms}
                 onExportXLSX={this.onExportXLSX}
+                onFilterAlarms={this.onFilterAlarms}
                 isLoading={this.state.isLoading}
             />
         );
@@ -251,12 +272,14 @@ class Alarms extends React.PureComponent {
 const mapStateToProps = (state, props) => ({
     filter: _.get(state, `alarms.${props.match.params.type}`, null),
     alarms: state.alarms.alarms,
+    policies: state.alarms.policies,
     locations: state.alarms.mrf,
     notifications: _.get(state, 'notifications.alerts')
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
+    onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
     onFetchAlarmsSuccess: alarms => dispatch(fetchAlarmsSuccess(alarms)),
     onChangeFilter: filter => _.isFunction(FILTER_ACTIONS[props.match.params.type]) ? dispatch(FILTER_ACTIONS[props.match.params.type](filter)) : null,
     flushNotifications: type => dispatch(flush('alerts', type))

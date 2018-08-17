@@ -17,6 +17,11 @@ export const fetchAlarmsSuccess = alarms => ({
     payload: { alarms },
 });
 
+export const FETCH_POLICIES_SUCCESS = 'alarms/FETCH_POLICIES_SUCCESS';
+export const fetchPoliciesSuccess = policies => ({
+    type: FETCH_POLICIES_SUCCESS,
+    payload: { policies },
+});
 export const SET_GP_FILTER = 'alarms/gp/SET_FILTER';
 export const fetchGpFilter = filter => ({
     type: SET_GP_FILTER,

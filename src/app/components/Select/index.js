@@ -11,6 +11,7 @@ const PLACEHOLDER_VALUE = `placeholder-${(new Date()).getTime()}`;
 class Select extends React.PureComponent {
 
     static defaultProps = {
+        disabled: false,
         options: [],
         noEmptyOption: false,
         errorMessage: ls('DEFAULT_ERROR_MSG', 'Это поле заполнено неверно'),
@@ -54,9 +55,11 @@ class Select extends React.PureComponent {
     };
 
     onClick = () => {
-        const actionMethod = this.state.isOptionsDisplayed ? 'blur' : 'focus';
-        this.setState({ isOptionsDisplayed: !this.state.isOptionsDisplayed });
-        this.select[actionMethod]();
+        if (!this.props.disabled) {
+            const actionMethod = this.state.isOptionsDisplayed ? 'blur' : 'focus';
+            this.setState({ isOptionsDisplayed: !this.state.isOptionsDisplayed });
+            this.select[actionMethod]();
+        }
     }
 
     handleClickOutside = () => {
@@ -67,15 +70,15 @@ class Select extends React.PureComponent {
     };
 
     render() {
-        const { placeholder, errorMessage, options, noEmptyOption, children, valid, ...rest } = this.props;
+        const { placeholder, errorMessage, options, noEmptyOption, children, valid, disabled, ...rest } = this.props;
         const value = this.getValue();
         const invalid = valid !== null && !valid;
         const placeholderClass =  value === '' ? styles.placeholder : '';
         if (!_.isEmpty(children)) {
-            console.info('Select should not has children')
+            console.info('Select should not has children');
         }
         return (
-            <div className={styles.selectWrapper} onClick={() => !rest.disabled && this.onClick()}>
+            <div className={styles.selectWrapper} onClick={this.onClick}>
                 {valid === false &&
                 <div className={classnames('fieldInvalid', styles.errorMark)} title={errorMessage}/>}
                 <Input type="select" {...rest}
@@ -83,11 +86,12 @@ class Select extends React.PureComponent {
                        className={placeholderClass}
                        invalid={invalid}
                        innerRef={select => this.select = select}
+                       disabled={disabled}
                 >
                     {!noEmptyOption && this.renderPlaceholder(placeholder)}
                     {this.renderOptions(options)}
                 </Input>
-                <ul
+                {!disabled && <ul
                     className={styles.optionsList}
                     style={{
                         display: this.state.isOptionsDisplayed ? 'flex' : 'none',
@@ -107,7 +111,7 @@ class Select extends React.PureComponent {
                             title={opt.title}
                         >{opt.title}</li>
                     ))}
-                </ul>
+                </ul>}
             </div>
         );
     }

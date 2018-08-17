@@ -21,23 +21,27 @@ class Alarms extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         filter: PropTypes.object,
-        alarms: PropTypes.array,
+        alarms: PropTypes.object,
+        policies: PropTypes.array,
         notifications: PropTypes.object,
         locations: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlarms: PropTypes.func,
         onExportXLSX: PropTypes.func,
+        onFilterAlarms: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
     static defaultProps = {
         filter: null,
-        alarms: [],
+        alarms: {},
         notifications: {},
         locations: [],
+        policies: [],
         onChangeFilter: () => null,
         onFetchAlarms: () => null,
         onExportXLSX: () => null,
+        onFilterAlarms: () => null,
         isLoading: false,
     };
 
@@ -49,8 +53,8 @@ class Alarms extends React.PureComponent {
 
     onTabClick = (tabId) => {
         this.props.history.push(`/alarms/${tabId}`);
-        const {filter} = this.props;
-        this.props.onChangeFilter({...filter, searchText: ''})
+        const { filter } = this.props;
+        this.props.onChangeFilter(filter);
     };
 
     composeNotificationCount = (notifications) => {
@@ -66,9 +70,11 @@ class Alarms extends React.PureComponent {
             filter,
             alarms,
             locations,
+            policies,
             onChangeFilter,
             onFetchAlarms,
             onExportXLSX,
+            onFilterAlarms,
             isLoading,
         } = this.props;
         const { params = {} } = match;
@@ -93,9 +99,11 @@ class Alarms extends React.PureComponent {
                             filter={filter}
                             alarms={alarms}
                             locations={locations}
+                            policies={policies}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
                             onExportXLSX={onExportXLSX}
+                            onFilterAlarms={onFilterAlarms}
                             isLoading={isLoading}
                         />
                     )}
@@ -114,9 +122,11 @@ class Alarms extends React.PureComponent {
                             filter={filter}
                             alarms={alarms}
                             locations={locations}
+                            policies={policies}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
                             onExportXLSX={onExportXLSX}
+                            onFilterAlarms={onFilterAlarms}
                             isLoading={isLoading}
                         />
                     )}
@@ -135,9 +145,11 @@ class Alarms extends React.PureComponent {
                             filter={filter}
                             alarms={alarms}
                             locations={locations}
+                            policies={policies}
                             onChangeFilter={onChangeFilter}
                             onFetchAlarms={onFetchAlarms}
                             onExportXLSX={onExportXLSX}
+                            onFilterAlarms={onFilterAlarms}
                             isLoading={isLoading}
                         />
                     )}

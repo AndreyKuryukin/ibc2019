@@ -3,6 +3,7 @@ import gp from './gp';
 import kqi from './kqi';
 import ci from './ci';
 import alarms from './alarms';
+import policies from './policies';
 import mrf from './mrf';
 import viewer from '../modules/Viewer/reducers';
 
@@ -11,6 +12,7 @@ export default combineReducers({
     kqi,
     ci,
     alarms,
+    policies,
     mrf,
     viewer,
 });

@@ -12,20 +12,26 @@ class DateTimePicker extends React.PureComponent {
     static MAX_DATE = new Date(2099, 11, 31);
 
     static propsTypes = {
+        inputStyle: PropTypes.object,
         itemId: PropTypes.string,
+        title: PropTypes.string,
         inputWidth: PropTypes.number,
         min: PropTypes.instanceOf(Date),
         max: PropTypes.instanceOf(Date),
+        disabled: PropTypes.bool,
         date: PropTypes.bool,
         time: PropTypes.bool,
         valid: PropTypes.bool,
     };
 
     static defaultProps = {
+        inputStyle: null,
         itemId: '',
+        title: '',
         inputWidth: DateTimePicker.DEFAULT_INPUT_WIDTH,
         min: new Date(1900, 0, 1),
         max: new Date(2099, 11, 31),
+        disabled: false,
         date: true,
         time: false,
         valid: true,
@@ -80,6 +86,7 @@ class DateTimePicker extends React.PureComponent {
 
     render() {
         const {
+            inputStyle,
             inputWidth,
             time,
             date,
@@ -88,13 +95,16 @@ class DateTimePicker extends React.PureComponent {
             valid,
             itemId,
             id,
+            title,
             ...rest
         } = this.props;
 
         const width = (inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH) + (+date + +time)*DateTimePicker.DEFAULT_TRIGGER_WIDTH;
         const inputProps = {
             itemId: `${itemId}_field`,
+            title,
             style: {
+                ...inputStyle,
                 width: inputWidth ? inputWidth : DateTimePicker.DEFAULT_INPUT_WIDTH,
             },
         };

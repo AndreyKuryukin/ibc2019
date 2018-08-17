@@ -6,7 +6,7 @@
   height: 100%;
   width: 100%;
   padding: 0 9px 0 0;
-  min-width: 1220px;
+  min-width: 1340px;
 }
 
 .alarmsContentWrapper {
@@ -47,6 +47,12 @@
   }
   .search {
     width: 20em;
+  }
+  .statistics {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
   }
 }
 .warningMsg {
