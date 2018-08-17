@@ -197,9 +197,9 @@ class Alarms extends React.PureComponent {
         rest.get('/api/v1/alerts', {}, { queryParams })
             .then((response) => {
                 const typeMap = {
-                    'gp': 'gp',
-                    'kqi': 'kqi',
-                    'ci': 'ki'
+                    'gp': 'GROUP_AGGREGATION',
+                    'kqi': 'KPIKQI',
+                    'ci': 'SIMPLE'
                 };
                 const alarms = response.data;
                 this.props.onFetchAlarmsSuccess(alarms);

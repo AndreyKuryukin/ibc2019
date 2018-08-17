@@ -42,9 +42,10 @@ const plugins = [
     // './kqi',
     // './reports',
     // './sources',
-    //  './alarms',
+    // './alarms',
     // './common',
     // './dashboard',
+    './notifications',
 ];
 
 app.use((req, res, next) => {
@@ -90,9 +91,10 @@ const plugIn = (app, plugins) => {
     })
 };
 
+
+
 if (PROXY_HOST) {
     const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
-    // const wsTarget = `ws://${PROXY_HOST}:${PROXY_PORT}`;
     const config = {
         proxyReqPathResolver: (req) => {
             console.log('Proxied: ' + target + require('url').parse(req.originalUrl).path + ` ${req.method}`);
@@ -103,28 +105,9 @@ if (PROXY_HOST) {
         console.log('Intercept mode ON');
         plugIn(app, plugins);
     }
-    // const wsHandler = (ws, req, next) => {
-    //     const { originalUrl } = req;
-    //     const targetUrl = `ws://${PROXY_HOST}:${PROXY_PORT}${originalUrl}`;
-    //     ws.send('o');
-    //     const socket = new WebSocket(targetUrl);
-    //     socket.on('open', (a, b) => {
-    //
-    //     });
-    //     socket.on('message', (data) => {
-    //
-    //         ws.send(data);
-    //     });
-    //     socket.on('error', (data) => {
-    //
-    //     });
-    //     next();
-    // };
 
     app.use('/api/*', proxy(target, config));
     app.use('/policy/*', proxy(target, config));
-    // app.ws('/*', wsHandler);
-    // app.use('/notifications/*', proxy(target, config));
     app.use('/data/*', proxy(target, config));
     useStatic();
     console.log(`Proxied to ${PROXY_HOST}:${PROXY_PORT}`);

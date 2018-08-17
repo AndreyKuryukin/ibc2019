@@ -59,9 +59,9 @@ class Menu extends React.Component {
 
     renderNotifications = (notifications) => {
         const linkMap = {
-            'gp': 'gp',
-            'kqi': 'kqi',
-            'ki': 'ci'
+            'GROUP_AGGREGATION': 'gp',
+            'KPIKQI': 'kqi',
+            'SIMPLE': 'ci'
         };
         return <div className={styles.notificationCountPopup}>
             {_.reduce(notifications, (result, msgs = [], type) => {

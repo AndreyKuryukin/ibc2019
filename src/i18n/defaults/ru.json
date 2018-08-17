@@ -55,9 +55,9 @@
   "ALARMS_TAB_TITLE_CI": "КИ",
   "ALARMS_TAB_TITLE_KQI": "KQI",
 
-  "ALERTS_TYPE_GP": "ГП",
-  "ALERTS_TYPE_KI": "КИ",
-  "ALERTS_TYPE_KQI": "KQI",
+  "ALERTS_TYPE_GROUP_AGGREGATION": "ГП",
+  "ALERTS_TYPE_SIMPLE": "КИ",
+  "ALERTS_TYPE_KPIKQI": "KQI",
 
   "SUBJECT_USERS": "Пользователи",
   "SUBJECT_ALARMS": "Аварии",

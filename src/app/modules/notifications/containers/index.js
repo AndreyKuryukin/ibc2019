@@ -1,15 +1,12 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import SockJS from 'sockjs-client';
-import { flush, onNewNotifications } from '../actions/index';
-import PropTypes from 'prop-types';
+import { onNewNotifications } from '../actions/index';
 import _ from 'lodash';
-import styles from './styles.scss';
-
-import classnames from "classnames";
 
 import Stomp from '@stomp/stompjs';
 
+const devMode = DEV_MODE;
 
 class Notification extends React.PureComponent {
 
@@ -43,14 +40,19 @@ class Notification extends React.PureComponent {
     };
 
     connectToWebSocket = (token = localStorage.getItem('jwtToken')) => {
-        const url = `/notifications?jwt=${token}`;
+        const url = `${devMode ? 'http://localhost:9999' : ''}/notifications?jwt=${token}`;
         const socket = new SockJS(url);
         const client = Stomp.over(socket);
-        client.connect({}, () => this.onWsConnect(client));
-        this.setState({client})
+        client.connect({}, () => {
+            this.onWsConnect(client);
+            this.setState({ client });
+        }, () => {
+            this.connectToWebSocket();
+        });
     };
 
-    dispatchNotifications = (notifications, topic) => {
+    dispatchNotifications = (message, topic) => {
+        let notifications = message.alerts;
         let count = 0;
         if (_.isArray(notifications)) {
             count = notifications.length;
