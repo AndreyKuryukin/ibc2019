@@ -37,7 +37,7 @@ class KIDuration extends React.Component {
                             const { dataLabel, shapeArgs } = item;
 
                             dataLabel.attr({
-                                x: dataLabel.alignAttr.x - (5 + shapeArgs.width / 2),
+                                x: dataLabel.alignAttr.x - (10 + shapeArgs.width / 2),
                             });
                         });
                     },

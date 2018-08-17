@@ -35,6 +35,7 @@ class BarchartKAB extends React.Component {
                 text: ls('DASHBOARD_CHART_BARCHART_KAB_TITLE', 'Каб ИТВ МРФ Волга в проекции по региональным филиалам'),
             },
             legend: {
+                align: 'left',
                 labelFormatter: this.legendLabelFormatter,
                 useHTML: true,
             },
