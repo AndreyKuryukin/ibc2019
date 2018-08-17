@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import AlarmsContent from './AlarmsContent';
+import AlertsContent from './AlertsContent';
 import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
-import { GROUP_POLICIES_ALARMS, CLIENTS_INCIDENTS_ALARMS, KQI_ALARMS } from '../constants';
+import { GROUP_POLICIES_ALERTS, CLIENTS_INCIDENTS_ALERTS, KQI_ALERTS } from '../constants';
 import * as _ from "lodash";
 
 const tabStyle = {
@@ -12,7 +12,7 @@ const tabStyle = {
     height: '100%',
 };
 
-class Alarms extends React.PureComponent {
+class Alerts extends React.PureComponent {
     static childContextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -21,27 +21,27 @@ class Alarms extends React.PureComponent {
         match: PropTypes.object.isRequired,
         history: PropTypes.object.isRequired,
         filter: PropTypes.object,
-        alarms: PropTypes.object,
+        alerts: PropTypes.object,
         policies: PropTypes.array,
         notifications: PropTypes.object,
         locations: PropTypes.array,
         onChangeFilter: PropTypes.func,
-        onFetchAlarms: PropTypes.func,
+        onFetchAlerts: PropTypes.func,
         onExportXLSX: PropTypes.func,
-        onFilterAlarms: PropTypes.func,
+        onFilterAlerts: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
     static defaultProps = {
         filter: null,
-        alarms: {},
+        alerts: {},
         notifications: {},
         locations: [],
         policies: [],
         onChangeFilter: () => null,
-        onFetchAlarms: () => null,
+        onFetchAlerts: () => null,
         onExportXLSX: () => null,
-        onFilterAlarms: () => null,
+        onFilterAlerts: () => null,
         isLoading: false,
     };
 
@@ -52,7 +52,7 @@ class Alarms extends React.PureComponent {
     }
 
     onTabClick = (tabId) => {
-        this.props.history.push(`/alarms/${tabId}`);
+        this.props.history.push(`/alerts/${tabId}`);
         const { filter } = this.props;
         this.props.onChangeFilter(filter);
     };
@@ -68,88 +68,88 @@ class Alarms extends React.PureComponent {
         const {
             match,
             filter,
-            alarms,
+            alerts,
             locations,
             policies,
             onChangeFilter,
-            onFetchAlarms,
+            onFetchAlerts,
             onExportXLSX,
-            onFilterAlarms,
+            onFilterAlerts,
             isLoading,
         } = this.props;
         const { params = {} } = match;
-        const { type = GROUP_POLICIES_ALARMS } = params;
+        const { type = GROUP_POLICIES_ALERTS } = params;
 
-        return <div className={styles.alarmsWrapper}>
+        return <div className={styles.alertsWrapper}>
             <TabPanel
                 onTabClick={this.onTabClick}
                 activeTabId={type}
             >
                 <div
-                    id={CLIENTS_INCIDENTS_ALARMS}
-                    itemId="alarms_ci_tab"
+                    id={CLIENTS_INCIDENTS_ALERTS}
+                    itemId="alerts_ci_tab"
                     tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
                     style={tabStyle}
                     notification={this.composeNotificationCount(_.get(this.props, 'notifications.ki'))}
                 >
-                    {type === CLIENTS_INCIDENTS_ALARMS && (
-                        <AlarmsContent
+                    {type === CLIENTS_INCIDENTS_ALERTS && (
+                        <AlertsContent
                             type={type}
                             params={params}
                             filter={filter}
-                            alarms={alarms}
+                            alerts={alerts}
                             locations={locations}
                             policies={policies}
                             onChangeFilter={onChangeFilter}
-                            onFetchAlarms={onFetchAlarms}
+                            onFetchAlerts={onFetchAlerts}
                             onExportXLSX={onExportXLSX}
-                            onFilterAlarms={onFilterAlarms}
+                            onFilterAlerts={onFilterAlerts}
                             isLoading={isLoading}
                         />
                     )}
                 </div>
                 <div
-                    id={GROUP_POLICIES_ALARMS}
-                    itemId="alarms_gp_tab"
+                    id={GROUP_POLICIES_ALERTS}
+                    itemId="alerts_gp_tab"
                     tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
                     style={tabStyle}
                     notification={this.composeNotificationCount(_.get(this.props, 'notifications.gp'))}
                 >
-                    {type === GROUP_POLICIES_ALARMS && (
-                        <AlarmsContent
+                    {type === GROUP_POLICIES_ALERTS && (
+                        <AlertsContent
                             type={type}
                             params={params}
                             filter={filter}
-                            alarms={alarms}
+                            alerts={alerts}
                             locations={locations}
                             policies={policies}
                             onChangeFilter={onChangeFilter}
-                            onFetchAlarms={onFetchAlarms}
+                            onFetchAlerts={onFetchAlerts}
                             onExportXLSX={onExportXLSX}
-                            onFilterAlarms={onFilterAlarms}
+                            onFilterAlerts={onFilterAlerts}
                             isLoading={isLoading}
                         />
                     )}
                 </div>
                 <div
-                    id={KQI_ALARMS}
-                    itemId="alarms_kqi_tab"
+                    id={KQI_ALERTS}
+                    itemId="alerts_kqi_tab"
                     tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
                     style={tabStyle}
                     notification={this.composeNotificationCount(_.get(this.props, 'notifications.kqi'))}
                 >
-                    {type === KQI_ALARMS && (
-                        <AlarmsContent
+                    {type === KQI_ALERTS && (
+                        <AlertsContent
                             type={type}
                             params={params}
                             filter={filter}
-                            alarms={alarms}
+                            alerts={alerts}
                             locations={locations}
                             policies={policies}
                             onChangeFilter={onChangeFilter}
-                            onFetchAlarms={onFetchAlarms}
+                            onFetchAlerts={onFetchAlerts}
                             onExportXLSX={onExportXLSX}
-                            onFilterAlarms={onFilterAlarms}
+                            onFilterAlerts={onFilterAlerts}
                             isLoading={isLoading}
                         />
                     )}
@@ -159,4 +159,4 @@ class Alarms extends React.PureComponent {
     }
 }
 
-export default Alarms;
+export default Alerts;

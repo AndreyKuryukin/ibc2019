@@ -1,6 +1,6 @@
 @import '../../../scss/vars';
 
-.alarmsWrapper {
+.alertsWrapper {
   display: flex;
   flex-grow: 1;
   height: 100%;
@@ -9,13 +9,13 @@
   min-width: 1340px;
 }
 
-.alarmsContentWrapper {
+.alertsContentWrapper {
   display: flex;
   width: 100%;
   flex-direction: column;
 }
 
-.alarmsControls {
+.alertsControls {
   padding: 3px 18px;
   display: flex;
   flex-grow: 0;
@@ -24,16 +24,16 @@
   justify-content: space-between;
   background: $white;
   z-index: 1000;
-  .alarmsFilterGroups{
+  .alertsFilterGroups{
     display: flex;
     //flex: 0 0 50%;
     align-items: center;
-    .alarmsFilterGroup {
+    .alertsFilterGroup {
       display: flex;
       flex-direction: column;
       margin: 4px 0;
     }
-    .alarmsFilterGroup + .alarmsFilterGroup {
+    .alertsFilterGroup + .alertsFilterGroup {
       margin-left: 10px;
     }
     .applyButton {

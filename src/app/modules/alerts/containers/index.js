@@ -4,14 +4,14 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment';
-import { fetchAlarmsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS } from '../actions';
+import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS } from '../actions';
 import { flush } from '../../notifications/actions';
 import rest from '../../../rest';
-import AlarmsComponent from '../components';
+import AlertsComponent from '../components';
 import ls from 'i18n';
-import { SENDING_ALARM_TYPES } from '../constants';
+import { SENDING_ALERT_TYPES } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
-import { getQueryParams, setQueryParams } from "../../../util/state";
+import { setQueryParams } from "../../../util/state";
 
 const TAB_TITLES = {
     'GP': 'ГП',
@@ -19,7 +19,7 @@ const TAB_TITLES = {
     'KQI': 'KQI',
 };
 
-class Alarms extends React.PureComponent {
+class Alerts extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
         notifications: PropTypes.object.isRequired,
@@ -33,10 +33,10 @@ class Alarms extends React.PureComponent {
 
     static propTypes = {
         filter: PropTypes.object,
-        alarms: PropTypes.object,
+        alerts: PropTypes.object,
         locations: PropTypes.array,
         policies: PropTypes.array,
-        onFetchAlarmsSuccess: PropTypes.func,
+        onFetchAlertsSuccess: PropTypes.func,
         onFetchLocationsSuccess: PropTypes.func,
         onFetchPoliciesSuccess: PropTypes.func,
         onChangeFilter: PropTypes.func,
@@ -44,10 +44,10 @@ class Alarms extends React.PureComponent {
 
     static defaultProps = {
         filter: null,
-        alarms: {},
+        alerts: {},
         locations: [],
         policies: [],
-        onFetchAlarmsSuccess: () => null,
+        onFetchAlertsSuccess: () => null,
         onFetchLocationsSuccess: () => null,
         onFetchPoliciesSuccess: () => null,
         onChangeFilter: () => null,
@@ -84,7 +84,7 @@ class Alarms extends React.PureComponent {
         const type = _.get(this.state, 'type');
         const nextType = _.get(nextProps, 'match.params.type', type);
         if (nextType && type !== nextType) {
-            this.context.navBar.setPageTitle([ls('ALARMS_PAGE_TITLE', 'Аварии'), ls(`ALARMS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
+            this.context.navBar.setPageTitle([ls('ALERTS_PAGE_TITLE', 'Аварии'), ls(`ALERTS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
             this.setState({ type: nextType });
         }
         if (nextProps.filter.auto_refresh && !this.props.filter.auto_refresh) {
@@ -98,27 +98,27 @@ class Alarms extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
+            const nextPart = readableUnits + ls(`ALERTS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
 
             return `${result}${nextPart}`;
         }, '');
 
     onChangeFilter = (filter) => {
         if (this.props.filter.filter !== filter.filter) {
-            this.onFilterAlarms(filter, this.props.onChangeFilter.bind(this, filter));
+            this.onFilterAlerts(filter, this.props.onChangeFilter.bind(this, filter));
         } else {
             this.props.onChangeFilter(filter);
         }
     };
 
-    onFetchingAlarmsError = (e) => {
+    onFetchingAlertsError = (e) => {
         console.error(e);
 
         this.context.notifications.notify({
-            title: ls('ALARMS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
-            message: ls('ALARMS_GETTING_ERROR_MESSAGE_FIELD', 'Данные по авариям не получены'),
+            title: ls('ALERTS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
+            message: ls('ALERTS_GETTING_ERROR_MESSAGE_FIELD', 'Данные по авариям не получены'),
             type: 'CRITICAL',
-            code: 'alarms-failed',
+            code: 'alerts-failed',
             timeout: 10000
         });
 
@@ -136,7 +136,7 @@ class Alarms extends React.PureComponent {
         delete queryParams.filter;
 
         const success = (response) => {
-            if (!response.data.alarms.length) {
+            if (!response.data.alerts.length) {
                 this.setState({ isLoading: false });
 
                 return;
@@ -152,7 +152,7 @@ class Alarms extends React.PureComponent {
                 { wpx: 150 },
                 { wpx: 200 },
             ];
-            const worksheet = XLSX.utils.json_to_sheet(response.data.alarms.map(node => ({
+            const worksheet = XLSX.utils.json_to_sheet(response.data.alerts.map(node => ({
                 id: node.id.toString(),
                 external_id: node.external_id || '',
                 policy_name: node.policy_name,
@@ -167,11 +167,11 @@ class Alarms extends React.PureComponent {
 
             for (let col = range.s.c; col <= range.e.c; ++col) {
                 var address = XLSX.utils.encode_col(col) + '1';
-                worksheet[address].v = ls(`ALARMS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
+                worksheet[address].v = ls(`ALERTS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
             }
 
-            XLSX.utils.book_append_sheet(workbook, worksheet, 'Alarms');
-            XLSX.writeFile(workbook, 'Alarms.xlsx', {
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'Alerts');
+            XLSX.writeFile(workbook, 'Alerts.xlsx', {
                 type: 'base64',
                 bookType: 'xlsx',
             });
@@ -179,10 +179,10 @@ class Alarms extends React.PureComponent {
             this.setState({ isLoading: false });
         };
 
-        this.handleAlarmsFetching(queryParams, success);
+        this.handleAlertsFetching(queryParams, success);
     };
 
-    onFetchAlarms = (filter) => {
+    onFetchAlerts = (filter) => {
         this.setState({ isLoading: true });
 
         const queryParams = this.prepareFilter(filter);
@@ -194,52 +194,52 @@ class Alarms extends React.PureComponent {
                 'kqi': 'KPIKQI',
                 'ci': 'SIMPLE'
             };
-            const alarms = response.data;
-            this.props.onFetchAlarmsSuccess(alarms);
+            const alerts = response.data;
+            this.props.onFetchAlertsSuccess(alerts);
             this.props.flushNotifications(typeMap[this.props.match.params.type]);
             this.setState({ isLoading: false });
         };
 
-        this.handleAlarmsFetching(queryParams, success);
+        this.handleAlertsFetching(queryParams, success);
     };
 
-    onFilterAlarms = _.debounce((filter, callback) => {
+    onFilterAlerts = _.debounce((filter, callback) => {
         this.setState({ isLoading: true });
 
         const queryParams = this.prepareFilter(filter);
 
         const success = (response) => {
-            const alarms = response.data;
+            const alerts = response.data;
 
-            this.props.onFetchAlarmsSuccess(alarms);
+            this.props.onFetchAlertsSuccess(alerts);
             callback();
             this.setState({ isLoading: false });
         };
 
-        this.handleAlarmsFetching(queryParams, success, callback);
+        this.handleAlertsFetching(queryParams, success, callback);
     }, 700);
 
-    handleAlarmsFetching = (queryParams, success, error) => {
+    handleAlertsFetching = (queryParams, success, error) => {
         rest.get('/api/v1/alerts', {}, { queryParams })
-            .then(success)
+            .then((response) => success({ data: { alerts: response.data.alarms, total: response.data.total } }))
             .catch((e) => {
-                this.onFetchingAlarmsError(e);
+                this.onFetchingAlertsError(e);
                 _.isFunction(error) && error(e);
             });
     };
 
-    fetchAlarms = (filter) => {
+    fetchAlerts = (filter) => {
         const queryParams = this.prepareFilter(filter);
         delete queryParams.filter;
 
         setQueryParams(queryParams, this.props.history, this.props.location);
-        this.onFetchAlarms(filter);
+        this.onFetchAlerts(filter);
     };
 
     prepareFilter = (filter) => {
         const preparedFilter = {
             ...filter,
-            type: SENDING_ALARM_TYPES[this.props.match.params.type],
+            type: SENDING_ALERT_TYPES[this.props.match.params.type],
             start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
@@ -251,18 +251,18 @@ class Alarms extends React.PureComponent {
 
     render() {
         return (
-            <AlarmsComponent
+            <AlertsComponent
                 history={this.props.history}
                 match={this.props.match}
                 filter={this.props.filter}
-                alarms={this.props.alarms}
+                alerts={this.props.alerts}
                 policies={this.props.policies}
                 locations={this.props.locations}
                 onChangeFilter={this.onChangeFilter}
                 notifications={this.props.notifications}
-                onFetchAlarms={this.fetchAlarms}
+                onFetchAlerts={this.fetchAlerts}
                 onExportXLSX={this.onExportXLSX}
-                onFilterAlarms={this.onFilterAlarms}
+                onFilterAlerts={this.onFilterAlerts}
                 isLoading={this.state.isLoading}
             />
         );
@@ -270,19 +270,19 @@ class Alarms extends React.PureComponent {
 }
 
 const mapStateToProps = (state, props) => ({
-    filter: _.get(state, `alarms.${props.match.params.type}`, null),
-    alarms: state.alarms.alarms,
-    policies: state.alarms.policies,
-    locations: state.alarms.mrf,
+    filter: _.get(state, `alerts.${props.match.params.type}`, null),
+    alerts: state.alerts.alerts,
+    policies: state.alerts.policies,
+    locations: state.alerts.mrf,
     notifications: _.get(state, 'notifications.alerts')
 });
 
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
     onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
-    onFetchAlarmsSuccess: alarms => dispatch(fetchAlarmsSuccess(alarms)),
+    onFetchAlertsSuccess: alerts => dispatch(fetchAlertsSuccess(alerts)),
     onChangeFilter: filter => _.isFunction(FILTER_ACTIONS[props.match.params.type]) ? dispatch(FILTER_ACTIONS[props.match.params.type](filter)) : null,
     flushNotifications: type => dispatch(flush('alerts', type))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Alarms);
+export default connect(mapStateToProps, mapDispatchToProps)(Alerts);

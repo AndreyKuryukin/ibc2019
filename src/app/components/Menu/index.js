@@ -69,7 +69,7 @@ class Menu extends React.Component {
                     result.push(<div className={styles.type}
                                      key={`item-${type}`}
                                      onClick={() => {
-                                         this.onItemClick({ link: `/alarms/${linkMap[type]}` });
+                                         this.onItemClick({ link: `/alerts/${linkMap[type]}` });
                                          this.toggle()
                                      }}
                     >
@@ -89,8 +89,8 @@ class Menu extends React.Component {
         const clearLink = this.getFeature(item.link);
         const isActive = clearLink === feature;
         //todo: Заменить частный случай на общий
-        const notificationCount = clearLink === 'alarms' ? _.get(this.props, `notifications.${'alerts'}.count`, 0) : 0;
-        const notifications = clearLink === 'alarms' ? _.omit(_.get(this.props, `notifications.${'alerts'}`, {}), ['count']) : {};
+        const notificationCount = clearLink === 'alerts' ? _.get(this.props, `notifications.${'alerts'}.count`, 0) : 0;
+        const notifications = clearLink === 'alerts' ? _.omit(_.get(this.props, `notifications.${'alerts'}`, {}), ['count']) : {};
         return (<div
             itemId={`menu_${clearLink}`}
             id={`menu-tile-${clearLink}`}

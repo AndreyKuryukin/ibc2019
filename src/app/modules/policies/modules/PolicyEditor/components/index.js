@@ -49,7 +49,7 @@ class PolicyEditor extends React.PureComponent {
         mrfList: PropTypes.array,
         rfList: PropTypes.array,
         active: PropTypes.bool,
-        alarmsCount: PropTypes.number,
+        alertsCount: PropTypes.number,
         onSubmit: PropTypes.func,
         onTest: PropTypes.func,
         onClose: PropTypes.func,
@@ -58,7 +58,7 @@ class PolicyEditor extends React.PureComponent {
         fetchObjectTypes: PropTypes.func,
         fetchPolicyTypes: PropTypes.func,
         fetchMetaData: PropTypes.func,
-        clearAlarms: PropTypes.func,
+        clearAlerts: PropTypes.func,
     };
 
     static defaultProps = {
@@ -73,7 +73,7 @@ class PolicyEditor extends React.PureComponent {
         mrfList: [],
         rfList: [],
         active: false,
-        alarmsCount: 0,
+        alertsCount: 0,
         onSubmit: () => null,
         onTest: () => null,
         onClose: () => null,
@@ -82,7 +82,7 @@ class PolicyEditor extends React.PureComponent {
         fetchObjectTypes: () => null,
         fetchPolicyTypes: () => null,
         fetchMetaData: () => null,
-        clearAlarms: () => null,
+        clearAlerts: () => null,
     };
 
     constructor(props) {
@@ -442,18 +442,18 @@ class PolicyEditor extends React.PureComponent {
                         </ModalFooter>
                     </Modal>
                 </DraggableWrapper>
-                {this.props.alarmsCount !== -1 && (
+                {this.props.alertsCount !== -1 && (
                     <ConfirmDialog
                         itemId="policies_test"
-                        active={this.props.alarmsCount !== -1}
+                        active={this.props.alertsCount !== -1}
                         defaultY={200}
                         className={styles.testPolicyConfirm}
                         message={ls(
                             'POLICIES_TEST_CONFIRMATION_TEXT',
                             'При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?'
-                        ).replace('{count}', this.props.alarmsCount)}
+                        ).replace('{count}', this.props.alertsCount)}
                         okButtonTitle={ls('CONTINUE', 'Продолжить')}
-                        cancelButtonAction={this.props.clearAlarms}
+                        cancelButtonAction={this.props.clearAlerts}
                         okButtonAction={this.onSubmit}
                     />
                 )}

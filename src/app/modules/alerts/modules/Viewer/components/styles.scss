@@ -1,14 +1,14 @@
 @import '../../../../../scss/vars';
 
-.alarmsViewer {
+.alertsViewer {
   width: 550px !important;
   max-width: 550px !important;
-  .alarmsViewerContent {
+  .alertsViewerContent {
     display: flex;
     flex-grow: 1;
     background: $white;
     flex-direction: column;
-    .alarmsViewerRow {
+    .alertsViewerRow {
       display: flex;
       flex-grow: 1;
       ul {
@@ -22,7 +22,7 @@
       > div:first-child {
         text-align: right;
       }
-      .alarmContent {
+      .alertContent {
         display: flex;
         align-items: center;
       }

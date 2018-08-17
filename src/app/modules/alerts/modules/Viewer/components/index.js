@@ -7,7 +7,7 @@ import { Modal, ModalBody, ModalFooter, ModalHeader } from 'reactstrap';
 import styles from './styles.scss';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 import Icon from '../../../../../components/Icon/Icon';
-import { ALARMS_TYPES } from '../../../constants';
+import { ALERTS_TYPES } from '../../../constants';
 import { convertUTC0ToLocal } from '../../../../../util/date';
 
 const infoScheme = [
@@ -28,28 +28,28 @@ const DEFAULT_TEXTS = {
     ATTRIBUTES: 'Все сохраняемые атрибуты аварии: (Значения макроподстановок)'
 };
 
-class AlarmsViewer extends React.PureComponent {
+class AlertsViewer extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,
     };
 
     static propTypes = {
-        type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
-        alarm: PropTypes.object,
+        type: PropTypes.oneOf(ALERTS_TYPES).isRequired,
+        alert: PropTypes.object,
         active: PropTypes.bool,
     };
 
     static defaultProps = {
-        alarm: null,
+        alert: null,
         active: false,
     };
 
     componentDidMount() {
-        const closeBtn = document.querySelector(`.${styles.alarmsViewer} .close`);
+        const closeBtn = document.querySelector(`.${styles.alertsViewer} .close`);
 
         if (closeBtn) {
-            closeBtn.setAttribute('itemId', 'alarms_close');
+            closeBtn.setAttribute('itemId', 'alerts_close');
         }
 
         if (typeof this.props.onMount === 'function') {
@@ -58,7 +58,7 @@ class AlarmsViewer extends React.PureComponent {
     }
 
     onClose = () => {
-        this.context.history.push(`/alarms/${this.props.type}/${this.context.location.search}`);
+        this.context.history.push(`/alerts/${this.props.type}/${this.context.location.search}`);
     };
 
     getReadableDuration = (milliseconds = 0) =>
@@ -67,30 +67,30 @@ class AlarmsViewer extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
+            const nextPart = readableUnits + ls(`ALERTS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
 
             return `${result}${nextPart}`;
         }, '');
 
-    getAlarmContent = (key) => {
+    getAlertContent = (key) => {
         switch (key) {
             case 'raise_time':
-                return _.get(this.props.alarm, key, null) ? convertUTC0ToLocal(_.get(this.props.alarm, key)).format('HH:mm:ss DD.MM.YYYY') : '';
+                return _.get(this.props.alert, key, null) ? convertUTC0ToLocal(_.get(this.props.alert, key)).format('HH:mm:ss DD.MM.YYYY') : '';
             case 'duration':
-                return this.getReadableDuration(_.get(this.props.alarm, key, 0));
+                return this.getReadableDuration(_.get(this.props.alert, key, 0));
             case 'notification_text':
-                const text = _.get(this.props.alarm, key, '');
+                const text = _.get(this.props.alert, key, '');
                 const NEW_LINE_SYMBOL = '\n';
                 return <ul className={styles.attributesList}>
                     {text.split(NEW_LINE_SYMBOL).map(line => <li>{line}</li>)}
                 </ul>;
             case 'notified': {
-                const notifications = _.get(this.props.alarm, key, []);
+                const notifications = _.get(this.props.alert, key, []);
                 return (
                     notifications.map(notif => (
-                        <div className={styles.alarmContent}>
+                        <div className={styles.alertContent}>
                             <Icon icon={`icon-state-${notif.status.toLowerCase()}`}
-                                  title={ls(`ALARMS_STATUS_${notif.status.toUpperCase()}`, 'Статус')}
+                                  title={ls(`ALERTS_STATUS_${notif.status.toUpperCase()}`, 'Статус')}
                             />
                             {notif.type}
                         </div>
@@ -99,12 +99,12 @@ class AlarmsViewer extends React.PureComponent {
             }
             case 'attributes':
                 return <ul
-                    className={styles.attributesList}>{_.reduce(_.get(this.props.alarm, key, {}), (result, value, key) => {
+                    className={styles.attributesList}>{_.reduce(_.get(this.props.alert, key, {}), (result, value, key) => {
                     result.push(`${key}=${value}`);
                     return result;
                 }, []).map(attr => <li title={attr}>{attr}</li>)}</ul>;
             default:
-                return _.get(this.props.alarm, key, '');
+                return _.get(this.props.alert, key, '');
         }
     };
 
@@ -113,20 +113,20 @@ class AlarmsViewer extends React.PureComponent {
             <DraggableWrapper>
                 <Modal
                     isOpen={this.props.active}
-                    className={styles.alarmsViewer}
+                    className={styles.alertsViewer}
                 >
                     <ModalHeader
                         toggle={this.onClose}
                         className="handle"
                     >
-                        {`${ls('ALARMS_GROUP_POLICIES_ALARMS_VIEWER_TITLE', 'Детальная информация аварии №')}${this.getAlarmContent('id')}`}
+                        {`${ls('ALERTS_GROUP_POLICIES_ALERTS_VIEWER_TITLE', 'Детальная информация аварии №')}${this.getAlertContent('id')}`}
                     </ModalHeader>
                     <ModalBody>
-                        <div className={styles.alarmsViewerContent}>
+                        <div className={styles.alertsViewerContent}>
                             {infoScheme.map(key => (
-                                <div key={key} className={styles.alarmsViewerRow}>
-                                    <div>{ls(`ALARMS_GROUP_POLICIES_ALARMS_VIEWER_${key.toUpperCase()}`, DEFAULT_TEXTS[key.toUpperCase()])}</div>
-                                    <div>{this.getAlarmContent(key)}</div>
+                                <div key={key} className={styles.alertsViewerRow}>
+                                    <div>{ls(`ALERTS_GROUP_POLICIES_ALERTS_VIEWER_${key.toUpperCase()}`, DEFAULT_TEXTS[key.toUpperCase()])}</div>
+                                    <div>{this.getAlertContent(key)}</div>
                                 </div>
                             ))}
                         </div>
@@ -138,4 +138,4 @@ class AlarmsViewer extends React.PureComponent {
     }
 }
 
-export default AlarmsViewer;
+export default AlertsViewer;

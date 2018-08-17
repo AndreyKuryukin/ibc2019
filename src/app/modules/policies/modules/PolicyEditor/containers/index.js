@@ -148,7 +148,7 @@ class PolicyEditor extends React.PureComponent {
             },
             mrfList: [],
             rfList: [],
-            alarmsCount: -1,
+            alertsCount: -1,
         };
     }
 
@@ -366,7 +366,7 @@ class PolicyEditor extends React.PureComponent {
 
         this.setState({
             loading: true,
-            alarmsCount: -1,
+            alertsCount: -1,
         });
 
         if (_.isEmpty(errors)) {
@@ -406,7 +406,7 @@ class PolicyEditor extends React.PureComponent {
             rest.post('/policy/v1/check', policy, { queryParams })
                 .then((response) => {
                     this.setState({
-                        alarmsCount: response.data.resultCount,
+                        alertsCount: response.data.resultCount,
                         loading: false,
                     });
                 })
@@ -420,8 +420,8 @@ class PolicyEditor extends React.PureComponent {
         }
     };
 
-    clearAlarms = () => {
-        this.setState({ alarmsCount: -1 });
+    clearAlerts = () => {
+        this.setState({ alertsCount: -1 });
     };
 
     render() {
@@ -432,8 +432,8 @@ class PolicyEditor extends React.PureComponent {
                 onSubmit={this.onSubmit}
                 onTest={this.onTest}
                 onClose={this.onClose}
-                alarmsCount={this.state.alarmsCount}
-                clearAlarms={this.clearAlarms}
+                alertsCount={this.state.alertsCount}
+                clearAlerts={this.clearAlerts}
                 policy={this.state.policy}
                 errors={this.state.errors}
                 objectTypes={this.state.objectTypes}

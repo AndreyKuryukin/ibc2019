@@ -1,40 +1,40 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import AlarmsViewerComponent from '../components';
+import AlertsViewerComponent from '../components';
 import rest from '../../../../../rest';
-import { fetchAlarmSuccess } from '../actions';
-import { ALARMS_TYPES } from '../../../constants';
+import { fetchAlertSuccess } from '../actions';
+import { ALERTS_TYPES } from '../../../constants';
 
-class AlarmsViewer extends React.PureComponent {
+class AlertsViewer extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
         pageBlur: PropTypes.func.isRequired
     };
 
     static propTypes = {
-        type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
-        alarmId: PropTypes.string,
-        alarm: PropTypes.object,
-        onFetchAlarmSuccess: PropTypes.func,
+        type: PropTypes.oneOf(ALERTS_TYPES).isRequired,
+        alertId: PropTypes.string,
+        alert: PropTypes.object,
+        onFetchAlertSuccess: PropTypes.func,
     };
 
     static defaultProps = {
-        alarmId: '',
-        alarm: null,
-        onFetchAlarmSuccess: () => null,
+        alertId: '',
+        alert: null,
+        onFetchAlertSuccess: () => null,
     };
 
     onMount = () => {
         this.context.pageBlur(true);
-        if (this.props.alarmId) {
+        if (this.props.alertId) {
             const urlParams = {
-                id: this.props.alarmId,
+                id: this.props.alertId,
             };
             rest.get('/api/v1/alerts/:id', { urlParams })
                 .then((response) => {
-                    const alarm = response.data;
-                    this.props.onFetchAlarmSuccess(alarm);
+                    const alert = response.data;
+                    this.props.onFetchAlertSuccess(alert);
                 })
                 .catch((e) => {
                     console.error(e);
@@ -44,10 +44,10 @@ class AlarmsViewer extends React.PureComponent {
 
     render() {
         return (
-            <AlarmsViewerComponent
+            <AlertsViewerComponent
                 type={this.props.type}
                 onMount={this.onMount}
-                alarm={this.props.alarm}
+                alert={this.props.alert}
                 active={this.props.active}
             />
         );
@@ -55,14 +55,14 @@ class AlarmsViewer extends React.PureComponent {
 }
 
 const mapStateToProps = state => ({
-    alarm: state.alarms.viewer,
+    alert: state.alerts.viewer,
 });
 
 const mapDispatchToProps = dispatch => ({
-    onFetchAlarmSuccess: alarm => dispatch(fetchAlarmSuccess(alarm)),
+    onFetchAlertSuccess: alert => dispatch(fetchAlertSuccess(alert)),
 });
 
 export default connect(
     mapStateToProps,
     mapDispatchToProps,
-)(AlarmsViewer);
+)(AlertsViewer);

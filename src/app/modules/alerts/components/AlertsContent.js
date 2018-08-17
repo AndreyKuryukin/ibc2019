@@ -2,41 +2,41 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import _ from 'lodash';
 import styles from './styles.scss';
-import AlarmsTable from './AlarmsTable';
-import AlarmsControls from './AlarmsControls';
-import AlarmsViewer from '../modules/Viewer/containers';
-import { ALARMS_TYPES } from '../constants';
+import AlertsTable from './AlertsTable';
+import AlertsControls from './AlertsControls';
+import AlertsViewer from '../modules/Viewer/containers';
+import { ALERTS_TYPES } from '../constants';
 import { getQueryParams } from "../../../util/state";
 
-class AlarmsContent extends React.PureComponent {
+class AlertsContent extends React.PureComponent {
     static contextTypes = {
         location: PropTypes.object.isRequired,
     };
 
     static propTypes = {
-        type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
+        type: PropTypes.oneOf(ALERTS_TYPES).isRequired,
         params: PropTypes.object,
         filter: PropTypes.object,
-        alarms: PropTypes.object,
+        alerts: PropTypes.object,
         locations: PropTypes.array,
         policies: PropTypes.array,
         onChangeFilter: PropTypes.func,
-        onFetchAlarms: PropTypes.func,
+        onFetchAlerts: PropTypes.func,
         onExportXLSX: PropTypes.func,
-        onFilterAlarms: PropTypes.func,
+        onFilterAlerts: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
     static defaultProps = {
         params: null,
         filter: null,
-        alarms: {},
+        alerts: {},
         policies: [],
         mrfOptions: [],
         onChangeFilter: () => null,
-        onFetchAlarms: () => null,
+        onFetchAlerts: () => null,
         onExportXLSX: () => null,
-        onFilterAlarms: () => null,
+        onFilterAlerts: () => null,
         isLoading: false,
     };
 
@@ -55,11 +55,11 @@ class AlarmsContent extends React.PureComponent {
             this.props.onChangeFilter(filter);
         }
 
-        this.props.onFetchAlarms(filter);
+        this.props.onFetchAlerts(filter);
     }
 
     onApplyFilter = () => {
-        this.props.onFetchAlarms(this.props.filter);
+        this.props.onFetchAlerts(this.props.filter);
     };
 
     onExportXLSX = () => {
@@ -71,20 +71,20 @@ class AlarmsContent extends React.PureComponent {
             type,
             params,
             filter,
-            alarms,
+            alerts,
             locations,
             policies,
             onChangeFilter,
             isLoading,
         } = this.props;
 
-        const { id: alarmId } = params;
-        const isAlarmsViewerActive = !!alarmId;
-        const { alarms: data, total } = alarms;
+        const { id: alertId } = params;
+        const isAlertsViewerActive = !!alertId;
+        const { alerts: data, total } = alerts;
 
         return (
-            <div className={styles.alarmsContentWrapper}>
-                <AlarmsControls
+            <div className={styles.alertsContentWrapper}>
+                <AlertsControls
                     current={data.length}
                     total={total}
                     filter={filter}
@@ -94,16 +94,16 @@ class AlarmsContent extends React.PureComponent {
                     locations={locations}
                     policies={policies}
                 />
-                <AlarmsTable
+                <AlertsTable
                     type={type}
                     data={data}
                     preloader={isLoading}
                     searchText={_.get(filter, 'filter', '')}
                 />
-                {isAlarmsViewerActive && <AlarmsViewer alarmId={alarmId} active={isAlarmsViewerActive} type={type} />}
+                {isAlertsViewerActive && <AlertsViewer alertId={alertId} active={isAlertsViewerActive} type={type} />}
             </div>
         );
     }
 }
 
-export default AlarmsContent;
+export default AlertsContent;

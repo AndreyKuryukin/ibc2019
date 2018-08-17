@@ -9,7 +9,7 @@ import Table from '../../../components/Table';
 import { convertUTC0ToLocal } from '../../../util/date';
 import { naturalSort } from '../../../util/sort';
 import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
-import { ALARMS_TYPES, CLIENTS_INCIDENTS_ALARMS } from '../constants';
+import { ALERTS_TYPES, CLIENTS_INCIDENTS_ALERTS } from '../constants';
 
 const iconCellStyle = {
     display: 'flex',
@@ -17,13 +17,13 @@ const iconCellStyle = {
     justifyContent: 'center'
 };
 
-class AlarmsTable extends React.PureComponent {
+class AlertsTable extends React.PureComponent {
     static contextTypes = {
         match: PropTypes.object.isRequired,
     };
 
     static propTypes = {
-        type: PropTypes.oneOf(ALARMS_TYPES).isRequired,
+        type: PropTypes.oneOf(ALERTS_TYPES).isRequired,
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
@@ -35,16 +35,16 @@ class AlarmsTable extends React.PureComponent {
         preloader: false,
     };
 
-    static getColumns = memoize((type = CLIENTS_INCIDENTS_ALARMS) => {
+    static getColumns = memoize((type = CLIENTS_INCIDENTS_ALERTS) => {
         const commonColumns = [
             {
-                getTitle: createLocalizer('ALARMS_ID_COLUMN', 'ID'),
+                getTitle: createLocalizer('ALERTS_ID_COLUMN', 'ID'),
                 name: 'id',
                 resizable: true,
                 searchable: true,
                 sortable: true,
             }, {
-                getTitle: createLocalizer('ALARMS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
+                getTitle: createLocalizer('ALERTS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
                 name: 'external_id',
                 resizable: true,
                 searchable: true,
@@ -52,37 +52,37 @@ class AlarmsTable extends React.PureComponent {
                 searchable: true,
                 width: 150,
             }, {
-                getTitle: createLocalizer('ALARMS_STATUS_COLUMN', 'Статус'),
+                getTitle: createLocalizer('ALERTS_STATUS_COLUMN', 'Статус'),
                 name: 'status',
                 sortable: true,
                 resizable: true,
                 width: 100,
             }, {
-                getTitle: createLocalizer('ALARMS_POLICY_NAME_COLUMN', 'Имя политики'),
+                getTitle: createLocalizer('ALERTS_POLICY_NAME_COLUMN', 'Имя политики'),
                 name: 'policy_name',
                 resizable: true,
                 searchable: true,
                 sortable: true,
             }, {
-                getTitle: createLocalizer('ALARMS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
+                getTitle: createLocalizer('ALERTS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
                 name: 'notification_status',
                 sortable: true,
                 width: 250,
             }, {
-                getTitle: createLocalizer('ALARMS_RAISE_TIME_COLUMN', 'Дата и время возникновения'),
+                getTitle: createLocalizer('ALERTS_RAISE_TIME_COLUMN', 'Дата и время возникновения'),
                 name: 'raise_time',
                 searchable: true,
                 sortable: true,
                 width: 150,
             },  {
-                getTitle: createLocalizer('ALARMS_CEASE_TIME_COLUMN', 'Дата и время закрытия'),
+                getTitle: createLocalizer('ALERTS_CEASE_TIME_COLUMN', 'Дата и время закрытия'),
                 name: 'cease_time',
                 resizable: true,
                 searchable: true,
                 sortable: true,
                 width: 150,
             }, {
-                getTitle: createLocalizer('ALARMS_DURATION_COLUMN', 'Длительность'),
+                getTitle: createLocalizer('ALERTS_DURATION_COLUMN', 'Длительность'),
                 name: 'duration',
                 searchable: true,
                 sortable: true,
@@ -90,28 +90,28 @@ class AlarmsTable extends React.PureComponent {
             }
         ];
 
-        const columnsByType = type === CLIENTS_INCIDENTS_ALARMS
+        const columnsByType = type === CLIENTS_INCIDENTS_ALERTS
                 ? [{
-                    getTitle: createLocalizer('ALARMS_MAC_COLUMN', 'MAC'),
+                    getTitle: createLocalizer('ALERTS_MAC_COLUMN', 'MAC'),
                     name: 'mac',
                     resizable: true,
                     searchable: true,
                     sortable: true,
                 }, {
-                    getTitle: createLocalizer('ALARMS_SAN_COLUMN', 'Service account number (SAN)'),
+                    getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'Service account number (SAN)'),
                     name: 'san',
                     resizable: true,
                     searchable: true,
                     sortable: true,
                 } , {
-                    getTitle: createLocalizer('ALARMS_PERSONAL_ACCOUNT_COLUMN', 'Лицевой счёт'),
+                    getTitle: createLocalizer('ALERTS_PERSONAL_ACCOUNT_COLUMN', 'Лицевой счёт'),
                     name: 'personal_account',
                     resizable: true,
                     searchable: true,
                     sortable: true,
                 }]
                 : [{
-                    getTitle: createLocalizer('ALARMS_OBJECT_COLUMN', 'Объект'),
+                    getTitle: createLocalizer('ALERTS_OBJECT_COLUMN', 'Объект'),
                     name: 'object',
                     resizable: true,
                     searchable: true,
@@ -133,7 +133,7 @@ class AlarmsTable extends React.PureComponent {
             case 'id':
                 return (
                     <LinkCell
-                        href={`/alarms/${this.props.type}/${node.id}`}
+                        href={`/alerts/${this.props.type}/${node.id}`}
                         content={node[column.name]}
                         highlightedText={this.props.searchText}
                     />
@@ -143,7 +143,7 @@ class AlarmsTable extends React.PureComponent {
                 return status ? (
                     <IconCell
                         icon={`icon-state-${status.toLowerCase()}`}
-                        iconTitle={ls(`ALARMS_STATUS_${status.toUpperCase()}`, 'Статус')}
+                        iconTitle={ls(`ALERTS_STATUS_${status.toUpperCase()}`, 'Статус')}
                         cellStyle={iconCellStyle}
                     />
                 ) : (
@@ -168,7 +168,7 @@ class AlarmsTable extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + ls(`ALARMS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
+            const nextPart = readableUnits + ls(`ALERTS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
 
             return `${result}${nextPart}`;
         }, '');
@@ -197,12 +197,12 @@ class AlarmsTable extends React.PureComponent {
 
     render() {
         const { data, searchText, preloader, total } = this.props;
-        const columns = AlarmsTable.getColumns(this.context.match.params.type);
+        const columns = AlertsTable.getColumns(this.context.match.params.type);
         const mappedData = this.mapData(data);
 
         return (
             <Table
-                id="alarms-table"
+                id="alerts-table"
                 data={mappedData}
                 columns={columns}
                 customSortFunction={this.customSortFunction}
@@ -215,4 +215,4 @@ class AlarmsTable extends React.PureComponent {
     }
 }
 
-export default AlarmsTable;
+export default AlertsTable;

@@ -20,14 +20,14 @@ const DATE_PICKER_DEFAULT_STYLE = {
     fontStyle: 'italic',
 };
 
-class AlarmsControls extends React.Component {
+class AlertsControls extends React.Component {
     static propTypes = {
         current: PropTypes.number,
         total: PropTypes.number,
         onChangeFilter: PropTypes.func,
         onApplyFilter: PropTypes.func,
         onExportXLSX: PropTypes.func,
-        onFilterAlarms: PropTypes.func,
+        onFilterAlerts: PropTypes.func,
         locations: PropTypes.array,
         policies: PropTypes.array,
         filter: PropTypes.shape({
@@ -46,7 +46,7 @@ class AlarmsControls extends React.Component {
         onChangeFilter: () => null,
         onApplyFilter: () => null,
         onExportXLSX: () => null,
-        onFilterAlarms: () => null,
+        onFilterAlerts: () => null,
         locations: [],
         policies: [],
         filter: null,
@@ -115,7 +115,7 @@ class AlarmsControls extends React.Component {
         const selectedMrfId = this.getFilterProperty('mrf', '');
         const selectedMrf = this.props.locations.find(mrf => mrf.id === selectedMrfId);
 
-        return selectedMrf ? AlarmsControls.mapOptions(selectedMrf.rf) : [];
+        return selectedMrf ? AlertsControls.mapOptions(selectedMrf.rf) : [];
     };
 
     checkHistorical = () => {
@@ -135,34 +135,34 @@ class AlarmsControls extends React.Component {
         const { locations, policies, current, total } = this.props;
 
         return (
-            <div className={styles.alarmsControls}>
-                <div className={styles.alarmsFilterGroups}>
-                    <div className={styles.alarmsFilterGroup}>
+            <div className={styles.alertsControls}>
+                <div className={styles.alertsFilterGroups}>
+                    <div className={styles.alertsFilterGroup}>
                         <Field
                             id="auto-refresh-filter"
-                            labelText={ls('ALARMS_AUTO_REFRESH_FILTER', 'Автообновление')}
+                            labelText={ls('ALERTS_AUTO_REFRESH_FILTER', 'Автообновление')}
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
                         >
                             <Checkbox
-                                itemId="alarms_auto_refresh_check"
+                                itemId="alerts_auto_refresh_check"
                                 id="auto-refresh-filter"
                                 checked={this.getFilterProperty('auto_refresh', false)}
                                 onChange={value => this.setFilterProperty('auto_refresh', value)}
                             />
                         </Field>
                     </div>
-                    <div className={styles.alarmsFilterGroup}>
+                    <div className={styles.alertsFilterGroup}>
                         <Field
-                            id="alarms-filter-start"
-                            labelText={ls('ALARMS_START_FILTER', 'Показать аварии с')}
+                            id="alerts-filter-start"
+                            labelText={ls('ALERTS_START_FILTER', 'Показать аварии с')}
                             inputWidth={160}
                             labelWidth={110}
                             splitter=""
                         >
                             <DatePicker
-                                itemId="alarms_start"
+                                itemId="alerts_start"
                                 max={this.getFilterProperty('end')}
                                 value={this.getFilterProperty('start')}
                                 inputWidth={115}
@@ -171,20 +171,20 @@ class AlarmsControls extends React.Component {
                                 time
                                 disabled={this.getFilterProperty('auto_refresh', false)}
                                 inputStyle={this.state.hasDatePickersDefaultStyle ? DATE_PICKER_DEFAULT_STYLE : null}
-                                placeholder={ls('ALARMS_FROM_FILTER_PLACEHOLDER', 'Начало')}
+                                placeholder={ls('ALERTS_FROM_FILTER_PLACEHOLDER', 'Начало')}
                                 valid={this.state.isDatePickersValid}
                                 title={!this.state.isDatePickersValid && 'Одно из полей дат начала и окончания должно быть заполнено'}
                             />
                         </Field>
                         <Field
-                            id="alarms-filter-end"
-                            labelText={ls('ALARMS_END_FILTER', 'по')}
+                            id="alerts-filter-end"
+                            labelText={ls('ALERTS_END_FILTER', 'по')}
                             inputWidth={160}
                             labelWidth={110}
                             splitter=""
                         >
                             <DatePicker
-                                itemId="alarms_end"
+                                itemId="alerts_end"
                                 min={this.getFilterProperty('start')}
                                 value={this.getFilterProperty('end')}
                                 inputWidth={115}
@@ -193,73 +193,73 @@ class AlarmsControls extends React.Component {
                                 time
                                 disabled={this.getFilterProperty('auto_refresh', false)}
                                 inputStyle={this.state.hasDatePickersDefaultStyle ? DATE_PICKER_DEFAULT_STYLE : null}
-                                placeholder={ls('ALARMS_TO_FILTER_PLACEHOLDER', 'Окончание')}
+                                placeholder={ls('ALERTS_TO_FILTER_PLACEHOLDER', 'Окончание')}
                                 valid={this.state.isDatePickersValid}
                                 title={!this.state.isDatePickersValid && 'Одно из полей дат начала и окончания должно быть заполнено'}
                             />
                         </Field>
                     </div>
-                    <div className={styles.alarmsFilterGroup}>
+                    <div className={styles.alertsFilterGroup}>
                         <Field
                             id="mrf-filter"
-                            labelText={ls('ALARMS_MRF_FILTER', 'Фильтр по МРФ')}
+                            labelText={ls('ALERTS_MRF_FILTER', 'Фильтр по МРФ')}
                             inputWidth={300}
                             labelWidth={120}
                             splitter=""
                         >
                             <Select
-                                itemId="alarms_mrf"
+                                itemId="alerts_mrf"
                                 id="mrf-filter"
-                                options={AlarmsControls.mapOptions(locations)}
+                                options={AlertsControls.mapOptions(locations)}
                                 value={this.getFilterProperty('mrf', '')}
                                 onChange={value => this.setFilterProperty('mrf', value)}
-                                placeholder={ls('ALARMS_MRF_FILTER_PLACEHOLDER', 'МРФ')}
+                                placeholder={ls('ALERTS_MRF_FILTER_PLACEHOLDER', 'МРФ')}
                             />
                         </Field>
                         <Field
                             id="region-filter"
-                            labelText={ls('ALARMS_REGION_FILTER', 'Фильтр по региону')}
+                            labelText={ls('ALERTS_REGION_FILTER', 'Фильтр по региону')}
                             inputWidth={300}
                             labelWidth={120}
                             splitter=""
                         >
                             <Select
-                                itemId="alarms_rf"
+                                itemId="alerts_rf"
                                 id="region-filter"
                                 options={this.getRfOptions()}
                                 value={this.getFilterProperty('rf', '')}
                                 onChange={value => this.setFilterProperty('rf', value)}
                                 disabled={!this.getFilterProperty('mrf', '')}
-                                placeholder={ls('ALARMS_REGION_FILTER_PLACEHOLDER', 'Регион')}
+                                placeholder={ls('ALERTS_REGION_FILTER_PLACEHOLDER', 'Регион')}
                             />
                         </Field>
                         <Field
                             id="policy-filter"
-                            labelText={ls('ALARMS_POLICY_FILTER', 'Фильтр по политике')}
+                            labelText={ls('ALERTS_POLICY_FILTER', 'Фильтр по политике')}
                             inputWidth={300}
                             labelWidth={120}
                             splitter=""
                         >
                             <Select
-                                itemId="alarms_policy"
+                                itemId="alerts_policy"
                                 id="policy-filter"
-                                options={AlarmsControls.mapOptions(policies)}
+                                options={AlertsControls.mapOptions(policies)}
                                 value={this.getFilterProperty('policyId', '')}
                                 onChange={value => this.setFilterProperty('policyId', value)}
-                                placeholder={ls('ALARMS_POLICY_FILTER_PLACEHOLDER', 'Политика')}
+                                placeholder={ls('ALERTS_POLICY_FILTER_PLACEHOLDER', 'Политика')}
                             />
                         </Field>
                     </div>
-                    <div className={styles.alarmsFilterGroup}>
+                    <div className={styles.alertsFilterGroup}>
                         <Field
                             id="current-checkbox-filter"
-                            labelText={ls('ALARMS_CURRENT_FILTER', 'Текущие')}
+                            labelText={ls('ALERTS_CURRENT_FILTER', 'Текущие')}
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
                         >
                             <Checkbox
-                                itemId="alarms_current_check"
+                                itemId="alerts_current_check"
                                 id="current-checkbox-filter"
                                 checked={this.getFilterProperty('current', false)}
                                 onChange={value => this.setFilterProperty('current', value)}
@@ -267,7 +267,7 @@ class AlarmsControls extends React.Component {
                         </Field>
                         <Field
                             id="historical-checkbox-filter"
-                            labelText={ls('ALARMS_HISTORICAL_FILTER', 'Исторические')}
+                            labelText={ls('ALERTS_HISTORICAL_FILTER', 'Исторические')}
                             inputWidth={12}
                             labelAlign="right"
                             splitter=""
@@ -278,7 +278,7 @@ class AlarmsControls extends React.Component {
                                 onToggle={() => null}
                                 trigger={
                                     <Checkbox
-                                        itemId="alarms_historical_check"
+                                        itemId="alerts_historical_check"
                                         id="historical-checkbox-filter"
                                         checked={this.getFilterProperty('historical', false)}
                                         onChange={this.getFilterProperty('historical', false)
@@ -290,31 +290,31 @@ class AlarmsControls extends React.Component {
                                 <div className={styles.warningMsg}>
                                     {ls('ATTENTION', 'Внимание!')}
                                     <br/>
-                                    {ls('ALARMS_HISTORICAL_WARNING_MESSAGE', 'Загрузка архивных аварий может занять длительное время')}
+                                    {ls('ALERTS_HISTORICAL_WARNING_MESSAGE', 'Загрузка архивных аварий может занять длительное время')}
                                 </div>
                                 <div className={styles.buttonWrapper}>
-                                    <Button itemId="alarms_cancel_historical" outline color="action" onClick={this.onTriggerHistoricalDropdown}>
+                                    <Button itemId="alerts_cancel_historical" outline color="action" onClick={this.onTriggerHistoricalDropdown}>
                                         {ls('CANCEL', 'Отмена')}
                                     </Button>
-                                    <Button itemId="alarms_confirm_historical" color="action" onClick={this.checkHistorical}>
+                                    <Button itemId="alerts_confirm_historical" color="action" onClick={this.checkHistorical}>
                                         {ls('CONTINUE', 'Продолжить')}
                                     </Button>
                                 </div>
                             </Dropdown>
                         </Field>
                     </div>
-                    <div className={styles.alarmsFilterGroup}>
-                        <Button itemId="alarms_apply" className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
-                            {ls('ALARMS_APPLY_FILTER', 'Применить')}
+                    <div className={styles.alertsFilterGroup}>
+                        <Button itemId="alerts_apply" className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
+                            {ls('ALERTS_APPLY_FILTER', 'Применить')}
                         </Button>
-                        <Button itemId="alarms_export" className={styles.applyButton} color="action" onClick={this.props.onExportXLSX}>
-                            {ls('ALARMS_LOAD_XLSX', 'Экспорт в XLSX')}
+                        <Button itemId="alerts_export" className={styles.applyButton} color="action" onClick={this.props.onExportXLSX}>
+                            {ls('ALERTS_LOAD_XLSX', 'Экспорт в XLSX')}
                         </Button>
                     </div>
                 </div>
-                <div className={styles.alarmsFilterGroup}>
+                <div className={styles.alertsFilterGroup}>
                     <Input
-                        itemId="alarms_search_field"
+                        itemId="alerts_search_field"
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.search}
                         onChange={value => this.setFilterProperty('filter', value)}
@@ -326,4 +326,4 @@ class AlarmsControls extends React.Component {
     }
 }
 
-export default AlarmsControls;
+export default AlertsControls;
