@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
-import { onNewNotifications } from '../actions/index';
+import { applyAlerts, onNewNotifications } from '../actions/index';
 import _ from 'lodash';
 import Connector from "./Connector";
 
@@ -40,7 +40,7 @@ class Notification extends React.PureComponent {
             this.alertStorm();
         } else if (!filter || !filter.auto_refresh) {
             const notifications = this.avSplit(alerts);
-            this.props.addAlertNotifications(notifications, '/alerts', notifications.length);
+            this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
         } else if (filter.auto_refresh) {
             const { ok, nok } = this.commonSplit(alerts, filter);
             const { add, remove, update, av } = this.actionSplit(ok, filter);
@@ -48,7 +48,7 @@ class Notification extends React.PureComponent {
             const notifications = av.concat(this.avSplit(nok));
             const uiAlerts = { add, remove, update };
 
-            this.props.addAlertNotifications(notifications, '/alerts', notifications.length);
+            this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
             this.props.applyAlerts(uiAlerts);
         }
     };
@@ -66,7 +66,9 @@ class Notification extends React.PureComponent {
         const filter = this.composeFilter(srcFilter);
         const matcher = _.matches(filter);
         const ok = [], nok = [];
-        alerts.forEach(alert => matcher(alert) ? ok.push(alert) : nok.push(alert));
+        alerts.forEach(alert => {
+            matcher(alert) ? ok.push(alert) : nok.push(alert)
+        });
         return { ok, nok }
     };
 
@@ -95,11 +97,23 @@ class Notification extends React.PureComponent {
 
     avSplit = (alerts) => alerts.filter(alert => alert.action === 'RAISE');
 
+    typeSplit = notifications => _.reduce(notifications, (result, notification) => {
+        if (!result[notification.type]) {
+            result[notification.type] = [];
+        }
+        result[notification.type].push(notification);
+        return result;
+    }, {});
+
     alertStorm = () => {
         this.props.alertStorm();
     };
 
-    getActiveTab = () => ((/\/ci\/|\/gp\/|\/kqi\//g).exec(this.props.location.pathname) || [''])[0].replace(/\//g, '');
+    getActiveTab = () => {
+        const tabPath = ((/ci(\/|\??)|\/gp(\/|\??)|\/kqi(\/|\??)/g).exec(this.props.location.pathname) || [''])[0];
+        const tab = tabPath.replace(/\/|\?/g, '');
+        return tab;
+    };
 
     extractFilter = (alertsState, activeTab) => alertsState[activeTab];
 
@@ -127,11 +141,10 @@ const
 const
     mapDispatchToProps = dispatch => ({
         addAlertNotifications: (notifications, topic, count) => {
-            debugger;
             dispatch(onNewNotifications(notifications, topic, count))
         },
         applyAlerts: (alerts) => {
-            debugger;
+            dispatch(applyAlerts(alerts))
         },
         alertStorm: () => {
         },

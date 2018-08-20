@@ -13,6 +13,7 @@ const initialState = {
     [FILTER_FIELDS.FILTER]: '',
     [FILTER_FIELDS.CURRENT]: true,
     [FILTER_FIELDS.HISTORICAL]: false,
+    [FILTER_FIELDS.TYPE]: 'KPIKQI'
 };
 
 export default (state = initialState, action) => {

@@ -20,12 +20,12 @@ const SCOPE_TYPES_NAMES_MAP = {
     SMART_SPY_PRC_ACC_DEVICE: ls('AGGREGATION_FUNCTION_SMART_SPY_PRC_ACC_DEVICE', '% STB на оборудовании доступа'),
     SMART_SPY_PRC_AGG_DEVICE: ls('AGGREGATION_FUNCTION_SMART_SPY_PRC_AGG_DEVICE', '% STB на оборудовании агрегации'),
     SMART_SPY_PRC_PE_DEVICE: ls('AGGREGATION_FUNCTION_SMART_SPY_PRC_PE_DEVICE', '% STB на оборудовании PE'),
-    VB_UNICAST_SIMPLE: ls('AGGREGATION_FUNCTION_VB_UNICAST_SIMPLE', 'Без функции агрегации'),
-    VB_UNICAST_CHANNEL_COUNT: ls('AGGREGATION_FUNCTION_VB_UNICAST_CHANNEL_COUNT', 'количество unicast-каналов на анализаторе'),
-    VB_MULTICAST_SIMPLE: ls('AGGREGATION_FUNCTION_VB_MULTICAST_SIMPLE', 'Без функции агрегации'),
-    VB_MULTICAST_CHANNEL_COUNT: ls('AGGREGATION_FUNCTION_VB_MULTICAST_CHANNEL_COUNT', 'количество mcast-каналов на анализаторе'),
+    VB_UNICAST_SIMPLE: ls('AGGREGATION_FUNCTION_VB_UNICAST_SIMPLE', 'Unicast без функции агрегации'),
+    VB_UNICAST_CHANNEL_COUNT: ls('AGGREGATION_FUNCTION_VB_UNICAST_CHANNEL_COUNT', 'Количество unicast-каналов на анализаторе'),
+    VB_MULTICAST_SIMPLE: ls('AGGREGATION_FUNCTION_VB_MULTICAST_SIMPLE', 'Multicast без функции агрегации'),
+    VB_MULTICAST_CHANNEL_COUNT: ls('AGGREGATION_FUNCTION_VB_MULTICAST_CHANNEL_COUNT', 'Количество mcast-каналов на анализаторе'),
     OTT_SIMPLE: ls('AGGREGATION_FUNCTION_OTT_SIMPLE', 'Без функции агрегации'),
-    KQI_SIMPLE: ls('AGGREGATION_FUNCTION_KQI_SIMPLE', 'Без функции агрегации (edited)'),
+    KQI_SIMPLE: ls('AGGREGATION_FUNCTION_KQI_SIMPLE', 'Без функции агрегации'),
 };
 
 class Configuration extends React.Component {

@@ -121,6 +121,10 @@ class AlertsTable extends React.PureComponent {
         return commonColumns.concat(columnsByType);
     });
 
+    componentWillReceiveProps(nextProps) {
+        console.log(nextProps.data.filter(alert => alert.new));
+    }
+
     headerRowRender = (column, sort) => (
         <DefaultCell
             content={column.getTitle ? column.getTitle() : ''}

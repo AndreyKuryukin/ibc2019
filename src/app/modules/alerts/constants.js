@@ -20,4 +20,5 @@ export const FILTER_FIELDS = {
     CURRENT: 'current',
     HISTORICAL: 'historical',
     FILTER: 'filter',
+    TYPE: 'type',
 };
