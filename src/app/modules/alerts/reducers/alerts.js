@@ -1,6 +1,7 @@
 import _ from 'lodash';
-import { FETCH_ALERTS_SUCCESS } from '../actions';
+import { FETCH_ALERTS_SUCCESS, READ_NEW_ALERT } from '../actions';
 import { APPLY_ALERTS } from "../../notifications/actions/index";
+import { FETCH_ALERTS_SUCCESS } from '../actions';
 
 const initialState = {
     alerts: [],
@@ -38,6 +39,11 @@ export default (state = initialState, action) => {
                 ...state,
                 alerts,
                 total: alerts.length,
+            };
+        case READ_NEW_ALERT:
+            return {
+                ...state,
+                alerts: state.alerts.map(alert => alert.id === action.payload.id ? { ...alert, new: false, } : alert),
             };
         default:
             return state;

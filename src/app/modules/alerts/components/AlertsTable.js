@@ -27,12 +27,14 @@ class AlertsTable extends React.PureComponent {
         data: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
+        onReadNewAlert: PropTypes.func,
     };
 
     static defaultProps = {
         data: [],
         searchText: '',
         preloader: false,
+        onReadNewAlert: () => null,
     };
 
     static getColumns = memoize((type = CLIENTS_INCIDENTS_ALERTS) => {
@@ -125,6 +127,12 @@ class AlertsTable extends React.PureComponent {
         console.log(nextProps.data.filter(alert => alert.new));
     }
 
+    onSelectRow = (node) => {
+        if (node.new) {
+            this.props.onReadNewAlert(node.id);
+        }
+    };
+
     headerRowRender = (column, sort) => (
         <DefaultCell
             content={column.getTitle ? column.getTitle() : ''}
@@ -191,6 +199,7 @@ class AlertsTable extends React.PureComponent {
         mac: node.mac || '',
         status: node.status || '',
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
+        new: !!node.new,
     }));
 
     customSortFunction = (data, columnName, direction) => {
@@ -198,6 +207,8 @@ class AlertsTable extends React.PureComponent {
 
         return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
     };
+
+    rowClassGetter = node => node.new ? 'newAlert' : '';
 
     render() {
         const { data, searchText, preloader, total } = this.props;
@@ -212,8 +223,9 @@ class AlertsTable extends React.PureComponent {
                 customSortFunction={this.customSortFunction}
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
+                rowClassGetter={this.rowClassGetter}
+                onSelectRow={this.onSelectRow}
                 preloader={preloader}
-                showStatistics
             />
         );
     }

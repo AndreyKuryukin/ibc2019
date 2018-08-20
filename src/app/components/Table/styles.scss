@@ -37,7 +37,7 @@
         background-color: $table-hover-bg;
       }
       &.selected {
-        background-color: $orange !important;
+        background-color: $orange;
         * {
           color: $white !important;
         }
