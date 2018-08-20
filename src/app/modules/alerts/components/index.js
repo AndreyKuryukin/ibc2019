@@ -29,6 +29,7 @@ class Alerts extends React.PureComponent {
         onFetchAlerts: PropTypes.func,
         onExportXLSX: PropTypes.func,
         onFilterAlerts: PropTypes.func,
+        onReadNewAlert: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
@@ -42,6 +43,7 @@ class Alerts extends React.PureComponent {
         onFetchAlerts: () => null,
         onExportXLSX: () => null,
         onFilterAlerts: () => null,
+        onReadNewAlert: () => null,
         isLoading: false,
     };
 
@@ -75,6 +77,7 @@ class Alerts extends React.PureComponent {
             onFetchAlerts,
             onExportXLSX,
             onFilterAlerts,
+            onReadNewAlert,
             isLoading,
         } = this.props;
         const { params = {} } = match;
@@ -104,6 +107,7 @@ class Alerts extends React.PureComponent {
                             onFetchAlerts={onFetchAlerts}
                             onExportXLSX={onExportXLSX}
                             onFilterAlerts={onFilterAlerts}
+                            onReadNewAlert={onReadNewAlert}
                             isLoading={isLoading}
                         />
                     )}
@@ -127,6 +131,7 @@ class Alerts extends React.PureComponent {
                             onFetchAlerts={onFetchAlerts}
                             onExportXLSX={onExportXLSX}
                             onFilterAlerts={onFilterAlerts}
+                            onReadNewAlert={onReadNewAlert}
                             isLoading={isLoading}
                         />
                     )}
@@ -150,6 +155,7 @@ class Alerts extends React.PureComponent {
                             onFetchAlerts={onFetchAlerts}
                             onExportXLSX={onExportXLSX}
                             onFilterAlerts={onFilterAlerts}
+                            onReadNewAlert={onReadNewAlert}
                             isLoading={isLoading}
                         />
                     )}

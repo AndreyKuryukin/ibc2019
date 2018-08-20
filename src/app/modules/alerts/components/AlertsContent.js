@@ -24,6 +24,7 @@ class AlertsContent extends React.PureComponent {
         onFetchAlerts: PropTypes.func,
         onExportXLSX: PropTypes.func,
         onFilterAlerts: PropTypes.func,
+        onReadNewAlert: PropTypes.func,
         isLoading: PropTypes.bool,
     };
 
@@ -37,6 +38,7 @@ class AlertsContent extends React.PureComponent {
         onFetchAlerts: () => null,
         onExportXLSX: () => null,
         onFilterAlerts: () => null,
+        onReadNewAlert: () => null,
         isLoading: false,
     };
 
@@ -99,6 +101,7 @@ class AlertsContent extends React.PureComponent {
                     data={data}
                     preloader={isLoading}
                     searchText={_.get(filter, 'filter', '')}
+                    onReadNewAlert={this.props.onReadNewAlert}
                 />
                 {isAlertsViewerActive && <AlertsViewer alertId={alertId} active={isAlertsViewerActive} type={type} />}
             </div>

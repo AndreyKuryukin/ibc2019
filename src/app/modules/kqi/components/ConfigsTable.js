@@ -53,6 +53,10 @@ class ConfigsTable extends React.PureComponent {
         width: 40,
     }]);
 
+    onSelectConfig = (node) => {
+        this.props.onSelectConfig(node.id);
+    };
+
     headerRowRender = (column, sort) => (
         <DefaultCell
             content={column.getTitle ? column.getTitle() : ''}
@@ -125,7 +129,7 @@ class ConfigsTable extends React.PureComponent {
                 headerRowRender={this.headerRowRender}
                 bodyRowRender={this.bodyRowRender}
                 preloader={this.props.preloader}
-                onSelectRow={this.props.onSelectConfig}
+                onSelectRow={this.onSelectConfig}
                 selected={String(selected)}
             />
         );

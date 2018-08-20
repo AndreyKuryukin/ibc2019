@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import HighlightedText from '../../HighlightedText';
 
+const linkStyle = { color: '#212529', textDecoration: 'underline' };
+
 class LinkCell extends React.PureComponent {
     static propTypes = {
         href: PropTypes.string.isRequired,
@@ -30,7 +32,7 @@ class LinkCell extends React.PureComponent {
                     <Link
                         onClick={onClick}
                         to={href}
-                        style={{ color: '#212529', textDecoration: 'underline' }}
+                        style={linkStyle}
                     >
                         {content && highlightedText ? (
                             <HighlightedText

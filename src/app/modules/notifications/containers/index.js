@@ -127,11 +127,11 @@ const
 const
     mapDispatchToProps = dispatch => ({
         addAlertNotifications: (notifications, topic, count) => {
-            debugger;
+            // debugger;
             dispatch(onNewNotifications(notifications, topic, count))
         },
         applyAlerts: (alerts) => {
-            debugger;
+            // debugger;
         },
         alertStorm: () => {
         },

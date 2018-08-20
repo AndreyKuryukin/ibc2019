@@ -25,6 +25,7 @@ class Table extends React.Component {
         bodyRowRender: PropTypes.func,
         customSortFunction: PropTypes.func,
         onSelectRow: PropTypes.func,
+        rowClassGetter: PropTypes.func,
         preloader: PropTypes.bool,
     };
 
@@ -35,6 +36,7 @@ class Table extends React.Component {
         preloader: false,
         headerRowRender: null,
         bodyRowRender: () => null,
+        rowClassGetter: () => null,
         customSortFunction: null,
         onSelectRow: null,
     };
@@ -70,8 +72,8 @@ class Table extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_.isEqual(nextProps.selected, this.state.selected)) {
-            this.setState({selected: nextProps.selected})
+        if (!!nextProps.selected && nextProps.selected !== this.state.selected) {
+            this.setState({ selected: nextProps.selected });
         }
         if (this.props.data !== nextProps.data) {
             const { by, direction } = this.state.sort;
@@ -98,10 +100,10 @@ class Table extends React.Component {
 
     onRowClick = (node) => {
         if (typeof this.props.onSelectRow === 'function') {
-            this.props.onSelectRow(node.id);
-        } else {
-            this.setState({ selected: node.id });
+            this.props.onSelectRow(node);
         }
+
+        this.setState({ selected: node.id });
     };
 
     sort = (columnName) => {
@@ -153,6 +155,7 @@ class Table extends React.Component {
             columns,
             headerRowRender,
             bodyRowRender,
+            rowClassGetter,
             className,
             preloader,
         } = this.props;
@@ -176,6 +179,7 @@ class Table extends React.Component {
                         selected={selected}
                         onRowClick={this.onRowClick}
                         bodyRowRender={bodyRowRender}
+                        rowClassGetter={rowClassGetter}
                     />
                 </div>
             </Preloader>

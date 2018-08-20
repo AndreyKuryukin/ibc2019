@@ -77,3 +77,11 @@
   left: 1px !important;
   top: -3px !important;
 }
+
+.tableContainer .tableBody .bodyRow.newAlert {
+  background: #ff7c7c !important;
+  color: $white;
+  a {
+    color: $white !important;
+  }
+}

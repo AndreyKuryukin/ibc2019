@@ -22,6 +22,11 @@ export const fetchPoliciesSuccess = policies => ({
     type: FETCH_POLICIES_SUCCESS,
     payload: { policies },
 });
+export const READ_NEW_ALERT = 'alerts/READ_NEW_ALERT';
+export const readNewAlert = id => ({
+    type: READ_NEW_ALERT,
+    payload: { id },
+});
 export const SET_GP_FILTER = 'alerts/gp/SET_FILTER';
 export const fetchGpFilter = filter => ({
     type: SET_GP_FILTER,

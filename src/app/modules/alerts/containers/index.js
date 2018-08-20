@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment';
-import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS } from '../actions';
+import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS, readNewAlert } from '../actions';
 import { flush } from '../../notifications/actions';
 import rest from '../../../rest';
 import AlertsComponent from '../components';
@@ -40,6 +40,7 @@ class Alerts extends React.PureComponent {
         onFetchLocationsSuccess: PropTypes.func,
         onFetchPoliciesSuccess: PropTypes.func,
         onChangeFilter: PropTypes.func,
+        onReadNewAlert: PropTypes.func,
     };
 
     static defaultProps = {
@@ -51,6 +52,7 @@ class Alerts extends React.PureComponent {
         onFetchLocationsSuccess: () => null,
         onFetchPoliciesSuccess: () => null,
         onChangeFilter: () => null,
+        onReadNewAlert: () => null,
     };
 
     getChildContext() {
@@ -263,6 +265,7 @@ class Alerts extends React.PureComponent {
                 onFetchAlerts={this.fetchAlerts}
                 onExportXLSX={this.onExportXLSX}
                 onFilterAlerts={this.onFilterAlerts}
+                onReadNewAlert={this.props.onReadNewAlert}
                 isLoading={this.state.isLoading}
             />
         );
@@ -282,7 +285,8 @@ const mapDispatchToProps = (dispatch, props) => ({
     onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
     onFetchAlertsSuccess: alerts => dispatch(fetchAlertsSuccess(alerts)),
     onChangeFilter: filter => _.isFunction(FILTER_ACTIONS[props.match.params.type]) ? dispatch(FILTER_ACTIONS[props.match.params.type](filter)) : null,
-    flushNotifications: type => dispatch(flush('alerts', type))
+    onReadNewAlert: alertId => dispatch(readNewAlert(alertId)),
+    flushNotifications: type => dispatch(flush('alerts', type)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Alerts);
