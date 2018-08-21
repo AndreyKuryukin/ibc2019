@@ -90,5 +90,13 @@
   "LOGIN_SIDEMENU_TITLE": "Выход",
 
   "POLICIES_TEST": "Тестирование",
-  "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?"
+  "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?",
+
+  "REPORTS_ACCIDENT_REPORT_TEMPLATE_OPTION": "Отчет по авариям",
+  "REPORTS_DEGRADATION_QUALITY_TEMPLATE_OPTION": "Отчет с гарантированной деградацией качества",
+  "REPORTS_KGS_BY_CHANNEL_TEMPLATE_OPTION": "Отчет Кгс в проекции по каналам",
+  "REPORTS_KAB_FOR_ACCESS_TEMPLATE_OPTION": "Отчет Каб в проекции по коммутаторам доступа",
+  "REPORTS_KAB_FOR_AGGREGATION_TEMPLATE_OPTION": "Отчет Каб в проекции по коммутаторам агрегации",
+  "REPORTS_REPORT_IPTV_TEMPLATE_OPTION": "Базовый отчет IPTV",
+  "REPORTS_REPORT_OTT_TEMPLATE_OPTION": "Базовый отчет ОТТ"
 }
