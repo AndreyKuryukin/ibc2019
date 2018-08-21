@@ -16,10 +16,11 @@ export const ABONENT_GROUP_GROUPING = {
     ABONENT: 'ABONENT',
 };
 
-export const SERVICE_TYPES = {
-    IPTV: 'IPTV',
-    WBA: 'WBA',
-};
+export const SERVICE_TYPES = [
+    'LIVE',
+    'VOD',
+    'PVR',
+];
 
 export const DATE_TIME_GROUPING = {
     DAY: ls('DAY_GROUPING', 'Дням'),

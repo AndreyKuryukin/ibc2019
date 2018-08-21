@@ -155,7 +155,7 @@
     "SERCH_PLACEHOLDER": "Search",
     "ROLES_REMOVE_CONFIRM_TITLE": "Confirm the action:",
     "OK": "OK",
-    "WITH_SW_GROUPING": "Group by sw version",
+    "WITH_SW_GROUPING": "Grouped by sw version",
     "KQI_CALCULATOR_TITLE": "KQI Projection",
     "KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_FIELD_LABEL": "Type of technology PD",
     "KQI_CALCULATOR_LAST_MILE_TECHNOLOGY_TITLE": "Type of last mile technology",
@@ -461,5 +461,18 @@
     "WITH_MRF_GROUPING": "Grouped by MRD",
 
     "POLICIES_TEST": "Test",
-    "POLICIES_TEST_CONFIRMATION_TEXT": "When you create a policy with the specified thresholds, you will see {count} crashes. Are you sure you want to create this policy?"
+    "POLICIES_TEST_CONFIRMATION_TEXT": "When you create a policy with the specified thresholds, you will see {count} crashes. Are you sure you want to create this policy?",
+    "POLICIES_TEST_CONFIRMATION_TEXT": "When you create a policy with the specified thresholds, you will see {count} crashes. Are you sure you want to create this policy?",
+
+    "KQI_CALCULATOR_SERVICE_TITLE": "Service",
+    "KQI_CALCULATOR_CONTENT_TYPE_FIELD_LABEL": "Service",
+    "KQI_CALCULATOR_CONTENT_TYPE_FIELD_PLACEHOLDER": "Select service",
+    "KQI_CALCULATOR_CONTENT_TYPE_GROUPING_FIELD_LABEL": "Group by service",
+    "CONTENT_LIVE_TYPE_OPTION": "Live",
+    "CONTENT_VOD_TYPE_OPTION": "VoD",
+    "WITH_LAST_MILE_TECHNOLOGY_GROUPING": "Grouped by last mile technology",
+    "WITH_LAST_INCH_TECHNOLOGY_GROUPING": "Grouped by last inch technology",
+    "WITH_MANUFACTURER_GROUPING": "Grouped by manufacturer",
+    "WITH_CONTENT_TYPE_GROUPING": "Grouped by service",
+    "WITH_EQUIPMENT_TYPE_GROUPING": "Grouped by equipment type"
 }

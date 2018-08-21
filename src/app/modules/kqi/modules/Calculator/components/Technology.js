@@ -61,7 +61,7 @@ class Technology extends React.PureComponent {
                         placeholder={ls('KQI_CALCULATOR_TECHNOLOGY_PLACEHOLDER', 'Выберите технологию')}
                         options={this.props.technologies}
                         onChange={this.props.onTechnologyChange}
-                        value={value}
+                        value={value || ''}
                         disabled={disabled}
                     />
                 </Field>
