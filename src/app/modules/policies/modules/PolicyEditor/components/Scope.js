@@ -93,7 +93,7 @@ class Scope extends React.PureComponent {
         };
     };
 
-    mapScopes = scopes => scopes.map(scope => ({ value: scope, title: scope }));
+    mapScopes = scopes => scopes.map(scope => ({ value: scope, title: ls(`POLICIES_${scope}_OPTION_TITLE`, scope) }));
 
     mapLocationLists = locations => locations.map(location => ({ value: location.id, title: location.name }));
 
