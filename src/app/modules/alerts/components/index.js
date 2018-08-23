@@ -4,7 +4,7 @@ import AlertsContent from './AlertsContent';
 import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
-import { GROUP_POLICIES_ALERTS, CLIENTS_INCIDENTS_ALERTS, KQI_ALERTS } from '../constants';
+import { CLIENTS_INCIDENTS_ALERTS, FILTER_FIELDS, GROUP_POLICIES_ALERTS, KQI_ALERTS } from '../constants';
 import * as _ from "lodash";
 
 const tabStyle = {
@@ -13,6 +13,8 @@ const tabStyle = {
 };
 
 class Alerts extends React.PureComponent {
+    state = {};
+
     static childContextTypes = {
         history: PropTypes.object.isRequired,
     };
@@ -53,10 +55,25 @@ class Alerts extends React.PureComponent {
         };
     }
 
+    componentWillMount() {
+        const { history } = this.props;
+        this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
+    }
+
+    handleLocationChange = (location) => {
+        if (this.state.currentLocation !== location.pathname) {
+            this.props.onChangeFilter({ ...this.props.filter, [FILTER_FIELDS.AUTO_REFRESH]: false })
+        }
+        this.setState({ currentLocation: location.pathname });
+    };
+
+    componentWillUnmount() {
+        this.unsubscribeFromHistory && this.unsubscribeFromHistory();
+    }
+
+
     onTabClick = (tabId) => {
         this.props.history.push(`/alerts/${tabId}`);
-        const { filter } = this.props;
-        this.props.onChangeFilter(filter);
     };
 
     composeNotificationCount = (notifications) => {

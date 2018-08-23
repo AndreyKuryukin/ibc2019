@@ -37,6 +37,7 @@ class AlertsControls extends React.Component {
             mrf: PropTypes.string,
             current: PropTypes.bool,
             historical: PropTypes.bool,
+            auto_refresh: PropTypes.bool,
         }),
     };
 
@@ -121,7 +122,7 @@ class AlertsControls extends React.Component {
     checkHistorical = () => {
         this.setFilterProperty('historical', true);
         this.onTriggerHistoricalDropdown();
-    }
+    };
 
     onApplyFilter = () => {
         this.props.onApplyFilter(this.props.filter);
@@ -129,7 +130,7 @@ class AlertsControls extends React.Component {
 
     onTriggerHistoricalDropdown = () => {
         this.setState({ isHistoricalConfirmOpen: !this.state.isHistoricalConfirmOpen });
-    }
+    };
 
     render() {
         const { locations, policies, current, total } = this.props;
@@ -317,6 +318,7 @@ class AlertsControls extends React.Component {
                         itemId="alerts_search_field"
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.search}
+                        disabled={this.getFilterProperty('auto_refresh')}
                         onChange={value => this.setFilterProperty('filter', value)}
                     />
                     <div className={styles.statistics}>{current + '/' + total}</div>

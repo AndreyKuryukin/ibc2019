@@ -1,7 +1,6 @@
 import _ from 'lodash';
 import { FETCH_ALERTS_SUCCESS, READ_NEW_ALERT } from '../actions';
 import { APPLY_ALERTS } from "../../notifications/actions/index";
-import { FETCH_ALERTS_SUCCESS } from '../actions';
 
 const initialState = {
     alerts: [],
@@ -31,7 +30,7 @@ export default (state = initialState, action) => {
             alerts.forEach((alert, index, array) => {
                 const target = _.find(update, each => each.id === alert.id);
                 if (target) {
-                    array[index] = target;
+                    array[index] = { ...alert, ...target, new: alert.new };
                 }
             });
 

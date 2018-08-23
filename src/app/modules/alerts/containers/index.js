@@ -11,7 +11,7 @@ import AlertsComponent from '../components';
 import ls from 'i18n';
 import { SENDING_ALERT_TYPES } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
-import { setQueryParams } from "../../../util/state";
+import { getQueryParams, setQueryParams } from "../../../util/state";
 
 const TAB_TITLES = {
     'GP': 'ГП',
@@ -168,7 +168,7 @@ class Alerts extends React.PureComponent {
             worksheet['!cols'] = worksheetCols;
 
             for (let col = range.s.c; col <= range.e.c; ++col) {
-                var address = XLSX.utils.encode_col(col) + '1';
+                let address = XLSX.utils.encode_col(col) + '1';
                 worksheet[address].v = ls(`ALERTS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
             }
 
@@ -223,7 +223,9 @@ class Alerts extends React.PureComponent {
 
     handleAlertsFetching = (queryParams, success, error) => {
         rest.get('/api/v1/alerts', {}, { queryParams })
-            .then((response) => success({ data: { alerts: response.data.alarms, total: response.data.total } }))
+        //todo: Uncomment after Alerts 2.0. release
+        // .then((response) => success({ data: { alerts: response.data.alerts, total: response.data.total } }))
+            .then((response) => success({ data: { alerts: response.data, total: response.data.length } }))
             .catch((e) => {
                 this.onFetchingAlertsError(e);
                 _.isFunction(error) && error(e);
@@ -248,7 +250,12 @@ class Alerts extends React.PureComponent {
 
         delete preparedFilter.auto_refresh;
 
-        return preparedFilter;
+        return _.reduce(preparedFilter, (result, value, paramName) => {
+            if (value !== '' && !_.isUndefined(value)) {
+                result[paramName] = value;
+            }
+            return result
+        }, {});
     };
 
     render() {

@@ -17,6 +17,11 @@ const iconCellStyle = {
     justifyContent: 'center'
 };
 
+const ALERTS_STATUS_MAP = {
+    'ACTIVE': ls('ALERTS_STATUS_ACTIVE', 'Текущая'),
+    'CLOSED': ls('ALERTS_STATUS_CLOSED', 'Историческая')
+};
+
 class AlertsTable extends React.PureComponent {
     static contextTypes = {
         match: PropTypes.object.isRequired,
@@ -51,7 +56,6 @@ class AlertsTable extends React.PureComponent {
                 resizable: true,
                 searchable: true,
                 sortable: true,
-                searchable: true,
                 width: 150,
             }, {
                 getTitle: createLocalizer('ALERTS_STATUS_COLUMN', 'Статус'),
@@ -197,7 +201,7 @@ class AlertsTable extends React.PureComponent {
         personal_account: node.personal_account || '',
         san: node.san || '',
         mac: node.mac || '',
-        status: node.status || '',
+        status: ALERTS_STATUS_MAP[node.status] || '',
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
         new: !!node.new,
     }));

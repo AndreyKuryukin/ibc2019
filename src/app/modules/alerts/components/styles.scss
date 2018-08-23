@@ -79,9 +79,9 @@
 }
 
 .tableContainer .tableBody .bodyRow.newAlert {
-  background: #ff7c7c !important;
-  color: $white;
+  background: rgba(255, 147, 0, 0.2) !important;
+  color: $black;
   a {
-    color: $white !important;
+    color: $black !important;
   }
 }

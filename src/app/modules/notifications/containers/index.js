@@ -77,19 +77,19 @@ class Notification extends React.PureComponent {
         const add = [], update = [], remove = [], av = [];
         if (current && historical) {
             alerts.forEach(alert => {
-                (alert.action === 'RAISE') && add.push(alert);
-                (alert.action === 'CEASE') && update.push(alert);
+                (alert.action === 'RAISE') && add.push({...alert, status: 'ACTIVE'});
+                (alert.action === 'CEASE') && update.push({...alert, status: 'CLOSED'});
             })
         } else if (current) {
             alerts.forEach(alert => {
-                (alert.action === 'RAISE') && add.push(alert);
+                (alert.action === 'RAISE') && add.push({...alert, status: 'ACTIVE'});
                 (alert.action === 'CEASE') && remove.push(alert);
             })
         }
         else if (historical) {
             alerts.forEach(alert => {
-                (alert.action === 'RAISE') && av.push(alert);
-                (alert.action === 'CEASE') && add.push(alert);
+                (alert.action === 'RAISE') && av.push({...alert, status: 'ACTIVE'});
+                (alert.action === 'CEASE') && add.push({...alert, status: 'CLOSED'});
             });
         }
         return { add, update, remove, av };
