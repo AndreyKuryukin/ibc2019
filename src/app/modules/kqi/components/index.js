@@ -162,7 +162,7 @@ class KQI extends React.PureComponent {
                 {isConfiguratorActive && <Configurator active={isConfiguratorActive} configId={urlKqiId}/>}
                 {isCalculatorActive && <Calculator active={isCalculatorActive}
                                                    projectionId={projectionId}
-                                                   onClose={() => this.onCloseCalculator}
+                                                   onClose={this.onCloseCalculator}
                 />}
                 {isResultsViewerActive && <ResultsViewer active={isResultsViewerActive}
                                                          projectionId={projectionId}

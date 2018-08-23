@@ -15,7 +15,7 @@
     "REQUIRED_ERROR_MESSAGE": "Field is required",
     "MIN_ERROR_MESSAGE": "Value is less than minimum",
     "PVR": "PVR",
-    "VOD": "VOD",
+    "VOD": "VoD",
     "MRF": "MRD",
     "STB_LOADING_SW_VERSION_COLUMN_TITLE": "Version",
     "SEARCH_PLACEHOLDER": "Search",
@@ -420,7 +420,7 @@
     "FTTB": "FTTB",
     "GPON": "GPON",
     "XDSL": "XDSL",
-    "LIVE": "LIVE",
+    "LIVE": "Live",
     "ITV": "ITV",
     "ITV2": "ITV 2.0",
     "IPTV": "IPTV/OTT",
@@ -462,7 +462,10 @@
 
     "POLICIES_TEST": "Test",
     "POLICIES_TEST_CONFIRMATION_TEXT": "When you create a policy with the specified thresholds, you will see {count} crashes. Are you sure you want to create this policy?",
-    "POLICIES_TEST_CONFIRMATION_TEXT": "When you create a policy with the specified thresholds, you will see {count} crashes. Are you sure you want to create this policy?",
+    "POLICIES_MRF_OPTION_TITLE": "MRF",
+    "POLICIES_RF_OPTION_TITLE": "RF",
+    "POLICIES_TECH_OPTION_TITLE": "Last mile technology",
+    "POLICIES_KQI_PROJECTION_OPTION_TITLE": "KQI"
 
     "KQI_CALCULATOR_SERVICE_TITLE": "Service",
     "KQI_CALCULATOR_CONTENT_TYPE_FIELD_LABEL": "Service",

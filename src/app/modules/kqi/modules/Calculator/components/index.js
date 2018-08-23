@@ -476,7 +476,7 @@ class Calculator extends React.PureComponent {
                         <Button itemId="kqi_projections_cancel" outline color="action" onClick={this.onClose}>
                             {ls('CANCEL', 'Отмена')}
                         </Button>
-                        <Button  itemId="kqi_projections_ok" color="action" onClick={this.onSubmit}>
+                        <Button  itemId="kqi_projections_ok" color="action" onClick={disableForm ? this.onClose : this.onSubmit}>
                             {ls('OK', 'OK')}
                         </Button>
                     </ModalFooter>

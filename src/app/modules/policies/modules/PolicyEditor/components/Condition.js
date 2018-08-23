@@ -36,7 +36,7 @@ class Condition extends React.PureComponent {
         super(props);
         this.state = {
             condition: {
-                conditionDuration: 0,
+                conditionDuration: '',
                 conjunction: {
                     type: 'AND',
                     conjunctionList: []
@@ -82,8 +82,9 @@ class Condition extends React.PureComponent {
         this.setState({
             condition,
             errors: cleanError ? _.omit(this.state.errors, path) : this.state.errors,
+        }, () => {
+            this.props.onChange({ condition }, cleanError ? path : '');
         });
-        this.props.onChange({ condition });
     };
 
     addConjunction = () => {
