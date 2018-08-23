@@ -477,5 +477,13 @@
     "WITH_LAST_INCH_TECHNOLOGY_GROUPING": "Grouped by last inch technology",
     "WITH_MANUFACTURER_GROUPING": "Grouped by manufacturer",
     "WITH_CONTENT_TYPE_GROUPING": "Grouped by service",
-    "WITH_EQUIPMENT_TYPE_GROUPING": "Grouped by equipment type"
+    "WITH_EQUIPMENT_TYPE_GROUPING": "Grouped by equipment type",
+
+    "REPORTS_ACCIDENT_REPORT_TEMPLATE_OPTION": "Accident report",
+    "REPORTS_DEGRADATION_QUALITY_TEMPLATE_OPTION": "Report with degradation quality",
+    "REPORTS_KGS_BY_CHANNEL_TEMPLATE_OPTION": "KGS report by channel",
+    "REPORTS_KAB_FOR_ACCESS_TEMPLATE_OPTION": "KAB report for access",
+    "REPORTS_KAB_FOR_AGGREGATION_TEMPLATE_OPTION": "KAB report for aggregation",
+    "REPORTS_REPORT_IPTV_TEMPLATE_OPTION": "IPTV report",
+    "REPORTS_REPORT_OTT_TEMPLATE_OPTION": "ОТТ report"
 }
