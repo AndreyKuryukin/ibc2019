@@ -21,6 +21,7 @@ import Location from './Location';
 import Technology from './Technology';
 import Manufacture from './Manufacture';
 import Equipment from './Equipment';
+import Service from './Service';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../../../util/date';
 import DraggableWrapper from '../../../../../components/DraggableWrapper';
 
@@ -38,6 +39,8 @@ const NAME_PATTERN_SEQUENCE = [
     'equipment_type_grouping',
     'abonent_group',
     'abonent_group_grouping',
+    'content_type',
+    'content_type_grouping',
 ];
 
 const period = {
@@ -48,19 +51,23 @@ const period = {
 };
 
 const last_mile_technology_grouping = {
-    true: createLocalizer('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПМ'),
+    true: createLocalizer('WITH_LAST_MILE_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПМ'),
 };
 
 const last_inch_technology_grouping = {
-    true: createLocalizer('WITH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПД'),
+    true: createLocalizer('WITH_LAST_INCH_TECHNOLOGY_GROUPING', 'С группировкой по технологии ПД'),
 };
 
 const manufacturer_grouping = {
     true: createLocalizer('WITH_MANUFACTURER_GROUPING', 'С группировкой по производителю оборудования'),
 };
 
+const content_type_grouping = {
+    true: createLocalizer('WITH_CONTENT_TYPE_GROUPING', 'С группировкой по услуге'),
+};
+
 const equipment_type_grouping = {
-    SELF: createLocalizer('WITH_TECHNOLOGY_GROUPING', 'С группировкой по типу оборудования'),
+    SELF: createLocalizer('WITH_EQUIPMENT_TYPE_GROUPING', 'С группировкой по типу оборудования'),
     HW: createLocalizer('WITH_HW_GROUPING', 'С группировкой по hw версии'),
     SW: createLocalizer('WITH_SW_GROUPING', 'С группировкой по sw версии'),
 };
@@ -74,7 +81,6 @@ const location_grouping = {
     RF: createLocalizer('WITH_RF_GROUPING', 'С группировкой по РФ'),
     MRF: createLocalizer('WITH_MRF_GROUPING', 'С группировкой по МРФ'),
 };
-
 
 class Calculator extends React.PureComponent {
     static contextTypes = {
@@ -118,6 +124,7 @@ class Calculator extends React.PureComponent {
                     auto: true,
                 },
                 location: '',
+                content_type: '',
                 last_mile_technology: '',
                 last_inch_technology: '',
                 manufacturer: [],
@@ -179,12 +186,13 @@ class Calculator extends React.PureComponent {
             equipment_type: this.props.equipmentsList,
             abonent_group: this.props.usergroupsList,
             kqi_id: this.props.kqiList,
-            location_grouping: location_grouping,
-            last_mile_technology_grouping: last_mile_technology_grouping,
-            last_inch_technology_grouping: last_inch_technology_grouping,
-            manufacturer_grouping: manufacturer_grouping,
-            equipment_type_grouping: equipment_type_grouping,
-            abonent_group_grouping: abonent_group_grouping,
+            location_grouping,
+            last_mile_technology_grouping,
+            last_inch_technology_grouping,
+            manufacturer_grouping,
+            equipment_type_grouping,
+            abonent_group_grouping,
+            content_type_grouping,
         };
         const composedName = _.reduce(NAME_PATTERN_SEQUENCE, (name, fieldName) => {
             const value = _.get(config, fieldName);
@@ -202,7 +210,7 @@ class Calculator extends React.PureComponent {
                 }
                 return _.isString(itemName) ? itemName : id;
             };
-            if (!_.isEmpty(value)) {
+            if (!_.isEmpty(value) || value === true) {
                 if (_.isArray(value)) {
                     if (nameMap) {
                         const names = value.map(id => getNameById(nameMap, id));
@@ -249,6 +257,10 @@ class Calculator extends React.PureComponent {
 
         if (key === 'last_mile_technology' && !!value) {
             config['last_mile_technology_grouping'] = false;
+        }
+
+        if (key === 'content_type' && !!value) {
+            config['content_type_grouping'] = false;
         }
 
         if (key === 'last_inch_technology' && !!value) {
@@ -318,6 +330,8 @@ class Calculator extends React.PureComponent {
             equipment_type_grouping: _.get(config, 'equipment_type_grouping') ? _.get(config, 'equipment_type_grouping') : GROUPING_TYPES.NONE,
             // abonent_group_grouping: _.get(config, 'abonent_group_grouping') ? _.get(config, 'abonent_group_grouping') : GROUPING_TYPES.NONE,
             abonent_group_grouping: GROUPING_TYPES.NONE,
+            content_type: _.get(config, 'content_type') ? _.get(config, 'content_type') : GROUPING_TYPES.NONE,
+            content_type_grouping: _.get(config, 'content_type_grouping') ? GROUPING_TYPES.SELF : GROUPING_TYPES.NONE,
             period: {
                 ...config.period,
                 start_date: convertDateToUTC0(config.period.start_date).toISOString(),
@@ -410,6 +424,13 @@ class Calculator extends React.PureComponent {
                                 value={_.get(this.state.config, 'last_mile_technology')}
                                 groupingValue={_.get(this.state.config, 'last_mile_technology_grouping')}
                             />}
+                            <Service
+                                service={_.get(this.state.config, 'content_type') !== GROUPING_TYPES.NONE ? _.get(this.state.config, 'content_type') : ''}
+                                isGroupingChecked={_.get(this.state.config, 'content_type_grouping')}
+                                disabled={disableForm}
+                                onServiceChange={value => this.setConfigProperty('content_type', value)}
+                                onGroupingChange={value => this.setConfigProperty('content_type_grouping', value)}
+                            />
                             {/*<Technology*/}
                             {/*id="last-inch-technology"*/}
                             {/*title={ls('KQI_CALCULATOR_LAST_INCH_TECHNOLOGY_TITLE', 'Тип технологии последнего дюйма')}*/}
@@ -455,7 +476,7 @@ class Calculator extends React.PureComponent {
                         <Button itemId="kqi_projections_cancel" outline color="action" onClick={this.onClose}>
                             {ls('CANCEL', 'Отмена')}
                         </Button>
-                        <Button  itemId="kqi_projections_ok" color="action" onClick={this.onSubmit}>
+                        <Button  itemId="kqi_projections_ok" color="action" onClick={disableForm ? this.onClose : this.onSubmit}>
                             {ls('OK', 'OK')}
                         </Button>
                     </ModalFooter>

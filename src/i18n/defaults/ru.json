@@ -91,6 +91,15 @@
 
   "POLICIES_TEST": "Тестирование",
   "POLICIES_TEST_CONFIRMATION_TEXT": "При создании политики с указанными порогами будет показано {count} аварий. Вы уверены, что хотите создать эту политику?",
+  "CONTENT_LIVE_TYPE_OPTION": "Live",
+  "CONTENT_VOD_TYPE_OPTION": "VoD",
+
+  "POLICIES_MRF_OPTION_TITLE": "МРФ",
+  "POLICIES_RF_OPTION_TITLE": "РФ",
+  "POLICIES_TECH_OPTION_TITLE": "Технология последней мили",
+  "POLICIES_KQI_PROJECTION_OPTION_TITLE": "KQI",
+  "VOD": "VoD",
+  "LIVE": "Live",
 
   "REPORTS_ACCIDENT_REPORT_TEMPLATE_OPTION": "Отчет по авариям",
   "REPORTS_DEGRADATION_QUALITY_TEMPLATE_OPTION": "Отчет с гарантированной деградацией качества",

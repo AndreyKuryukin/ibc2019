@@ -56,18 +56,18 @@ export const FILTERS = [
     }, {
         id: 'feature',
         title: 'Услуга',
-        editable: false,
+        editable: true,
         options: [
             {
                 value: 'LIVE',
-                label: ls('LIVE', 'LIVE'),
+                label: 'Live',
                 enabled: true,
-            // }, {
-            //     value: 'PVR',
-            //     label: ls('PVR', 'PVR'),
-            // }, {
-            //     value: 'VOD',
-            //     label: ls('VOD', 'VOD'),
+            }, {
+                value: 'PVR',
+                label: 'PVR',
+            }, {
+                value: 'VOD',
+                label: 'VoD',
             },
         ],
     }, {
