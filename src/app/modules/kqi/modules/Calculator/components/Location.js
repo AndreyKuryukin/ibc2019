@@ -84,7 +84,7 @@ class Location extends React.PureComponent {
                         id="location"
                         options={this.props.locationOptions}
                         onChange={this.props.onLocationChange}
-                        value={_.get(config, 'location')}
+                        value={_.get(config, 'location') || ''}
                         placeholder={ls('KQI_CALCULATOR_LOCATION_FIELD_PLACEHOLDER', 'Выберите МРФ')}
                         disabled={disabled}
                     />
