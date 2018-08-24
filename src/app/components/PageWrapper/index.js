@@ -91,33 +91,32 @@ class PageWrapper extends React.Component {
     };
 
 
-    fireDownloading = (fileUrl) => {
-        const fakeLink = document.createElement('a');
-        const e = document.createEvent('MouseEvents');
-
-        fakeLink.setAttribute('download', this.props.text);
-        fakeLink.setAttribute('href', fileUrl);
-
-        e.initEvent('click', true, true);
-        fakeLink.dispatchEvent(e);
-    };
-
+    // fireDownloading = (fileUrl) => {
+    //     const fakeLink = document.createElement('a');
+    //     const e = document.createEvent('MouseEvents');
     //
-    // getUserManual = (href) => {
-    //     if (href) {
-    //         rest.get(href, undefined, undefined, { responseType: 'blob' })
-    //             .then((response) => {
-    //                 const fileUrl = URL.createObjectURL(response.data);
-    //                 if (fileUrl) {
-    //                     this.fireDownloading(fileUrl);
-    //                 }
-    //                 URL.revokeObjectURL(fileUrl);
-    //             })
-    //             .catch((e) => {
-    //                 console.error(e);
-    //             });
-    //     }
+    //     fakeLink.setAttribute('download', this.props.text);
+    //     fakeLink.setAttribute('href', fileUrl);
+    //
+    //     e.initEvent('click', true, true);
+    //     fakeLink.dispatchEvent(e);
     // };
+
+    getUserManual = (href) => {
+        if (href) {
+            rest.get(href, undefined, undefined, { responseType: 'blob' })
+                .then((response) => {
+                    const fileUrl = URL.createObjectURL(response.data);
+                    if (fileUrl) {
+                        this.fireDownloading(fileUrl);
+                    }
+                    URL.revokeObjectURL(fileUrl);
+                })
+                .catch((e) => {
+                    console.error(e);
+                });
+        }
+    };
 
     render() {
         const hidden = this.state.hidden || _.get(this.props, 'embedded');
@@ -152,7 +151,7 @@ class PageWrapper extends React.Component {
                             icon="help-icon"
                             itemId="header_load_manual"
                             title={ls('LOAD_USER_MANUAL_TITLE', 'Загрузить руководство пользователя')}
-                            onClick={() => this.fireDownloading('/user_manual.pdf')}
+                            onClick={() => this.getUserManual('/api/v1/files/documentation.html')}
                             style={logoutIconStyle}
                         />
 
