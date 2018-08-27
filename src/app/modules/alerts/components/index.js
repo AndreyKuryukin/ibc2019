@@ -4,13 +4,14 @@ import AlertsContent from './AlertsContent';
 import TabPanel from '../../../components/TabPanel';
 import styles from './styles.scss';
 import ls from "i18n";
-import { CLIENTS_INCIDENTS_ALERTS, FILTER_FIELDS, GROUP_POLICIES_ALERTS, KQI_ALERTS } from '../constants';
+import { ALERTS_TYPES, CLIENTS_INCIDENTS_ALERTS, GROUP_POLICIES_ALERTS, KQI_ALERTS } from '../constants';
 import * as _ from "lodash";
 
 const tabStyle = {
     display: 'flex',
     height: '100%',
 };
+
 
 class Alerts extends React.PureComponent {
     state = {};
@@ -55,26 +56,16 @@ class Alerts extends React.PureComponent {
         };
     }
 
-    componentWillMount() {
-        const { history } = this.props;
-        this.unsubscribeFromHistory = history.listen(this.handleLocationChange);
-    }
-
-    handleLocationChange = (location) => {
-        if (this.state.currentLocation !== location.pathname) {
-            this.props.onChangeFilter({ ...this.props.filter, [FILTER_FIELDS.AUTO_REFRESH]: false })
-        }
-        this.setState({ currentLocation: location.pathname });
-    };
-
-    componentWillUnmount() {
-        this.unsubscribeFromHistory && this.unsubscribeFromHistory();
-    }
-
-
     onTabClick = (tabId) => {
         this.props.history.push(`/alerts/${tabId}`);
     };
+
+    getTabTitle = (type) => ({
+        [CLIENTS_INCIDENTS_ALERTS]: ls('CLI_TAB_TITLE', 'КИ'),
+        [GROUP_POLICIES_ALERTS]: ls('GROUP_POLICIES_TAB_TITLE', 'ГП'),
+        [KQI_ALERTS]: ls('KQI_TAB_TITLE', 'KQI'),
+    }[type]);
+
 
     composeNotificationCount = (notifications) => {
         if (_.isArray(notifications) && !_.isEmpty(notifications)) {
@@ -83,7 +74,7 @@ class Alerts extends React.PureComponent {
         return ''
     };
 
-    render() {
+    renderTabsContent = (props) => {
         const {
             match,
             filter,
@@ -96,6 +87,40 @@ class Alerts extends React.PureComponent {
             onFilterAlerts,
             onReadNewAlert,
             isLoading,
+        } = props;
+        const { params = {} } = match;
+        const { type: activeType = GROUP_POLICIES_ALERTS } = params;
+        return ALERTS_TYPES.map(type => {
+            return <div
+                id={type}
+                itemId={`alerts_${type}_tab`}
+                tabtitle={this.getTabTitle(type)}
+                style={tabStyle}
+                notification={this.composeNotificationCount(_.get(this.props, 'notifications.ki'))}
+            >
+                {activeType === type && (
+                    <AlertsContent
+                        type={type}
+                        params={params}
+                        filter={filter}
+                        alerts={alerts}
+                        locations={locations}
+                        policies={policies}
+                        onChangeFilter={onChangeFilter}
+                        onFetchAlerts={onFetchAlerts}
+                        onExportXLSX={onExportXLSX}
+                        onFilterAlerts={onFilterAlerts}
+                        onReadNewAlert={onReadNewAlert}
+                        isLoading={isLoading}
+                    />
+                )}
+            </div>
+        })
+    };
+
+    render() {
+        const {
+            match,
         } = this.props;
         const { params = {} } = match;
         const { type = GROUP_POLICIES_ALERTS } = params;
@@ -105,78 +130,7 @@ class Alerts extends React.PureComponent {
                 onTabClick={this.onTabClick}
                 activeTabId={type}
             >
-                <div
-                    id={CLIENTS_INCIDENTS_ALERTS}
-                    itemId="alerts_ci_tab"
-                    tabtitle={ls('CLI_TAB_TITLE', 'КИ')}
-                    style={tabStyle}
-                    notification={this.composeNotificationCount(_.get(this.props, 'notifications.ki'))}
-                >
-                    {type === CLIENTS_INCIDENTS_ALERTS && (
-                        <AlertsContent
-                            type={type}
-                            params={params}
-                            filter={filter}
-                            alerts={alerts}
-                            locations={locations}
-                            policies={policies}
-                            onChangeFilter={onChangeFilter}
-                            onFetchAlerts={onFetchAlerts}
-                            onExportXLSX={onExportXLSX}
-                            onFilterAlerts={onFilterAlerts}
-                            onReadNewAlert={onReadNewAlert}
-                            isLoading={isLoading}
-                        />
-                    )}
-                </div>
-                <div
-                    id={GROUP_POLICIES_ALERTS}
-                    itemId="alerts_gp_tab"
-                    tabtitle={ls('GROUP_POLICIES_TAB_TITLE', 'ГП')}
-                    style={tabStyle}
-                    notification={this.composeNotificationCount(_.get(this.props, 'notifications.gp'))}
-                >
-                    {type === GROUP_POLICIES_ALERTS && (
-                        <AlertsContent
-                            type={type}
-                            params={params}
-                            filter={filter}
-                            alerts={alerts}
-                            locations={locations}
-                            policies={policies}
-                            onChangeFilter={onChangeFilter}
-                            onFetchAlerts={onFetchAlerts}
-                            onExportXLSX={onExportXLSX}
-                            onFilterAlerts={onFilterAlerts}
-                            onReadNewAlert={onReadNewAlert}
-                            isLoading={isLoading}
-                        />
-                    )}
-                </div>
-                <div
-                    id={KQI_ALERTS}
-                    itemId="alerts_kqi_tab"
-                    tabtitle={ls('KQI_TAB_TITLE', 'KQI')}
-                    style={tabStyle}
-                    notification={this.composeNotificationCount(_.get(this.props, 'notifications.kqi'))}
-                >
-                    {type === KQI_ALERTS && (
-                        <AlertsContent
-                            type={type}
-                            params={params}
-                            filter={filter}
-                            alerts={alerts}
-                            locations={locations}
-                            policies={policies}
-                            onChangeFilter={onChangeFilter}
-                            onFetchAlerts={onFetchAlerts}
-                            onExportXLSX={onExportXLSX}
-                            onFilterAlerts={onFilterAlerts}
-                            onReadNewAlert={onReadNewAlert}
-                            isLoading={isLoading}
-                        />
-                    )}
-                </div>
+                {this.renderTabsContent(this.props)}
             </TabPanel>
         </div>
     }

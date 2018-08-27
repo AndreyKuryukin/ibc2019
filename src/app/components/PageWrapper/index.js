@@ -128,6 +128,7 @@ class PageWrapper extends React.Component {
                   className={classNames({ [styles.hidden]: hidden })}
                   path={_.get(this.props, 'location.pathname')}
                   notifications={_.get(this.props, 'notifications')}
+                  onNotificationClick={this.props.onNotificationClick}
             />
             <div className={classNames(styles.workspace, { [styles.withSidebar]: !hidden })}>
                 <Navbar color="faded"
@@ -172,10 +173,5 @@ class PageWrapper extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    user: state.user,
-    app: state.app,
-    notifications: _.get(state, 'notifications')
-});
 
-export default withRouter(connect(mapStateToProps, null)(PageWrapper));
+export default PageWrapper;

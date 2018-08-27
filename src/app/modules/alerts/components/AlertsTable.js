@@ -127,10 +127,6 @@ class AlertsTable extends React.PureComponent {
         return commonColumns.concat(columnsByType);
     });
 
-    componentWillReceiveProps(nextProps) {
-        console.log(nextProps.data.filter(alert => alert.new));
-    }
-
     onSelectRow = (node) => {
         if (node.new) {
             this.props.onReadNewAlert(node.id);
@@ -185,7 +181,6 @@ class AlertsTable extends React.PureComponent {
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
             const nextPart = readableUnits + ls(`ALERTS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
-
             return `${result}${nextPart}`;
         }, '');
 
@@ -208,7 +203,6 @@ class AlertsTable extends React.PureComponent {
 
     customSortFunction = (data, columnName, direction) => {
         const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
-
         return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
     };
 

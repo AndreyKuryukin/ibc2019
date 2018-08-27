@@ -20,6 +20,7 @@ class Menu extends React.Component {
             link: PropTypes.string
         })),
         onClick: PropTypes.func,
+        onNotificationClick: PropTypes.func,
         className: PropTypes.string,
         path: PropTypes.string,
         notifications: PropTypes.object,
@@ -31,6 +32,7 @@ class Menu extends React.Component {
         notifications: [],
         path: '',
         onClick: () => null,
+        onNotificationClick: () => null,
         app: {}
     };
 
@@ -69,8 +71,9 @@ class Menu extends React.Component {
                     result.push(<div className={styles.type}
                                      key={`item-${type}`}
                                      onClick={() => {
+                                         this.props.onNotificationClick(type, msgs);
                                          this.onItemClick({ link: `/alerts/${linkMap[type]}` });
-                                         this.toggle()
+                                         this.toggle();
                                      }}
                     >
                         {ls(`ALERTS_TYPE_${type.toUpperCase()}`)}

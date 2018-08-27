@@ -9,7 +9,7 @@ import momentTz from 'moment-timezone';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import { resetActiveUserSuccess } from '../actions';
-import PageWrapper from '../components/PageWrapper';
+import Page from '../modules/page/containers';
 import Preloader from '../components/Preloader';
 import Login from '../modules/login/containers';
 import Dashboard from '../modules/dashboard/containers';
@@ -415,7 +415,7 @@ class App extends React.Component {
             <div style={{ display: 'flex', flexGrow: 1 }}>
                 <AlertsNotifications loggedIn={loggedIn}/>
                 <Preloader active={this.state.loading}>
-                    {!loading && <PageWrapper onLogOut={this.onLogOut}
+                    {!loading && <Page onLogOut={this.onLogOut}
                                               embedded={embedded}
                     >
                         <Switch>
@@ -423,7 +423,7 @@ class App extends React.Component {
                             {routes}
                             {loggedIn ? <Route component={NoMatch}/> : this.loginRedirect()}
                         </Switch>
-                    </PageWrapper>}
+                    </Page>}
                 </Preloader>
             </div>
         );

@@ -11,7 +11,6 @@ export default combineReducers({
     gp,
     kqi,
     ci,
-    alerts,
     policies,
     mrf,
     viewer,

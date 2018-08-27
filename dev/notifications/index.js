@@ -126,7 +126,8 @@ const locations =
 class AlertsGenerator {
 
     constructor() {
-        this._alerts = []
+        this._alerts = [];
+        this._historical = [];
     }
 
     static randomize(values = []) {
@@ -163,8 +164,13 @@ class AlertsGenerator {
                 this._alerts.splice(index, 1);
             }
             alert.action = 'CEASE';
+            this._historical.push(alert);
             return alert
         }
+    }
+
+    getAlerts() {
+        return this._alerts.concat(this._historical)
     }
 
     [Symbol.iterator]() {
@@ -197,9 +203,11 @@ module.exports = (app) => {
 
     });
 
+    const alertsGenerator = new AlertsGenerator();
+    global.alertsGenerator = alertsGenerator;
+
     stompServer.on('subscribe', (() => {
         let pinged;
-        const alertsGenerator = new AlertsGenerator();
         return () => {
             const ping = () => {
                 setTimeout(() => {
@@ -215,7 +223,7 @@ module.exports = (app) => {
                     }
                     stompServer.send('/alerts', {}, JSON.stringify({ error: 'NONE', alerts }));
                     ping();
-                }, 2000)
+                }, 5000)
             };
 
             if (!pinged) {

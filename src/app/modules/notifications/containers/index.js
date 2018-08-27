@@ -35,7 +35,6 @@ class Notification extends React.PureComponent {
         const { error, alerts } = alertsMessage;
         const activeTab = this.getActiveTab();
         const filter = this.extractFilter(this.props.alertsState, activeTab);
-
         if (!!error && error === 'STORM') {
             this.alertStorm();
         } else if (!filter || !filter.auto_refresh) {
@@ -44,10 +43,8 @@ class Notification extends React.PureComponent {
         } else if (filter.auto_refresh) {
             const { ok, nok } = this.commonSplit(alerts, filter);
             const { add, remove, update, av } = this.actionSplit(ok, filter);
-
             const notifications = av.concat(this.avSplit(nok));
             const uiAlerts = { add, remove, update };
-
             this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
             this.props.applyAlerts(uiAlerts);
         }

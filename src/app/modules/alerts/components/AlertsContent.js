@@ -42,24 +42,6 @@ class AlertsContent extends React.PureComponent {
         isLoading: false,
     };
 
-    componentDidMount() {
-        const queryParams = getQueryParams(this.context.location);
-        let filter = this.props.filter;
-
-        if (!_.isEmpty(queryParams)) {
-            filter = {
-                ...queryParams,
-                start: new Date(+queryParams.start),
-                end: new Date(+queryParams.end),
-                filter: _.get(this.props.filter, 'filter', ''),
-            };
-
-            this.props.onChangeFilter(filter);
-        }
-
-        this.props.onFetchAlerts(filter);
-    }
-
     onApplyFilter = () => {
         this.props.onFetchAlerts(this.props.filter);
     };
@@ -103,7 +85,7 @@ class AlertsContent extends React.PureComponent {
                     searchText={_.get(filter, 'filter', '')}
                     onReadNewAlert={this.props.onReadNewAlert}
                 />
-                {isAlertsViewerActive && <AlertsViewer alertId={alertId} active={isAlertsViewerActive} type={type} />}
+                {isAlertsViewerActive && <AlertsViewer alertId={alertId} active={isAlertsViewerActive} type={type}/>}
             </div>
         );
     }
