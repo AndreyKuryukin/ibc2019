@@ -1,4 +1,4 @@
-import { NEW_NOTIFICATIONS } from "../actions/index";
+import { UPDATE_ALERTS_NOTIFICATIONS } from "../actions/index";
 import * as _ from "lodash";
 import { UNHIGHLIGHT_CI_ALERT } from "../../alerts/actions/ci";
 import { UNHIGHLIGHT_GP_ALERT } from "../../alerts/actions/gp";
@@ -10,18 +10,45 @@ const initialState = {};
 
 export default (state = initialState, action) => {
     switch (action.type) {
-        case NEW_NOTIFICATIONS: {
-            let { topic, notifications, count } = action.payload;
-            if (_.isUndefined(state[topic])) {
-                state[topic] = {};
-            }
-            state[topic] = _.mergeWith(state[topic], notifications, (dst, src) => {
+        case UPDATE_ALERTS_NOTIFICATIONS: {
+            let alerts = _.get(state, 'alerts', {});
+
+            let { notifications } = action.payload;
+            const { add = {}, remove = {} } = notifications;
+
+            alerts = _.mergeWith(alerts, add, (dst, src) => {
                 if (_.isArray(dst)) {
                     return dst.concat(src);
+                } else if (_.isNumber(dst)) {
+                    return dst + src
                 }
             });
-            state[topic].count = (state[topic].count || 0) + count;
-            return { ...state };
+
+            const ci_alerts = _.get(alerts, CI_ALERT_TYPE, []);
+            const gp_alerts = _.get(alerts, GROUP_POLICIES_ALERT_TYPE, []);
+            const kqi_alerts = _.get(alerts, KQI_ALERT_TYPE, []);
+
+            let decrement = 0;
+            if (!_.isEmpty(remove[CI_ALERT_TYPE])) {
+                decrement = decrement + _.remove(ci_alerts, alert => remove[CI_ALERT_TYPE].findIndex(cease => alert.id === cease.id) !== -1).length;
+            }
+            if (!_.isEmpty(remove[GROUP_POLICIES_ALERT_TYPE])) {
+                decrement = decrement + _.remove(gp_alerts, alert => remove[GROUP_POLICIES_ALERT_TYPE].findIndex(cease => alert.id === cease.id) !== -1).length;
+            }
+            if (!_.isEmpty(remove[KQI_ALERT_TYPE])) {
+                decrement = decrement + _.remove(kqi_alerts, alert => remove[KQI_ALERT_TYPE].findIndex(cease => alert.id === cease.id) !== -1).length;
+            }
+            return {
+                ...state,
+                alerts: {
+                    ...alerts,
+                    [CI_ALERT_TYPE]: ci_alerts,
+                    [GROUP_POLICIES_ALERT_TYPE]: gp_alerts,
+                    [KQI_ALERT_TYPE]: kqi_alerts,
+                    count: alerts.count - decrement
+                }
+            };
+
         }
 
         case UNHIGHLIGHT_CI_ALERT: {
@@ -32,7 +59,7 @@ export default (state = initialState, action) => {
                 ...state,
                 alerts: {
                     ...alerts,
-                    [CI_ALERT_TYPE] : ci_alerts,
+                    [CI_ALERT_TYPE]: ci_alerts,
                     count: alerts.count - decrement
                 }
             }
@@ -46,7 +73,7 @@ export default (state = initialState, action) => {
                 ...state,
                 alerts: {
                     ...alerts,
-                    [GROUP_POLICIES_ALERT_TYPE] : gp_alerts,
+                    [GROUP_POLICIES_ALERT_TYPE]: gp_alerts,
                     count: alerts.count - decrement
                 }
             }
@@ -60,7 +87,7 @@ export default (state = initialState, action) => {
                 ...state,
                 alerts: {
                     ...alerts,
-                    [KQI_ALERT_TYPE] : kqi_alerts,
+                    [KQI_ALERT_TYPE]: kqi_alerts,
                     count: alerts.count - decrement
                 }
             }

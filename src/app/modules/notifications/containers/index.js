@@ -3,7 +3,7 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
-import { applyAlerts, onNewNotifications } from '../actions/index';
+import { applyAlerts, ceaseAlerts, updateAlertsNotifications } from '../actions/index';
 import _ from 'lodash';
 import Connector from "./Connector";
 
@@ -31,23 +31,50 @@ class Notification extends React.PureComponent {
         this.connector = new Connector({ '/alerts': this.onAlerts })
     }
 
+    applyNotificationChain = (alerts) => {
+        const alertsByType = this.typeSplit(alerts);
+        const alertsActions = _.reduce(alertsByType, (result, typeAlerts, typeName) => {
+            const ceaseAlerts = typeAlerts.filter(alert => alert.closed === true);
+            const raiseAlerts = typeAlerts.filter(raise => raise.closed === false);
+
+            if (raiseAlerts.length > 0) {
+                if (!result.add[typeName]) {
+                    result.add[typeName] = []
+                }
+                result.add[typeName] = result.add[typeName].concat(raiseAlerts);
+                result.add['count'] = (result.add['count'] || 0) + raiseAlerts.length;
+            }
+
+            if (ceaseAlerts.length > 0) {
+                if (!result.remove[typeName]) {
+                    result.remove[typeName] = []
+                }
+                result.remove[typeName] = result.remove[typeName].concat(ceaseAlerts);
+            }
+
+            return result;
+        }, { add: { count: 0 }, remove: {} });
+        this.props.addAlertNotifications(alertsActions)
+    };
+
     onAlerts = (alertsMessage) => {
         const { error, alerts } = alertsMessage;
         const activeTab = this.getActiveTab();
         const filter = this.extractFilter(this.props.alertsState, activeTab);
-        if (!!error && error === 'STORM') {
-            this.alertStorm();
-        } else if (!filter || !filter.auto_refresh) {
-            const notifications = this.avSplit(alerts);
-            this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
-        } else if (filter.auto_refresh) {
-            const { ok, nok } = this.commonSplit(alerts, filter);
-            const { add, remove, update, av } = this.actionSplit(ok, filter);
-            const notifications = av.concat(this.avSplit(nok));
-            const uiAlerts = { add, remove, update };
-            this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
-            this.props.applyAlerts(uiAlerts);
-        }
+        this.applyNotificationChain(alerts);
+        // if (!!error && error === 'STORM') {
+        //     this.alertStorm();
+        // } else if (!filter || !filter.auto_refresh) {
+        //     const notifications = this.avSplit(alerts);
+        //     this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts');
+        // } else if (filter.auto_refresh) {
+        //     const { ok, nok } = this.commonSplit(alerts, filter);
+        //     const { add, remove, update, av } = this.actionSplit(ok, filter);
+        //     const notifications = av.concat(this.avSplit(nok));
+        //     const uiAlerts = { add, remove, update };
+        //     this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
+        //     this.props.applyAlerts(uiAlerts);
+        // }
     };
 
     composeFilter = (filter) => {
@@ -74,25 +101,25 @@ class Notification extends React.PureComponent {
         const add = [], update = [], remove = [], av = [];
         if (current && historical) {
             alerts.forEach(alert => {
-                (alert.action === 'RAISE') && add.push({...alert, status: 'ACTIVE'});
-                (alert.action === 'CEASE') && update.push({...alert, status: 'CLOSED'});
+                (alert.closed === false) && add.push({ ...alert, status: 'ACTIVE' });
+                (alert.closed === true) && update.push({ ...alert, status: 'CLOSED' });
             })
         } else if (current) {
             alerts.forEach(alert => {
-                (alert.action === 'RAISE') && add.push({...alert, status: 'ACTIVE'});
-                (alert.action === 'CEASE') && remove.push(alert);
+                (alert.closed === false) && add.push({ ...alert, status: 'ACTIVE' });
+                (alert.closed === true) && remove.push(alert);
             })
         }
         else if (historical) {
             alerts.forEach(alert => {
-                (alert.action === 'RAISE') && av.push({...alert, status: 'ACTIVE'});
-                (alert.action === 'CEASE') && add.push({...alert, status: 'CLOSED'});
+                (alert.closed === false) && av.push({ ...alert, status: 'ACTIVE' });
+                (alert.closed === true) && add.push({ ...alert, status: 'CLOSED' });
             });
         }
         return { add, update, remove, av };
     };
 
-    avSplit = (alerts) => alerts.filter(alert => alert.action === 'RAISE');
+    avSplit = (alerts) => alerts.filter(alert => alert.closed === false);
 
     typeSplit = notifications => _.reduce(notifications, (result, notification) => {
         if (!result[notification.type]) {
@@ -137,8 +164,11 @@ const
 
 const
     mapDispatchToProps = dispatch => ({
-        addAlertNotifications: (notifications, topic, count) => {
-            dispatch(onNewNotifications(notifications, topic, count))
+        addAlertNotifications: (notifications) => {
+            dispatch(updateAlertsNotifications(notifications))
+        },
+        onCeaseAlerts: (notifications) => {
+            dispatch(ceaseAlerts(notifications))
         },
         applyAlerts: (alerts) => {
             dispatch(applyAlerts(alerts))

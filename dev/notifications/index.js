@@ -140,7 +140,7 @@ class AlertsGenerator {
         const alert = {
             severity: "CRITICAL",
             type: AlertsGenerator.randomize(['SIMPLE', 'GROUP_AGGREGATION', 'KPIKQI']),
-            action: 'RAISE',
+            closed: false,
             duration: 1219232,
             external_id: "",
             id: String(Math.floor(Math.random() * 99999999)),
@@ -163,7 +163,7 @@ class AlertsGenerator {
             if (index > -1) {
                 this._alerts.splice(index, 1);
             }
-            alert.action = 'CEASE';
+            alert.closed = true;
             this._historical.push(alert);
             return alert
         }
