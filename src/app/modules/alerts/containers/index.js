@@ -14,19 +14,30 @@ import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
 import { getQueryParams, setQueryParams } from "../../../util/state";
 import { applyCiFilter, fetchCiAlertsSuccess, flushCiHighlight, setCiFilter, unhighlightCiAlert } from "../actions/ci";
 import {
-    applyGpFilter, fetchGpAlertsSuccess, fetchGpFilter, flushGpHighlight,
+    applyGpFilter,
+    fetchGpAlertsSuccess,
+    fetchGpFilter,
+    flushGpHighlight,
     unhighlightGpAlert
 } from "../actions/gp";
 import {
-    applyKqiFilter, fetchKqiAlertsSuccess, fetchKqiFilter, flushKqiHighlight,
+    applyKqiFilter,
+    fetchKqiAlertsSuccess,
+    fetchKqiFilter,
+    flushKqiHighlight,
     unhighlightKqiAlert
 } from "../actions/kqi";
-import { applyCiAlerts } from "../../notifications/actions/index";
 
 const TAB_TITLES = {
     'GP': 'ГП',
     'CI': 'КИ',
     'KQI': 'KQI',
+};
+
+const ALERT_POLICY_MAP = {
+    ci: ['VB'],
+    gp: ['STB', 'OTT'],
+    kqi: ['KQI']
 };
 
 class Alerts extends React.PureComponent {
@@ -304,6 +315,11 @@ class Alerts extends React.PureComponent {
         }
     });
 
+    mapPolicies = (type, policies) => {
+        const matcher = policy => (ALERT_POLICY_MAP[type] || []).findIndex(policy_type => policy.object_type === policy_type) !== -1;
+        return policies.filter(matcher)
+    };
+
     render() {
         return (
             <AlertsComponent
@@ -311,7 +327,7 @@ class Alerts extends React.PureComponent {
                 match={this.props.match}
                 filter={this.props.filter}
                 alerts={this.mapAlerts(this.props.alerts, this.props.highLight)}
-                policies={this.props.policies}
+                policies={this.mapPolicies(this.props.match.params.type, this.props.policies)}
                 locations={this.props.locations}
                 onChangeFilter={this.onChangeFilter}
                 notifications={this.props.notifications}
@@ -365,7 +381,9 @@ const ACTIONS_MAP = {
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
     onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
-    applyFilter: (filter) => {dispatch(ACTIONS_MAP.APPLY_FILTER[props.match.params.type](filter))},
+    applyFilter: (filter) => {
+        dispatch(ACTIONS_MAP.APPLY_FILTER[props.match.params.type](filter))
+    },
     onFetchAlertsSuccess: alerts => dispatch(ACTIONS_MAP.FETCH_ALERTS_SUCCESS[props.match.params.type](alerts)),
     onChangeFilter: filter => dispatch(ACTIONS_MAP.SET_FILTER[props.match.params.type](filter)),
     onReadNewAlert: alertId => dispatch(ACTIONS_MAP.UNHIGHLIGHT_ALERT[props.match.params.type](alertId)),

@@ -22,6 +22,13 @@ const ALERTS_STATUS_MAP = {
     'CLOSED': ls('ALERTS_STATUS_CLOSED', 'Историческая')
 };
 
+const DURATION_UNITS_MAP = {
+    'DAYS': ls('ALERTS_GROUP_POLICIES_DURATION_DAY_UNIT', 'дн. '),
+    'HOURS': ls('ALERTS_STATUS_CLOSED', 'ч'),
+    'MINUTES': ls('ALERTS_STATUS_CLOSED', 'м'),
+    'SECONDS': ls('ALERTS_STATUS_CLOSED', 'с'),
+};
+
 class AlertsTable extends React.PureComponent {
     static contextTypes = {
         match: PropTypes.object.isRequired,
@@ -180,8 +187,8 @@ class AlertsTable extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + ls(`ALERTS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
-            return `${result}${nextPart}`;
+            const nextPart = readableUnits + DURATION_UNITS_MAP[key.toUpperCase()];
+            return `${result}${nextPart} `;
         }, '');
 
     mapData = data => data.map(node => ({
@@ -193,7 +200,7 @@ class AlertsTable extends React.PureComponent {
         cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',
-        personal_account: node.personal_account || '',
+        personal_account: node.nls || '',
         san: node.san || '',
         mac: node.mac || '',
         status: node.closed ? ALERTS_STATUS_MAP['CLOSED'] : ALERTS_STATUS_MAP['ACTIVE'],
