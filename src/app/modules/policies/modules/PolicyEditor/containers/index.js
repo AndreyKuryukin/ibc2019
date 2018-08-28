@@ -96,7 +96,7 @@ class PolicyEditor extends React.PureComponent {
                 condition: () => ({
                     conditionDuration: {
                         required: _.get(metaData, 'conditionDuration', false),
-                        min: 1,
+                        min: _.get(metaData, 'conditionDuration', false) ? 1 : 0,
                     },
                     conjunction: () => ({
                         type: {
