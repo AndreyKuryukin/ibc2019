@@ -4,7 +4,6 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const i18n = require('./dev/loaders/i18n');
-const FE_VERSION = require('./package.json').version;
 
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -117,7 +116,6 @@ module.exports = {
             allChunks: true,
         }),
         new webpack.DefinePlugin({
-            'FE_VERSION' : JSON.stringify(FE_VERSION),
             'DEV_MODE': devMode
         })
     ],

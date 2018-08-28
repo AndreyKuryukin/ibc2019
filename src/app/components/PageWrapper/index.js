@@ -90,17 +90,16 @@ class PageWrapper extends React.Component {
         this.props.history.push('/');
     };
 
+    fireDownloading = (fileUrl) => {
+        const fakeLink = document.createElement('a');
+        const e = document.createEvent('MouseEvents');
 
-    // fireDownloading = (fileUrl) => {
-    //     const fakeLink = document.createElement('a');
-    //     const e = document.createEvent('MouseEvents');
-    //
-    //     fakeLink.setAttribute('download', this.props.text);
-    //     fakeLink.setAttribute('href', fileUrl);
-    //
-    //     e.initEvent('click', true, true);
-    //     fakeLink.dispatchEvent(e);
-    // };
+        fakeLink.setAttribute('download', this.props.text);
+        fakeLink.setAttribute('href', fileUrl);
+
+        e.initEvent('click', true, true);
+        fakeLink.dispatchEvent(e);
+    };
 
     getUserManual = (href) => {
         if (href) {
