@@ -158,6 +158,14 @@ class PoliciesTable extends React.PureComponent {
                         content={node[column.name]}
                     />
                 );
+            case 'policy_type': {
+                const type = node[column.name];
+                return (
+                    <DefaultCell
+                        content={ls(`AGGREGATION_FUNCTION_${type}`, type)}
+                    />
+                );
+            }
             case 'aggregation_interval':
             case 'threshold':
                 return (
