@@ -107,5 +107,19 @@
   "REPORTS_KAB_FOR_ACCESS_TEMPLATE_OPTION": "Отчет Каб в проекции по коммутаторам доступа",
   "REPORTS_KAB_FOR_AGGREGATION_TEMPLATE_OPTION": "Отчет Каб в проекции по коммутаторам агрегации",
   "REPORTS_REPORT_IPTV_TEMPLATE_OPTION": "Базовый отчет IPTV",
-  "REPORTS_REPORT_OTT_TEMPLATE_OPTION": "Базовый отчет ОТТ"
+  "REPORTS_REPORT_OTT_TEMPLATE_OPTION": "Базовый отчет ОТТ",
+
+  "AGGREGATION_FUNCTION_SMART_SPY_SIMPLE": "Без функции агрегации",
+  "AGGREGATION_FUNCTION_SMART_SPY_ACC_DEVICE": "Количество STB на оборудовании доступа",
+  "AGGREGATION_FUNCTION_SMART_SPY_AGG_DEVICE": "Количество STB на оборудовании агрегации",
+  "AGGREGATION_FUNCTION_SMART_SPY_PE_DEVICE": "Количество STB на оборудовании PE",
+  "AGGREGATION_FUNCTION_SMART_SPY_PRC_ACC_DEVICE": "% STB на оборудовании доступа",
+  "AGGREGATION_FUNCTION_SMART_SPY_PRC_AGG_DEVICE": "% STB на оборудовании агрегации",
+  "AGGREGATION_FUNCTION_SMART_SPY_PRC_PE_DEVICE": "% STB на оборудовании PE",
+  "AGGREGATION_FUNCTION_VB_UNICAST_SIMPLE": "Без функции агрегации",
+  "AGGREGATION_FUNCTION_VB_UNICAST_CHANNEL_COUNT": "количество unicast-каналов на анализаторе",
+  "AGGREGATION_FUNCTION_VB_MULTICAST_SIMPLE": "Без функции агрегации",
+  "AGGREGATION_FUNCTION_VB_MULTICAST_CHANNEL_COUNT": "количество mcast-каналов на анализаторе",
+  "AGGREGATION_FUNCTION_OTT_SIMPLE": "Без функции агрегации",
+  "AGGREGATION_FUNCTION_KQI_SIMPLE": "Без функции агрегации (edited)"
 }
