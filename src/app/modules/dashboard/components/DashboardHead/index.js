@@ -10,7 +10,7 @@ import {REGULARITIES, VIEW_MODE, DEFAULT_PATH_PARAMETERS} from '../../constants'
 import LocationDropdown from './LocationDropdown';
 
 const filterButtonStyle = {
-    marginLeft: 10,
+    marginLeft: 40,
 };
 
 class DashboardHead extends React.Component {
@@ -107,11 +107,12 @@ class DashboardHead extends React.Component {
                 <ReactstrapButtonGroup>
                     <Button
                         itemId="dashboard_filter_button"
-                        color="secondary"
+                        color={this.props.isFiltersExpanded ? 'primary' : 'secondary'}
                         className="dropdown-toggle icon-btn dashboard-filter-icon"
                         style={filterButtonStyle}
                         outline={!this.props.isFiltersExpanded}
                         onClick={this.onFiltersButtonClick}
+                        aria-expanded={this.props.isFiltersExpanded}
                     >{ls('FILTERS', 'Фильтры')}</Button>
                 </ReactstrapButtonGroup>
                 <Collapse

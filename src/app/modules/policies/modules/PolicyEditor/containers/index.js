@@ -96,7 +96,7 @@ class PolicyEditor extends React.PureComponent {
                 condition: () => ({
                     conditionDuration: {
                         required: _.get(metaData, 'conditionDuration', false),
-                        min: 0,
+                        min: 1,
                     },
                     conjunction: () => ({
                         type: {
@@ -131,7 +131,7 @@ class PolicyEditor extends React.PureComponent {
             policy: {
                 condition: {
                     condition: {
-                        conditionDuration: 0,
+                        conditionDuration: '',
                         conjunction: {
                             type: 'AND',
                             conjunctionList: []
@@ -266,7 +266,7 @@ class PolicyEditor extends React.PureComponent {
                     return {};
                 })
         } else {
-            return Promise.resolve([])
+            return Promise.resolve([]);
         }
     };
 

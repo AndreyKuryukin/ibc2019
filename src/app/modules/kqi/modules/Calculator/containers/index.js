@@ -88,12 +88,12 @@ class Calculator extends React.PureComponent {
         this.setState({ isLoading: true });
 
         Promise.all(requests).then(([
-                                        kqiResponse,
-                                        locationResponse,
-                                        manufactureResponse,
-                                        usergroupResponse,
-                                        projectionResponse
-                                    ]) => {
+            kqiResponse,
+            locationResponse,
+            manufactureResponse,
+            usergroupResponse,
+            projectionResponse
+        ]) => {
             this.props.onFetchListsSuccess({
                 kqi: kqiResponse.data,
                 locations: locationResponse.data,
@@ -127,7 +127,7 @@ class Calculator extends React.PureComponent {
                     const kqi = response.data;
                     this.setState({ isLoading: false });
                     this.context.history.push('/kqi');
-                    this.props.onClose()
+                    this.props.onClose();
                 })
                 .catch((e) => {
                     const errorData = e.data;

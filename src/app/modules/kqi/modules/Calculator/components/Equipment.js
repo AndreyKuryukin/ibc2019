@@ -29,12 +29,12 @@ class Equipment extends React.PureComponent {
         super(props);
 
         this.state = {
-            grouping: null,
+            groupingValue: '',
         };
     }
 
     onGroupingChange = (value) => {
-        this.setState({ grouping: value });
+        this.setState({ groupingValue: value });
         this.props.onGroupingChange(value);
     };
 
@@ -59,6 +59,7 @@ class Equipment extends React.PureComponent {
 
     render() {
         const { value, disabled } = this.props;
+        const groupingValue = _.get(this.props, 'groupingValue', this.state.groupingValue);
         return (
             <Panel
                 title={ls('KQI_CALCULATOR_EQUIPMENT_TITLE', 'Оборудование')}
@@ -75,7 +76,7 @@ class Equipment extends React.PureComponent {
                         options={this.props.equipmentsList}
                         placeholder={ls('KQI_CONFIGURATOR_EQUIPMENT_TYPE_PLACEHOLDER', 'Тип оборудования')}
                         onChange={this.onEquipmentTypeChange}
-                        value={value}
+                        value={value || ''}
                         disabled={disabled}
                     />
                 </Field>
@@ -89,7 +90,7 @@ class Equipment extends React.PureComponent {
                         itemId="kqi_projections_equipment_grouping_field"
                         id="self-equipment-type"
                         options={this.getGropingOptions()}
-                        value={_.get(this.props, 'groupingValue', this.state.grouping) || ''}
+                        value={groupingValue !== EQUIPMENT_TYPE_GROUPING.NONE ? (groupingValue || '') : ''}
                         placeholder={ls('KQI_CONFIGURATOR_GROUPING_FIELD_PLACEHOLDER', 'Выберите группировку')}
                         onChange={v => this.onGroupingChange(v)}
                         disabled={disabled || !!value}

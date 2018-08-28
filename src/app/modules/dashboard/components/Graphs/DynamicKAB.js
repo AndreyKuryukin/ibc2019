@@ -159,6 +159,7 @@ class DynamicKAB extends React.Component {
                 text: ls('DASHBOARD_CHART_DYNAMIC_KAB_TITLE', 'Динамика Каб'),
             },
             legend: {
+                align: 'left',
                 symbolWidth: 10,
             },
             tooltip: {

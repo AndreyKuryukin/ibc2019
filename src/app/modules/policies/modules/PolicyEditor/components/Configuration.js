@@ -84,7 +84,6 @@ class Configuration extends React.Component {
     };
 
     mapTypes = (types) => {
-        console.log(types)
         return types.map(type => ({ value: type, title: SCOPE_TYPES_NAMES_MAP[type] || type }))
     };
 

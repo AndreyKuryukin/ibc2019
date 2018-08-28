@@ -166,7 +166,7 @@ class ConfigEditor extends React.PureComponent {
         this.props.onSubmit(this.state.config);
     };
 
-    mapTemplateOptions = templates => templates.map(tpl => ({ value: tpl.id, title: tpl.name }));
+    mapTemplateOptions = templates => templates.map(tpl => ({ value: tpl.id, title: ls(`REPORTS_${tpl.name}_TEMPLATE_OPTION`, tpl.name) }));
 
     onIntervalChange = (regularity, start, end, auto = false) => {
         const removeKeys = [

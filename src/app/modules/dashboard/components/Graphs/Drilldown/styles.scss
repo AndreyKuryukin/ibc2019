@@ -75,6 +75,9 @@ $padding: 30px;
 
           &.name {
             color: #000 !important;
+            & > .parentCell {
+              padding: 7px 10px 7px 0;
+            }
           }
           &.itv1 {
             color: #377dc4 !important;
