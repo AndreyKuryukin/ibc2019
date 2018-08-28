@@ -255,8 +255,17 @@ class Alerts extends React.PureComponent {
         this.handleAlertsFetching(queryParams, success, callback);
     }, 700);
 
+    adaptClosedParam = (queryParams) => {
+        const clearParams = _.omit(queryParams, ['historical', 'current']);
+        if (!(queryParams.historical && queryParams.current)) {
+            clearParams.closed = queryParams.historical ? true : false
+        }
+        return clearParams;
+    };
+
     handleAlertsFetching = (queryParams, success, error) => {
-        rest.get('/api/v1/alerts', {}, { queryParams })
+
+        rest.get('/api/v1/alerts', {}, { queryParams: this.adaptClosedParam(queryParams) })
             .then((response) => success({ data: { alerts: response.data.alerts, total: response.data.total } }))
             .catch((e) => {
                 this.onFetchingAlertsError(e);

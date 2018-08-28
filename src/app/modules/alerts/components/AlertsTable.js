@@ -82,13 +82,13 @@ class AlertsTable extends React.PureComponent {
                 sortable: true,
                 width: 250,
             }, {
-                getTitle: createLocalizer('ALERTS_RAISE_TIME_COLUMN', 'Дата и время возникновения'),
+                getTitle: createLocalizer('ALERTS_RAISE_TIME_COLUMN', 'Время и дата и возникновения'),
                 name: 'raise_time',
                 searchable: true,
                 sortable: true,
                 width: 150,
             },  {
-                getTitle: createLocalizer('ALERTS_CEASE_TIME_COLUMN', 'Дата и время закрытия'),
+                getTitle: createLocalizer('ALERTS_CEASE_TIME_COLUMN', 'Время и дата закрытия'),
                 name: 'cease_time',
                 resizable: true,
                 searchable: true,
