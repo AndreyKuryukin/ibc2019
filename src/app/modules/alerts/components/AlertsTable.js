@@ -111,7 +111,7 @@ class AlertsTable extends React.PureComponent {
                     searchable: true,
                     sortable: true,
                 }, {
-                    getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'Service account number (SAN)'),
+                    getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'SAN'),
                     name: 'san',
                     resizable: true,
                     searchable: true,
