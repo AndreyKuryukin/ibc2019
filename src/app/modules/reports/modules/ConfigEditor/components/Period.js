@@ -150,7 +150,7 @@ class Period extends React.PureComponent {
                 </div>}
             >
                 <div className={styles.intervalsGroup}>
-                    {templateId !== '9' && <Field
+                    <Field
                         id="day-interval"
                         labelText={ls('TIME_INTERVAL_DAY', 'День')}
                         inputWidth={15}
@@ -165,13 +165,13 @@ class Period extends React.PureComponent {
                             checked={this.state.interval === INTERVALS.DAY}
                             onChange={v => this.onIntervalChange(INTERVALS.DAY, v)}
                         />
-                    </Field>}
+                    </Field>
                     <Field
                         id="week-interval"
                         labelText={ls('TIME_INTERVAL_WEEK', 'Неделя')}
                         inputWidth={15}
                         labelAlign="right"
-                        style={templateId !== '9' ? intervalFieldStyle : null}
+                        style={intervalFieldStyle}
                         title={ls('TIME_INTERVAL_WEEK_TITLE', 'Предыдущая неделя с 00:00 часов понедельника до 24:00 часов воскресения')}
                         splitter=""
                     >
