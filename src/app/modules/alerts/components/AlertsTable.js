@@ -185,7 +185,7 @@ class AlertsTable extends React.PureComponent {
         }, '');
 
     mapData = data => data.map(node => ({
-        id: node.id.toString(),
+        id: String(node.id),
         external_id: node.external_id || '',
         policy_name: node.policy_name,
         notification_status: node.notification_status || '',
@@ -196,7 +196,7 @@ class AlertsTable extends React.PureComponent {
         personal_account: node.personal_account || '',
         san: node.san || '',
         mac: node.mac || '',
-        status: ALERTS_STATUS_MAP[node.status] || '',
+        status: node.closed ? ALERTS_STATUS_MAP['CLOSED'] : ALERTS_STATUS_MAP['ACTIVE'],
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
         new: !!node.new,
     }));

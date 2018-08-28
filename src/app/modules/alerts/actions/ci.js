@@ -22,3 +22,10 @@ export const unhighlightCiAlert = id => ({
     type: UNHIGHLIGHT_CI_ALERT,
     payload: { id },
 });
+
+
+export const APPLY_CI_FILTER = 'alerts/ci/APPLY_CI_FILTER';
+export const applyCiFilter = filter => ({
+    type: APPLY_CI_FILTER,
+    payload: { filter },
+});

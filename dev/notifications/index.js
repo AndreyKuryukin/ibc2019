@@ -223,8 +223,9 @@ module.exports = (app) => {
                     }
                     stompServer.send('/alerts', {}, JSON.stringify({ error: 'NONE', alerts }));
                     ping();
-                }, 5000)
+                }, 3000)
             };
+
 
             if (!pinged) {
                 pinged = true;

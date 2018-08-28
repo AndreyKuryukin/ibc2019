@@ -21,3 +21,9 @@ export const unhighlightKqiAlert = id => ({
     type: UNHIGHLIGHT_KQI_ALERT,
     payload: { id },
 });
+
+export const APPLY_KQI_FILTER = 'alerts/kqi/APPLY_KQI_FILTER';
+export const applyKqiFilter = filter => ({
+    type: APPLY_KQI_FILTER,
+    payload: { filter },
+})

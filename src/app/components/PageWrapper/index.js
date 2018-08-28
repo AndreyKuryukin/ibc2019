@@ -153,7 +153,7 @@ class PageWrapper extends React.Component {
                             icon="help-icon"
                             itemId="header_load_manual"
                             title={ls('LOAD_USER_MANUAL_TITLE', 'Загрузить руководство пользователя')}
-                            onClick={() => this.fireDownloading('/user_manual.pdf')}
+                            onClick={() => this.fireDownloading('/documentation.pdf')}
                             style={logoutIconStyle}
                         />
 

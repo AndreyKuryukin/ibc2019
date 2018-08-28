@@ -12,9 +12,16 @@ import ls from 'i18n';
 import { SENDING_ALERT_TYPES } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
 import { getQueryParams, setQueryParams } from "../../../util/state";
-import { fetchCiAlertsSuccess, flushCiHighlight, setCiFilter, unhighlightCiAlert } from "../actions/ci";
-import { fetchGpAlertsSuccess, fetchGpFilter, flushGpHighlight, unhighlightGpAlert } from "../actions/gp";
-import { fetchKqiAlertsSuccess, fetchKqiFilter, flushKqiHighlight, unhighlightKqiAlert } from "../actions/kqi";
+import { applyCiFilter, fetchCiAlertsSuccess, flushCiHighlight, setCiFilter, unhighlightCiAlert } from "../actions/ci";
+import {
+    applyGpFilter, fetchGpAlertsSuccess, fetchGpFilter, flushGpHighlight,
+    unhighlightGpAlert
+} from "../actions/gp";
+import {
+    applyKqiFilter, fetchKqiAlertsSuccess, fetchKqiFilter, flushKqiHighlight,
+    unhighlightKqiAlert
+} from "../actions/kqi";
+import { applyCiAlerts } from "../../notifications/actions/index";
 
 const TAB_TITLES = {
     'GP': 'ГП',
@@ -249,7 +256,10 @@ class Alerts extends React.PureComponent {
     fetchAlerts = (filter) => {
         const queryParams = this.prepareFilter(filter);
         setQueryParams(queryParams, this.props.history, this.props.location);
-        this.props.onFlushHighlight();
+        if (!filter.auto_refresh) {
+            this.props.onFlushHighlight();
+        }
+        this.props.applyFilter(filter);
         this.onFetchAlerts(filter);
     };
 
@@ -344,13 +354,18 @@ const ACTIONS_MAP = {
         ci: unhighlightCiAlert,
         gp: unhighlightGpAlert,
         kqi: unhighlightKqiAlert,
+    },
+    APPLY_FILTER: {
+        ci: applyCiFilter,
+        gp: applyGpFilter,
+        kqi: applyKqiFilter,
     }
 };
 
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
     onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
-
+    applyFilter: (filter) => {dispatch(ACTIONS_MAP.APPLY_FILTER[props.match.params.type](filter))},
     onFetchAlertsSuccess: alerts => dispatch(ACTIONS_MAP.FETCH_ALERTS_SUCCESS[props.match.params.type](alerts)),
     onChangeFilter: filter => dispatch(ACTIONS_MAP.SET_FILTER[props.match.params.type](filter)),
     onReadNewAlert: alertId => dispatch(ACTIONS_MAP.UNHIGHLIGHT_ALERT[props.match.params.type](alertId)),

@@ -4,14 +4,20 @@ export const updateAlertsNotifications = (notifications, topic) => ({
     payload: { notifications }
 });
 
-export const APPLY_ALERTS = 'notifications/APPLY_ALERTS';
-export const applyAlerts = (alerts) => ({
-    type: APPLY_ALERTS,
-    payload: { alerts }
+export const APPLY_CI_ALERTS = 'notifications/APPLY_CI_ALERTS';
+export const applyCiAlerts = (alerts) => ({
+    type: APPLY_CI_ALERTS,
+    payload: alerts
 });
 
-export const CEASE_ALERTS = 'notifications/CEASE_ALERTS';
-export const ceaseAlerts = (payload) => ({
-    type: CEASE_ALERTS,
-    payload
+export const APPLY_GP_ALERTS = 'notifications/APPLY_GP_ALERTS';
+export const applyGpAlerts = (alerts) => ({
+    type: APPLY_GP_ALERTS,
+    payload: alerts
+});
+
+export const APPLY_KQI_ALERTS = 'notifications/APPLY_KQI_ALERTS';
+export const applyKqiAlerts = (alerts) => ({
+    type: APPLY_KQI_ALERTS,
+    payload: alerts
 });

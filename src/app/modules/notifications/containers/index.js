@@ -3,9 +3,10 @@ import { withRouter } from 'react-router'
 import { connect } from 'react-redux';
 
 import PropTypes from 'prop-types';
-import { applyAlerts, ceaseAlerts, updateAlertsNotifications } from '../actions/index';
+import { applyAlerts, applyCiAlerts, applyGpAlerts, applyKqiAlerts, updateAlertsNotifications } from '../actions/index';
 import _ from 'lodash';
 import Connector from "./Connector";
+import { CLIENTS_INCIDENTS_ALERTS, GROUP_POLICIES_ALERTS, KQI_ALERTS } from "../../alerts/constants";
 
 const devMode = DEV_MODE;
 
@@ -57,28 +58,8 @@ class Notification extends React.PureComponent {
         this.props.addAlertNotifications(alertsActions)
     };
 
-    onAlerts = (alertsMessage) => {
-        const { error, alerts } = alertsMessage;
-        const activeTab = this.getActiveTab();
-        const filter = this.extractFilter(this.props.alertsState, activeTab);
-        this.applyNotificationChain(alerts);
-        // if (!!error && error === 'STORM') {
-        //     this.alertStorm();
-        // } else if (!filter || !filter.auto_refresh) {
-        //     const notifications = this.avSplit(alerts);
-        //     this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts');
-        // } else if (filter.auto_refresh) {
-        //     const { ok, nok } = this.commonSplit(alerts, filter);
-        //     const { add, remove, update, av } = this.actionSplit(ok, filter);
-        //     const notifications = av.concat(this.avSplit(nok));
-        //     const uiAlerts = { add, remove, update };
-        //     this.props.addAlertNotifications(this.typeSplit(notifications), 'alerts', notifications.length);
-        //     this.props.applyAlerts(uiAlerts);
-        // }
-    };
-
-    composeFilter = (filter) => {
-        return _.reduce(['type', 'mrf', 'rf', 'policy_id'], (result, key) => {
+    composeFilter = (filter, fields) => {
+        return _.reduce(fields, (result, key) => {
             if (!_.isEmpty(filter[key])) {
                 result[key] = filter[key]
             }
@@ -86,40 +67,67 @@ class Notification extends React.PureComponent {
         }, {})
     };
 
-    commonSplit = (alerts, srcFilter) => {
-        const filter = this.composeFilter(srcFilter);
-        const matcher = _.matches(filter);
-        const ok = [], nok = [];
-        alerts.forEach(alert => {
-            matcher(alert) ? ok.push(alert) : nok.push(alert)
-        });
-        return { ok, nok }
+    composeFiltersByTypes = (stateFilter) => _.reduce(stateFilter, (result, filter, type) => {
+        if (filter.auto_refresh) {
+            result[type] = this.composeFilter(filter, ['type', 'mrf', 'rf', 'policy_id']);
+        }
+        return result;
+    }, {});
+
+    applyAutoRefreshChain = (alerts, stateFilter) => {
+        const typeFilter = this.composeFiltersByTypes(stateFilter);
+        const typesToRefresh = Object.keys(typeFilter);
+
+        const matches = _.reduce(typesToRefresh, (result, type) => {
+            const freshAlerts = alerts.filter(_.matches(typeFilter[type]));
+            const split = this.actionSplit(freshAlerts, stateFilter[type]);
+            if (!_.isEmpty(split)) {
+                result[type] = split;
+            }
+            return result
+        }, {});
+        if (!_.isEmpty(matches)) {
+            this.props.applyAlerts(matches)
+        }
+    };
+
+    onAlerts = (alertsMessage) => {
+        const { error, alerts } = alertsMessage;
+        // const activeTab = this.getActiveTab();
+        //todo: Использовать только примененный фильтр
+        const filter = this.extractFilter(this.props.alertsState);
+        this.applyNotificationChain(alerts);
+        if (!!error && error === 'STORM') {
+            this.alertStorm();
+        } else {
+            this.applyAutoRefreshChain(alerts, filter)
+        }
     };
 
     actionSplit = (alerts = [], filter) => {
         const { current, historical } = filter;
-        const add = [], update = [], remove = [], av = [];
+        const add = [], update = [], remove = [];
+        const result = {};
         if (current && historical) {
             alerts.forEach(alert => {
-                (alert.closed === false) && add.push({ ...alert, status: 'ACTIVE' });
-                (alert.closed === true) && update.push({ ...alert, status: 'CLOSED' });
+                (alert.closed === false) && add.push(alert);
+                (alert.closed === true) && update.push(alert);
             })
         } else if (current) {
             alerts.forEach(alert => {
-                (alert.closed === false) && add.push({ ...alert, status: 'ACTIVE' });
+                (alert.closed === false) && add.push(alert);
                 (alert.closed === true) && remove.push(alert);
             })
-        }
-        else if (historical) {
+        } else if (historical) {
             alerts.forEach(alert => {
-                (alert.closed === false) && av.push({ ...alert, status: 'ACTIVE' });
-                (alert.closed === true) && add.push({ ...alert, status: 'CLOSED' });
+                (alert.closed === true) && add.push(alert);
             });
         }
-        return { add, update, remove, av };
+        (add.length > 0) && (result.add = add);
+        (update.length > 0) && (result.update = update);
+        (remove.length > 0) && (result.remove = remove);
+        return result;
     };
-
-    avSplit = (alerts) => alerts.filter(alert => alert.closed === false);
 
     typeSplit = notifications => _.reduce(notifications, (result, notification) => {
         if (!result[notification.type]) {
@@ -133,13 +141,10 @@ class Notification extends React.PureComponent {
         this.props.alertStorm();
     };
 
-    getActiveTab = () => {
-        const tabPath = ((/ci(\/|\??)|\/gp(\/|\??)|\/kqi(\/|\??)/g).exec(this.props.location.pathname) || [''])[0];
-        const tab = tabPath.replace(/\/|\?/g, '');
-        return tab;
-    };
-
-    extractFilter = (alertsState, activeTab) => alertsState[activeTab];
+    extractFilter = (alertsState) => _.reduce(['ci', 'gp', 'kqi'], (result, type) => {
+        result[type] = alertsState[type].appliedFilter;
+        return result
+    }, {});
 
     componentWillReceiveProps(nextProps) {
         if (this.props.loggedIn !== nextProps.loggedIn) {
@@ -156,26 +161,27 @@ class Notification extends React.PureComponent {
     }
 }
 
-const
-    mapStateToProps = state => ({
-        notifications: state.notifications,
-        alertsState: _.get(state, 'alerts')
-    });
+const mapStateToProps = state => ({
+    notifications: state.notifications,
+    alertsState: _.get(state, 'alerts')
+});
 
-const
-    mapDispatchToProps = dispatch => ({
-        addAlertNotifications: (notifications) => {
-            dispatch(updateAlertsNotifications(notifications))
-        },
-        onCeaseAlerts: (notifications) => {
-            dispatch(ceaseAlerts(notifications))
-        },
-        applyAlerts: (alerts) => {
-            dispatch(applyAlerts(alerts))
-        },
-        alertStorm: () => {
-        },
-    });
+const ACTIONS_MAP = {
+    [CLIENTS_INCIDENTS_ALERTS]: applyCiAlerts,
+    [GROUP_POLICIES_ALERTS]: applyGpAlerts,
+    [KQI_ALERTS]: applyKqiAlerts,
+};
+
+const mapDispatchToProps = dispatch => ({
+    addAlertNotifications: (notifications) => {
+        dispatch(updateAlertsNotifications(notifications))
+    },
+    applyAlerts: (alerts) => {
+        Object.keys(alerts).forEach(type => dispatch(ACTIONS_MAP[type](alerts[type])))
+    },
+    alertStorm: () => {
+    },
+});
 
 export default withRouter(connect(
     mapStateToProps,

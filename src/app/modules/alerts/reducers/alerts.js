@@ -1,6 +1,7 @@
 import _ from 'lodash';
 import { FETCH_ALERTS_SUCCESS, READ_NEW_ALERT } from '../actions';
 import { APPLY_ALERTS } from "../../notifications/actions/index";
+import { CLIENTS_INCIDENTS_ALERTS, GROUP_POLICIES_ALERTS, KQI_ALERTS } from "../constants";
 
 const initialState = {
     alerts: [],
@@ -17,7 +18,7 @@ export default (state = initialState, action) => {
             };
         case APPLY_ALERTS:
             const { alerts: oldAlerts = [] } = state;
-            const { add = [], remove = [], update = [] } = _.get(action.payload, 'alerts');
+            const { [GROUP_POLICIES_ALERTS]: gp, [CLIENTS_INCIDENTS_ALERTS]: ci, [KQI_ALERTS]: kqi } = _.get(action.payload, 'alerts', {});
 
             //ADD
             let alerts = oldAlerts.concat(add.map(alert => {
