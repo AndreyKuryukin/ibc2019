@@ -87,6 +87,7 @@ class ChipList extends React.PureComponent {
     };
 
     render() {
+        const { children } = this.props;
         const isSelect = !_.isUndefined(this.props.options);
         const InputCmp = isSelect ? Select : NativeInput;
         const value = this.formatValue(this.state.value);
@@ -110,7 +111,7 @@ class ChipList extends React.PureComponent {
                     title={this.props.addTitle}
                 />
             </div>
-            {this.props.children.length > 0 && <div className={styles.chipList}>
+            {children && children.length > 0 && <div className={styles.chipList}>
                 {this.props.children}
             </div>}
         </div>

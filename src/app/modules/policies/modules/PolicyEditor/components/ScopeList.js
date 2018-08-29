@@ -71,17 +71,16 @@ class ScopeList extends React.PureComponent {
                 value={value}
                 addTitle={ls('POLICY_ADD_SCOPE_TYPE_TITLE', 'Добавить область применения')}
                 placeholder={placeholder}
-            >
-                {values.map(value => (
-                    <Chip
-                        key={value}
-                        title={this.getItemTitle(value)}
-                        onRemove={() => this.onRemove(value)}
-                    />
-                ))}
-            </ChipList>
+            />
         );
     }
 }
 
 export default ScopeList;
+// {values.map(value => (
+//     <Chip
+//         key={value}
+//         title={this.getItemTitle(value)}
+//         onRemove={() => this.onRemove(value)}
+//     />
+// ))}

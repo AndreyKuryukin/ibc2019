@@ -78,11 +78,7 @@ class MacList extends React.PureComponent {
             value={this.state.mac}
             addTitle={ls('POLICY_ADD_SCOPE_TYPE_TITLE', 'Добавить область применения')}
             placeholder={ls('POLICY_MAC_ADDRESSES_PLACEHOLDER', 'MAC-адрес')}
-        >
-            {this.props.macs.map(mac => <Chip title={this.composeDisplayString(mac)}
-                                              key={mac}
-                                              onRemove={() => this.onRemove(mac)}/>)}
-        </ChipList>
+        />
     }
 }
 

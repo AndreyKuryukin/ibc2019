@@ -8,20 +8,21 @@ class Chip extends React.PureComponent {
     static propTypes = {
         title: PropTypes.string,
         onRemove: PropTypes.func,
-
+        style: PropTypes.object,
     };
 
     static defaultProps = {
         title: '',
         onRemove: () => null,
+        style: null,
     };
 
 
     render() {
-        const { title } = this.props;
-        return <div className={styles.chipContainer}>
+        const { title, style, onRemove } = this.props;
+        return <div className={styles.chipContainer} style={style}>
             <div title={title}>{title}</div>
-            <div onClick={this.props.onRemove}
+            <div onClick={onRemove}
                  className={styles.closeButton}
             >
                 ×

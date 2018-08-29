@@ -100,11 +100,7 @@ class KqiList extends React.PureComponent {
             value={_.get(this.state, 'kqi.id')}
             addTitle={ls('POLICY_ADD_SCOPE_TYPE_TITLE', 'Добавить область применения')}
             placeholder={ls('POLICY_KQI_LIST_PLACEHOLDER', 'Выберите KQI')}
-        >
-            {selected.map(kqi => <Chip title={kqiListById[kqi].name}
-                                       key={kqi}
-                                       onRemove={() => this.onRemove(kqi)}/>)}
-        </ChipList>
+        />
     }
 }
 
