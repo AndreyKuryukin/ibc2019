@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Immutable from 'immutable';
 import classnames from 'classnames';
-import memoize from 'memoizejs';
 import Preloader from '../Preloader';
 import { naturalSort } from '../../util/sort';
 import search from '../../util/search';
@@ -50,15 +49,14 @@ class Table extends React.Component {
     constructor(props) {
         super(props);
 
-        const defaultSortDirection = 'asc';
-        const sortBy = Table.getDefaultSortBy(props.columns);
+        const { defaultSortColumn = Table.getDefaultSortBy(props.columns), defaultSortDirection = 'asc' } = props;
 
         this.state = {
-            data: Array.isArray(props.data) ? this.getSortedData(props.data, sortBy, defaultSortDirection) : [],
+            data: Array.isArray(props.data) ? this.getSortedData(props.data, defaultSortColumn, defaultSortDirection) : [],
             cntrlIsPressed: false,
             selected: '',
             sort: {
-                by: sortBy,
+                by: defaultSortColumn,
                 direction: defaultSortDirection,
             },
             columnFilterValues: Immutable.Map(),
@@ -163,7 +161,7 @@ class Table extends React.Component {
 
         return (
             <Preloader active={preloader}>
-                <div className={classnames(styles.tableContainer, className )}>
+                <div className={classnames(styles.tableContainer, className)}>
                     {headerRowRender && <Header
                         id={id}
                         columns={columns}

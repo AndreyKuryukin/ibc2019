@@ -365,7 +365,7 @@ const ACTIONS_MAP = {
         gp: fetchGpAlertsSuccess,
         kqi: fetchKqiAlertsSuccess,
     },
-    SET_FILTER: {
+    SET_FILTER_VALUES: {
         ci: setCiFilter,
         gp: fetchGpFilter,
         kqi: fetchKqiFilter,
@@ -394,7 +394,7 @@ const mapDispatchToProps = (dispatch, props) => ({
         dispatch(ACTIONS_MAP.APPLY_FILTER[props.match.params.type](filter))
     },
     onFetchAlertsSuccess: alerts => dispatch(ACTIONS_MAP.FETCH_ALERTS_SUCCESS[props.match.params.type](alerts)),
-    onChangeFilter: filter => dispatch(ACTIONS_MAP.SET_FILTER[props.match.params.type](filter)),
+    onChangeFilter: filter => dispatch(ACTIONS_MAP.SET_FILTER_VALUES[props.match.params.type](filter)),
     onReadNewAlert: alertId => dispatch(ACTIONS_MAP.UNHIGHLIGHT_ALERT[props.match.params.type](alertId)),
     onFlushHighlight: () => dispatch(ACTIONS_MAP.FLUSH_HIGHLIGHT[props.match.params.type]())
 });

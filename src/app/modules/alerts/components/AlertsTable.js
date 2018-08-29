@@ -228,6 +228,8 @@ class AlertsTable extends React.PureComponent {
             <Table
                 id="alerts-table"
                 data={mappedData}
+                defaultSortColumn={'raise_time'}
+                defaultSortDirection={'desc'}
                 columns={columns}
                 customSortFunction={this.customSortFunction}
                 headerRowRender={this.headerRowRender}
