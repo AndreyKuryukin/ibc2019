@@ -1,6 +1,4 @@
-const initialState = {
-    version: FE_VERSION
-};
+const initialState = {};
 
 export default (state = initialState) => {
     return state

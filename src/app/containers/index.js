@@ -9,7 +9,7 @@ import momentTz from 'moment-timezone';
 import moment from 'moment';
 import momentLocalizer from 'react-widgets-moment';
 import { resetActiveUserSuccess } from '../actions';
-import PageWrapper from '../components/PageWrapper';
+import Page from '../modules/page/containers';
 import Preloader from '../components/Preloader';
 import Login from '../modules/login/containers';
 import Dashboard from '../modules/dashboard/containers';
@@ -18,9 +18,9 @@ import Reports from '../modules/reports/containers';
 import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
-import Alarms from '../modules/alarms/containers';
+import Alerts from '../modules/alerts/containers';
 import UsersAndRoles from '../modules/usersAndRoles/components';
-import AlarmsNotifications from '../modules/notifications/containers';
+import AlertsNotifications from '../modules/notifications/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
 import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
@@ -105,12 +105,13 @@ class App extends React.Component {
                 path: "/policies/:action?/:id?",
                 component: Policies
             },
+            //todo: rename to ALERTS
             'ALARMS': {
                 id: 'ALARMS',
                 defaultTitle: 'Аварии',
-                link: '/alarms/ci',
-                path: "/alarms/:type/:id?",
-                component: Alarms
+                link: '/alerts/ci',
+                path: "/alerts/:type/:id?",
+                component: Alerts
             },
             'REPORTS': {
                 id: 'REPORTS',
@@ -412,9 +413,9 @@ class App extends React.Component {
         const routes = this.renderRoutes(subjects);
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
-                <AlarmsNotifications loggedIn={loggedIn}/>
+                <AlertsNotifications loggedIn={loggedIn}/>
                 <Preloader active={this.state.loading}>
-                    {!loading && <PageWrapper onLogOut={this.onLogOut}
+                    {!loading && <Page onLogOut={this.onLogOut}
                                               embedded={embedded}
                     >
                         <Switch>
@@ -422,7 +423,7 @@ class App extends React.Component {
                             {routes}
                             {loggedIn ? <Route component={NoMatch}/> : this.loginRedirect()}
                         </Switch>
-                    </PageWrapper>}
+                    </Page>}
                 </Preloader>
             </div>
         );

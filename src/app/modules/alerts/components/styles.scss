@@ -1,0 +1,87 @@
+@import '../../../scss/vars';
+
+.alertsWrapper {
+  display: flex;
+  flex-grow: 1;
+  height: 100%;
+  width: 100%;
+  padding: 0 9px 0 0;
+  min-width: 1340px;
+}
+
+.alertsContentWrapper {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+}
+
+.alertsControls {
+  padding: 3px 18px;
+  display: flex;
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  background: $white;
+  z-index: 1000;
+  .alertsFilterGroups{
+    display: flex;
+    //flex: 0 0 50%;
+    align-items: center;
+    .alertsFilterGroup {
+      display: flex;
+      flex-direction: column;
+      margin: 4px 0;
+    }
+    .alertsFilterGroup + .alertsFilterGroup {
+      margin-left: 10px;
+    }
+    .applyButton {
+      font-size: 12px;
+      line-height: 0;
+      height: $input-height;
+    }
+    .applyButton + .applyButton {
+      margin-top: 5px;
+    }
+  }
+  .search {
+    width: 20em;
+  }
+  .statistics {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-top: 5px;
+  }
+}
+.warningMsg {
+  width: 225px;
+  color: $white;
+  padding: 0 8px 8px;
+  display: flex;
+  &:before {
+    content: url(../../../../resources/img/warning.png);
+    height: 15px;
+    width: 15px;
+    display: block;
+    margin-right: 8px
+  }
+}
+.buttonWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 8px 0;
+}
+.historicalDropdown {
+  left: 1px !important;
+  top: -3px !important;
+}
+
+.tableContainer .tableBody .bodyRow.newAlert {
+  box-shadow: inset 0 $table-cell-height 0 0 rgba(255, 147, 0, 0.2);
+  color: $black;
+  a {
+    color: $black !important;
+  }
+}

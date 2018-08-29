@@ -90,17 +90,16 @@ class PageWrapper extends React.Component {
         this.props.history.push('/');
     };
 
+    fireDownloading = (fileUrl) => {
+        const fakeLink = document.createElement('a');
+        const e = document.createEvent('MouseEvents');
 
-    // fireDownloading = (fileUrl) => {
-    //     const fakeLink = document.createElement('a');
-    //     const e = document.createEvent('MouseEvents');
-    //
-    //     fakeLink.setAttribute('download', this.props.text);
-    //     fakeLink.setAttribute('href', fileUrl);
-    //
-    //     e.initEvent('click', true, true);
-    //     fakeLink.dispatchEvent(e);
-    // };
+        fakeLink.setAttribute('download', `${ls('USER_MANUAL_FILE_NAME', 'Руководство пользователя')}.pdf`);
+        fakeLink.setAttribute('href', fileUrl);
+
+        e.initEvent('click', true, true);
+        fakeLink.dispatchEvent(e);
+    };
 
     getUserManual = (href) => {
         if (href) {
@@ -127,6 +126,7 @@ class PageWrapper extends React.Component {
                   className={classNames({ [styles.hidden]: hidden })}
                   path={_.get(this.props, 'location.pathname')}
                   notifications={_.get(this.props, 'notifications')}
+                  onNotificationClick={this.props.onNotificationClick}
             />
             <div className={classNames(styles.workspace, { [styles.withSidebar]: !hidden })}>
                 <Navbar color="faded"
@@ -151,7 +151,7 @@ class PageWrapper extends React.Component {
                             icon="help-icon"
                             itemId="header_load_manual"
                             title={ls('LOAD_USER_MANUAL_TITLE', 'Загрузить руководство пользователя')}
-                            onClick={() => this.getUserManual('/api/v1/files/documentation.html')}
+                            onClick={() => this.getUserManual('/api/v1/files/documentation.pdf')}
                             style={logoutIconStyle}
                         />
 
@@ -171,10 +171,5 @@ class PageWrapper extends React.Component {
     }
 }
 
-const mapStateToProps = state => ({
-    user: state.user,
-    app: state.app,
-    notifications: _.get(state, 'notifications')
-});
 
-export default withRouter(connect(mapStateToProps, null)(PageWrapper));
+export default PageWrapper;

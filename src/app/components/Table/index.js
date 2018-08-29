@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import _ from 'lodash';
 import Immutable from 'immutable';
 import classnames from 'classnames';
-import memoize from 'memoizejs';
 import Preloader from '../Preloader';
 import { naturalSort } from '../../util/sort';
 import search from '../../util/search';
@@ -25,6 +24,7 @@ class Table extends React.Component {
         bodyRowRender: PropTypes.func,
         customSortFunction: PropTypes.func,
         onSelectRow: PropTypes.func,
+        rowClassGetter: PropTypes.func,
         preloader: PropTypes.bool,
     };
 
@@ -35,6 +35,7 @@ class Table extends React.Component {
         preloader: false,
         headerRowRender: null,
         bodyRowRender: () => null,
+        rowClassGetter: () => null,
         customSortFunction: null,
         onSelectRow: null,
     };
@@ -48,15 +49,14 @@ class Table extends React.Component {
     constructor(props) {
         super(props);
 
-        const defaultSortDirection = 'asc';
-        const sortBy = Table.getDefaultSortBy(props.columns);
+        const { defaultSortColumn = Table.getDefaultSortBy(props.columns), defaultSortDirection = 'asc' } = props;
 
         this.state = {
-            data: Array.isArray(props.data) ? this.getSortedData(props.data, sortBy, defaultSortDirection) : [],
+            data: Array.isArray(props.data) ? this.getSortedData(props.data, defaultSortColumn, defaultSortDirection) : [],
             cntrlIsPressed: false,
             selected: '',
             sort: {
-                by: sortBy,
+                by: defaultSortColumn,
                 direction: defaultSortDirection,
             },
             columnFilterValues: Immutable.Map(),
@@ -70,8 +70,8 @@ class Table extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        if (!_.isEqual(nextProps.selected, this.state.selected)) {
-            this.setState({selected: nextProps.selected})
+        if (!!nextProps.selected && nextProps.selected !== this.state.selected) {
+            this.setState({ selected: nextProps.selected });
         }
         if (this.props.data !== nextProps.data) {
             const { by, direction } = this.state.sort;
@@ -98,10 +98,10 @@ class Table extends React.Component {
 
     onRowClick = (node) => {
         if (typeof this.props.onSelectRow === 'function') {
-            this.props.onSelectRow(node.id);
-        } else {
-            this.setState({ selected: node.id });
+            this.props.onSelectRow(node);
         }
+
+        this.setState({ selected: node.id });
     };
 
     sort = (columnName) => {
@@ -153,6 +153,7 @@ class Table extends React.Component {
             columns,
             headerRowRender,
             bodyRowRender,
+            rowClassGetter,
             className,
             preloader,
         } = this.props;
@@ -160,7 +161,7 @@ class Table extends React.Component {
 
         return (
             <Preloader active={preloader}>
-                <div className={classnames(styles.tableContainer, className )}>
+                <div className={classnames(styles.tableContainer, className)}>
                     {headerRowRender && <Header
                         id={id}
                         columns={columns}
@@ -176,6 +177,7 @@ class Table extends React.Component {
                         selected={selected}
                         onRowClick={this.onRowClick}
                         bodyRowRender={bodyRowRender}
+                        rowClassGetter={rowClassGetter}
                     />
                 </div>
             </Preloader>

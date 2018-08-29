@@ -1,15 +1,15 @@
 {
   "name": "js",
-  "version": "5.1.18",
+  "version": "5.1.20-SNAPSHOT",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "jest --config=./jest.config.json",
     "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack --watch\" \"cross-env nodemon dev/server.js\"",
-    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8888 nodemon dev/server.js --intercept\"",
-    "build": "cross-env NODE_ENV=production node ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --bail",
-    "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept\"",
-    "proxy": "cross-env PROXY_HOST=192.168.192.144 PROXY_PORT=8010 nodemon dev/server.js --intercept"
+    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env PROXY_HOST=192.168.10.16 PROXY_PORT=8088 nodemon --inspect dev/server.js --intercept\"",
+    "build": "cross-env NODE_ENV=production LINT=true node ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --bail",
+    "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.10.6 PROXY_PORT=8088 nodemon dev/server.js --intercept\"",
+    "proxy": "cross-env PROXY_HOST=192.168.10.16 PROXY_PORT=8088 nodemon --inspect dev/server.js --intercept"
   },
   "author": "",
   "license": "ISC",
@@ -56,6 +56,7 @@
     "node-sass": "^4.7.2",
     "nodemon": "^1.15.1",
     "sass-loader": "^6.0.6",
+    "stomp-broker-js": "git://github.com/4ib3r/StompBrokerJS",
     "style-loader": "^0.19.1",
     "url-loader": "^0.6.2",
     "webpack-bundle-analyzer": "^2.11.0",
@@ -75,6 +76,7 @@
     "chart.js": "^2.7.2",
     "classnames": "^2.2.5",
     "cssnano": "^3.10.0",
+    "fifo-array": "^0.1.2",
     "highcharts": "^6.1.0",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
@@ -108,5 +110,11 @@
     "webpack": "^4.0.1",
     "webpack-cli": "^2.0.9",
     "xlsx": "^0.13.0"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "dist/*"
+    ],
+    "delay": "1000"
   }
 }

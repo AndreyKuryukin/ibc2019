@@ -4,7 +4,6 @@ const path = require('path');
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 const i18n = require('./dev/loaders/i18n');
-const FE_VERSION = require('./package.json').version;
 
 const MinifyPlugin = require('babel-minify-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
@@ -12,13 +11,24 @@ const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPl
 const plugins = [];
 const devMode = process.env.NODE_ENV === 'development';
 const prodMode = process.env.NODE_ENV === 'production';
-
+const lint = process.env.LINT === 'true';
+console.log(process.env.LINT);
 
 const PROXY_HOST = process.env.PROXY_HOST;
 const PROXY_PORT = process.env.PROXY_PORT;
 
-if (prodMode) {
-    // plugins.push(new MinifyPlugin());
+const rules = [];
+
+if (lint) {
+   rules.push({
+       enforce: 'pre',
+       test: /\.js$/,
+       exclude: /node_modules/,
+       loader: 'eslint-loader',
+       options: {
+           emitWarning: true
+       }
+   })
 }
 
 if (devMode) {
@@ -35,16 +45,7 @@ module.exports = {
     mode: process.env.NODE_ENV,
     devtool: devMode && 'inline-sourcemap',
     module: {
-        rules: [
-            {
-                enforce: 'pre',
-                test: /\.js$/,
-                exclude: /node_modules/,
-                loader: 'eslint-loader',
-                options: {
-                    emitWarning: true
-                }
-            },
+        rules: rules.concat([
             {
                 test: /\.js$/,
                 loader: ['babel-loader', {
@@ -95,7 +96,7 @@ module.exports = {
                 test: /\.(svg|woff|woff2|eot|ttf|)$/i,
                 loaders: ['url-loader']
             }
-        ],
+        ]),
     },
     resolve: {
         symlinks: prodMode,
@@ -115,7 +116,7 @@ module.exports = {
             allChunks: true,
         }),
         new webpack.DefinePlugin({
-            'FE_VERSION' : JSON.stringify(FE_VERSION),
+            'DEV_MODE': devMode
         })
     ],
     stats: {

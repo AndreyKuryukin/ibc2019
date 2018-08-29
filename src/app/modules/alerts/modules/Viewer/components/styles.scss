@@ -1,0 +1,35 @@
+@import '../../../../../scss/vars';
+
+.alertsViewer {
+  width: 550px !important;
+  max-width: 550px !important;
+  .alertsViewerContent {
+    display: flex;
+    flex-grow: 1;
+    background: $white;
+    flex-direction: column;
+    .alertsViewerRow {
+      display: flex;
+      flex-grow: 1;
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
+      > div {
+        width: 50%;
+        padding: 6px;
+      }
+      > div:first-child {
+        text-align: right;
+      }
+      .alertContent {
+        display: flex;
+        align-items: center;
+      }
+      .attributesList li {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+}
