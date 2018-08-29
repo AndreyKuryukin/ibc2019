@@ -28,6 +28,14 @@ const DEFAULT_TEXTS = {
     ATTRIBUTES: 'Все сохраняемые атрибуты аварии: (Значения макроподстановок)'
 };
 
+
+const DURATION_UNITS_MAP = {
+    'DAYS': () => ls('ALERTS_GROUP_POLICIES_DURATION_DAYS_UNIT', 'дн. '),
+    'HOURS': () => ls('ALERTS_GROUP_POLICIES_DURATION_HOURS_UNIT', 'ч'),
+    'MINUTES': () => ls('ALERTS_GROUP_POLICIES_DURATION_MINUTES_UNIT', 'м'),
+    'SECONDS': () => ls('ALERTS_GROUP_POLICIES_DURATION_SECONDS_UNIT', 'с'),
+};
+
 class AlertsViewer extends React.PureComponent {
     static contextTypes = {
         history: PropTypes.object.isRequired,
@@ -67,9 +75,8 @@ class AlertsViewer extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + ls(`ALERTS_GROUP_POLICIES_DURATION_${key.toUpperCase()}_UNIT`, '');
-
-            return `${result}${nextPart}`;
+            const nextPart = readableUnits + DURATION_UNITS_MAP[key.toUpperCase()]();
+            return `${result}${nextPart} `;
         }, '');
 
     getAlertContent = (key) => {

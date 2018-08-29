@@ -22,10 +22,10 @@ const ALERTS_STATUS_MAP = {
 };
 
 const DURATION_UNITS_MAP = {
-    'DAYS': ls('ALERTS_GROUP_POLICIES_DURATION_DAY_UNIT', 'дн. '),
-    'HOURS': ls('ALERTS_STATUS_CLOSED', 'ч'),
-    'MINUTES': ls('ALERTS_STATUS_CLOSED', 'м'),
-    'SECONDS': ls('ALERTS_STATUS_CLOSED', 'с'),
+    'DAYS': () => ls('ALERTS_GROUP_POLICIES_DURATION_DAYS_UNIT', 'дн. '),
+    'HOURS': () => ls('ALERTS_GROUP_POLICIES_DURATION_HOURS_UNIT', 'ч'),
+    'MINUTES': () => ls('ALERTS_GROUP_POLICIES_DURATION_MINUTES_UNIT', 'м'),
+    'SECONDS': () => ls('ALERTS_GROUP_POLICIES_DURATION_SECONDS_UNIT', 'с'),
 };
 
 class AlertsTable extends React.PureComponent {
@@ -186,7 +186,7 @@ class AlertsTable extends React.PureComponent {
             const method = duration[key];
             const units = method.call(duration).toString();
             const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + DURATION_UNITS_MAP[key.toUpperCase()];
+            const nextPart = readableUnits + DURATION_UNITS_MAP[key.toUpperCase()]();
             return `${result}${nextPart} `;
         }, '');
 

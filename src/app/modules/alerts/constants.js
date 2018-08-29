@@ -14,6 +14,9 @@ export const SENDING_ALERT_TYPES = {
     [KQI_ALERTS]: KQI_ALERT_TYPE,
 };
 
+export const NOTIFICATION_MAX_COUNT = 1000;
+export const ALERT_MAX_COUNT = 1000;
+
 export const FILTER_FIELDS = {
     AUTO_REFRESH: 'auto_refresh',
     START: 'start',

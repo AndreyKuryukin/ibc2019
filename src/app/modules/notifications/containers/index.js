@@ -7,6 +7,7 @@ import { applyAlerts, applyCiAlerts, applyGpAlerts, applyKqiAlerts, updateAlerts
 import _ from 'lodash';
 import Connector from "./Connector";
 import { CLIENTS_INCIDENTS_ALERTS, GROUP_POLICIES_ALERTS, KQI_ALERTS } from "../../alerts/constants";
+import ls from "i18n";
 
 const devMode = DEV_MODE;
 
@@ -19,6 +20,10 @@ class Notification extends React.PureComponent {
     static defaultProps = {
         notifications: [],
         alertsState: {},
+    };
+
+    static contextTypes = {
+        notifications: PropTypes.object.isRequired,
     };
 
     //todo: Replace inline strings to constants
@@ -138,7 +143,12 @@ class Notification extends React.PureComponent {
     }, {});
 
     alertStorm = () => {
-        this.props.alertStorm();
+        this.context.notifications && this.context.notifications.notify({
+            title: ls('NOTIFICATIONS_ALERT_STORM_TITLE', 'Зафиксировано аномально высокое количество аварий'),
+            message: ls('NOTIFICATIONS_ALERT_STORM_MESSAGE', 'Уведомление о новых авариях приостановлено'),
+            type: 'CRITICAL',
+            code: 'alert-storm'
+        });
     };
 
     extractFilter = (alertsState) => _.reduce(['ci', 'gp', 'kqi'], (result, type) => {
@@ -178,8 +188,6 @@ const mapDispatchToProps = dispatch => ({
     },
     applyAlerts: (alerts) => {
         Object.keys(alerts).forEach(type => dispatch(ACTIONS_MAP[type](alerts[type])))
-    },
-    alertStorm: () => {
     },
 });
 

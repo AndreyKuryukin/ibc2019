@@ -1,5 +1,6 @@
 import moment from 'moment';
 import _ from 'lodash';
+// import FifoArray from 'fifo-array';
 import {
     APPLY_CI_FILTER, FETCH_CI_ALERTS_SUCCESS, FLUSH_CI_HIGHLIGHT, SET_CI_FILTER,
     UNHIGHLIGHT_CI_ALERT

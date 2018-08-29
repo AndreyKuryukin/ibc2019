@@ -1,6 +1,6 @@
 {
   "name": "js",
-  "version": "5.1.19-SNAPSHOT",
+  "version": "5.1.20-SNAPSHOT",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -76,6 +76,7 @@
     "chart.js": "^2.7.2",
     "classnames": "^2.2.5",
     "cssnano": "^3.10.0",
+    "fifo-array": "^0.1.2",
     "highcharts": "^6.1.0",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
