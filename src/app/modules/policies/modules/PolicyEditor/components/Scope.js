@@ -143,10 +143,14 @@ class Scope extends React.PureComponent {
     }
 
     onRemoveScopeValue = (scope, value) => {
-        const scopes = {
-            ...this.props.scopes,
-            [scope]: _.without(this.props.scopes[scope], value),
-        };
+        const scopes = { ...this.props.scopes };
+        const values = _.without(scopes[scope], value);
+
+        if (values.length !== 0) {
+            scopes[scope] = values;
+        } else {
+            delete scopes[scope];
+        }
 
         this.props.onChange(scopes);
     }
