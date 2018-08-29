@@ -8,20 +8,21 @@ import {
 import { CI_ALERT_TYPE, FILTER_FIELDS } from '../constants';
 import { SUBMIT_CI_NOTIFICATIONS } from '../../page/actions';
 import { APPLY_CI_ALERTS } from "../../notifications/actions/index";
+const defaultFilter = {
+    [FILTER_FIELDS.AUTO_REFRESH]: false,
+    [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
+    [FILTER_FIELDS.END]: moment().toDate(),
+    [FILTER_FIELDS.RF]: '',
+    [FILTER_FIELDS.MRF]: '',
+    [FILTER_FIELDS.FILTER]: '',
+    [FILTER_FIELDS.CURRENT]: true,
+    [FILTER_FIELDS.HISTORICAL]: false,
+    [FILTER_FIELDS.TYPE]: CI_ALERT_TYPE
+};
 
 const initialState = {
-    filter: {
-        [FILTER_FIELDS.AUTO_REFRESH]: false,
-        [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
-        [FILTER_FIELDS.END]: moment().toDate(),
-        [FILTER_FIELDS.RF]: '',
-        [FILTER_FIELDS.MRF]: '',
-        [FILTER_FIELDS.FILTER]: '',
-        [FILTER_FIELDS.CURRENT]: true,
-        [FILTER_FIELDS.HISTORICAL]: false,
-        [FILTER_FIELDS.TYPE]: CI_ALERT_TYPE
-    },
-    appliedFilter: {},
+    filter: defaultFilter,
+    appliedFilter: {...defaultFilter},
     alerts: [],
     highLight: [],
     total: 0,

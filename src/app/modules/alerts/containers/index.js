@@ -319,7 +319,7 @@ class Alerts extends React.PureComponent {
         return {
             ...alerts,
             alerts: alerts.alerts.map(alert => {
-                alert.new = highlight.findIndex(hglth => hglth.id === alert.id) !== -1;
+                alert.new = !alert.closed && (highlight.findIndex(hglth => hglth.id === alert.id) !== -1);
                 return alert;
             })
         }

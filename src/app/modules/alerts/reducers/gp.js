@@ -1,28 +1,32 @@
 import moment from 'moment';
 import _ from 'lodash';
 import {
-    APPLY_GP_FILTER, FETCH_GP_ALERTS_SUCCESS, FLUSH_GP_HIGHLIGHT, SET_GP_FILTER,
+    APPLY_GP_FILTER,
+    FETCH_GP_ALERTS_SUCCESS,
+    FLUSH_GP_HIGHLIGHT,
+    SET_GP_FILTER,
     UNHIGHLIGHT_GP_ALERT
 } from '../actions/gp';
 import { FILTER_FIELDS, GROUP_POLICIES_ALERT_TYPE } from '../constants';
 import { SUBMIT_GP_NOTIFICATIONS } from '../../page/actions';
 import { APPLY_GP_ALERTS } from "../../notifications/actions/index";
 
+const defaultFilter = {
+    [FILTER_FIELDS.AUTO_REFRESH]: false,
+    [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
+    [FILTER_FIELDS.END]: moment().toDate(),
+    [FILTER_FIELDS.RF]: '',
+    [FILTER_FIELDS.MRF]: '',
+    [FILTER_FIELDS.FILTER]: '',
+    [FILTER_FIELDS.CURRENT]: true,
+    [FILTER_FIELDS.HISTORICAL]: false,
+    [FILTER_FIELDS.TYPE]: GROUP_POLICIES_ALERT_TYPE
+};
 
 const initialState = {
-    filter: {
-        [FILTER_FIELDS.AUTO_REFRESH]: false,
-        [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
-        [FILTER_FIELDS.END]: moment().toDate(),
-        [FILTER_FIELDS.RF]: '',
-        [FILTER_FIELDS.MRF]: '',
-        [FILTER_FIELDS.FILTER]: '',
-        [FILTER_FIELDS.CURRENT]: true,
-        [FILTER_FIELDS.HISTORICAL]: false,
-        [FILTER_FIELDS.TYPE]: GROUP_POLICIES_ALERT_TYPE
-    },
+    filter: defaultFilter,
     alerts: [],
-    appliedFilter: {},
+    appliedFilter: { ...defaultFilter },
     highLight: [],
     total: 0,
 };

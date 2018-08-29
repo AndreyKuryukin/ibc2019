@@ -11,23 +11,24 @@ import { FILTER_FIELDS, KQI_ALERT_TYPE } from '../constants';
 import { SUBMIT_KQI_NOTIFICATIONS } from '../../page/actions';
 import { APPLY_KQI_ALERTS } from "../../notifications/actions/index";
 
+const defaultFilter = {
+    [FILTER_FIELDS.AUTO_REFRESH]: false,
+    [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
+    [FILTER_FIELDS.END]: moment().toDate(),
+    [FILTER_FIELDS.RF]: '',
+    [FILTER_FIELDS.MRF]: '',
+    [FILTER_FIELDS.FILTER]: '',
+    [FILTER_FIELDS.CURRENT]: true,
+    [FILTER_FIELDS.HISTORICAL]: false,
+    [FILTER_FIELDS.TYPE]: KQI_ALERT_TYPE
+};
 
 const initialState = {
-    filter: {
-        [FILTER_FIELDS.AUTO_REFRESH]: false,
-        [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
-        [FILTER_FIELDS.END]: moment().toDate(),
-        [FILTER_FIELDS.RF]: '',
-        [FILTER_FIELDS.MRF]: '',
-        [FILTER_FIELDS.FILTER]: '',
-        [FILTER_FIELDS.CURRENT]: true,
-        [FILTER_FIELDS.HISTORICAL]: false,
-        [FILTER_FIELDS.TYPE]: KQI_ALERT_TYPE
-    },
+    filter: defaultFilter,
     alerts: [],
     highLight: [],
     total: 0,
-    appliedFilter: {},
+    appliedFilter: { [FILTER_FIELDS.TYPE]: KQI_ALERT_TYPE },
 };
 
 export default (state = initialState, action) => {
