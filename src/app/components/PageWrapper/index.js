@@ -94,7 +94,7 @@ class PageWrapper extends React.Component {
         const fakeLink = document.createElement('a');
         const e = document.createEvent('MouseEvents');
 
-        fakeLink.setAttribute('download', this.props.text);
+        fakeLink.setAttribute('download', `${ls('USER_MANUAL_FILE_NAME', 'Руководство пользователя')}.pdf`);
         fakeLink.setAttribute('href', fileUrl);
 
         e.initEvent('click', true, true);

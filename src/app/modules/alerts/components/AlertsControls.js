@@ -318,7 +318,7 @@ class AlertsControls extends React.Component {
                         itemId="alerts_search_field"
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
                         className={styles.search}
-                        value={this.getFilterProperty('filter', false)}
+                        value={this.getFilterProperty('filter')}
                         onChange={value => this.setFilterProperty('filter', value)}
                     />
                     <div className={styles.statistics}>{current + '/' + total}</div>

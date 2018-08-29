@@ -4,11 +4,10 @@ import memoize from 'memoizejs';
 import moment from 'moment';
 import ls, { createLocalizer } from 'i18n';
 import _ from 'lodash';
-import search from '../../../util/search';
 import Table from '../../../components/Table';
 import { convertUTC0ToLocal } from '../../../util/date';
 import { naturalSort } from '../../../util/sort';
-import { DefaultCell, LinkCell, IconCell } from '../../../components/Table/Cells';
+import { DefaultCell, IconCell, LinkCell } from '../../../components/Table/Cells';
 import { ALERTS_TYPES, CLIENTS_INCIDENTS_ALERTS } from '../constants';
 
 const iconCellStyle = {
@@ -87,7 +86,7 @@ class AlertsTable extends React.PureComponent {
                 searchable: true,
                 sortable: true,
                 width: 150,
-            },  {
+            }, {
                 getTitle: createLocalizer('ALERTS_CEASE_TIME_COLUMN', 'Время и дата закрытия'),
                 name: 'cease_time',
                 resizable: true,
@@ -99,37 +98,37 @@ class AlertsTable extends React.PureComponent {
                 name: 'duration',
                 searchable: true,
                 sortable: true,
-                width: 100,
+                width: 120,
             }
         ];
 
         const columnsByType = type === CLIENTS_INCIDENTS_ALERTS
-                ? [{
-                    getTitle: createLocalizer('ALERTS_MAC_COLUMN', 'MAC'),
-                    name: 'mac',
-                    resizable: true,
-                    searchable: true,
-                    sortable: true,
-                }, {
-                    getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'SAN'),
-                    name: 'san',
-                    resizable: true,
-                    searchable: true,
-                    sortable: true,
-                } , {
-                    getTitle: createLocalizer('ALERTS_PERSONAL_ACCOUNT_COLUMN', 'Лицевой счёт'),
-                    name: 'personal_account',
-                    resizable: true,
-                    searchable: true,
-                    sortable: true,
-                }]
-                : [{
-                    getTitle: createLocalizer('ALERTS_OBJECT_COLUMN', 'Объект'),
-                    name: 'object',
-                    resizable: true,
-                    searchable: true,
-                    sortable: true,
-                }];
+            ? [{
+                getTitle: createLocalizer('ALERTS_MAC_COLUMN', 'MAC'),
+                name: 'mac',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }, {
+                getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'SAN'),
+                name: 'san',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }, {
+                getTitle: createLocalizer('ALERTS_PERSONAL_ACCOUNT_COLUMN', 'Лицевой счёт'),
+                name: 'personal_account',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }]
+            : [{
+                getTitle: createLocalizer('ALERTS_OBJECT_COLUMN', 'Объект'),
+                name: 'object',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }];
 
         return commonColumns.concat(columnsByType);
     });
@@ -148,7 +147,7 @@ class AlertsTable extends React.PureComponent {
     );
 
     bodyRowRender = (column, node) => {
-        switch(column.name) {
+        switch (column.name) {
             case 'id':
                 return (
                     <LinkCell
@@ -191,6 +190,11 @@ class AlertsTable extends React.PureComponent {
             return `${result}${nextPart} `;
         }, '');
 
+    mapSan = (san) => {
+        const digits = String(san).match(/\d+/g);
+        return _.isEmpty(digits) ? '' : digits.join('_');
+    };
+
     mapData = data => data.map(node => ({
         id: String(node.id),
         external_id: node.external_id || '',
@@ -201,8 +205,8 @@ class AlertsTable extends React.PureComponent {
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',
         personal_account: node.nls || '',
-        san: node.san || '',
-        mac: node.mac || '',
+        san: this.mapSan(node.san),
+        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
         status: node.closed ? ALERTS_STATUS_MAP['CLOSED'] : ALERTS_STATUS_MAP['ACTIVE'],
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
         new: !!node.new,

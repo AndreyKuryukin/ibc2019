@@ -35,8 +35,8 @@ const TAB_TITLES = {
 };
 
 const ALERT_POLICY_MAP = {
-    ci: ['VB'],
-    gp: ['STB', 'OTT'],
+    ci: ['STB', 'OTT'],
+    gp: ['VB'],
     kqi: ['KQI']
 };
 
@@ -131,11 +131,11 @@ class Alerts extends React.PureComponent {
                 historical: queryParams.historical === 'true',
             };
             this.props.onChangeFilter(filter);
-            !this.state.isLoading && this.onFetchAlerts(filter);
+            !this.state.isLoading && this.onFetchAlerts(filter, newType);
         } else {
-            setQueryParams(this.prepareFilter(filter), props.history, props.location);
+            setQueryParams(this.prepareFilter(filter, newType), props.history, props.location);
             if (props.alerts.alerts.length === 0) {
-                !this.state.isLoading && this.onFetchAlerts(filter);
+                !this.state.isLoading && this.onFetchAlerts(filter, newType);
             }
         }
     };
@@ -167,7 +167,7 @@ class Alerts extends React.PureComponent {
         this.setState({ isLoading: true });
 
         const queryParams = {
-            ...this.prepareFilter(filter),
+            ...this.prepareFilter(filter,this.props.match.params.type),
             limit: 65000,
         };
 
@@ -191,7 +191,7 @@ class Alerts extends React.PureComponent {
                 { wpx: 200 },
             ];
             const worksheet = XLSX.utils.json_to_sheet(response.data.alerts.map(node => ({
-                id: node.id.toString(),
+                id: String(node.id),
                 external_id: node.external_id || '',
                 policy_name: node.policy_name,
                 notification_status: node.notification_status || '',
@@ -220,10 +220,10 @@ class Alerts extends React.PureComponent {
         this.handleAlertsFetching(queryParams, success);
     };
 
-    onFetchAlerts = (filter) => {
+    onFetchAlerts = (filter, type) => {
         this.setState({ isLoading: true });
 
-        const queryParams = this.prepareFilter(filter);
+        const queryParams = this.prepareFilter(filter, type);
 
         const success = (response) => {
             const typeMap = {
@@ -242,7 +242,7 @@ class Alerts extends React.PureComponent {
     onFilterAlerts = _.debounce((filter, callback) => {
         this.setState({ isLoading: true });
 
-        const queryParams = this.prepareFilter(filter);
+        const queryParams = this.prepareFilter(filter, this.props.match.params.type);
 
         const success = (response) => {
             const alerts = response.data;
@@ -274,19 +274,19 @@ class Alerts extends React.PureComponent {
     };
 
     fetchAlerts = (filter) => {
-        const queryParams = this.prepareFilter(filter);
+        const queryParams = this.prepareFilter(filter, this.props.match.params.type);
         setQueryParams(queryParams, this.props.history, this.props.location);
         if (!filter.auto_refresh) {
             this.props.onFlushHighlight();
         }
         this.props.applyFilter(filter);
-        this.onFetchAlerts(filter);
+        this.onFetchAlerts(filter, this.props.match.params.type);
     };
 
-    prepareFilter = (filter) => {
+    prepareFilter = (filter, type) => {
         const preparedFilter = {
             ...filter,
-            type: SENDING_ALERT_TYPES[this.props.match.params.type],
+            type: SENDING_ALERT_TYPES[type],
             start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
             end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
         };
@@ -302,7 +302,7 @@ class Alerts extends React.PureComponent {
     };
 
     onChangeFilter = (filter) => {
-        const queryParams = this.prepareFilter(filter);
+        const queryParams = this.prepareFilter(filter, this.props.match.params.type);
         if (this.props.filter.filter !== filter.filter) {
             this.onFilterAlerts(filter, () => {
                 this.props.onChangeFilter(filter);
