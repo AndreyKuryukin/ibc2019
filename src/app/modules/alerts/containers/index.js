@@ -121,10 +121,11 @@ class Alerts extends React.PureComponent {
     onTypeSwitch = (newType, props) => {
         this.setState({ type: newType });
         const queryParams = getQueryParams(props.location);
-        const filter = props.filter;
+        const stateFilter = props.filter;
         if (!_.isEmpty(queryParams)) {
             const filter = {
                 ...queryParams,
+                auto_refresh: stateFilter.auto_refresh,
                 start: new Date(+queryParams.start),
                 end: new Date(+queryParams.end),
                 current: queryParams.current === 'true',
@@ -133,9 +134,9 @@ class Alerts extends React.PureComponent {
             this.props.onChangeFilter(filter);
             !this.state.isLoading && this.onFetchAlerts(filter, newType);
         } else {
-            setQueryParams(this.prepareFilter(filter, newType), props.history, props.location);
+            setQueryParams(this.prepareFilter(stateFilter, newType), props.history, props.location);
             if (props.alerts.alerts.length === 0) {
-                !this.state.isLoading && this.onFetchAlerts(filter, newType);
+                !this.state.isLoading && this.onFetchAlerts(stateFilter, newType);
             }
         }
     };
@@ -167,7 +168,7 @@ class Alerts extends React.PureComponent {
         this.setState({ isLoading: true });
 
         const queryParams = {
-            ...this.prepareFilter(filter,this.props.match.params.type),
+            ...this.prepareFilter(filter, this.props.match.params.type),
             limit: 65000,
         };
 
