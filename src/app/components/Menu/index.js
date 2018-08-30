@@ -20,6 +20,7 @@ class Menu extends React.Component {
             link: PropTypes.string
         })),
         onClick: PropTypes.func,
+        onNotificationClick: PropTypes.func,
         className: PropTypes.string,
         path: PropTypes.string,
         notifications: PropTypes.object,
@@ -31,6 +32,7 @@ class Menu extends React.Component {
         notifications: [],
         path: '',
         onClick: () => null,
+        onNotificationClick: () => null,
         app: {}
     };
 
@@ -59,9 +61,9 @@ class Menu extends React.Component {
 
     renderNotifications = (notifications) => {
         const linkMap = {
-            'gp': 'gp',
-            'kqi': 'kqi',
-            'ki': 'ci'
+            'GROUP_AGGREGATION': 'gp',
+            'KPIKQI': 'kqi',
+            'SIMPLE': 'ci'
         };
         return <div className={styles.notificationCountPopup}>
             {_.reduce(notifications, (result, msgs = [], type) => {
@@ -69,8 +71,9 @@ class Menu extends React.Component {
                     result.push(<div className={styles.type}
                                      key={`item-${type}`}
                                      onClick={() => {
-                                         this.onItemClick({ link: `/alarms/${linkMap[type]}` });
-                                         this.toggle()
+                                         this.props.onNotificationClick(type, msgs);
+                                         this.onItemClick({ link: `/alerts/${linkMap[type]}` });
+                                         this.toggle();
                                      }}
                     >
                         {ls(`ALERTS_TYPE_${type.toUpperCase()}`)}
@@ -89,8 +92,8 @@ class Menu extends React.Component {
         const clearLink = this.getFeature(item.link);
         const isActive = clearLink === feature;
         //todo: Заменить частный случай на общий
-        const notificationCount = clearLink === 'alarms' ? _.get(this.props, `notifications.${'alerts'}.count`, 0) : 0;
-        const notifications = clearLink === 'alarms' ? _.omit(_.get(this.props, `notifications.${'alerts'}`, {}), ['count']) : {};
+        const notificationCount = clearLink === 'alerts' ? _.get(this.props, `notifications.${'alerts'}.count`, 0) : 0;
+        const notifications = clearLink === 'alerts' ? _.omit(_.get(this.props, `notifications.${'alerts'}`, {}), ['count']) : {};
         return (<div
             itemId={`menu_${clearLink}`}
             id={`menu-tile-${clearLink}`}
@@ -128,7 +131,7 @@ class Menu extends React.Component {
         return <div className={classNames(styles.sideMenu, className)}>
             {_.isArray(menuItems) && menuItems.map((item, index) => this.renderTile(item, index, feature))}
             <div className={classNames(styles.appVersion)}>
-                {`FE: v. ${app.version}`}
+                {'SQM v.1.2.1.1'}
             </div>
         </div>
     }

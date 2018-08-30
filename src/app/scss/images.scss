@@ -159,11 +159,11 @@
   @include iconBuilder(40px, 40px, 'menu/sources-active.svg');
 }
 
-.menu-icon-alarms {
-  @include iconBuilder(40px, 40px, 'menu/alarms.svg');
+.menu-icon-alerts {
+  @include iconBuilder(40px, 40px, 'menu/alerts.svg');
 }
-.menu-icon-alarms-active {
-  @include iconBuilder(40px, 40px, 'menu/alarms-active.svg');
+.menu-icon-alerts-active {
+  @include iconBuilder(40px, 40px, 'menu/alerts-active.svg');
 }
 
 .menu-icon-users-and-roles {
@@ -196,4 +196,7 @@
 
 .logout-icon {
   @include iconBuilder(15px, 15px, 'common/logout.svg');
+}
+.info-icon {
+  @include iconBuilder(15px, 15px, 'info.svg');
 }

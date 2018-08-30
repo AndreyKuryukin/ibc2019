@@ -13,6 +13,7 @@ class Body extends React.PureComponent {
         selected: PropTypes.string,
         onRowClick: PropTypes.func,
         bodyRowRender: PropTypes.func,
+        rowClassGetter: PropTypes.func,
     };
 
     static defaultProps = {
@@ -22,6 +23,7 @@ class Body extends React.PureComponent {
         selected: '',
         onRowClick: () => null,
         bodyRowRender: () => null,
+        rowClassGetter: () => null,
     };
 
     render() {
@@ -33,26 +35,31 @@ class Body extends React.PureComponent {
             selected,
             onRowClick,
             bodyRowRender,
+            rowClassGetter,
         } = this.props;
 
         return (
             <div className={styles.tableBody}>
-                {data.map((node, index) => <div
-                        key={node.id || `table-${id}_node-${index}`}
-                        id={node.id}
-                        className={classnames(styles.bodyRow, { [styles.selected]: selected === node.id })}
-                        onClick={() => onRowClick(node)}
-                    >
-                        {columns.map(column => (
-                            <div
-                                key={column.name}
-                                className={classnames(styles.bodyCell, `table-${id}_column-${column.name}`)}
-                            >
-                                {bodyRowRender(column, node)}
-                            </div>
-                        ))}
-                    </div>
-                )}
+                {data.map((node, index) => {
+                    const rowClass = _.isFunction(rowClassGetter) ? rowClassGetter(node) : '';
+                    return (
+                        <div
+                            key={node.id || `table-${id}_node-${index}`}
+                            id={node.id}
+                            className={classnames(styles.bodyRow, rowClass, { [styles.selected]: selected === node.id })}
+                            onClick={() => onRowClick(node)}
+                        >
+                            {columns.map(column => (
+                                <div
+                                    key={column.name}
+                                    className={classnames(styles.bodyCell, `table-${id}_column-${column.name}`)}
+                                >
+                                    {bodyRowRender(column, node)}
+                                </div>
+                            ))}
+                        </div>
+                    );
+                })}
             </div>
         );
     }

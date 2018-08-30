@@ -37,7 +37,7 @@
         background-color: $table-hover-bg;
       }
       &.selected {
-        background-color: $orange !important;
+        background-color: $orange;
         * {
           color: $white !important;
         }
@@ -49,6 +49,14 @@
         align-items: center;
       }
     }
+  }
+  .tableStatistics {
+    display: flex;
+    height: 30px;
+    background: $nav-background;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 20px;
   }
 }
 

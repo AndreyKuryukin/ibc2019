@@ -9,7 +9,7 @@ import policies from '../modules/policies/reducers';
 import kqi from '../modules/kqi/reducers';
 import reports from '../modules/reports/reducers';
 import sources from '../modules/sources/reducers';
-import alarms from '../modules/alarms/reducers';
+import alerts from '../modules/alerts/reducers';
 import notifications from '../modules/notifications/reducers';
 
 export default combineReducers({
@@ -22,6 +22,6 @@ export default combineReducers({
     kqi,
     reports,
     sources,
-    alarms,
+    alerts,
     notifications
 });

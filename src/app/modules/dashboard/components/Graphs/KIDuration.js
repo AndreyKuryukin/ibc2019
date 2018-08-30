@@ -125,7 +125,7 @@ class KIDuration extends React.Component {
             const start = moment().subtract(1, interval).startOf(interval).valueOf();
 
             owner.context.history.push({
-                pathname: '/alarms/ci',
+                pathname: '/alerts/ci',
                 search: _.reduce({
                     rf: owner.props.data[point.index].id,
                     mrf: owner.props.mrfId,
