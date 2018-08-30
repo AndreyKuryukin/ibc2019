@@ -55,6 +55,7 @@ export default (state = initialState, action) => {
             const alerts = _.get(state, 'alerts');
             const ci_alerts = _.get(alerts, CI_ALERT_TYPE, []);
             const decrement = _.remove(ci_alerts, alert => alert.id === action.payload.id).length;
+            console.log(ci_alerts, action.payload.id);
             return {
                 ...state,
                 alerts: {

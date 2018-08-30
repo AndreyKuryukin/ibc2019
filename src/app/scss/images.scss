@@ -197,3 +197,6 @@
 .logout-icon {
   @include iconBuilder(15px, 15px, 'common/logout.svg');
 }
+.info-icon {
+  @include iconBuilder(15px, 15px, 'info.svg');
+}

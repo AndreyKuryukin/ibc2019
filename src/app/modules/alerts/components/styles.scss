@@ -24,7 +24,7 @@
   justify-content: space-between;
   background: $white;
   z-index: 1000;
-  .alertsFilterGroups{
+  .alertsFilterGroups {
     display: flex;
     //flex: 0 0 50%;
     align-items: center;
@@ -55,6 +55,17 @@
     margin-top: 5px;
   }
 }
+
+.alertsFilterInput {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  :first-child {
+    margin-right: 4px
+  }
+}
+
 .warningMsg {
   width: 225px;
   color: $white;
@@ -68,11 +79,13 @@
     margin-right: 8px
   }
 }
+
 .buttonWrapper {
   display: flex;
   justify-content: flex-end;
   padding: 16px 8px 0;
 }
+
 .historicalDropdown {
   left: 1px !important;
   top: -3px !important;
