@@ -119,10 +119,10 @@
   "AGGREGATION_FUNCTION_SMART_SPY_PRC_ACC_DEVICE": "% STB на оборудовании доступа",
   "AGGREGATION_FUNCTION_SMART_SPY_PRC_AGG_DEVICE": "% STB на оборудовании агрегации",
   "AGGREGATION_FUNCTION_SMART_SPY_PRC_PE_DEVICE": "% STB на оборудовании PE",
-  "AGGREGATION_FUNCTION_VB_UNICAST_SIMPLE": "Без функции агрегации",
+  "AGGREGATION_FUNCTION_VB_UNICAST_SIMPLE": "Без функции агрегации (unicast)",
   "AGGREGATION_FUNCTION_VB_UNICAST_CHANNEL_COUNT": "количество unicast-каналов на анализаторе",
-  "AGGREGATION_FUNCTION_VB_MULTICAST_SIMPLE": "Без функции агрегации",
+  "AGGREGATION_FUNCTION_VB_MULTICAST_SIMPLE": "Без функции агрегации (multicast)",
   "AGGREGATION_FUNCTION_VB_MULTICAST_CHANNEL_COUNT": "количество mcast-каналов на анализаторе",
   "AGGREGATION_FUNCTION_OTT_SIMPLE": "Без функции агрегации",
-  "AGGREGATION_FUNCTION_KQI_SIMPLE": "Без функции агрегации (edited)"
+  "AGGREGATION_FUNCTION_KQI_SIMPLE": "Без функции агрегации"
 }
