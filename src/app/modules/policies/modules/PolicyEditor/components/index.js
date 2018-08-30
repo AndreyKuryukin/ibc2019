@@ -166,8 +166,8 @@ class PolicyEditor extends React.PureComponent {
         }
 
         if (key === 'allow_accident' && value === false) {
-            _.set(policyValues, 'accident', '');
-            _.set(policyValues, 'waiting_time', '');
+            _.set(policyValues, 'parent_policy', '');
+            _.set(policyValues, 'suppression_timeout', '');
         }
 
         if ((key === 'threshold.cease_value' || key === 'threshold.rise_value') && _.get(prevPolicy, 'object_type', '') !== 'STB') {
@@ -396,9 +396,11 @@ class PolicyEditor extends React.PureComponent {
                                                         type="select"
                                                         placeholder={ls('POLICY_NOT_ALLOWED_ACCIDENT_PLACEHOLDER', 'Выбрать политику')}
                                                         options={this.mapPolicies(policies, policyId)}
-                                                        value={this.getPolicyProperty('accident')}
-                                                        onChange={value => this.setPolicyProperty('accident', value)}
+                                                        value={this.getPolicyProperty('parent_policy') || ''}
+                                                        onChange={value => this.setPolicyProperty('parent_policy', value)}
                                                         disabled={!this.getPolicyProperty('allow_accident')}
+                                                        valid={_.isEmpty(_.get(errors, 'parent_policy'))}
+                                                        errorMessage={_.get(errors, 'parent_policy.title')}
                                                     />
                                                 </Field>
                                             )}
@@ -417,10 +419,12 @@ class PolicyEditor extends React.PureComponent {
                                                             type="number"
                                                             name="waiting-time"
                                                             placeholder="0"
-                                                            value={this.getPolicyProperty('waiting_time')}
-                                                            onChange={value => this.setPolicyProperty('waiting_time', value)}
+                                                            value={this.getPolicyProperty('suppression_timeout')}
+                                                            onChange={value => this.setPolicyProperty('suppression_timeout', value)}
                                                             disabled={!this.getPolicyProperty('allow_accident')}
                                                             maxLength={6}
+                                                            valid={_.isEmpty(_.get(errors, 'suppression_timeout'))}
+                                                            errorMessage={_.get(errors, 'suppression_timeout.title')}
                                                         />
                                                         <span
                                                             style={unitStyle}>{ls('MEASURE_UNITS_SECOND', 'сек.')}</span>
