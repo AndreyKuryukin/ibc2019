@@ -5,7 +5,6 @@ import ls from 'i18n';
 import _ from 'lodash';
 import moment from 'moment';
 import memoize from 'memoizejs';
-import XLSX from 'xlsx';
 import Field from '../../../components/Field';
 import Input from '../../../components/Input';
 import Select from '../../../components/Select';
@@ -13,7 +12,7 @@ import Checkbox from '../../../components/Checkbox';
 import DatePicker from '../../../components/DateTimePicker';
 import Dropdown from '../../../components/Dropdown';
 import styles from './styles.scss';
-import { FILTER_FIELDS } from '../constants';
+import Icon from "../../../components/Icon/Icon";
 
 const DATE_PICKER_DEFAULT_STYLE = {
     color: '#aaa',
@@ -67,12 +66,13 @@ class AlertsControls extends React.Component {
 
     shouldComponentUpdate(nextProps, nextState) {
         const isFilterChanged = this.props.filter !== nextProps.filter;
+        const isCounterChanged = this.props.current !== nextProps.current || this.props.total !== nextProps.total;
         const isLocationsChanged = this.props.locations !== nextProps.locations;
         const isOnChangeFilterChanged = this.props.onChangeFilter !== nextProps.onChangeFilter;
         const isOnApplyFilterChanged = this.props.onApplyFilter !== nextProps.onApplyFilter;
         const isHistoricalConfirmOpenChanged = this.state.isHistoricalConfirmOpen !== nextState.isHistoricalConfirmOpen;
 
-        return isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
+        return isCounterChanged || isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
     }
 
     componentWillReceiveProps(nextProps) {
@@ -294,10 +294,12 @@ class AlertsControls extends React.Component {
                                     {ls('ALERTS_HISTORICAL_WARNING_MESSAGE', 'Загрузка архивных аварий может занять длительное время')}
                                 </div>
                                 <div className={styles.buttonWrapper}>
-                                    <Button itemId="alerts_cancel_historical" outline color="action" onClick={this.onTriggerHistoricalDropdown}>
+                                    <Button itemId="alerts_cancel_historical" outline color="action"
+                                            onClick={this.onTriggerHistoricalDropdown}>
                                         {ls('CANCEL', 'Отмена')}
                                     </Button>
-                                    <Button itemId="alerts_confirm_historical" color="action" onClick={this.checkHistorical}>
+                                    <Button itemId="alerts_confirm_historical" color="action"
+                                            onClick={this.checkHistorical}>
                                         {ls('CONTINUE', 'Продолжить')}
                                     </Button>
                                 </div>
@@ -305,23 +307,36 @@ class AlertsControls extends React.Component {
                         </Field>
                     </div>
                     <div className={styles.alertsFilterGroup}>
-                        <Button itemId="alerts_apply" className={styles.applyButton} color="action" onClick={this.onApplyFilter}>
+                        <Button itemId="alerts_apply" className={styles.applyButton} color="action"
+                                onClick={this.onApplyFilter}>
                             {ls('ALERTS_APPLY_FILTER', 'Применить')}
                         </Button>
-                        <Button itemId="alerts_export" className={styles.applyButton} color="action" onClick={this.props.onExportXLSX}>
+                        <Button itemId="alerts_export" className={styles.applyButton} color="action"
+                                onClick={this.props.onExportXLSX}>
                             {ls('ALERTS_LOAD_XLSX', 'Экспорт в XLSX')}
                         </Button>
                     </div>
                 </div>
                 <div className={styles.alertsFilterGroup}>
-                    <Input
-                        itemId="alerts_search_field"
-                        placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
-                        className={styles.search}
-                        value={this.getFilterProperty('filter')}
-                        onChange={value => this.setFilterProperty('filter', value)}
-                    />
-                    <div className={styles.statistics}>{current + '/' + total}</div>
+                    <div className={styles.alertsFilterInput}>
+                        <Input
+                            itemId="alerts_search_field"
+                            placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}
+                            className={styles.search}
+                            value={this.getFilterProperty('filter')}
+                            onChange={value => this.setFilterProperty('filter', value)}
+                        />
+                        <Icon
+                            title={'Поиск по полям ID, SAN, MAC, Лицевой счёт'}
+                            icon="info-icon"
+                        />
+                    </div>
+                    <div className={styles.statistics}
+                         title={ls('ALERTS_COUNTER_TEXT', 'Отображено: {current} / Всего: {total}')
+                             .replace('{current}', current)
+                             .replace('{total}', total)}>
+                        {current + '/' + total}
+                    </div>
                 </div>
             </div>
         );

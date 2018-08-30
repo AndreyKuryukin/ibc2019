@@ -72,20 +72,20 @@ class Notification extends React.PureComponent {
         }, {})
     };
 
-    composeFiltersByTypes = (stateFilter) => _.reduce(stateFilter, (result, filter, type) => {
+    composeFiltersByTypes = (appliedFilter, filterValues) => _.reduce(filterValues, (result, filter, type) => {
         if (filter.auto_refresh) {
-            result[type] = this.composeFilter(filter, ['type', 'mrf', 'rf', 'policy_id']);
+            result[type] = this.composeFilter(_.get(appliedFilter, type, {}), ['type', 'mrf', 'rf', 'policy_id']);
         }
         return result;
     }, {});
 
-    applyAutoRefreshChain = (alerts, stateFilter) => {
-        const typeFilter = this.composeFiltersByTypes(stateFilter);
+    applyAutoRefreshChain = (alerts, appliedFilter, filterValues) => {
+        const typeFilter = this.composeFiltersByTypes(appliedFilter, filterValues);
         const typesToRefresh = Object.keys(typeFilter);
 
         const matches = _.reduce(typesToRefresh, (result, type) => {
             const freshAlerts = alerts.filter(_.matches(typeFilter[type]));
-            const split = this.actionSplit(freshAlerts, stateFilter[type]);
+            const split = this.actionSplit(freshAlerts, appliedFilter[type]);
             if (!_.isEmpty(split)) {
                 result[type] = split;
             }
@@ -98,14 +98,13 @@ class Notification extends React.PureComponent {
 
     onAlerts = (alertsMessage) => {
         const { error, alerts } = alertsMessage;
-        // const activeTab = this.getActiveTab();
-        //todo: Использовать только примененный фильтр
-        const filter = this.extractFilter(this.props.alertsState);
+        const filter = this.extractAppliedFilterValues(this.props.alertsState);
         this.applyNotificationChain(alerts);
         if (!!error && error === 'STORM') {
             this.alertStorm();
         } else {
-            this.applyAutoRefreshChain(alerts, filter)
+            const filterValues = this.extractFilterValues(this.props.alertsState);
+            this.applyAutoRefreshChain(alerts, filter, filterValues);
         }
     };
 
@@ -151,8 +150,13 @@ class Notification extends React.PureComponent {
         });
     };
 
-    extractFilter = (alertsState) => _.reduce(['ci', 'gp', 'kqi'], (result, type) => {
+    extractAppliedFilterValues = (alertsState) => _.reduce(['ci', 'gp', 'kqi'], (result, type) => {
         result[type] = alertsState[type].appliedFilter;
+        return result
+    }, {});
+
+    extractFilterValues = (alertsState) => _.reduce(['ci', 'gp', 'kqi'], (result, type) => {
+        result[type] = alertsState[type].filter;
         return result
     }, {});
 
@@ -183,9 +187,11 @@ const ACTIONS_MAP = {
 };
 
 const mapDispatchToProps = dispatch => ({
+    // alerts -> notificator
     addAlertNotifications: (notifications) => {
         dispatch(updateAlertsNotifications(notifications))
     },
+    // alerts -> ui table
     applyAlerts: (alerts) => {
         Object.keys(alerts).forEach(type => dispatch(ACTIONS_MAP[type](alerts[type])))
     },
