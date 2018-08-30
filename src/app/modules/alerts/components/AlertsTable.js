@@ -17,8 +17,8 @@ const iconCellStyle = {
 };
 
 const ALERTS_STATUS_MAP = {
-    'ACTIVE': ls('ALERTS_STATUS_ACTIVE', 'Текущая'),
-    'CLOSED': ls('ALERTS_STATUS_CLOSED', 'Историческая')
+    'ACTIVE': ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
+    'CLOSED': ls('ALERTS_STATUS_CLOSED', 'Закрытая')
 };
 
 const DURATION_UNITS_MAP = {
