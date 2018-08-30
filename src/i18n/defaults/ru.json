@@ -59,6 +59,9 @@
   "ALERTS_TYPE_SIMPLE": "КИ",
   "ALERTS_TYPE_KPIKQI": "KQI",
 
+  "ALERTS_STATUS_ACTIVE": "Открытая",
+  "ALERTS_STATUS_CLOSED": "Закрытая",
+
   "SUBJECT_USERS": "Пользователи",
   "SUBJECT_ALARMS": "Аварии",
   "SUBJECT_POLICY": "Политики",

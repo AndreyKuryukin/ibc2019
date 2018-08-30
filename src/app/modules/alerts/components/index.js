@@ -28,6 +28,7 @@ class Alerts extends React.PureComponent {
         policies: PropTypes.array,
         notifications: PropTypes.object,
         locations: PropTypes.array,
+        columns: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlerts: PropTypes.func,
         onExportXLSX: PropTypes.func,
@@ -42,6 +43,7 @@ class Alerts extends React.PureComponent {
         notifications: {},
         locations: [],
         policies: [],
+        columns: [],
         onChangeFilter: () => null,
         onFetchAlerts: () => null,
         onExportXLSX: () => null,
@@ -87,6 +89,7 @@ class Alerts extends React.PureComponent {
             onFilterAlerts,
             onReadNewAlert,
             isLoading,
+            columns,
         } = props;
         const { params = {} } = match;
         const { type: activeType = GROUP_POLICIES_ALERTS } = params;
@@ -104,6 +107,7 @@ class Alerts extends React.PureComponent {
                         params={params}
                         filter={filter}
                         alerts={alerts}
+                        columns={columns}
                         locations={locations}
                         policies={policies}
                         onChangeFilter={onChangeFilter}

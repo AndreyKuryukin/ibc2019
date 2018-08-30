@@ -36,6 +36,7 @@ class AlertsTable extends React.PureComponent {
     static propTypes = {
         type: PropTypes.oneOf(ALERTS_TYPES).isRequired,
         data: PropTypes.array,
+        columns: PropTypes.array,
         searchText: PropTypes.string,
         preloader: PropTypes.bool,
         onReadNewAlert: PropTypes.func,
@@ -43,95 +44,11 @@ class AlertsTable extends React.PureComponent {
 
     static defaultProps = {
         data: [],
+        columns: [],
         searchText: '',
         preloader: false,
         onReadNewAlert: () => null,
     };
-
-    static getColumns = memoize((type = CLIENTS_INCIDENTS_ALERTS) => {
-        const commonColumns = [
-            {
-                getTitle: createLocalizer('ALERTS_ID_COLUMN', 'ID'),
-                name: 'id',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-            }, {
-                getTitle: createLocalizer('ALERTS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
-                name: 'external_id',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-                width: 150,
-            }, {
-                getTitle: createLocalizer('ALERTS_STATUS_COLUMN', 'Статус'),
-                name: 'status',
-                sortable: true,
-                resizable: true,
-                width: 100,
-            }, {
-                getTitle: createLocalizer('ALERTS_POLICY_NAME_COLUMN', 'Имя политики'),
-                name: 'policy_name',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-            }, {
-                getTitle: createLocalizer('ALERTS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
-                name: 'notification_status',
-                sortable: true,
-                width: 250,
-            }, {
-                getTitle: createLocalizer('ALERTS_RAISE_TIME_COLUMN', 'Время и дата и возникновения'),
-                name: 'raise_time',
-                searchable: true,
-                sortable: true,
-                width: 150,
-            }, {
-                getTitle: createLocalizer('ALERTS_CEASE_TIME_COLUMN', 'Время и дата закрытия'),
-                name: 'cease_time',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-                width: 150,
-            }, {
-                getTitle: createLocalizer('ALERTS_DURATION_COLUMN', 'Длительность'),
-                name: 'duration',
-                searchable: true,
-                sortable: true,
-                width: 120,
-            }
-        ];
-
-        const columnsByType = type === CLIENTS_INCIDENTS_ALERTS
-            ? [{
-                getTitle: createLocalizer('ALERTS_MAC_COLUMN', 'MAC'),
-                name: 'mac',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-            }, {
-                getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'SAN'),
-                name: 'san',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-            }, {
-                getTitle: createLocalizer('ALERTS_PERSONAL_ACCOUNT_COLUMN', 'Лицевой счёт'),
-                name: 'personal_account',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-            }]
-            : [{
-                getTitle: createLocalizer('ALERTS_OBJECT_COLUMN', 'Объект'),
-                name: 'object',
-                resizable: true,
-                searchable: true,
-                sortable: true,
-            }];
-
-        return commonColumns.concat(columnsByType);
-    });
 
     onSelectRow = (node) => {
         if (node.new) {
@@ -220,8 +137,7 @@ class AlertsTable extends React.PureComponent {
     rowClassGetter = node => node.new ? 'newAlert' : '';
 
     render() {
-        const { data, searchText, preloader, total } = this.props;
-        const columns = AlertsTable.getColumns(this.context.match.params.type);
+        const { data, searchText, preloader, total, columns } = this.props;
         const mappedData = this.mapData(data);
 
         return (
