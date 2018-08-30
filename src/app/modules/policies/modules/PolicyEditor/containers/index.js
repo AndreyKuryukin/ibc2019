@@ -66,6 +66,8 @@ class PolicyEditor extends React.PureComponent {
     }
 
     getValidationConfig = (metaData) => {
+        const minSuppressionTimeout = _.get(metaData, 'min_suppression_timeout');
+
         return {
             name: {
                 required: true
@@ -75,6 +77,9 @@ class PolicyEditor extends React.PureComponent {
             },
             policy_type: {
                 required: true,
+            },
+            parent_policy: {
+                required: !!_.get(metaData, 'parent_policy', false),
             },
             threshold: () => ({
                 cease_duration: {
@@ -121,6 +126,7 @@ class PolicyEditor extends React.PureComponent {
                     }),
                 }),
             }),
+            ...(_.isNumber(minSuppressionTimeout) ? { suppression_timeout: { min: minSuppressionTimeout } } : null),
         }
     };
 
@@ -195,7 +201,10 @@ class PolicyEditor extends React.PureComponent {
             .then(([kqiResp, objectTypesResp, locationResp, policyResp]) => {
                 const objectTypes = objectTypesResp.data;
                 const kqiList = kqiResp.data;
-                const policy = _.get(policyResp, 'data', false);
+                const policy = {
+                    ..._.get(policyResp, 'data', null),
+                    allow_accident: !!_.get(policyResp, 'data.parent_policy', false),
+                };
                 const { mrfList, rfList } = this.mapLocations(locationResp.data);
 
                 const update = {
@@ -353,7 +362,11 @@ class PolicyEditor extends React.PureComponent {
             || _.get(policyData, 'threshold.cease_duration') >= _.get(policyData, 'threshold.rise_duration'),
         };
 
-        return validateForm(policyData, this.getValidationConfig(this.state.metaData, policyData), messages, validators);
+        return validateForm(policyData, this.getValidationConfig({
+            ...this.state.metaData,
+            parent_policy: _.get(policyData, 'allow_accident', false),
+            min_suppression_timeout: _.get(policyData, 'allow_accident', false) ? 1 : null,
+        }, policyData), messages, validators);
     };
 
     onClose = () => {
