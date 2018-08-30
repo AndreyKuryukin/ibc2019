@@ -4,7 +4,6 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment';
-import memoize from 'memoizejs';
 import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS, readNewAlert } from '../actions';
 import rest from '../../../rest';
 import AlertsComponent from '../components';
@@ -135,9 +134,7 @@ class Alerts extends React.PureComponent {
             !this.state.isLoading && this.onFetchAlerts(filter, newType);
         } else {
             setQueryParams(this.prepareFilter(stateFilter, newType), props.history, props.location);
-            if (props.alerts.alerts.length === 0) {
-                !this.state.isLoading && this.onFetchAlerts(stateFilter, newType);
-            }
+            !this.state.isLoading && this.onFetchAlerts(stateFilter, newType);
         }
     };
 
@@ -315,16 +312,6 @@ class Alerts extends React.PureComponent {
         }
     };
 
-    mapAlerts = memoize((alerts, highlight) => {
-        return {
-            ...alerts,
-            alerts: alerts.alerts.map(alert => {
-                alert.new = !alert.closed && (highlight.findIndex(hglth => hglth.id === alert.id) !== -1);
-                return alert;
-            })
-        }
-    });
-
     mapPolicies = (type, policies) => {
         const matcher = policy => (ALERT_POLICY_MAP[type] || []).findIndex(policy_type => policy.object_type === policy_type) !== -1;
         return policies.filter(matcher)
@@ -336,7 +323,7 @@ class Alerts extends React.PureComponent {
                 history={this.props.history}
                 match={this.props.match}
                 filter={this.props.filter}
-                alerts={this.mapAlerts(this.props.alerts, this.props.highLight)}
+                alerts={this.props.alerts}
                 policies={this.mapPolicies(this.props.match.params.type, this.props.policies)}
                 locations={this.props.locations}
                 onChangeFilter={this.onChangeFilter}
@@ -354,7 +341,6 @@ class Alerts extends React.PureComponent {
 const mapStateToProps = (state, props) => ({
     filter: _.get(state, `alerts.${props.match.params.type}.filter`, null),
     alerts: _.get(state, `alerts.${props.match.params.type}`, {}),
-    highLight: _.get(state, `alerts.${props.match.params.type}.highLight`, []),
     policies: state.alerts.policies,
     locations: state.alerts.mrf,
     notifications: _.get(state, 'notifications.alerts')
