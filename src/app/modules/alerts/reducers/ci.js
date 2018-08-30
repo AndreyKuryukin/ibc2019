@@ -2,88 +2,60 @@ import moment from 'moment';
 import _ from 'lodash';
 // import FifoArray from 'fifo-array';
 import {
-    APPLY_CI_FILTER,
-    FETCH_CI_ALERTS_SUCCESS,
-    FLUSH_CI_HIGHLIGHT,
-    SET_CI_FILTER,
+    APPLY_CI_FILTER, FETCH_CI_ALERTS_SUCCESS, FLUSH_CI_HIGHLIGHT, SET_CI_FILTER,
     UNHIGHLIGHT_CI_ALERT
 } from '../actions/ci';
 import { CI_ALERT_TYPE, FILTER_FIELDS } from '../constants';
 import { SUBMIT_CI_NOTIFICATIONS } from '../../page/actions';
 import { APPLY_CI_ALERTS } from "../../notifications/actions/index";
 
-const defaultFilter = {
-    [FILTER_FIELDS.AUTO_REFRESH]: false,
-    [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
-    [FILTER_FIELDS.END]: moment().toDate(),
-    [FILTER_FIELDS.RF]: '',
-    [FILTER_FIELDS.MRF]: '',
-    [FILTER_FIELDS.FILTER]: '',
-    [FILTER_FIELDS.CURRENT]: true,
-    [FILTER_FIELDS.HISTORICAL]: false,
-    [FILTER_FIELDS.TYPE]: CI_ALERT_TYPE
-};
-
 const initialState = {
-    filter: defaultFilter,
-    appliedFilter: { ...defaultFilter },
+    filter: {
+        [FILTER_FIELDS.AUTO_REFRESH]: false,
+        [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
+        [FILTER_FIELDS.END]: moment().toDate(),
+        [FILTER_FIELDS.RF]: '',
+        [FILTER_FIELDS.MRF]: '',
+        [FILTER_FIELDS.FILTER]: '',
+        [FILTER_FIELDS.CURRENT]: true,
+        [FILTER_FIELDS.HISTORICAL]: false,
+        [FILTER_FIELDS.TYPE]: CI_ALERT_TYPE
+    },
+    appliedFilter: {},
     alerts: [],
     highLight: [],
     total: 0,
 };
-
-const highLightAlerts = (alerts, highLight) => alerts.map(alert => {
-    alert.new = !alert.closed && (highLight.findIndex(newAlert => newAlert.id === alert.id) !== -1);
-    return alert;
-});
 
 
 export default (state = initialState, action) => {
     switch (action.type) {
         case SET_CI_FILTER:
             return { ...state, filter: action.payload.filter };
-        case FETCH_CI_ALERTS_SUCCESS: {
-            let alerts = _.get(action.payload, 'alerts.alerts', []);
-            if (!_.isEmpty(alerts) && !_.isEmpty(state.highLight)) {
-                alerts = highLightAlerts(alerts, state.highLight);
-            }
+        case FETCH_CI_ALERTS_SUCCESS:
             return {
                 ...state,
-                alerts,
+                alerts: _.isArray(action.payload.alerts.alerts) ? action.payload.alerts.alerts : [],
                 total: action.payload.alerts.total,
             };
-        }
         case SUBMIT_CI_NOTIFICATIONS: {
-            const highLight = _.get(action, 'payload.notifications', []);
-            let alerts = state.alerts;
-            if (!_.isEmpty(alerts)) {
-                alerts = highLightAlerts(alerts, highLight)
-            }
+            const alerts = _.get(action, 'payload.notifications', []);
             return {
                 ...initialState,
-                alerts,
-                highLight,
+                highLight: alerts,
             };
         }
         case FLUSH_CI_HIGHLIGHT:
             return {
                 ...state,
-                alerts: highLightAlerts(state.alerts, []),
                 highLight: [],
             };
 
-        case UNHIGHLIGHT_CI_ALERT: {
-            const highLight = state.highLight;
-            const alert = state.alerts.find(alert => alert.id === action.payload.id);
-            if (alert) {
-                alert.new = false;
-            }
-            _.remove(highLight, alert => alert.id === action.payload.id);
+        case UNHIGHLIGHT_CI_ALERT:
             return {
                 ...state,
-                highLight
+                highLight: state.highLight.filter(alert => alert.id !== action.payload.id),
             };
-        }
         case APPLY_CI_ALERTS:
             const { add, update, remove } = action.payload;
             let { alerts, highLight, total } = state;
@@ -103,7 +75,7 @@ export default (state = initialState, action) => {
             }
             return {
                 ...state,
-                alerts: highLightAlerts(alerts, highLight),
+                alerts,
                 highLight,
                 total: total + increment - decrement
             };
