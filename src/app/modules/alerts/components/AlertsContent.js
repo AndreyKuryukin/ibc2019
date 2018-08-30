@@ -20,6 +20,7 @@ class AlertsContent extends React.PureComponent {
         alerts: PropTypes.object,
         locations: PropTypes.array,
         policies: PropTypes.array,
+        columns: PropTypes.array,
         onChangeFilter: PropTypes.func,
         onFetchAlerts: PropTypes.func,
         onExportXLSX: PropTypes.func,
@@ -34,6 +35,7 @@ class AlertsContent extends React.PureComponent {
         alerts: {},
         policies: [],
         mrfOptions: [],
+        columns: [],
         onChangeFilter: () => null,
         onFetchAlerts: () => null,
         onExportXLSX: () => null,
@@ -60,6 +62,7 @@ class AlertsContent extends React.PureComponent {
             policies,
             onChangeFilter,
             isLoading,
+            columns
         } = this.props;
 
         const { id: alertId } = params;
@@ -84,6 +87,7 @@ class AlertsContent extends React.PureComponent {
                     preloader={isLoading}
                     searchText={_.get(filter, 'filter', '')}
                     onReadNewAlert={this.props.onReadNewAlert}
+                    columns={columns}
                 />
                 {isAlertsViewerActive && <AlertsViewer alertId={alertId} active={isAlertsViewerActive} type={type}/>}
             </div>

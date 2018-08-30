@@ -4,11 +4,12 @@ import { connect } from "react-redux";
 import _ from 'lodash';
 import XLSX from 'xlsx';
 import moment from 'moment';
+import memoize from 'memoizejs';
+import ls, { createLocalizer } from 'i18n';
 import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS, readNewAlert } from '../actions';
 import rest from '../../../rest';
 import AlertsComponent from '../components';
-import ls from 'i18n';
-import { SENDING_ALERT_TYPES } from '../constants';
+import { SENDING_ALERT_TYPES, CLIENTS_INCIDENTS_ALERTS } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
 import { getQueryParams, setQueryParams } from "../../../util/state";
 import { applyCiFilter, fetchCiAlertsSuccess, flushCiHighlight, setCiFilter, unhighlightCiAlert } from "../actions/ci";
@@ -138,6 +139,91 @@ class Alerts extends React.PureComponent {
         }
     };
 
+    getColumns = memoize((type = CLIENTS_INCIDENTS_ALERTS) => {
+        const commonColumns = [
+            {
+                getTitle: createLocalizer('ALERTS_ID_COLUMN', 'ID'),
+                name: 'id',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }, {
+                getTitle: createLocalizer('ALERTS_EXTERNAL_ID_COLUMN', 'ID во внешней системе'),
+                name: 'external_id',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+                width: 150,
+            }, {
+                getTitle: createLocalizer('ALERTS_STATUS_COLUMN', 'Статус'),
+                name: 'status',
+                sortable: true,
+                resizable: true,
+                width: 100,
+            }, {
+                getTitle: createLocalizer('ALERTS_POLICY_NAME_COLUMN', 'Имя политики'),
+                name: 'policy_name',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }, {
+                getTitle: createLocalizer('ALERTS_NOTIFICATION_STATUS_COLUMN', 'Статус отправки во внешнюю систему'),
+                name: 'notification_status',
+                sortable: true,
+                width: 250,
+            }, {
+                getTitle: createLocalizer('ALERTS_RAISE_TIME_COLUMN', 'Время и дата и возникновения'),
+                name: 'raise_time',
+                searchable: true,
+                sortable: true,
+                width: 150,
+            }, {
+                getTitle: createLocalizer('ALERTS_CEASE_TIME_COLUMN', 'Время и дата закрытия'),
+                name: 'cease_time',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+                width: 150,
+            }, {
+                getTitle: createLocalizer('ALERTS_DURATION_COLUMN', 'Длительность'),
+                name: 'duration',
+                searchable: true,
+                sortable: true,
+                width: 120,
+            }
+        ];
+
+        const columnsByType = type === CLIENTS_INCIDENTS_ALERTS
+            ? [{
+                getTitle: createLocalizer('ALERTS_MAC_COLUMN', 'MAC'),
+                name: 'mac',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }, {
+                getTitle: createLocalizer('ALERTS_SAN_COLUMN', 'SAN'),
+                name: 'san',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }, {
+                getTitle: createLocalizer('ALERTS_PERSONAL_ACCOUNT_COLUMN', 'Лицевой счёт'),
+                name: 'personal_account',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }]
+            : [{
+                getTitle: createLocalizer('ALERTS_OBJECT_COLUMN', 'Объект'),
+                name: 'object',
+                resizable: true,
+                searchable: true,
+                sortable: true,
+            }];
+
+        return commonColumns.concat(columnsByType);
+    });
+
     getReadableDuration = (milliseconds = 0) =>
         ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
             const duration = moment.duration(milliseconds, 'milliseconds');
@@ -163,7 +249,6 @@ class Alerts extends React.PureComponent {
 
     onExportXLSX = (filter) => {
         this.setState({ isLoading: true });
-
         const queryParams = {
             ...this.prepareFilter(filter, this.props.match.params.type),
             limit: 65000,
@@ -178,24 +263,32 @@ class Alerts extends React.PureComponent {
                 return;
             }
 
+            const colsConfig = this.getColumns(this.props.match.params.type).reduce((config, column) => ({
+                ...config,
+                [column.name]: {
+                    wpx: column.width || 200,
+                    title: column.getTitle(),
+                }
+            }), {});
             const workbook = XLSX.utils.book_new();
-            const worksheetCols = [
-                { wpx: 250 },
-                { wpx: 250 },
-                { wpx: 300 },
-                { wpx: 220 },
-                { wpx: 150 },
-                { wpx: 150 },
-                { wpx: 200 },
-            ];
+            const worksheetCols = Object.values(colsConfig).map(({ wpx }) => ({ wpx }));
             const worksheet = XLSX.utils.json_to_sheet(response.data.alerts.map(node => ({
                 id: String(node.id),
                 external_id: node.external_id || '',
-                policy_name: node.policy_name,
+                status: node.closed ? ls('ALERTS_STATUS_CLOSED', 'Закрытая') : ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
+                policy_name: node.policy_name || '',
                 notification_status: node.notification_status || '',
                 raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
+                cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
                 duration: this.getReadableDuration(node.duration),
-                object: node.object || '',
+                ...(colsConfig.object
+                    ? { object: node.object || '' }
+                    : {
+                        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
+                        san: this.mapSan(node.san),
+                        personal_account: node.nls || '',
+                    }
+                ),
             })));
             const range = XLSX.utils.decode_range(worksheet['!ref']);
 
@@ -203,11 +296,11 @@ class Alerts extends React.PureComponent {
 
             for (let col = range.s.c; col <= range.e.c; ++col) {
                 let address = XLSX.utils.encode_col(col) + '1';
-                worksheet[address].v = ls(`ALERTS_${worksheet[address].v.toUpperCase()}_COLUMN`, '');
+                worksheet[address].v = colsConfig[worksheet[address].v].title;
             }
 
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Alerts');
-            XLSX.writeFile(workbook, 'Alerts.xlsx', {
+            XLSX.writeFile(workbook, `${moment(queryParams.start).format('HH.mm_DD.MM.YYYY')}-${moment(queryParams.end).format('HH.mm_DD.MM.YYYY')}Alerts.xlsx`, {
                 type: 'base64',
                 bookType: 'xlsx',
             });
@@ -317,6 +410,11 @@ class Alerts extends React.PureComponent {
         return policies.filter(matcher)
     };
 
+    mapSan = (san) => {
+        const digits = String(san).match(/\d+/g);
+        return _.isEmpty(digits) ? '' : digits.join('_');
+    };
+
     render() {
         return (
             <AlertsComponent
@@ -332,6 +430,7 @@ class Alerts extends React.PureComponent {
                 onExportXLSX={this.onExportXLSX}
                 onFilterAlerts={this.onFilterAlerts}
                 onReadNewAlert={this.props.onReadNewAlert}
+                columns={this.getColumns(this.props.match.params.type)}
                 isLoading={this.state.isLoading}
             />
         );
