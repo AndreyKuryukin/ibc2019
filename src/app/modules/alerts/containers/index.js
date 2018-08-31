@@ -9,7 +9,7 @@ import ls, { createLocalizer } from 'i18n';
 import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS, readNewAlert } from '../actions';
 import rest from '../../../rest';
 import AlertsComponent from '../components';
-import { SENDING_ALERT_TYPES, CLIENTS_INCIDENTS_ALERTS } from '../constants';
+import { SENDING_ALERT_TYPES, CLIENTS_INCIDENTS_ALERTS, FILTER_FIELDS } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
 import { getQueryParams, setQueryParams } from "../../../util/state";
 import { applyCiFilter, fetchCiAlertsSuccess, flushCiHighlight, setCiFilter, unhighlightCiAlert } from "../actions/ci";
@@ -38,6 +38,14 @@ const ALERT_POLICY_MAP = {
     ci: ['STB', 'OTT'],
     gp: ['VB'],
     kqi: ['KQI']
+};
+
+const EXPORT_FIELDS_LOCALIZERS = {
+    [FILTER_FIELDS.RF]: createLocalizer('ALERTS_FILTER_RF', 'РФ'),
+    [FILTER_FIELDS.MRF]: createLocalizer('ALERTS_FILTER_MRF', 'МРФ'),
+    [FILTER_FIELDS.POLICY_ID]: createLocalizer('ALERTS_FILTER_POLICY_ID', 'Политика'),
+    [FILTER_FIELDS.CURRENT]: createLocalizer('ALERTS_FILTER_CURRENT', 'Текущие'),
+    [FILTER_FIELDS.HISTORICAL]: createLocalizer('ALERTS_FILTER_HISTORICAL', 'Исторические'),
 };
 
 class Alerts extends React.PureComponent {
@@ -235,6 +243,50 @@ class Alerts extends React.PureComponent {
             return `${result}${nextPart}`;
         }, '');
 
+    buildFilterString = (filter) => {
+        const finder = (array, id) => array.find(node => node.id === id);
+
+        return [
+            FILTER_FIELDS.START,
+            FILTER_FIELDS.END,
+            FILTER_FIELDS.MRF,
+            FILTER_FIELDS.RF,
+            FILTER_FIELDS.POLICY_ID,
+            FILTER_FIELDS.CURRENT,
+            FILTER_FIELDS.HISTORICAL,
+        ].reduce((str, filterKey) => {
+            let value = filter[filterKey];
+            if ((filterKey === FILTER_FIELDS.RF || filterKey === FILTER_FIELDS.MRF) && value) {
+                const mrfId = filterKey === FILTER_FIELDS.MRF ? value : filter[FILTER_FIELDS.MRF];
+                const mrf = finder(this.props.locations, mrfId);
+
+                if (mrf) {
+                    value = filterKey === FILTER_FIELDS.MRF ? mrf.name : _.get(finder(mrf.rf, value), 'name', '');
+                }
+            }
+
+            if (filterKey === FILTER_FIELDS.POLICY_ID && value) {
+                value = _.get(finder(this.props.policies, value), 'name', '');
+            }
+
+            switch(filterKey) {
+                case FILTER_FIELDS.START:
+                    return value ? str + moment(value).format('HH.mm DD.MM.YYYY') : str;
+                case FILTER_FIELDS.END:
+                    return value ? str + ' - ' + moment(value).format('HH.mm DD.MM.YYYY') : str;
+                case FILTER_FIELDS.RF:
+                case FILTER_FIELDS.MRF:
+                case FILTER_FIELDS.POLICY_ID:
+                    return value ? str + ', ' + EXPORT_FIELDS_LOCALIZERS[filterKey].call() + '-' + value : str;
+                case FILTER_FIELDS.CURRENT:
+                case FILTER_FIELDS.HISTORICAL:
+                    return value ? str + ', ' + EXPORT_FIELDS_LOCALIZERS[filterKey].call() : str;
+                default:
+                    return str;
+            }
+        },  ls('ALERTS_FILTER_STRING', 'Фильтр') + ': ');
+    }
+
     onFetchingAlertsError = (e) => {
         this.context.notifications.notify({
             title: ls('ALERTS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
@@ -272,7 +324,11 @@ class Alerts extends React.PureComponent {
             }), {});
             const workbook = XLSX.utils.book_new();
             const worksheetCols = Object.values(colsConfig).map(({ wpx }) => ({ wpx }));
-            const worksheet = XLSX.utils.json_to_sheet(response.data.alerts.map(node => ({
+
+            const filterString = this.buildFilterString(queryParams);
+            const worksheet = XLSX.utils.aoa_to_sheet([[filterString]]);
+
+            XLSX.utils.sheet_add_json(worksheet, response.data.alerts.map(node => ({
                 id: String(node.id),
                 external_id: node.external_id || '',
                 status: node.closed ? ls('ALERTS_STATUS_CLOSED', 'Закрытая') : ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
@@ -282,20 +338,23 @@ class Alerts extends React.PureComponent {
                 cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
                 duration: this.getReadableDuration(node.duration),
                 ...(colsConfig.object
-                    ? { object: node.object || '' }
-                    : {
-                        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
-                        san: this.mapSan(node.san),
-                        personal_account: node.nls || '',
-                    }
+                        ? { object: node.object || '' }
+                        : {
+                            mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
+                            san: this.mapSan(node.san),
+                            personal_account: node.nls || '',
+                        }
                 ),
-            })));
+            })), { origin: 'A2' });
+
             const range = XLSX.utils.decode_range(worksheet['!ref']);
 
-            worksheet['!cols'] = worksheetCols;
+            worksheet['!cols'] = worksheetCols; // Apply columns
+            worksheet['!merges'] = [{ s: { c: 0, r: 0 }, e: { c: 4, r: 0 } }]; // Merge A1:E1
 
+            // Apply column titles
             for (let col = range.s.c; col <= range.e.c; ++col) {
-                let address = XLSX.utils.encode_col(col) + '1';
+                let address = XLSX.utils.encode_col(col) + '2';
                 worksheet[address].v = colsConfig[worksheet[address].v].title;
             }
 

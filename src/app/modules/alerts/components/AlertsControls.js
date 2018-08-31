@@ -71,8 +71,10 @@ class AlertsControls extends React.Component {
         const isOnChangeFilterChanged = this.props.onChangeFilter !== nextProps.onChangeFilter;
         const isOnApplyFilterChanged = this.props.onApplyFilter !== nextProps.onApplyFilter;
         const isHistoricalConfirmOpenChanged = this.state.isHistoricalConfirmOpen !== nextState.isHistoricalConfirmOpen;
+        const isPoliciesChanged = this.props.policies !== nextProps.policies;
 
-        return isCounterChanged || isFilterChanged || isLocationsChanged || isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged;
+        return isCounterChanged || isFilterChanged || isLocationsChanged ||
+            isOnChangeFilterChanged || isOnApplyFilterChanged || isHistoricalConfirmOpenChanged || isPoliciesChanged;
     }
 
     componentWillReceiveProps(nextProps) {

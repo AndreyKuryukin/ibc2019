@@ -61,6 +61,12 @@
 
   "ALERTS_STATUS_ACTIVE": "Открытая",
   "ALERTS_STATUS_CLOSED": "Закрытая",
+  "ALERTS_FILTER_STRING": "Фильтр",
+  "ALERTS_FILTER_RF": "РФ",
+  "ALERTS_FILTER_MRF": "МРФ",
+  "ALERTS_FILTER_POLICY_ID": "Политика",
+  "ALERTS_FILTER_CURRENT": "Текущие",
+  "ALERTS_FILTER_HISTORICAL": "Исторические",
 
   "SUBJECT_USERS": "Пользователи",
   "SUBJECT_ALARMS": "Аварии",
