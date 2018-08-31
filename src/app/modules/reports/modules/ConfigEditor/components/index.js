@@ -113,7 +113,7 @@ class ConfigEditor extends React.PureComponent {
         const name = [];
         const template = _.find(this.state.templates, tpl => tpl.id === templateId);
         if (template) {
-            name.push(template.name);
+            name.push(ls(`REPORTS_${template.name}_TEMPLATE_OPTION`, template.name));
         } else {
             name.push(NAME_PATTERNS['template_id'.toUpperCase()]());
         }
