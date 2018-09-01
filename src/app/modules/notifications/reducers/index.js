@@ -38,12 +38,6 @@ export default (state = initialState, action) => {
             if (!_.isEmpty(remove[KQI_ALERT_TYPE])) {
                 decrement = decrement + _.remove(kqi_alerts, alert => remove[KQI_ALERT_TYPE].findIndex(cease => alert.id === cease.id) !== -1).length;
             }
-            if (!_.isEmpty(remove[KQI_ALERT_TYPE]) || !_.isEmpty(remove[GROUP_POLICIES_ALERT_TYPE]) || !_.isEmpty(remove[CI_ALERT_TYPE])) {
-                console.log(decrement);
-                if (decrement === 0) {
-                    debugger;
-                }
-            }
             return {
                 ...state,
                 alerts: {
