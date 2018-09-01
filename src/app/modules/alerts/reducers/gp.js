@@ -5,7 +5,7 @@ import {
     FETCH_GP_ALERTS_SUCCESS,
     FLUSH_GP_HIGHLIGHT,
     SET_GP_FILTER,
-    UNHIGHLIGHT_GP_ALERT
+    UNHIGHLIGHT_GP_ALERT,
 } from '../actions/gp';
 import { FILTER_FIELDS, GROUP_POLICIES_ALERT_TYPE } from '../constants';
 import { SUBMIT_GP_NOTIFICATIONS } from '../../page/actions';
@@ -36,7 +36,6 @@ const highLightAlerts = (alerts, highLight) => alerts.map(alert => {
     return alert;
 });
 
-
 export default (state = initialState, action) => {
     switch (action.type) {
         case SET_GP_FILTER:
@@ -61,7 +60,7 @@ export default (state = initialState, action) => {
             return {
                 ...initialState,
                 alerts,
-                highLight,
+                highLight: [...highLight],
             };
         }
         case FLUSH_GP_HIGHLIGHT:
@@ -70,7 +69,6 @@ export default (state = initialState, action) => {
                 alerts: highLightAlerts(state.alerts, []),
                 highLight: [],
             };
-
         case UNHIGHLIGHT_GP_ALERT: {
             const highLight = state.highLight;
             const alert = state.alerts.find(alert => alert.id === action.payload.id);

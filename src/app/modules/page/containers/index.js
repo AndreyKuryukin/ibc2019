@@ -9,7 +9,7 @@ import { CI_ALERT_TYPE, GROUP_POLICIES_ALERT_TYPE, KQI_ALERT_TYPE } from "../../
 const mapStateToProps = state => ({
     user: state.user,
     app: state.app,
-    notifications: _.get(state, 'notifications')
+    notifications: _.get(state, 'notifications'),
 });
 
 const ACTION_MAP = {

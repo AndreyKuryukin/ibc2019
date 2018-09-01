@@ -5,7 +5,7 @@ import {
     FETCH_KQI_ALERTS_SUCCESS,
     FLUSH_KQI_HIGHLIGHT,
     SET_KQI_FILTER,
-    UNHIGHLIGHT_KQI_ALERT
+    UNHIGHLIGHT_KQI_ALERT,
 } from '../actions/kqi';
 import { FILTER_FIELDS, KQI_ALERT_TYPE } from '../constants';
 import { SUBMIT_KQI_NOTIFICATIONS } from '../../page/actions';
@@ -60,7 +60,7 @@ export default (state = initialState, action) => {
             return {
                 ...initialState,
                 alerts,
-                highLight,
+                highLight: [...highLight],
             };
         }
         case FLUSH_KQI_HIGHLIGHT:

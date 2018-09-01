@@ -372,7 +372,7 @@ class Alerts extends React.PureComponent {
 
     onFetchAlerts = (filter, type) => {
         this.setState({ isLoading: true });
-
+        this.props.applyFilter(filter);
         const queryParams = this.prepareFilter(filter, type);
 
         const success = (response) => {
