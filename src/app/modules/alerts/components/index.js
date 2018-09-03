@@ -96,6 +96,7 @@ class Alerts extends React.PureComponent {
         return ALERTS_TYPES.map(type => {
             return <div
                 id={type}
+                key={`alerts_${type}_tab`}
                 itemId={`alerts_${type}_tab`}
                 tabtitle={this.getTabTitle(type)}
                 style={tabStyle}
