@@ -189,6 +189,7 @@ class PolicyEditor extends React.PureComponent {
         );
 
         this.setState({
+            policy,
             errors: key.indexOf('condition') === -1 ? _.omit(this.state.errors, key) : _.omit(this.state.errors, errorKey ? 'condition.condition.' + errorKey : ''),
         }, () => {
             this.props.updatePolicy(policy);
