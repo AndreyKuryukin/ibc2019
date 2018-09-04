@@ -137,13 +137,14 @@ class AlertsGenerator {
     raiseAlert() {
         const mrf = AlertsGenerator.randomize(locations);
         const rf = AlertsGenerator.randomize(mrf.rf).id;
+        const type = AlertsGenerator.randomize(['SIMPLE', 'GROUP_AGGREGATION', 'KPIKQI'])
         const alert = {
             severity: "CRITICAL",
-            type: AlertsGenerator.randomize(['SIMPLE', 'GROUP_AGGREGATION', 'KPIKQI']),
+            type,
             closed: false,
             duration: 1219232,
             external_id: "",
-            id: String(Math.floor(Math.random() * 99999999)),
+            id: String(Math.floor(Math.random() * 99999999)) + ' ' + type,
             mrf: mrf.id,
             notification_status: "WAITING",
             object: "SAN=0303936751094, Л/С=352010230624",
