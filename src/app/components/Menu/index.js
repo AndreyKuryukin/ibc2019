@@ -94,6 +94,18 @@ class Menu extends React.Component {
         //todo: Заменить частный случай на общий
         const notificationCount = clearLink === 'alerts' ? _.get(this.props, `notifications.${'alerts'}.count`, 0) : 0;
         const notifications = clearLink === 'alerts' ? _.omit(_.get(this.props, `notifications.${'alerts'}`, {}), ['count']) : {};
+        const notificationMouseEventHandler = (() => {
+            let timeout;
+            return (eventName) => {
+                if (eventName === 'over' && this.state.notificationPopup !== clearLink) {
+                    timeout = setTimeout(() => {
+                        this.toggle(clearLink)
+                    }, 500);
+                } else if (eventName === 'leave') {
+                    clearTimeout(timeout)
+                }
+            }
+        })();
         return (<div
             itemId={`menu_${clearLink}`}
             id={`menu-tile-${clearLink}`}
@@ -105,6 +117,8 @@ class Menu extends React.Component {
                 <Icon icon={this.mapIconClass(clearLink, isActive)}/>
                 {notificationCount > 0 &&
                 <span className={styles.notificationCount}
+                      onMouseOver={() => notificationMouseEventHandler('over')}
+                      onMouseLeave={() => notificationMouseEventHandler('leave')}
                       onClick={(e) => {
                           e.stopPropagation();
                       }}
