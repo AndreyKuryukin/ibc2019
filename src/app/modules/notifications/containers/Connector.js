@@ -18,7 +18,7 @@ class Connector {
     };
 
     _onWsConnect = (client) => {
-        client.debug = () => {};
+        client.debug = null;
         _.reduce(this.topics, (result, onMessage, topicName) => {
             client.subscribe(topicName, (message) => {
                 let parsedBody = [];

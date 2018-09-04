@@ -107,7 +107,6 @@ class Menu extends React.Component {
                 <span className={styles.notificationCount}
                       onClick={(e) => {
                           e.stopPropagation();
-                          this.toggle(clearLink)
                       }}
                 >
                     {this.composeNotificationsCount(notificationCount)}
