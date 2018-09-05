@@ -122,7 +122,7 @@ class AlertsTable extends React.PureComponent {
         duration: this.getReadableDuration(node.duration),
         object: node.object || '',
         personal_account: node.nls || '',
-        san: this.mapSan(node.san),
+        san: node.san,
         mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
         status: node.closed ? ALERTS_STATUS_MAP['CLOSED'] : ALERTS_STATUS_MAP['ACTIVE'],
         timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
