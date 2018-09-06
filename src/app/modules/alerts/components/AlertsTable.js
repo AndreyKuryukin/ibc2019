@@ -16,18 +16,6 @@ const iconCellStyle = {
     justifyContent: 'center'
 };
 
-const ALERTS_STATUS_MAP = {
-    'ACTIVE': ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
-    'CLOSED': ls('ALERTS_STATUS_CLOSED', 'Закрытая')
-};
-
-const DURATION_UNITS_MAP = {
-    'DAYS': () => ls('ALERTS_GROUP_POLICIES_DURATION_DAYS_UNIT', 'дн. '),
-    'HOURS': () => ls('ALERTS_GROUP_POLICIES_DURATION_HOURS_UNIT', 'ч'),
-    'MINUTES': () => ls('ALERTS_GROUP_POLICIES_DURATION_MINUTES_UNIT', 'м'),
-    'SECONDS': () => ls('ALERTS_GROUP_POLICIES_DURATION_SECONDS_UNIT', 'с'),
-};
-
 class AlertsTable extends React.PureComponent {
     static contextTypes = {
         match: PropTypes.object.isRequired,
@@ -97,38 +85,6 @@ class AlertsTable extends React.PureComponent {
         }
     };
 
-    getReadableDuration = (milliseconds = 0) =>
-        ['days', 'hours', 'minutes', 'seconds'].reduce((result, key) => {
-            const duration = moment.duration(milliseconds, 'milliseconds');
-            const method = duration[key];
-            const units = method.call(duration).toString();
-            const readableUnits = (key === 'hours' || key === 'minutes' || key === 'seconds') && units.length === 1 ? '0' + units : units;
-            const nextPart = readableUnits + DURATION_UNITS_MAP[key.toUpperCase()]();
-            return `${result}${nextPart} `;
-        }, '');
-
-    mapSan = (san) => {
-        const digits = String(san).match(/\d+/g);
-        return _.isEmpty(digits) ? '' : digits.join('_');
-    };
-
-    mapData = data => data.map(node => ({
-        id: String(node.id),
-        external_id: node.external_id || '',
-        policy_name: node.policy_name,
-        notification_status: node.notification_status || '',
-        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
-        cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
-        duration: this.getReadableDuration(node.duration),
-        object: node.object || '',
-        personal_account: node.nls || '',
-        san: node.san,
-        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
-        status: node.closed ? ALERTS_STATUS_MAP['CLOSED'] : ALERTS_STATUS_MAP['ACTIVE'],
-        timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
-        new: !!node.new,
-    }));
-
     customSortFunction = (data, columnName, direction) => {
         const sortBy = columnName === 'raise_time' ? 'timestamp' : columnName;
         return naturalSort(data, [direction], node => [_.get(node, `${sortBy}`, '').toString()]);
@@ -138,12 +94,11 @@ class AlertsTable extends React.PureComponent {
 
     render() {
         const { data, searchText, preloader, total, columns } = this.props;
-        const mappedData = this.mapData(data);
 
         return (
             <Table
                 id="alerts-table"
-                data={mappedData}
+                data={data}
                 defaultSortColumn={'raise_time'}
                 defaultSortDirection={'desc'}
                 columns={columns}

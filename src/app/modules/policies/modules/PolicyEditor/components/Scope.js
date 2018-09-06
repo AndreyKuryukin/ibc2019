@@ -183,6 +183,7 @@ class Scope extends React.PureComponent {
                 </Panel>
                 {!_.isEmpty(scopes) && _.map(scopes, (values, scope) => (
                     <Panel
+                        key={scope}
                         title={ls(`POLICIES_${scope}_OPTION_TITLE`, scope)}
                         style={scopePanelStyle}
                         bodyStyle={scopePanelBodyStyle}

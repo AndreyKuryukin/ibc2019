@@ -23,7 +23,7 @@ import UsersAndRoles from '../modules/usersAndRoles/components';
 import AlertsNotifications from '../modules/notifications/containers';
 import rest from '../rest';
 import { fetchActiveUserSuccess } from "../actions/index";
-import { LOGIN_SUCCESS_RESPONSE } from "../costants/login";
+import { LOGIN_SUCCESS_RESPONSE, LANGUAGES } from "../costants/login";
 import { setGlobalTimezone } from '../util/date';
 import Subscriber from "../modules/subscriber/containers/index";
 
@@ -52,11 +52,13 @@ class App extends React.Component {
     static propTypes = {
         onFetchUserSuccess: PropTypes.func,
         onLogOut: PropTypes.func,
+        language: PropTypes.string,
     };
 
     static defaultProps = {
         onFetchUserSuccess: () => null,
         onLogOut: () => null,
+        language: LANGUAGES.RUSSIAN,
     };
 
     static contextTypes = {
@@ -407,14 +409,17 @@ class App extends React.Component {
     }}/>;
 
     render() {
-        const { user = {} } = this.props;
+        const { language, user = {} } = this.props;
         const { subjects } = user;
         const { loading, loggedIn, embedded } = this.state;
         const routes = this.renderRoutes(subjects);
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
                 <AlertsNotifications loggedIn={loggedIn}/>
-                <Preloader active={this.state.loading}>
+                <Preloader
+                    active={this.state.loading}
+                    text={ls('PRELOADER_DEFAULT_TEXT', language === LANGUAGES.RUSSIAN ? 'Загрузка' : 'Loading')}
+                >
                     {!loading && <Page onLogOut={this.onLogOut}
                                               embedded={embedded}
                     >
@@ -430,11 +435,10 @@ class App extends React.Component {
     }
 }
 
-const mapStateToProps = state => {
-    return {
-        user: state.user,
-    };
-};
+const mapStateToProps = state => ({
+    user: state.user,
+    language: state.app.language,
+});
 
 const mapDispatchToProps = dispatch => ({
     onFetchUserSuccess: user => dispatch(fetchActiveUserSuccess(user)),

@@ -9,7 +9,7 @@ import ls, { createLocalizer } from 'i18n';
 import { fetchAlertsSuccess, fetchMrfSuccess, fetchPoliciesSuccess, FILTER_ACTIONS, readNewAlert } from '../actions';
 import rest from '../../../rest';
 import AlertsComponent from '../components';
-import { SENDING_ALERT_TYPES, CLIENTS_INCIDENTS_ALERTS, FILTER_FIELDS } from '../constants';
+import { SENDING_ALERT_TYPES, CLIENTS_INCIDENTS_ALERTS, GROUP_POLICIES_ALERTS, KQI_ALERTS, FILTER_FIELDS } from '../constants';
 import { convertDateToUTC0, convertUTC0ToLocal } from '../../../util/date';
 import { getQueryParams, setQueryParams } from "../../../util/state";
 import { applyCiFilter, fetchCiAlertsSuccess, flushCiHighlight, setCiFilter, unhighlightCiAlert } from "../actions/ci";
@@ -28,17 +28,25 @@ import {
     unhighlightKqiAlert
 } from "../actions/kqi";
 
-const TAB_TITLES = {
-    'GP': 'ГП',
-    'CI': 'КИ',
-    'KQI': 'KQI',
-};
-
 const ALERT_POLICY_MAP = {
     ci: ['STB', 'OTT'],
     gp: ['VB'],
     kqi: ['KQI']
 };
+
+const getExportFieldLocale = key => ({
+    [FILTER_FIELDS.RF]: ls('ALERTS_FILTER_RF', 'РФ'),
+    [FILTER_FIELDS.MRF]: ls('ALERTS_FILTER_MRF', 'МРФ'),
+    [FILTER_FIELDS.POLICY_ID]: ls('ALERTS_FILTER_POLICY_ID', 'Политика'),
+    [FILTER_FIELDS.CURRENT]: ls('ALERTS_FILTER_CURRENT', 'Текущие'),
+    [FILTER_FIELDS.HISTORICAL]: ls('ALERTS_FILTER_HISTORICAL', 'Исторические'),
+}[key]);
+
+const getTypeLocale = type => ({
+    [CLIENTS_INCIDENTS_ALERTS]: ls('CLI_TAB_TITLE', 'КИ'),
+    [GROUP_POLICIES_ALERTS]: ls('GROUP_POLICIES_TAB_TITLE', 'ГП'),
+    [KQI_ALERTS]: ls('KQI_TAB_TITLE', 'KQI'),
+}[type]);
 
 const EXPORT_FIELDS_LOCALIZERS = {
     [FILTER_FIELDS.RF]: createLocalizer('ALERTS_FILTER_RF', 'РФ'),
@@ -119,7 +127,7 @@ class Alerts extends React.PureComponent {
         const type = _.get(this.state, 'type');
         const nextType = _.get(nextProps, 'match.params.type', type);
         if (nextType && type !== nextType) {
-            this.context.navBar.setPageTitle([ls('ALERTS_PAGE_TITLE', 'Аварии'), ls(`ALERTS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
+            this.context.navBar.setPageTitle([ls('ALERTS_PAGE_TITLE', 'Аварии'), ls(`ALERTS_TAB_TITLE_${nextType.toUpperCase()}`, getTypeLocale(nextType))]);
             this.onTypeSwitch(nextType, nextProps);
         } else if (this.props.location.search !== nextProps.location.search && _.isEmpty(nextProps.location.search)) {
             this.onTypeSwitch(nextType, nextProps);
@@ -277,10 +285,10 @@ class Alerts extends React.PureComponent {
                 case FILTER_FIELDS.RF:
                 case FILTER_FIELDS.MRF:
                 case FILTER_FIELDS.POLICY_ID:
-                    return value ? str + ', ' + EXPORT_FIELDS_LOCALIZERS[filterKey].call() + '-' + value : str;
+                    return value ? str + ', ' + getExportFieldLocale(filterKey) + '-' + value : str;
                 case FILTER_FIELDS.CURRENT:
                 case FILTER_FIELDS.HISTORICAL:
-                    return value ? str + ', ' + EXPORT_FIELDS_LOCALIZERS[filterKey].call() : str;
+                    return value ? str + ', ' + getExportFieldLocale(filterKey) : str;
                 default:
                     return str;
             }
@@ -301,8 +309,9 @@ class Alerts extends React.PureComponent {
 
     onExportXLSX = (filter) => {
         this.setState({ isLoading: true });
+        const type = this.props.match.params.type;
         const queryParams = {
-            ...this.prepareQueryParams(filter, this.props.match.params.type),
+            ...this.prepareQueryParams(filter, type),
             limit: 65000,
         };
 
@@ -315,7 +324,7 @@ class Alerts extends React.PureComponent {
                 return;
             }
 
-            const colsConfig = this.getColumns(this.props.match.params.type).reduce((config, column) => ({
+            const colsConfig = this.getColumns(type).reduce((config, column) => ({
                 ...config,
                 [column.name]: {
                     wpx: column.width || 200,
@@ -328,24 +337,10 @@ class Alerts extends React.PureComponent {
             const filterString = this.buildFilterString(queryParams);
             const worksheet = XLSX.utils.aoa_to_sheet([[filterString]]);
 
-            XLSX.utils.sheet_add_json(worksheet, response.data.alerts.map(node => ({
-                id: String(node.id),
-                external_id: node.external_id || '',
-                status: node.closed ? ls('ALERTS_STATUS_CLOSED', 'Закрытая') : ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
-                policy_name: node.policy_name || '',
-                notification_status: node.notification_status || '',
-                raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
-                cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
-                duration: this.getReadableDuration(node.duration),
-                ...(colsConfig.object
-                        ? { object: node.object || '' }
-                        : {
-                            mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
-                            san: this.mapSan(node.san),
-                            personal_account: node.nls || '',
-                        }
-                ),
-            })), { origin: 'A2' });
+            XLSX.utils.sheet_add_json(
+                worksheet,
+                response.data.alerts.map(node => _.pick(this.mapAlertNode(node), Object.keys(colsConfig))), { origin: 'A2' }
+            );
 
             const range = XLSX.utils.decode_range(worksheet['!ref']);
 
@@ -359,10 +354,13 @@ class Alerts extends React.PureComponent {
             }
 
             XLSX.utils.book_append_sheet(workbook, worksheet, 'Alerts');
-            XLSX.writeFile(workbook, `${moment(queryParams.start).format('HH.mm_DD.MM.YYYY')}-${moment(queryParams.end).format('HH.mm_DD.MM.YYYY')}Alerts.xlsx`, {
-                type: 'base64',
-                bookType: 'xlsx',
-            });
+            XLSX.writeFile(
+                workbook,
+                `${moment(queryParams.start).format('HH.mm_DD.MM.YYYY')}-${moment(queryParams.end).format('HH.mm_DD.MM.YYYY')}_${getTypeLocale(type)}_Alerts.xlsx`,
+                {
+                    type: 'base64',
+                    bookType: 'xlsx',
+                });
 
             this.setState({ isLoading: false });
         };
@@ -376,8 +374,11 @@ class Alerts extends React.PureComponent {
         const queryParams = this.prepareQueryParams(filter, type);
 
         const success = (response) => {
-            const alerts = response.data;
-            this.props.onFetchAlertsSuccess(alerts);
+            const { alerts, total } = response.data;
+            this.props.onFetchAlertsSuccess({
+                alerts: alerts.map(this.mapAlertNode),
+                total,
+            });
             this.setState({ isLoading: false });
         };
 
@@ -390,9 +391,11 @@ class Alerts extends React.PureComponent {
         const queryParams = this.prepareQueryParams(filter, this.props.match.params.type);
 
         const success = (response) => {
-            const alerts = response.data;
-
-            this.props.onFetchAlertsSuccess(alerts);
+            const { alerts, total } = response.data;
+            this.props.onFetchAlertsSuccess({
+                alerts: alerts.map(this.mapAlertNode),
+                total,
+            });
             callback();
             this.setState({ isLoading: false });
         };
@@ -458,15 +461,27 @@ class Alerts extends React.PureComponent {
         }
     };
 
+    mapAlertNode = node => ({
+        id: String(node.id),
+        external_id: node.external_id || '',
+        policy_name: node.policy_name,
+        notification_status: node.notification_status || '',
+        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
+        cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
+        duration: this.getReadableDuration(node.duration),
+        object: node.object || '',
+        personal_account: node.nls || '',
+        san: node.san || '',
+        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
+        status: node.closed ? ls('ALERTS_STATUS_CLOSED', 'Закрытая') : ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
+        timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
+        new: !!node.new,
+    });
+
     mapPolicies = memoize((type, policies) => {
         const matcher = policy => (ALERT_POLICY_MAP[type] || []).findIndex(policy_type => policy.object_type === policy_type) !== -1;
         return policies.filter(matcher)
     });
-
-    mapSan = (san) => {
-        const digits = String(san).match(/\d+/g);
-        return _.isEmpty(digits) ? '' : digits.join('_');
-    };
 
     render() {
         return (
