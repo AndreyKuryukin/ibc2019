@@ -48,14 +48,6 @@ const getTypeLocale = type => ({
     [KQI_ALERTS]: ls('KQI_TAB_TITLE', 'KQI'),
 }[type]);
 
-const EXPORT_FIELDS_LOCALIZERS = {
-    [FILTER_FIELDS.RF]: createLocalizer('ALERTS_FILTER_RF', 'РФ'),
-    [FILTER_FIELDS.MRF]: createLocalizer('ALERTS_FILTER_MRF', 'МРФ'),
-    [FILTER_FIELDS.POLICY_ID]: createLocalizer('ALERTS_FILTER_POLICY_ID', 'Политика'),
-    [FILTER_FIELDS.CURRENT]: createLocalizer('ALERTS_FILTER_CURRENT', 'Текущие'),
-    [FILTER_FIELDS.HISTORICAL]: createLocalizer('ALERTS_FILTER_HISTORICAL', 'Исторические'),
-};
-
 class Alerts extends React.PureComponent {
     static contextTypes = {
         navBar: PropTypes.object.isRequired,
@@ -412,7 +404,6 @@ class Alerts extends React.PureComponent {
     };
 
     handleAlertsFetching = (queryParams, success, error) => {
-
         rest.get('/api/v1/alerts', {}, { queryParams: this.adaptClosedParam(queryParams) })
             .then((response) => success({ data: { alerts: response.data.alerts, total: response.data.total } }))
             .catch((e) => {
@@ -451,8 +442,8 @@ class Alerts extends React.PureComponent {
     onChangeFilter = (filter) => {
         const queryParams = this.prepareQueryParams(filter, this.props.match.params.type);
         if (this.props.filter.filter !== filter.filter) {
+            this.props.onChangeFilter(filter);
             this.onFilterAlerts(filter, () => {
-                this.props.onChangeFilter(filter);
                 setQueryParams(queryParams, this.props.history, this.props.location);
             });
         } else {

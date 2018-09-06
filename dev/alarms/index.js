@@ -6,17 +6,43 @@ module.exports = (app) => {
     kqi(app);
 
     app.get('/api/v1/alerts', (req, res) => {
-        let alerts = [];
-        const { type, closed } = req.query;
-        if (global.alertsGenerator) {
-            alerts = (global.alertsGenerator.getAlerts() || []).filter(alert => alert.type === type);
-        }
-        if (closed) {
-            alerts = alerts.filter(alert => closed === String(alert.closed))
-        }
         res.send({
-            alerts,
-            total: alerts.length,
+            alerts: [{
+                severity: "CRITICAL",
+                type: 'SIMPLE',
+                closed: false,
+                duration: 1219232,
+                external_id: "",
+                id: 1,
+                mrf: 3,
+                notification_status: "WAITING",
+                object: "SAN=0303936751094, Л/С=352010230624",
+                policy_name: "T2",
+                raise_time: new Date().toISOString(),
+                rf: 145453,
+                san: '1231qwe3eds2',
+                mac: ['111111111111', '333CCCCCCCCC'],
+                nls: '666',
+                object: 'object',
+            }, {
+                severity: "CRITICAL",
+                type: 'SIMPLE',
+                closed: false,
+                duration: 1219232,
+                external_id: "",
+                id: 2,
+                mrf: 3,
+                notification_status: "WAITING",
+                object: "SAN=0303936751094, Л/С=352010230624",
+                policy_name: "T2",
+                raise_time: new Date().toISOString(),
+                rf: 145453,
+                san: '1231qwe3eds2',
+                mac: ['111111111111', '333CCCCCCCCC'],
+                nls: '666',
+                object: 'object',
+            }],
+            total: 2,
         });
     });
     app.get('/api/v1/alerts/:id', (req, res) => {
