@@ -138,17 +138,17 @@ class Alerts extends React.PureComponent {
         const stateFilter = props.filter;
         if (!_.isEmpty(queryParams)) {
             const filter = {
+                ...stateFilter,
                 ...queryParams,
-                auto_refresh: stateFilter.auto_refresh,
-                start: new Date(+queryParams.start),
-                end: new Date(+queryParams.end),
                 current: queryParams.current === 'true',
                 historical: queryParams.historical === 'true',
+                start: moment(+queryParams.start),
+                end: moment(+queryParams.end),
             };
             this.props.onChangeFilter(filter);
             !this.state.isLoading && this.onFetchAlerts(filter, newType);
         } else {
-            setQueryParams(this.prepareFilter(stateFilter, newType), props.history, props.location);
+            setQueryParams(this.prepareQueryParams(stateFilter, newType), props.history, props.location);
             !this.state.isLoading && this.onFetchAlerts(stateFilter, newType);
         }
     };
@@ -326,7 +326,7 @@ class Alerts extends React.PureComponent {
         this.setState({ isLoading: true });
         const type = this.props.match.params.type;
         const queryParams = {
-            ...this.prepareFilter(filter, type),
+            ...this.prepareQueryParams(filter, type),
             limit: 65000,
         };
 
@@ -382,15 +382,10 @@ class Alerts extends React.PureComponent {
 
     onFetchAlerts = (filter, type) => {
         this.setState({ isLoading: true });
-        this.props.applyFilter(filter);
-        const queryParams = this.prepareFilter(filter, type);
+        this.props.applyFilter(filter, type);
+        const queryParams = this.prepareQueryParams(filter, type);
 
         const success = (response) => {
-            const typeMap = {
-                'gp': 'GROUP_AGGREGATION',
-                'kqi': 'KPIKQI',
-                'ci': 'SIMPLE'
-            };
             const { alerts, total } = response.data;
             this.props.onFetchAlertsSuccess({
                 alerts: alerts.map(this.mapAlertNode),
@@ -405,7 +400,7 @@ class Alerts extends React.PureComponent {
     onFilterAlerts = _.debounce((filter, callback) => {
         this.setState({ isLoading: true });
 
-        const queryParams = this.prepareFilter(filter, this.props.match.params.type);
+        const queryParams = this.prepareQueryParams(filter, this.props.match.params.type);
 
         const success = (response) => {
             const { alerts, total } = response.data;
@@ -438,21 +433,20 @@ class Alerts extends React.PureComponent {
     };
 
     fetchAlerts = (filter) => {
-        const queryParams = this.prepareFilter(filter, this.props.match.params.type);
+        const queryParams = this.prepareQueryParams(filter, this.props.match.params.type);
         setQueryParams(queryParams, this.props.history, this.props.location);
         if (!filter.auto_refresh) {
             this.props.onFlushHighlight();
         }
-        this.props.applyFilter(filter);
         this.onFetchAlerts(filter, this.props.match.params.type);
     };
 
-    prepareFilter = (filter, type) => {
+    prepareQueryParams = (filter, type) => {
         const preparedFilter = {
             ...filter,
             type: SENDING_ALERT_TYPES[type],
-            start: filter.start && convertDateToUTC0(filter.start.getTime()).valueOf(),
-            end: filter.end && convertDateToUTC0(filter.end.getTime()).valueOf(),
+            start: filter.start && convertDateToUTC0(filter.start.toDate().getTime()).valueOf(),
+            end: filter.end && convertDateToUTC0(filter.end.toDate().getTime()).valueOf(),
         };
 
         delete preparedFilter.auto_refresh;
@@ -466,7 +460,7 @@ class Alerts extends React.PureComponent {
     };
 
     onChangeFilter = (filter) => {
-        const queryParams = this.prepareFilter(filter, this.props.match.params.type);
+        const queryParams = this.prepareQueryParams(filter, this.props.match.params.type);
         if (this.props.filter.filter !== filter.filter) {
             this.props.onChangeFilter(filter);
             this.onFilterAlerts(filter, () => {
@@ -478,10 +472,10 @@ class Alerts extends React.PureComponent {
         }
     };
 
-    mapPolicies = (type, policies) => {
+    mapPolicies = memoize((type, policies) => {
         const matcher = policy => (ALERT_POLICY_MAP[type] || []).findIndex(policy_type => policy.object_type === policy_type) !== -1;
         return policies.filter(matcher)
-    };
+    });
 
     mapSan = (san) => {
         const digits = String(san).match(/\d+/g);
@@ -549,8 +543,8 @@ const ACTIONS_MAP = {
 const mapDispatchToProps = (dispatch, props) => ({
     onFetchLocationsSuccess: mrf => dispatch(fetchMrfSuccess(mrf)),
     onFetchPoliciesSuccess: policies => dispatch(fetchPoliciesSuccess(policies)),
-    applyFilter: (filter) => {
-        dispatch(ACTIONS_MAP.APPLY_FILTER[props.match.params.type](filter))
+    applyFilter: (filter, type) => {
+        dispatch(ACTIONS_MAP.APPLY_FILTER[type](filter))
     },
     onFetchAlertsSuccess: alerts => dispatch(ACTIONS_MAP.FETCH_ALERTS_SUCCESS[props.match.params.type](alerts)),
     onChangeFilter: filter => dispatch(ACTIONS_MAP.SET_FILTER_VALUES[props.match.params.type](filter)),

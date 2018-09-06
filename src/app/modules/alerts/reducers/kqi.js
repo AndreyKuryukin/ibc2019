@@ -13,8 +13,8 @@ import { APPLY_KQI_ALERTS } from "../../notifications/actions/index";
 
 const defaultFilter = {
     [FILTER_FIELDS.AUTO_REFRESH]: false,
-    [FILTER_FIELDS.START]: moment().subtract(1, 'hours').toDate(),
-    [FILTER_FIELDS.END]: moment().toDate(),
+    [FILTER_FIELDS.START]: moment().subtract(1, 'hours'),
+    [FILTER_FIELDS.END]: moment(),
     [FILTER_FIELDS.RF]: '',
     [FILTER_FIELDS.MRF]: '',
     [FILTER_FIELDS.FILTER]: '',
@@ -96,7 +96,7 @@ export default (state = initialState, action) => {
                 _.remove(highLight, alert => update.findIndex(rm => rm.id === alert.id) !== -1);
             }
             if (!_.isEmpty(remove)) {
-                decrement = _.remove(alerts, alert => remove.findIndex(rm => rm.id === alert.id) !== -1);
+                decrement = _.remove(alerts, alert => remove.findIndex(rm => rm.id === alert.id) !== -1).length;
             }
             return {
                 ...state,

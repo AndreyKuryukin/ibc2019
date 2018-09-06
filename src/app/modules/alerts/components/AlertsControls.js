@@ -107,8 +107,8 @@ class AlertsControls extends React.Component {
         }
 
         if (property === 'auto_refresh' && !value) {
-            _.set(newFilter, 'start', moment().subtract(1, 'hours').toDate());
-            _.set(newFilter, 'end', moment().toDate());
+            _.set(newFilter, 'start', moment().subtract(1, 'hours'));
+            _.set(newFilter, 'end', moment());
         }
 
         this.props.onChangeFilter(newFilter);
@@ -166,10 +166,10 @@ class AlertsControls extends React.Component {
                         >
                             <DatePicker
                                 itemId="alerts_start"
-                                max={this.getFilterProperty('end')}
-                                value={this.getFilterProperty('start')}
+                                max={this.getFilterProperty('end').toDate()}
+                                value={this.getFilterProperty('start').toDate()}
                                 inputWidth={115}
-                                onChange={value => this.setFilterProperty('start', value)}
+                                onChange={value => this.setFilterProperty('start', moment(value))}
                                 format={'DD.MM.YYYY HH:mm'}
                                 time
                                 disabled={this.getFilterProperty('auto_refresh', false)}
@@ -188,10 +188,10 @@ class AlertsControls extends React.Component {
                         >
                             <DatePicker
                                 itemId="alerts_end"
-                                min={this.getFilterProperty('start')}
-                                value={this.getFilterProperty('end')}
+                                min={this.getFilterProperty('start').toDate()}
+                                value={this.getFilterProperty('end').toDate()}
                                 inputWidth={115}
-                                onChange={value => this.setFilterProperty('end', value)}
+                                onChange={value => this.setFilterProperty('end', moment(value))}
                                 format={'DD.MM.YYYY HH:mm'}
                                 time
                                 disabled={this.getFilterProperty('auto_refresh', false)}
