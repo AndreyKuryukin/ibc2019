@@ -77,10 +77,3 @@ class ScopeList extends React.PureComponent {
 }
 
 export default ScopeList;
-// {values.map(value => (
-//     <Chip
-//         key={value}
-//         title={this.getItemTitle(value)}
-//         onRemove={() => this.onRemove(value)}
-//     />
-// ))}

@@ -47,7 +47,6 @@ class PolicyEditor extends React.PureComponent {
         metaData: PropTypes.object,
         policies: PropTypes.array,
         mrfList: PropTypes.array,
-        rfList: PropTypes.array,
         active: PropTypes.bool,
         alertsCount: PropTypes.number,
         onSubmit: PropTypes.func,
@@ -71,7 +70,6 @@ class PolicyEditor extends React.PureComponent {
         metaData: {},
         policies: [],
         mrfList: [],
-        rfList: [],
         active: false,
         alertsCount: 0,
         onSubmit: () => null,
@@ -235,7 +233,7 @@ class PolicyEditor extends React.PureComponent {
     };
 
     render() {
-        const { active, policyId, scopes, policyTypes, policies, objectTypes, kqiList, rfList, mrfList } = this.props;
+        const { active, policyId, scopes, policyTypes, policies, objectTypes, kqiList, mrfList } = this.props;
         const { policy, errors, metaData } = this.state;
         const threshold = _.get(metaData, 'threshold', false);
         const duration = _.get(metaData, 'duration', false);
@@ -267,7 +265,6 @@ class PolicyEditor extends React.PureComponent {
                                             scopeList={scopes}
                                             kqiList={kqiList}
                                             mrfList={mrfList}
-                                            rfList={rfList}
                                             scopes={this.getPolicyProperty('scopes')}
                                             onChange={scopes => this.setPolicyProperty('scopes', scopes)}
                                         />
