@@ -329,7 +329,7 @@ class AlertsControls extends React.Component {
                             onChange={value => this.setFilterProperty('filter', value)}
                         />
                         <Icon
-                            title={'Поиск по полям ID, SAN, MAC, Лицевой счёт'}
+                            title={ls('SEARCH_INFO_TITLE', 'Поиск по полям ID, SAN, MAC, Лицевой счёт')}
                             icon="info-icon"
                         />
                     </div>
