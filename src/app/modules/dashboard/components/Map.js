@@ -74,20 +74,20 @@ class Map extends React.Component {
 
     getTitle() {
         const { mrfId, type } = this.props;
-
-        if (mrfId === MACRO_RF_ID) {
-            return (
-                <span>
-                    {ls('DASHBOARD_AVERAGE_TITLE', 'Средний показатель ')}
-                    <KQI
-                        className={styles.mapTitleKQI}
-                        type={type}
-                        placeholder={null}
-                    />
-                    {ls('DASHBOARD_BY_MRF_TITLE', ' по МРФ')}
-                </span>
-            );
-        }
+        //
+        // if (mrfId === MACRO_RF_ID) {
+        //     return (
+        //         <span>
+        //             {ls('DASHBOARD_AVERAGE_TITLE', 'Средний показатель ')}
+        //             <KQI
+        //                 className={styles.mapTitleKQI}
+        //                 type={type}
+        //                 placeholder={null}
+        //             />
+        //             {ls('DASHBOARD_BY_MRF_TITLE', ' по МРФ')}
+        //         </span>
+        //     );
+        // }
 
         const mrf = this.state.details.find(r => r.id === mrfId);
         if (mrf === undefined) return '';
@@ -96,15 +96,10 @@ class Map extends React.Component {
 
         return (
             <span>
-                {`Средний показатель ${extractRegionName(mrf.name)} `}
+                {`${ls('DASHBOARD_AVERAGE_TITLE', 'Средний показатель ')} `}
                 <KQI
                     className={styles.mapTitleKQI}
                     type={type}
-                    placeholder={null}
-                />
-                {' по МРФ '}
-                <KQI
-                    className={styles.mapTitleKQI}
                     value={mrf.kqi}
                     positive={mrf.kqi > plan}
                     negative={mrf.kqi < plan}
@@ -136,7 +131,7 @@ class Map extends React.Component {
             <WidgetWrapper
                 className={styles.map}
                 title={this.getTitle()}
-                backLink={mrfId === MACRO_RF_ID ? undefined : this.props.buildLink({ mrfId: null })}
+                // backLink={mrfId === MACRO_RF_ID ? undefined : this.props.buildLink({ mrfId: null })}
             >
                 <RussianMap
                     mrfId={this.props.mrfId}

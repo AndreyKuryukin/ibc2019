@@ -28,7 +28,7 @@ class Graph extends React.PureComponent {
                     <DynamicKAB regularity={regularity} />
                 </WidgetWrapper>
                 <WidgetWrapper
-                    title={ls('DASHBOARD_CHART_DRILLDOWN_TITLE', 'KQI МРФ Волга')}
+                    title={ls('DASHBOARD_CHART_DRILLDOWN_TITLE', 'Operator Key Quality Indicators')}
                     style={{
                         gridColumn: '1 / 3',
                         height: 400,

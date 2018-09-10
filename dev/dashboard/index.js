@@ -9,24 +9,25 @@ module.exports = (app) => {
     app.get('/api/v1/dashboard/head', (req, res) => {
         res.json({
             KAB: {
-                current: 99.9,
-                previous: 99.7,
-                plan: 98.5
+                current: 95.5,
+                previous: 95.8,
+                plan: 95
             },
             KGS: {
-                current: 99.9,
-                previous: 99.7,
-                plan: 98.5
+                current: 95.8,
+                previous: 95.9,
+                plan: 95
             },
             KSPD: {
-                current: 99.9,
-                previous: 99.7,
-                plan: 98.5
+                current: 96.5,
+                previous: 95.8,
+                plan: 95
             },
         });
     });
     app.post('/api/v1/dashboard/map/detailed', (req, res) => {
-        res.json(details);
+        const { type = 'KAB' } = req.body;
+        res.json([details[type]]);
     });
     app.get('/api/v1/dashboard/dynamic/kab', (req, res) => {
         res.json(dynamicKAB);

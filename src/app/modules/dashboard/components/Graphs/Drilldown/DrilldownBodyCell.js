@@ -34,49 +34,40 @@ class DrilldownBodyCell extends React.PureComponent {
                         viewBox="0 0 16 16"
                         onClick={this.onClick}
                     >
-                        <path d="M4,8l8,0z" />
-                        <path d="M8,4l0,8z" className={styles.vertical} />
+                        <path d="M4,8l8,0z"/>
+                        <path d="M8,4l0,8z" className={styles.vertical}/>
                     </svg>
                 )}
                 <div className={styles.parentCell}>
-                    {row.parameter}<sub>{row.index}</sub>
+                    {row.name}
                 </div>
                 {isExpanded && (row.items.map(childRow => (
                     <div
                         key={childRow.id}
                         className={styles.childCell}
                     >
-                        {row.parameter}<sub>{row.index}</sub> {childRow.name}
+                        {childRow.name}
                     </div>
                 )))}
             </div>
         );
     }
-    renderITV1(column, row, isExpanded) {
+
+    formatValue = number => typeof number === 'number'
+        ? parseFloat(number.toFixed(2)) + '%'
+        : ls('NOT_AVAILABLE', 'Н/Д');
+
+
+    renderValue = (column, row, isExpanded, fieldName) => {
         return (
             <div className={cn(styles.cell, styles.itv1)}>
-                <div className={styles.parentCell}>{row.itv1}</div>
+                <div className={styles.parentCell}>{this.formatValue(row[fieldName])}</div>
                 {isExpanded && (row.items.map(childRow => (
                     <div
                         key={childRow.id}
                         className={styles.childCell}
                     >
-                        {childRow.itv1}
-                    </div>
-                )))}
-            </div>
-        );
-    }
-    renderITV2(column, row, isExpanded) {
-        return (
-            <div className={cn(styles.cell, styles.itv2)}>
-                <div className={styles.parentCell}>{row.itv2}</div>
-                {isExpanded && (row.items.map(childRow => (
-                    <div
-                        key={childRow.id}
-                        className={styles.childCell}
-                    >
-                        {childRow.itv2}
+                        {this.formatValue(childRow[fieldName])}
                     </div>
                 )))}
             </div>
@@ -90,10 +81,10 @@ class DrilldownBodyCell extends React.PureComponent {
         switch (column.name) {
             case 'name':
                 return this.renderName(column, row, isExpanded);
-            case 'itv1':
-                return this.renderITV1(column, row, isExpanded);
-            case 'itv2':
-                return this.renderITV2(column, row, isExpanded);
+            case 'ksub':
+            case 'khe':
+            case 'knet':
+                return this.renderValue(column, row, isExpanded, column.name);
             default:
                 return null;
         }

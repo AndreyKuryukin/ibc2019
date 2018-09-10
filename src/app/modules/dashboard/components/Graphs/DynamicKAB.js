@@ -9,8 +9,9 @@ import { REGULARITIES } from '../../constants';
 import { convertUTC0ToLocal } from '../../../../util/date';
 
 const NAMES = {
-    itv1: 'ИТВ',
-    itv2: 'ИТВ 2.0',
+    KSUB: 'KQIsub',
+    KNET: 'KQInet',
+    KHE: 'KQIhe',
 };
 const STEPS = {
     [REGULARITIES.HOUR]: 3600 * 1000,

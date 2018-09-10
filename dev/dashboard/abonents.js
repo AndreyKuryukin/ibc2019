@@ -1,14 +1,14 @@
 module.exports = {
     "FTTB": {
-        "total": 123123,
-        "broken": 55
+        "total": 511785,
+        "broken": 3632
     },
     "GPON": {
-        "total": 2342,
-        "broken": 345
+        "total": 65152,
+        "broken": 9081
     },
     "XDSL": {
-        "total": 11111,
-        "broken": 4545
+        "total": 8905,
+        "broken": 192
     }
 };

@@ -15,7 +15,7 @@ export const MACRO_RF_ID = 'macro';
 export const DEFAULT_PATH_PARAMETERS = {
     regularity: REGULARITIES.HOUR,
     mode: VIEW_MODE.MAP,
-    mapMrfId: MACRO_RF_ID,
+    mapMrfId: '9',
     graphMrfId: '9',
     type: undefined,
 };

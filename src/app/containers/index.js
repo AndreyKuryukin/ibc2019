@@ -47,7 +47,7 @@ const NoMatch = () => (
 
 let isLanguageMapLoading = false;
 
-const DASHBOARD_LANDING = '/dashboard/map/HOUR/9/KAB';
+const DASHBOARD_LANDING = '/dashboard/map/DAY/9/KAB';
 
 class App extends React.Component {
 

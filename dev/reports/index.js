@@ -2,10 +2,10 @@ const reports = [{
     id: 101,
     type: 'STATISTIC',
     templates: [{
-        templ_name: 'Базовый отчёт IPTV',
+        templ_name: 'Top subscribers with degradation',
         templ_id: 1,
         report_config: [{
-            config_name: 'Ежедневный',
+            config_name: 'Daily',
             config_id: 2,
             type: 'PDF',
             author: 'author 1',
