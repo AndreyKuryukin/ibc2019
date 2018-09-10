@@ -392,7 +392,7 @@
     "ALERTS_TYPE_SIMPLE": "Simple",
     "ALERTS_TYPE_KPIKQI": "KQI",
 
-    "ALERTS_STATUS_ACTIVE": "Active",
+    "ALERTS_STATUS_ACTIVE": "Open",
     "ALERTS_STATUS_CLOSED": "Closed",
     "ALERTS_FILTER_STRING": "Filter",
     "ALERTS_FILTER_RF": "RF",

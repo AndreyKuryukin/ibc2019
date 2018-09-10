@@ -28,12 +28,6 @@ import {
     unhighlightKqiAlert
 } from "../actions/kqi";
 
-const TAB_TITLES = {
-    'GP': 'ГП',
-    'CI': 'КИ',
-    'KQI': 'KQI',
-};
-
 const ALERT_POLICY_MAP = {
     ci: ['STB', 'OTT'],
     gp: ['VB'],
@@ -125,7 +119,7 @@ class Alerts extends React.PureComponent {
         const type = _.get(this.state, 'type');
         const nextType = _.get(nextProps, 'match.params.type', type);
         if (nextType && type !== nextType) {
-            this.context.navBar.setPageTitle([ls('ALERTS_PAGE_TITLE', 'Аварии'), ls(`ALERTS_TAB_TITLE_${nextType.toUpperCase()}`, TAB_TITLES[nextType.toUpperCase()])]);
+            this.context.navBar.setPageTitle([ls('ALERTS_PAGE_TITLE', 'Аварии'), ls(`ALERTS_TAB_TITLE_${nextType.toUpperCase()}`, getTypeLocale(nextType))]);
             this.onTypeSwitch(nextType, nextProps);
         } else if (this.props.location.search !== nextProps.location.search && _.isEmpty(nextProps.location.search)) {
             this.onTypeSwitch(nextType, nextProps);
@@ -293,23 +287,6 @@ class Alerts extends React.PureComponent {
         },  ls('ALERTS_FILTER_STRING', 'Фильтр') + ': ');
     }
 
-    mapAlertNode = node => ({
-        id: String(node.id),
-        external_id: node.external_id || '',
-        policy_name: node.policy_name,
-        notification_status: node.notification_status || '',
-        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
-        cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
-        duration: this.getReadableDuration(node.duration),
-        object: node.object || '',
-        personal_account: node.nls || '',
-        san: this.mapSan(node.san),
-        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
-        status: node.closed ? ls('ALERTS_STATUS_CLOSED', 'Закрытая') : ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
-        timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
-        new: !!node.new,
-    });
-
     onFetchingAlertsError = (e) => {
         this.context.notifications.notify({
             title: ls('ALERTS_GETTING_ERROR_TITLE_FIELD', 'Ошибка загрузки аварий:'),
@@ -352,7 +329,10 @@ class Alerts extends React.PureComponent {
             const filterString = this.buildFilterString(queryParams);
             const worksheet = XLSX.utils.aoa_to_sheet([[filterString]]);
 
-            XLSX.utils.sheet_add_json(worksheet, response.data.alerts.map(node => _.pick(this.mapAlertNode(node), Object.keys(colsConfig))), { origin: 'A2' });
+            XLSX.utils.sheet_add_json(
+                worksheet,
+                response.data.alerts.map(node => _.pick(this.mapAlertNode(node), Object.keys(colsConfig))), { origin: 'A2' }
+            );
 
             const range = XLSX.utils.decode_range(worksheet['!ref']);
 
@@ -472,15 +452,27 @@ class Alerts extends React.PureComponent {
         }
     };
 
+    mapAlertNode = node => ({
+        id: String(node.id),
+        external_id: node.external_id || '',
+        policy_name: node.policy_name,
+        notification_status: node.notification_status || '',
+        raise_time: convertUTC0ToLocal(node.raise_time).format('HH:mm DD.MM.YYYY'),
+        cease_time: node.cease_time ? convertUTC0ToLocal(node.cease_time).format('HH:mm DD.MM.YYYY') : '',
+        duration: this.getReadableDuration(node.duration),
+        object: node.object || '',
+        personal_account: node.nls || '',
+        san: node.san || '',
+        mac: _.isArray(node.mac) ? node.mac.join(', ') : node.mac,
+        status: node.closed ? ls('ALERTS_STATUS_CLOSED', 'Закрытая') : ls('ALERTS_STATUS_ACTIVE', 'Открытая'),
+        timestamp: convertUTC0ToLocal(node.raise_time).valueOf(),
+        new: !!node.new,
+    });
+
     mapPolicies = memoize((type, policies) => {
         const matcher = policy => (ALERT_POLICY_MAP[type] || []).findIndex(policy_type => policy.object_type === policy_type) !== -1;
         return policies.filter(matcher)
     });
-
-    mapSan = (san) => {
-        const digits = String(san).match(/\d+/g);
-        return _.isEmpty(digits) ? '' : digits.join('_');
-    };
 
     render() {
         return (

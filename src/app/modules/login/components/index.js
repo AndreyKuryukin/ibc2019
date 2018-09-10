@@ -8,29 +8,7 @@ import _ from 'lodash';
 import ls from '../../../../i18n';
 import styles from './login.scss';
 import Select from "../../../components/Select/index";
-
-const LANGUAGES = {
-    RUSSIAN: 'RUSSIAN',
-    ENGLISH: 'ENGLISH'
-};
-
-const LANGUAGE_OPTIONS = [
-    { title: 'Русский', value: LANGUAGES.RUSSIAN },
-    { title: 'English', value: LANGUAGES.ENGLISH }
-];
-
-const PLACEHOLDERS = {
-    [LANGUAGES.RUSSIAN]: {
-        LOGIN: 'Логин',
-        PASSWORD: 'Пароль',
-        LOG_IN: 'ВХОД'
-    },
-    [LANGUAGES.ENGLISH]: {
-        LOGIN: 'Login',
-        PASSWORD: 'Password',
-        LOG_IN: 'LOG IN'
-    }
-};
+import { LANGUAGES, LANGUAGE_OPTIONS, PLACEHOLDERS } from '../../../costants/login';
 
 class Login extends React.PureComponent {
     static propTypes = {
@@ -38,20 +16,25 @@ class Login extends React.PureComponent {
         onInput: PropTypes.func,
         loading: PropTypes.bool,
         errors: PropTypes.object,
-        loginFailed: PropTypes.bool
+        loginFailed: PropTypes.bool,
+        language: PropTypes.string,
+        onLanguageChange: PropTypes.func,
     };
 
     static defaultProps = {
         onSubmit: () => null,
         onInput: () => null,
         errors: {},
+        language: LANGUAGES.RUSSIAN,
+        onLanguageChange: () => null,
     };
 
     constructor(props) {
         super(props);
         this.state = {
-            language: LANGUAGES.RUSSIAN,
-            errors: {}
+            login: '',
+            password: '',
+            errors: {},
         };
     }
 
@@ -62,20 +45,26 @@ class Login extends React.PureComponent {
     }
 
     onSubmit = (e) => {
-        const { login, password, language } = this.state;
+        const { login, password } = this.state;
+        const { language } = this.props;
         e.preventDefault();
         this.props.onSubmit(login, password, language);
     };
 
     inputValue = (value, valuePath) => {
         const errors = _.omit({ ...this.state.errors }, valuePath);
-        this.setState({ [valuePath]: value, errors }, () => {
-            this.props.onInput();
-        });
+        if (valuePath === 'language') {
+            this.props.onLanguageChange(value);
+        } else {
+            this.setState({ [valuePath]: value, errors }, () => {
+                this.props.onInput();
+            });
+        }
     };
 
     render() {
         const { errors } = this.state;
+        const { language } = this.props;
         return (
             <div className={styles.loginContainer}>
                 <div className={styles.shield}>
@@ -85,14 +74,17 @@ class Login extends React.PureComponent {
                     <div className={styles.sqmLabel}>
                         {'SQM B2C'}
                     </div>
-                    <Preloader active={this.props.loading}>
+                    <Preloader
+                        active={this.props.loading}
+                        text={ls('PRELOADER_DEFAULT_TEXT', language === LANGUAGES.RUSSIAN ? 'Загрузка' : 'Loading')}
+                    >
                         <Form
                             onSubmit={this.onSubmit}
                             className={styles.loginForm}
                         >
                             <Input
                                 value={this.state.login}
-                                placeholder={_.get(PLACEHOLDERS, `${this.state.language}.LOGIN`, 'Логин')}
+                                placeholder={_.get(PLACEHOLDERS, `${language}.LOGIN`, 'Логин')}
                                 onChange={value => this.inputValue(value, 'login')}
                                 valid={_.isEmpty(errors.login)}
                             />
@@ -101,21 +93,21 @@ class Login extends React.PureComponent {
                                 type="password"
                                 id="password"
                                 value={this.state.password}
-                                placeholder={_.get(PLACEHOLDERS, `${this.state.language}.PASSWORD`, 'Пароль')}
+                                placeholder={_.get(PLACEHOLDERS, `${language}.PASSWORD`, 'Пароль')}
                                 onChange={value => this.inputValue(value, 'password')}
                                 valid={_.isEmpty(errors.password)}
                             />
                             <Select
                                 options={LANGUAGE_OPTIONS}
                                 onChange={value => this.inputValue(value, 'language')}
-                                value={this.state.language}
+                                value={language}
                             />
 
                             <Button
                                 type="submit"
                                 color="action"
                             >
-                                {_.get(PLACEHOLDERS, `${this.state.language}.LOG_IN`, 'ВХОД')}
+                                {_.get(PLACEHOLDERS, `${language}.LOG_IN`, 'ВХОД')}
                             </Button>
                         </Form>
                     </Preloader>
