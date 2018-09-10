@@ -26,7 +26,6 @@ class Scope extends React.PureComponent {
         scopeList: PropTypes.array,
         kqiList: PropTypes.array,
         mrfList: PropTypes.array,
-        rfList: PropTypes.array,
         onChange: PropTypes.func,
     };
 
@@ -35,7 +34,6 @@ class Scope extends React.PureComponent {
         scopeList: [],
         kqiList: [],
         mrfList: [],
-        rfList: [],
         onChange: () => null,
     };
 
@@ -44,6 +42,26 @@ class Scope extends React.PureComponent {
 
         this.state = { selectedScope: '' };
     }
+
+    getRfList = () => {
+        const mrfs = _.get(this.props, 'scopes.MRF', []);
+        let rfList = [];
+
+        if (mrfs.length > 0) {
+            rfList = _.chain(this.props.mrfList)
+                .filter(mrf => mrfs.includes(mrf.id))
+                .map('rf')
+                .flatten()
+                .value();
+        } else {
+            rfList = _.chain(this.props.mrfList)
+                .map('rf')
+                .flatten()
+                .value();
+        }
+
+        return rfList;
+    };
 
     getScopeList = (scope, values) => {
         const commonProps = {
@@ -78,7 +96,7 @@ class Scope extends React.PureComponent {
                         itemId="policies_rf_scope"
                         id="scope-list-rf"
                         placeholder={ls('POLICY_RF_LIST_PLACEHOLDER', 'Выберите РФ')}
-                        options={this.mapIdNameList(this.props.rfList)}
+                        options={this.mapIdNameList(this.getRfList())}
                         {...commonProps}
                     />
                 );
@@ -115,7 +133,7 @@ class Scope extends React.PureComponent {
             case 'MRF':
                 return _.get(this.mapIdNameList(this.props.mrfList).find(finder), 'title', null);
             case 'RF':
-                return _.get(this.mapIdNameList(this.props.rfList).find(finder), 'title', null);
+                return _.get(this.mapIdNameList(this.getRfList()).find(finder), 'title', null);
             case 'KQI_PROJECTION':
                 return _.get(this.mapIdNameList(this.props.kqiList).find(finder), 'title', null);
             default:
@@ -135,6 +153,20 @@ class Scope extends React.PureComponent {
             [selectedScope]: value,
         };
 
+        if (selectedScope === 'MRF' && scopes.MRF.length === 1 && scopes.RF) {
+            const rfsOfMrf = _.chain(this.props.mrfList)
+                .find(mrf => mrf.id === scopes.MRF[0])
+                .get('rf', [])
+                .map('id')
+                .value();
+
+            scopes.RF = scopes.RF.filter(rfId => rfsOfMrf.includes(rfId));
+
+            if (scopes.RF.length === 0) {
+                delete scopes.RF;
+            }
+        }
+
         this.props.onChange(scopes);
     }
 
@@ -150,6 +182,20 @@ class Scope extends React.PureComponent {
             scopes[scope] = values;
         } else {
             delete scopes[scope];
+        }
+
+        if (scope === 'MRF' && scopes.RF) {
+            const rfsOfMrf = _.chain(this.props.mrfList)
+                .find(mrf => mrf.id === value)
+                .get('rf', [])
+                .map('id')
+                .value();
+
+            scopes.RF = !scopes.MRF ? scopes.RF : scopes.RF.filter(rfId => !rfsOfMrf.includes(rfId));
+
+            if (scopes.RF.length === 0) {
+                delete scopes.RF;
+            }
         }
 
         this.props.onChange(scopes);

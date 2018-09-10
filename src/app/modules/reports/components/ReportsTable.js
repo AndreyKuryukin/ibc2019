@@ -20,13 +20,13 @@ const iconCellStyle = {
 };
 
 const TEMPLATE_NAMES_MAP = {
-    ACCIDENT_REPORT: ls('ACCIDENT_REPORT', "Отчёт об авариях"),
-    DEGRADATION_QUALITY: ls('DEGRADATION_QUALITY', "Отчет с гарантированной деградацией качества"),
-    KGS_BY_CHANNEL: ls('KGS_BY_CHANNEL', "Отчёт Кгс в проекции по каналам"),
-    KAB_FOR_ACCESS: ls('KAB_FOR_ACCESS', "Отчёт Каб в проекции на коммутаторы доступа"),
-    KAB_FOR_AGGREGATION: ls('KAB_FOR_AGGREGATION', "Отчёт Каб в проекции на коммутаторы агрегации"),
-    REPORT_IPTV: ls('REPORT_IPTV', "Базовый отчёт IPTV"),
-    REPORT_OTT: ls('REPORT_OTT', "Базовый отчёт ОТТ")
+  ACCIDENT_REPORT:() => ls('ACCIDENT_REPORT', "Отчёт об авариях"),
+  DEGRADATION_QUALITY:() => ls('DEGRADATION_QUALITY', "Отчет с гарантированной деградацией качества"),
+  KGS_BY_CHANNEL:() => ls('KGS_BY_CHANNEL', "Отчёт Кгс в проекции по каналам"),
+  KAB_FOR_ACCESS:() => ls('KAB_FOR_ACCESS', "Отчёт Каб в проекции на коммутаторы доступа"),
+  KAB_FOR_AGGREGATION:() => ls('KAB_FOR_AGGREGATION', "Отчёт Каб в проекции на коммутаторы агрегации"),
+  REPORT_IPTV:() => ls('REPORT_IPTV', "Базовый отчёт IPTV"),
+  REPORT_OTT:() => ls('REPORT_OTT', "Базовый отчёт ОТТ")
 };
 
 class ReportsTable extends React.PureComponent {
@@ -154,7 +154,7 @@ class ReportsTable extends React.PureComponent {
     mapTemplate = template => ({
         id: template.id,
         nodeType: 'template',
-        name: TEMPLATE_NAMES_MAP[template.name] || '',
+        name: (TEMPLATE_NAMES_MAP[template.name] || (() => ''))(),
         children: _.get(template, 'report_config', []).map(this.mapConfig),
     });
 
