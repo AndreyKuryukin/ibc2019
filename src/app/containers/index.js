@@ -47,6 +47,8 @@ const NoMatch = () => (
 
 let isLanguageMapLoading = false;
 
+const DASHBOARD_LANDING = '/dashboard/map/HOUR/9/KAB';
+
 class App extends React.Component {
 
     static propTypes = {
@@ -86,7 +88,7 @@ class App extends React.Component {
             'LANDING': {
                 id: 'DASHBOARD',
                 defaultTitle: 'Рабочий стол',
-                link: '/dashboard',
+                link: DASHBOARD_LANDING,
                 path: '/dashboard/:mode?/:regularity?/:mrfId?/:type?',
                 component: Dashboard,
                 exact: true
@@ -419,7 +421,8 @@ class App extends React.Component {
                                               embedded={embedded}
                     >
                         <Switch>
-                            <Redirect from="/" exact to="/dashboard"/>
+                            <Redirect from="/" exact to={DASHBOARD_LANDING}/>
+                            <Redirect from="/dashboard" exact to={DASHBOARD_LANDING}/>
                             {routes}
                             {loggedIn ? <Route component={NoMatch}/> : this.loginRedirect()}
                         </Switch>

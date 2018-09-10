@@ -70,12 +70,25 @@ module.exports = (app) => {
 
     app.get('/api/v1/user/current', (req, res) => {
         res.json({
-            id: "355136763302707201",
-            login: "admin",
-            subjects: [],
-            first_name: "Admin",
-            last_name: "Admin",
+            "id": "360775744165314561",
+            "login": "admin",
+            "roles": [{
+                "name": "Admin",
+                "description": "Admin role",
+                "access_level": [{
+                    "access_level_type": "ALL",
+                    "subject": { "name": "Reports", "description": "Reports subject", "id": "360775743261114369" },
+                    "id": "360775743371837441"
+                }],
+                "id": "360775743335923713"
+            }],
+            "first_name": "Admin",
+            "last_name": "Admin"
         });
+    });
+
+    app.get('/api/v1/user/language/current/', (req, res) => {
+        res.send("ENGLISH");
     });
 
     app.get('/api/v1/user/:id', (req, res) => {

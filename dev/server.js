@@ -35,16 +35,16 @@ app.set('etag', false);
 app.set('port', (PORT));
 
 const plugins = [
-    // './login',
-    // './roles',
-    // './users',
-    // './policies',
-    // './kqi',
-    // './reports',
-    // './sources',
-      './alarms',
-    // './common',
-    // './dashboard',
+    './login',
+    './roles',
+    './users',
+    './policies',
+    './kqi',
+    './reports',
+    './sources',
+    './alarms',
+    './common',
+    './dashboard',
     './notifications',
 ];
 
@@ -90,7 +90,6 @@ const plugIn = (app, plugins) => {
         }
     })
 };
-
 
 
 if (PROXY_HOST) {

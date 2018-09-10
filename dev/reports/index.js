@@ -1,6 +1,6 @@
 const reports = [{
     id: 101,
-    type: 'Статистические отчёты',
+    type: 'STATISTIC',
     templates: [{
         templ_name: 'Базовый отчёт IPTV',
         templ_id: 1,
@@ -100,7 +100,7 @@ const reports = [{
     }]
 }, {
     id: 102,
-    type: 'Оперативные отчёты',
+    type: 'OPERATIVE',
     templates: [{
         templ_name: 'Антирейтинг каналов по данным STB',
         templ_id: 'a',
@@ -174,14 +174,14 @@ const reports = [{
 
 
 module.exports = (app) => {
-    app.get('/api/v1/report/results', (req, res) => {
+    app.get('/api/v1/report/result', (req, res) => {
         res.send(reports);
     });
-    app.delete('/api/v1/reports/results/:id', (req, res) => {
+    app.delete('/api/v1/reports/result/:id', (req, res) => {
         reports[0].report_config[0].reports.shift();
         res.end();
     });
-    app.post('/api/v1/reports/results/:id', (req, res) => {
+    app.post('/api/v1/reports/result/:id', (req, res) => {
         reports[0].templates[0].report_config[0].reports[1].state = 'RUNNING';
         res.end();
     });
