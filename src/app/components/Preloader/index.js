@@ -13,7 +13,7 @@ class Prealoder extends React.PureComponent {
 
     static defaultProps = {
         active: false,
-        text: ls('PRELOADER_DEFAULT_TEXT', 'Загрузка'),
+        text: '',
         children: null,
     };
 
@@ -70,7 +70,7 @@ class Prealoder extends React.PureComponent {
                                       className='st18' opacity='.15' fill='#fff' />
                             </g>
                         </svg>
-                        <div>{text}</div>
+                        <div>{text || ls('PRELOADER_DEFAULT_TEXT', 'Загрузка')}</div>
                     </div>
                 </div>
                 {children}

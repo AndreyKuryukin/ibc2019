@@ -118,25 +118,25 @@ class Users extends React.Component {
                             style={iconStyle}
                             title={ls('DELETE_USER_TITLE', 'Удалить пользователя')}
                         />
+                        <Icon
+                            itemId="users_block"
+                            icon="lockIcon"
+                            onClick={this.onLock}
+                            title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
+                        />
+                        <Icon
+                            itemId="users_unlock"
+                            icon="unlockIcon"
+                            onClick={this.onUnlock}
+                            title={ls('UNLOCK_USER_TITLE', 'Разблокировать пользователя')}
+                        />
+                        <Icon
+                            itemId="users_create_group"
+                            icon="groupIcon"
+                            style={groupIconStyle}
+                            title={ls('CREATE_USER_GROUP_TITLE', 'Создать группу пользователей')}
+                        />
                     </Fragment>}
-                    <Icon
-                        itemId="users_block"
-                        icon="lockIcon"
-                        onClick={this.onLock}
-                        title={ls('LOCK_USER_TITLE', 'Заблокировать пользователя')}
-                    />
-                    <Icon
-                        itemId="users_unlock"
-                        icon="unlockIcon"
-                        onClick={this.onUnlock}
-                        title={ls('UNLOCK_USER_TITLE', 'Разблокировать пользователя')}
-                    />
-                    <Icon
-                        itemId="users_create_group"
-                        icon="groupIcon"
-                        style={groupIconStyle}
-                        title={ls('CREATE_USER_GROUP_TITLE', 'Создать группу пользователей')}
-                    />
                     <Input
                         itemId="users_search_field"
                         placeholder={ls('SEARCH_PLACEHOLDER', 'Поиск')}

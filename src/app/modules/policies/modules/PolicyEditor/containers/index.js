@@ -153,7 +153,6 @@ class PolicyEditor extends React.PureComponent {
                 cease_duration: 0,
             },
             mrfList: [],
-            rfList: [],
             alertsCount: -1,
         };
     }
@@ -178,11 +177,6 @@ class PolicyEditor extends React.PureComponent {
 
     mapKqi = (kqiList = []) => kqiList.map(kqi => ({ id: String(kqi.id), name: kqi.name }));
 
-    mapLocations = (locations = []) => locations.reduce((result, { id, name, rf }) => ({
-        mrfList: [...result.mrfList, { id, name }],
-        rfList: [...result.rfList, ...rf],
-    }), { mrfList: [], rfList: [] });
-
     fetchBasicData = () => {
         const requests = [
             rest.get('/api/v1/kqi/projection/'),
@@ -205,13 +199,12 @@ class PolicyEditor extends React.PureComponent {
                     ..._.get(policyResp, 'data', null),
                     allow_accident: !!_.get(policyResp, 'data.parent_policy', false),
                 };
-                const { mrfList, rfList } = this.mapLocations(locationResp.data);
+                const mrfList = locationResp.data;
 
                 const update = {
                     objectTypes,
                     kqiList: this.mapKqi(kqiList),
                     mrfList,
-                    rfList,
                     loading: false,
                 };
 
@@ -460,7 +453,6 @@ class PolicyEditor extends React.PureComponent {
                 scopes={this.state.scopeTypes}
                 kqiList={this.state.kqiList}
                 mrfList={this.state.mrfList}
-                rfList={this.state.rfList}
                 {...props}
             />
         );
