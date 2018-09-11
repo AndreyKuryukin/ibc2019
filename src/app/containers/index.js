@@ -236,9 +236,7 @@ class App extends React.Component {
         const hashToken = this.extractHashToken(hashParams);
         const embedded = !!hashToken;
         const localToken = hashToken || localStorage.getItem('jwtToken');
-        if (hashToken) {
-            this.setToken(hashToken);
-        }
+        this.setToken(localToken);
         this.setState({ loading: true, embedded });
         rest.get('api/v1/user/current')
             .then((userResp) => {

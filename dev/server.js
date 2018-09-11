@@ -57,7 +57,6 @@ app.use((req, res, next) => {
 
 function useStatic() {
     const buildPath = path.resolve(__dirname, '../build');
-    const filesPath = path.resolve(__dirname, buildPath, 'files');
     app.use('/*.css', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../build/styles.css'));
     });
