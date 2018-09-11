@@ -121,9 +121,9 @@ class ReportsTable extends React.PureComponent {
         id: report.id,
         name: report.name,
         path: report.file_path,
-        start: report.create_start_time ? convertUTC0ToLocal(report.create_start_time).format(DATE_TIME) : '',
-        end: report.create_end_time ? convertUTC0ToLocal(report.create_end_time).format(DATE_TIME) : '',
-        create_end_time: report.create_end_time,
+        start: report.create_start ? convertUTC0ToLocal(report.create_start).format(DATE_TIME) : '',
+        end: report.create_end ? convertUTC0ToLocal(report.create_end).format(DATE_TIME) : '',
+        create_end_time: report.create_end,
         state: report.state,
         type: config.type,
         nodeType: 'report',
@@ -134,7 +134,7 @@ class ReportsTable extends React.PureComponent {
         id: config.id,
         type: config.type,
         nodeType: 'config',
-        author: config.author_name,
+        author: config.author,
         comment: config.comment,
         notify: _.isArray(config.notify_users) ? config.notify_users : [],
         name: config.name,
@@ -154,7 +154,7 @@ class ReportsTable extends React.PureComponent {
     mapTemplate = template => ({
         id: template.id,
         nodeType: 'template',
-        name: (TEMPLATE_NAMES_MAP[template.name] || (() => ''))(),
+        name: template.name,
         children: _.get(template, 'report_config', []).map(this.mapConfig),
     });
 
@@ -213,7 +213,7 @@ class ReportsTable extends React.PureComponent {
             case 'type': {
                 const type = _.get(node, 'type', '');
                 return (node.nodeType === 'config') ? <DefaultCell
-                    content={ls(`REPORT_TYPE_${String(type).toUpperCase()}`, '')}
+                    content={String(type).toUpperCase()}
                 /> : '';
             }
             case 'state': {
@@ -231,12 +231,7 @@ class ReportsTable extends React.PureComponent {
                     <div className={styles.deleteStyle} onClick={() => this.remove(node)}>×</div>;
             }
             case 'notify': {
-                const users = _.get(node, column.name, []).map(id => {
-                    const user = _.find(this.props.users, { id });
-                    if (user) {
-                        return user.login;
-                    }
-                }).join(', ');
+                const users = _.get(node, column.name, []).join(', ');
                 return <DefaultCell
                     content={users}
                 />

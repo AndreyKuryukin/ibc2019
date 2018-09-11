@@ -1,100 +1,40 @@
+const path = require('path');
+
+
 const reports = [{
     id: 101,
     type: 'STATISTIC',
     templates: [{
-        templ_name: 'Top subscribers with degradation',
-        templ_id: 1,
+        name: 'Basic OTT Report',
+        id: 1,
         report_config: [{
-            config_name: 'Daily',
-            config_id: 2,
-            type: 'PDF',
-            author: 'author 1',
+            name: 'Daily',
+            id: 2,
+            type: 'XLSX',
+            author: 'Operator',
             comment: '123',
-            notify_users_name: ['Максим Уваров', 'Дмитрий Строганов'],
+            notify_users: ['Admin', 'CEO'],
             reports: [{
-                id: 3,
-                file_name: 'Волга_22102017-23102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-01T00:00:01.434',
-                create_end: '2018-04-01T00:00:21.434',
+                id: '7',
+                name: 'BASIC_OTT_REPORT_DAILY_12092018.xlsx',
+                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_12092018.xlsx',
+                create_start: '2018-09-12T00:00:40.434',
+                create_end: '2018-09-12T00:00:50.434',
                 state: 'SUCCESS'
             }, {
-                id: 4,
-                file_name: 'Волга_21102017-22102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-02T00:00:01.434',
-                create_end: '2018-04-02T00:00:21.434',
-                state: 'SUCCESS'
-            }]
-        }, {
-            config_name: 'Еженедельный',
-            config_id: 21,
-            type: 'PDF',
-            author: 'author 1',
-            comment: '123',
-            notify_users_name: ['Сергей Лобанов', 'Андрей Смолин'],
-            reports: [{
-                id: 31,
-                file_name: 'Волга_22102017-29102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-02T00:00:01.434',
-                create_end: '2018-04-02T00:00:50.434',
+                id: '8',
+                name: 'BASIC_OTT_REPORT_DAILY_13092018',
+                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_13092018.xlsx',
+                create_start: '2018-09-13T00:00:40.434',
+                create_end: '2018-09-13T00:00:50.434',
                 state: 'SUCCESS'
             }, {
-                id: 41,
-                file_name: 'Волга_15102017-22102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-03-26T00:00:01.434',
-                create_end: '2018-03-26T00:00:50.434',
-                state: 'SUCCESS',
-            }]
-        }]
-    }, {
-        templ_name: 'Базовый отчёт ОТТ',
-        templ_id: 5,
-        report_config: [{
-            config_name: 'Ежедневный',
-            config_id: 6,
-            type: 'XLS',
-            author: 'author',
-            comment: 'qwe',
-            notify_users_name: ['Максим Уваров', 'Дмитрий Строганов'],
-            reports: [{
-                id: 7,
-                file_name: 'Волга_21102017-22102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-01T00:00:01.434',
-                create_end: '2018-04-01T00:00:21.434',
-                state: 'RUNNING'
-            }, {
-                id: 8,
-                file_name: 'Волга_22102017-23102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-02T00:00:01.434',
-                create_end: '2018-04-02T00:00:21.434',
-                state: 'FAILED',
-            }]
-        }, {
-            config_name: 'Ежемесячный',
-            config_id: 66,
-            type: 'XLS',
-            author: 'author',
-            comment: 'qwe',
-            notify_users_name: ['Сергей Лобанов', 'Андрей Смолин'],
-            reports: [{
-                id: 71,
-                file_name: 'Волга_21102017-21112017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-01T00:00:01.434',
-                create_end: '2018-04-01T00:12:21.434',
-                state: 'RUNNING'
-            }, {
-                id: 88,
-                file_name: 'Волга_21092017-21102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-03-01T00:00:01.434',
-                create_end: '2018-03-01T00:12:21.434',
-                state: 'FAILED'
+                id: '9',
+                name: 'BASIC _OTT_REPORT_DAILY_14092018',
+                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_14092018.xlsx',
+                create_start: '2018-09-14T00:00:40.434',
+                create_end: '2018-09-14T00:00:50.434',
+                state: 'SUCCESS'
             }]
         }]
     }]
@@ -102,74 +42,39 @@ const reports = [{
     id: 102,
     type: 'OPERATIVE',
     templates: [{
-        templ_name: 'Антирейтинг каналов по данным STB',
-        templ_id: 'a',
+        name: 'TOP subscribers with failures',
+        id: 'a',
         report_config: [{
-            config_name: 'Еженедельный',
-            config_id: 'a6',
-            type: 'XLS',
-            author: 'author',
-            comment: 'qwe',
-            notify_users_name: ['Максим Уваров', 'Дмитрий Строганов'],
+            name: 'Daily',
+            id: 'a6',
+            type: 'XLSX',
+            author: 'Senior engineer',
+            comment: 'TOP subscribers with failures',
+            notify_users: ['Admin', 'CEO'],
             reports: [{
                 id: 'a7',
-                file_name: 'Волга_21102017-22102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-02T00:00:01.434',
-                create_end: '2018-04-02T00:00:50.434',
-                state: 'RUNNING'
+                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_12092018',
+                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_12092018.xlsx',
+                create_start: '2018-09-12T00:00:40.434',
+                create_end: '2018-09-12T00:00:50.434',
+                state: 'SUCCESS'
             }, {
                 id: 'a8',
-                file_name: 'Волга_22102017-23102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-03-26T00:00:01.434',
-                create_end: '2018-03-26T00:00:50.434',
-            }]
-        }, {
-            config_name: 'Ежемесячный',
-            config_id: 'a66',
-            type: 'XLS',
-            author: 'author',
-            comment: 'qwe',
-            notify_users_name: ['Сергей Лобанов', 'Андрей Смолин'],
-            reports: [{
-                id: 'a71',
-                file_name: 'Волга_21102017-21112017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-04-01T00:00:01.434',
-                create_end: '2018-04-01T00:12:21.434',
-                state: 'RUNNING'
+                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_13092018',
+                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_13092018.xlsx',
+                create_start: '2018-09-13T00:00:40.434',
+                create_end: '2018-09-13T00:00:50.434',
+                state: 'SUCCESS'
             }, {
-                id: 'a88',
-                file_name: 'Волга_21092017-21102017',
-                file_path: 'http://localhost:8088',
-                create_start: '2018-03-01T00:00:01.434',
-                create_end: '2018-03-01T00:12:21.434',
-                state: 'FAILED',
+                id: 'a9',
+                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_14092018',
+                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_14092018.xlsx',
+                create_start: '2018-09-14T00:00:40.434',
+                create_end: '2018-09-14T00:00:50.434',
+                state: 'SUCCESS'
             }]
         }]
-    }, {
-        templ_name: 'Антирейтинг каналов по данным VB/Telescreen',
-        templ_id: 'b',
-    }, {
-        templ_name: 'Антирейтинг каналов по данным STB',
-        templ_id: 'v',
-    }, {
-        templ_name: 'Антирейтинг свитчей доступ',
-        templ_id: 'd',
-    }, {
-        templ_name: 'Антирейтинг свитчей агрегация',
-        templ_id: 'p',
-    }, {
-        templ_name: 'Скорость загрузки STB',
-        templ_id: 'e',
-    }, {
-        templ_name: 'Скорость переключения каналов',
-        templ_id: 't',
-    }, {
-        templ_name: 'Отчёт об авариях',
-        templ_id: 'j',
-    },]
+    }]
 }];
 
 
@@ -177,6 +82,36 @@ module.exports = (app) => {
     app.get('/api/v1/report/result', (req, res) => {
         res.send(reports);
     });
+
+    app.get('/api/v1/files/:fileName', (req, res) => {
+        const options = {
+            headers: {
+                'Accept-Ranges': 'bytes',
+                'Access-Control-Allow-Headers': 'Access-Control-Allow-Headers',
+                'Access-Control-Allow-Methods': 'POST, GET, DELETE, PUT',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Expose-Headers': 'Access-Control-Allow-Headers',
+                'Access-Control-Max-Age': '3600',
+                'Cache-Control': 'no-cache, no-store, max-age=0, must-revalidate',
+                'Connection': 'keep-alive',
+                'Content-Disposition': '',
+                'Authorization': 'Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJBdXRoU3ViamVjdChsb2dpbj1hZG1pbiwgbGFuZ3VhZ2U9UlVTU0lBTikiLCJleHAiOjE1MzY2ODIzOTB9.6G9pb8FO3jXG0YisyB9kbXriPT4rOuL63uTqZW19kjq90VSUMq1eWMdtrjBRjiwydesZJZlCDntBxDdndLRR4A',
+                'ETag': "5b833f1f-2c42",
+                'Expires': 0,
+                'Pragma': 'no-cache',
+                'Server': 'nginx/1.12.2',
+                'X-Application-Context': 'application:dictionary,backend,dev,default_data',
+                'X-Content-Type-Options': 'nosniff',
+                'X-Frame-Options': 'DENY',
+                'X-XSS-Protection': '1; mode=block',
+                'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            }
+        };
+
+        const { fileName } = req.params;
+        res.sendFile(path.resolve(__dirname, 'files', fileName));
+    });
+
     app.delete('/api/v1/reports/result/:id', (req, res) => {
         reports[0].report_config[0].reports.shift();
         res.end();

@@ -7,6 +7,7 @@ import rest from '../../../../rest';
 import ls from 'i18n';
 import { REGULARITIES } from '../../constants';
 import { convertUTC0ToLocal } from '../../../../util/date';
+import * as _ from "lodash";
 
 const NAMES = {
     KSUB: 'KQIsub',
@@ -95,7 +96,7 @@ class DynamicKAB extends React.Component {
 
                     for (const key of keys) {
                         result[key].push({
-                            value: (value.get(key) || {}).kqi || null,
+                            value: (value.get(key) || {}).kqi,
                             timestamp,
                         });
                     }

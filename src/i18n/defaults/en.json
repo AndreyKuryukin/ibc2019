@@ -355,8 +355,8 @@
     "REPORTS_STATUS_RUNNING": "Running",
     "REPORTS_STATUS_SUCCESS": "Success",
 
-    "REPORTS_OPERATIVE_GROUP_NAME": "Realtime reports",
-    "REPORTS_STATISTIC_GROUP_NAME": "Statistics reports",
+    "REPORTS_OPERATIVE_GROUP_NAME": "Operation reports",
+    "REPORTS_STATISTIC_GROUP_NAME": "Consolidated reports",
 
     "KQI_STATUS_FAILED": "Failed",
     "KQI_STATUS_RUNNING": "Running",
