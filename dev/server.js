@@ -63,8 +63,8 @@ function useStatic() {
     app.use('/*.js', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../build/app.js'));
     });
-    app.use('/*.json', function (req, res) {
-        res.sendFile(path.resolve(__dirname, `../build${req.baseUrl}`));
+    app.use('/en.json', function (req, res) {
+        res.sendFile(path.resolve(__dirname, `../build/en.json`));
     });
     app.use('/*.ico', function (req, res) {
         res.sendFile(path.resolve(__dirname, '../build/favicon.ico'));

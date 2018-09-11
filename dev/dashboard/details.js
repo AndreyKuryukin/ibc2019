@@ -80,7 +80,7 @@ module.exports = {
     "KSPD": {
         "id": "9",
         "name": "total",
-        "kqi": 95.8,
+        "kqi": 96.5,
         "rf":
             [
                 {
@@ -158,7 +158,7 @@ module.exports = {
     "KGS": {
         "id": "9",
         "name": "total",
-        "kqi": 96.5,
+        "kqi": 95.8,
         "rf": [
                 {
                     "id": "300011",
