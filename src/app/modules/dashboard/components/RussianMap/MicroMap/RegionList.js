@@ -40,7 +40,7 @@ class RegionList extends React.PureComponent {
                         className={cn({
                             [styles.selected]: selected === item.id,
                             [styles.positive]: item.kqi !== undefined && plan !== null && item.kqi > plan,
-                            [styles.negative]: item.kqi !== undefined && plan !== null && item.kqi < plan,
+                            [styles.negative]: item.kqi !== undefined && plan !== null && item.kqi <= plan,
                         })}
                         onMouseEnter={() => this.props.onHoverIn(item.id)}
                         onMouseLeave={() => this.props.onHoverOut(item.id)}

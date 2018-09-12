@@ -1,13 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Highcharts from 'highcharts';
 import Chart from './Chart';
 import moment from 'moment';
 import rest from '../../../../rest';
 import ls from 'i18n';
 import { REGULARITIES } from '../../constants';
 import { convertUTC0ToLocal } from '../../../../util/date';
-import * as _ from "lodash";
 
 const NAMES = {
     KSUB: 'KQIsub',
@@ -80,8 +78,7 @@ class DynamicKAB extends React.Component {
         const step = STEPS[regularity];
         return Array.from(acc)
             .sort(([aTimestamp], [bTimestamp]) => aTimestamp - bTimestamp)
-            .reduce(
-                (result, [timestamp, value]) => {
+            .reduce((result, [timestamp, value]) => {
                     let offset = prevTimestamp === undefined ? 0 : timestamp - prevTimestamp;
 
                     while (offset > step) {
@@ -119,6 +116,7 @@ class DynamicKAB extends React.Component {
     componentDidMount() {
         this.fetchChartData();
     }
+
     componentWillUpdate(nextProps) {
         if (this.props.regularity !== nextProps.regularity) {
             this.fetchChartData(nextProps);
@@ -167,16 +165,16 @@ class DynamicKAB extends React.Component {
             tooltip: {
                 ...Chart.DEFAULT_OPTIONS.tooltip,
                 shared: true,
-                formatter: function() {
+                formatter: function () {
                     if (this.points.length === 0) return undefined;
 
-                    const date = moment(this.points[0].point.timestamp).format('D MMMM YYYY').toLowerCase();
+                    const date = moment(this.points[0].point.timestamp).format('D MMM YYYY');
                     const points = this.points
                         .map(point => `${point.series.name}: <span style="color: ${point.series.color}">${point.y}%</span>`)
-                        .join('<br />');
+                        .join('<br/>');
 
                     return `
-                        ${date}<br />
+                        ${date}<br/>
                         ${points}
                     `;
                 },
@@ -202,9 +200,10 @@ class DynamicKAB extends React.Component {
         };
 
         return rest.get('/api/v1/dashboard/dynamic/kab', {}, { queryParams })
-            .then(({ data }) => this.setState({
-                data: DynamicKAB.expandData(data, props.regularity),
-            }))
+            .then(({ data }) => {
+                const expandedData = DynamicKAB.expandData(data, props.regularity);
+                this.setState({ data: expandedData })
+            })
             .catch(console.error);
     }
 
@@ -217,6 +216,7 @@ class DynamicKAB extends React.Component {
                 timestamp: item.timestamp,
             })),
             color: COLORS[i],
+            turboThreshold: 2500,
             marker: {
                 states: {
                     hover: {
@@ -226,6 +226,7 @@ class DynamicKAB extends React.Component {
             }
         }));
     }
+
     getCategories() {
         const { regularity } = this.props;
         const values = Object.values(this.state.data)[0];
@@ -248,7 +249,7 @@ class DynamicKAB extends React.Component {
     }
 
     render() {
-        return <Chart options={this.getChartOptions()} />;
+        return <Chart options={this.getChartOptions()}/>;
     }
 }
 

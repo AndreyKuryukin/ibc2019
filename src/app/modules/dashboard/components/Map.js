@@ -96,9 +96,10 @@ class Map extends React.Component {
 
         return (
             <span>
-                {`${ls('DASHBOARD_AVERAGE_TITLE', 'Средний показатель ')} `}
+                {`${ls('DASHBOARD_AVERAGE_TITLE', 'Средний показатель {type}').replace('{type}', ls(`DASHBOARD_KQI_FULL_NAME_${type}`))} `}
                 <KQI
                     className={styles.mapTitleKQI}
+                    only
                     type={type}
                     value={mrf.kqi}
                     positive={mrf.kqi > plan}

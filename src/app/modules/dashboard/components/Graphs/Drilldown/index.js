@@ -76,13 +76,13 @@ class Drilldown extends React.Component {
                         getTitle: () => 'Region',
                         name: 'name',
                     }, {
-                        getTitle: () => <span>K<sub>{'sub'}</sub></span>,
+                        getTitle: () => <span>{ls('DASHBOARD_PARAMETER_LETTER', 'KQI')}<sub>{'sub'}</sub></span>,
                         name: 'ksub',
                     }, {
-                        getTitle: () => <span>K<sub>{'khe'}</sub></span>,
+                        getTitle: () => <span>{ls('DASHBOARD_PARAMETER_LETTER', 'KQI')}<sub>{'khe'}</sub></span>,
                         name: 'khe',
                     }, {
-                        getTitle: () => <span>K<sub>{'knet'}</sub></span>,
+                        getTitle: () => <span>{ls('DASHBOARD_PARAMETER_LETTER', 'KQI')}<sub>{'knet'}</sub></span>,
                         name: 'knet',
                     },
                 ]}

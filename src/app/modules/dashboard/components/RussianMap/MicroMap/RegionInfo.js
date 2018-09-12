@@ -33,7 +33,7 @@ class RegionInfo extends React.PureComponent {
     }
     getIsNegative() {
         const { kqi, plan } = this.props;
-        return kqi !== undefined && plan !== null && kqi < plan;
+        return kqi !== undefined && plan !== null && kqi <= plan;
     }
 
     renderTooltip() {

@@ -12,8 +12,9 @@ class DrilldownBodyCell extends React.PureComponent {
             name: PropTypes.string.isRequired,
             parameter: PropTypes.string.isRequired,
             index: PropTypes.string.isRequired,
-            itv1: PropTypes.string.isRequired,
-            itv2: PropTypes.string.isRequired,
+            ksub: PropTypes.string.isRequired,
+            khe: PropTypes.string.isRequired,
+            knet: PropTypes.string.isRequired,
         }).isRequired,
         expanded: PropTypes.instanceOf(Set).isRequired,
         onExpanderClick: PropTypes.func.isRequired,
@@ -58,14 +59,24 @@ class DrilldownBodyCell extends React.PureComponent {
         : ls('NOT_AVAILABLE', 'Н/Д');
 
 
+    isLower = (row, fieldName, parentTarget) => {
+        const { target = parentTarget } = row;
+        const { [fieldName]: current = 0 } = row;
+        return current <= target;
+    };
+
     renderValue = (column, row, isExpanded, fieldName) => {
         return (
             <div className={cn(styles.cell, styles.itv1)}>
-                <div className={styles.parentCell}>{this.formatValue(row[fieldName])}</div>
+                <div className={cn(styles.parentCell, {
+                    [styles.lowerThanTarget]: this.isLower(row, fieldName),
+                })}>{this.formatValue(row[fieldName])}</div>
                 {isExpanded && (row.items.map(childRow => (
                     <div
                         key={childRow.id}
-                        className={styles.childCell}
+                        className={cn(styles.childCell, {
+                            [styles.lowerThanTarget]: this.isLower(childRow, fieldName, row.target),
+                        })}
                     >
                         {this.formatValue(childRow[fieldName])}
                     </div>

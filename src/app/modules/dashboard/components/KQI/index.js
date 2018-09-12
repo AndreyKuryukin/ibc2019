@@ -16,6 +16,7 @@ class KQI extends React.PureComponent {
         type: PropTypes.oneOf(['KAB', 'KGS', 'KSPD']),
         value: PropTypes.number,
         positive: PropTypes.bool,
+        only: PropTypes.bool,
         negative: PropTypes.bool,
         precision: PropTypes.number,
         placeholder: PropTypes.string,
@@ -44,6 +45,7 @@ class KQI extends React.PureComponent {
             positive,
             negative,
             precision,
+            only,
             placeholder,
         } = this.props;
 
@@ -54,7 +56,7 @@ class KQI extends React.PureComponent {
                 [styles.positive]: positive,
                 [styles.negative]: negative,
             })}>
-                {parameter !== null && (
+                {parameter !== null && !only && (
                     <span className={styles.name}>
                         <span className={styles.parameter}>{parameter}</span>
                         <span className={styles.index}>{index}</span>

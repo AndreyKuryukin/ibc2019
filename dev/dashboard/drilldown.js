@@ -7,6 +7,7 @@ module.exports = {
     "ksub": 95.5,
     "knet": 95.8,
     "khe": 96.5,
+    "target": 95,
     "rf": [
         {
             "id": "300001",

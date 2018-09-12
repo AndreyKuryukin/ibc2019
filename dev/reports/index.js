@@ -11,12 +11,12 @@ const reports = [{
             name: 'Daily',
             id: 2,
             type: 'XLSX',
-            author: 'Operator',
-            comment: '123',
-            notify_users: ['Admin', 'CEO'],
+            author: 'SYSTEM',
+            comment: '',
+            notify_users: ['ADMIN'],
             reports: [{
                 id: '7',
-                name: 'BASIC_OTT_REPORT_DAILY_12092018.xlsx',
+                name: 'BASIC_OTT_REPORT_DAILY_12092018',
                 file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_12092018.xlsx',
                 create_start: '2018-09-12T00:00:40.434',
                 create_end: '2018-09-12T00:00:50.434',
@@ -30,7 +30,7 @@ const reports = [{
                 state: 'SUCCESS'
             }, {
                 id: '9',
-                name: 'BASIC _OTT_REPORT_DAILY_14092018',
+                name: 'BASIC_OTT_REPORT_DAILY_14092018',
                 file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_14092018.xlsx',
                 create_start: '2018-09-14T00:00:40.434',
                 create_end: '2018-09-14T00:00:50.434',
@@ -48,9 +48,9 @@ const reports = [{
             name: 'Daily',
             id: 'a6',
             type: 'XLSX',
-            author: 'Senior engineer',
-            comment: 'TOP subscribers with failures',
-            notify_users: ['Admin', 'CEO'],
+            author: 'SYSTEM',
+            comment: '',
+            notify_users: ['ALL USERS'],
             reports: [{
                 id: 'a7',
                 name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_12092018',

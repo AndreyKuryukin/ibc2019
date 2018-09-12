@@ -415,7 +415,6 @@ class App extends React.Component {
         const routes = this.renderRoutes(subjects);
         return (
             <div style={{ display: 'flex', flexGrow: 1 }}>
-                <AlertsNotifications loggedIn={loggedIn}/>
                 <Preloader
                     active={this.state.loading}
                     text={ls('PRELOADER_DEFAULT_TEXT', language === LANGUAGES.RUSSIAN ? 'Загрузка' : 'Loading')}
