@@ -5,4 +5,6 @@ export const setQueryParams = (params, history, location) => history.push({
     search: qs.stringify(params)
 });
 
+export const composeQueryParams = (params) => qs.stringify(params, { skipNulls: true });
+
 export const getQueryParams = location => qs.parse(location.search);

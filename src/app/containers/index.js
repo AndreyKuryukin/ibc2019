@@ -19,6 +19,7 @@ import StbLoading from '../modules/stb-loading/components';
 import KQI from '../modules/kqi/containers';
 import Sources from '../modules/sources/containers';
 import Alerts from '../modules/alerts/containers';
+import Subscribers from '../modules/subscribers/containers';
 import UsersAndRoles from '../modules/usersAndRoles/components';
 import AlertsNotifications from '../modules/notifications/containers';
 import rest from '../rest';
@@ -158,6 +159,13 @@ class App extends React.Component {
                 link: '/subscriber',
                 path: "/subscriber",
                 component: Subscriber
+            },
+            'SUBSCRIBERS': {
+                id: 'SUBSCRIBERS',
+                defaultTitle: 'Карточка клиента',
+                link: '/subscribers',
+                path: '/subscribers/:subscriberId?/:page?/:id?',
+                component: Subscribers,
             }
         }
     };

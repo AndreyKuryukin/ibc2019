@@ -104,28 +104,28 @@ class DashboardHead extends React.Component {
                     {/*value={this.props.regularity}*/}
                     {/*options={this.getRegularityOptions()}*/}
                 {/*/>*/}
-                {/*<ReactstrapButtonGroup>*/}
-                    {/*<Button*/}
-                        {/*itemId="dashboard_filter_button"*/}
-                        {/*color={this.props.isFiltersExpanded ? 'primary' : 'secondary'}*/}
-                        {/*className="dropdown-toggle icon-btn dashboard-filter-icon"*/}
-                        {/*style={filterButtonStyle}*/}
-                        {/*outline={!this.props.isFiltersExpanded}*/}
-                        {/*onClick={this.onFiltersButtonClick}*/}
-                        {/*aria-expanded={this.props.isFiltersExpanded}*/}
-                    {/*>{ls('FILTERS', 'Фильтры')}</Button>*/}
-                {/*</ReactstrapButtonGroup>*/}
-                {/*<Collapse*/}
-                    {/*className={styles.filtersCollapse}*/}
-                    {/*isOpen={this.props.isFiltersExpanded}*/}
-                {/*>*/}
-                    {/*<Filters*/}
-                        {/*className={styles.filters}*/}
-                        {/*list={this.props.filters}*/}
-                        {/*values={this.props.filterValues}*/}
-                        {/*onChange={this.props.onFilterChange}*/}
-                    {/*/>*/}
-                {/*</Collapse>*/}
+                <ReactstrapButtonGroup>
+                    <Button
+                        itemId="dashboard_filter_button"
+                        color={this.props.isFiltersExpanded ? 'primary' : 'secondary'}
+                        className="dropdown-toggle icon-btn dashboard-filter-icon"
+                        style={filterButtonStyle}
+                        outline={!this.props.isFiltersExpanded}
+                        onClick={this.onFiltersButtonClick}
+                        aria-expanded={this.props.isFiltersExpanded}
+                    >{ls('FILTERS', 'Фильтры')}</Button>
+                </ReactstrapButtonGroup>
+                <Collapse
+                    className={styles.filtersCollapse}
+                    isOpen={this.props.isFiltersExpanded}
+                >
+                    <Filters
+                        className={styles.filters}
+                        list={this.props.filters}
+                        values={this.props.filterValues}
+                        onChange={this.props.onFilterChange}
+                    />
+                </Collapse>
             </div>
         );
     }

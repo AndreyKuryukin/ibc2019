@@ -1,0 +1,14 @@
+@import '../../../../../scss/vars';
+
+.graphTitle {
+  padding: 24px 0 0 24px;
+  font-size: 18px;
+  font-weight: bold;
+  color: black;
+}
+.kqiResultsViewerGraphContainer {
+  display: flex;
+  height: 300px;
+  margin-top: 5px;
+  background: $white;
+}

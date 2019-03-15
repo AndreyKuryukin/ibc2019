@@ -1,0 +1,19 @@
+.treeViewThemeDefault {
+
+  .treeViewNode {
+    border-bottom: 1px solid #f0f0f0;
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    .treeViewTableBodyRow {
+
+      & > .cell {
+        font-size: 16px;
+        line-height: 1.35em;
+        padding: 4px 16px;
+      }
+    }
+  }
+}

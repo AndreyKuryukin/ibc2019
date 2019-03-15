@@ -1,0 +1,41 @@
+.alert-details {
+  font-size: 14px;
+  width: 100%;
+
+  & > tbody {
+    & > tr {
+      & + tr {
+        & > td {
+          border-top: 1px solid #f0f0f0;
+        }
+      }
+
+      & > td {
+        width: 50%;
+        padding: 12px;
+
+        &:first-child {
+          text-align: right;
+          padding-right: 6px;
+        }
+        &:last-child {
+          color: #02486E;
+          padding-left: 6px;
+        }
+
+        & > .notification-type {
+          & + .notification-type {
+            margin-left: 10px;
+            border-left: 1px solid;
+            padding-left: 10px;
+          }
+        }
+
+        & > textarea {
+          border: none;
+          width: 100%;
+        }
+      }
+    }
+  }
+}

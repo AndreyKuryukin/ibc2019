@@ -1,0 +1,22 @@
+@import '../../../../../scss/vars';
+
+.ip-filter {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+
+  & > .title {
+    color: $dark-blue;
+    font-weight: bold;
+    margin-right: 20px;
+  }
+  & > .fieldWrapper {
+    & + .fieldWrapper {
+      margin-top: 0;
+      margin-left: 10px;
+    }
+    .fieldInput {
+      background: transparent;
+    }
+  }
+}

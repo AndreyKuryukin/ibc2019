@@ -1,0 +1,66 @@
+@import '../../../../../scss/vars';
+
+.deviceDetailsItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & > .loadingNode.small {
+    height: 50px;
+  }
+
+  & > .parameters {
+    display: flex;
+    justify-content: stretch;
+    width: 100%;
+    & > .parameter {
+      box-sizing: content-box;
+      padding: 16px;
+      font-size: 16px;
+      line-height: 1.35em;
+
+      &.name {
+        flex-basis: 30%;
+      }
+      &.vendor {
+        flex-basis: 15%;
+      }
+      &.model {
+        flex-basis: 15%;
+      }
+      &.version {
+        flex-basis: 15%;
+      }
+      &.uptime {
+        flex-basis: 25%;
+      }
+
+      & > .name {
+        font-weight: bold;
+      }
+      & > .value {
+        margin-top: 0.3em;
+      }
+    }
+  }
+
+  .subscriberDevicesResultsViewer {
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+    width: 100%;
+    .graphTitle {
+      padding: 0 0 16px 24px;
+      font-size: 18px;
+      font-weight: bold;
+      color: black;
+    }
+    .kqiResultsViewerGraphContainer {
+      display: flex;
+      width: 100%;
+      height: 300px;
+      background: $white;
+    }
+  }
+
+}

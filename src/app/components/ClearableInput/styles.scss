@@ -1,0 +1,31 @@
+@import '../../scss/vars';
+
+.clearableInputBlock {
+  display: flex;
+  flex-grow: 1;
+  align-items: center;
+  background: $white;
+  padding: 0 10px;
+  .clearableInput {
+    display: flex;
+    flex-grow: 1;
+    height: 100%;
+    input {
+      height: 100%;
+      border: none;
+      font-size: 14px !important;
+      box-shadow: none;
+    }
+  }
+  .clearBtn {
+    background: none;
+    border: none;
+    padding: 0;
+    font-size: 16px;
+    cursor: pointer;
+    &:before {
+      content: '\2716';
+      color: $dark-blue;
+    }
+  }
+}

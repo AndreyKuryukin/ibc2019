@@ -23,39 +23,70 @@ export const DEFAULT_PATH_PARAMETERS = {
 export const FILTERS = [
     {
         id: 'service',
-        title: 'Сервисы',
-        editable: false,
-        options: [
-            {
-                value: 'IPTV',
-                label: ls('IPTV', 'IPTV/OTT'),
-                enabled: true,
-            // }, {
-            //     value: 'INTERNET',
-            //     label: ls('INTERNET', 'INTERNET'),
-            // }, {
-            //     value: 'VOIP',
-            //     label: ls('VOIP', 'VoIP'),
-            },
-        ],
-    }, {
-        id: 'product',
-        title: 'Продукт',
+        title: 'STB VENDOR',
         editable: true,
-        type: 'radio',
         options: [
             {
-                value: 'ITV',
-                label: ls('ITV', 'ИТВ'),
+                value: 'HUAWEI',
+                label: 'HUAWEI',
                 enabled: true,
-            }, {
-                value: 'ITV2',
-                label: ls('ITV2', 'ИТВ 2.0'),
             },
+            {
+                value: 'ZTE',
+                label: 'ZTE',
+            },
+            {
+                value: 'ZYXEL',
+                label: 'ZYXEL',
+            },
+            {
+                value: 'OTHER',
+                label: 'OTHER',
+            }
         ],
     }, {
+        id: 'segment',
+        title: 'SUBSCRIBER TYPE',
+        editable: true,
+        options: [
+            {
+                value: 'VIP',
+                label: 'VIP',
+                enabled: true,
+            },
+            {
+                value: 'PRIMIUM',
+                label: 'PRIMIUM',
+            },
+            {
+                value: 'BASE',
+                label: 'BASE',
+            },
+            {
+                value: 'OTHER',
+                label: 'OTHER',
+            },
+        ],
+    },
+    // {
+    //     id: 'product',
+    //     title: 'Продукт',
+    //     editable: true,
+    //     type: 'radio',
+    //     options: [
+    //         {
+    //             value: 'ITV',
+    //             label: ls('ITV', 'ИТВ'),
+    //             enabled: true,
+    //         }, {
+    //             value: 'ITV2',
+    //             label: ls('ITV2', 'ИТВ 2.0'),
+    //         },
+    //     ],
+    // },
+    {
         id: 'feature',
-        title: 'Услуга',
+        title: 'SERVICE',
         editable: true,
         options: [
             {
@@ -68,11 +99,14 @@ export const FILTERS = [
             }, {
                 value: 'VOD',
                 label: 'VoD',
+            }, {
+                value: 'ALL',
+                label: 'ALL',
             },
         ],
     }, {
         id: 'technology',
-        title: 'Технология',
+        title: 'LAST MILE TECHNOLOGY',
         editable: true,
         options: [
             {
@@ -84,6 +118,9 @@ export const FILTERS = [
             }, {
                 value: 'XDSL',
                 label: ls('XDSL', 'XDSL'),
+            }, {
+                value: 'OTHER',
+                label: ls('OTHER', 'OTHER'),
             },
         ],
     },

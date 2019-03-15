@@ -79,6 +79,10 @@ module.exports = (app) => {
                     "access_level_type": "ALL",
                     "subject": { "name": "Reports", "description": "Reports subject", "id": "360775743261114369" },
                     "id": "360775743371837441"
+                },{
+                    "access_level_type": "ALL",
+                    "subject": { "name": "SUBSCRIBERS", "description": "SUBSCRIBERS", "id": "360775743261114366" },
+                    "id": "360775743371837441"
                 }],
                 "id": "360775743335923713"
             }],

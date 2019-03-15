@@ -1,0 +1,15 @@
+.loadingNode {
+  height: 50px;
+
+  &.small {
+    height: 100%;
+    width: 30px;
+  }
+
+  .layout {
+    background: none !important;
+  }
+  .loader path {
+    fill: grey;
+  }
+}

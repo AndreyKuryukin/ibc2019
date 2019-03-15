@@ -19,6 +19,7 @@ class Map extends React.Component {
             type: PropTypes.string.isRequired,
             service: PropTypes.arrayOf(PropTypes.string),
             product: PropTypes.arrayOf(PropTypes.string),
+            segment: PropTypes.arrayOf(PropTypes.string),
             feature: PropTypes.arrayOf(PropTypes.string),
             technology: PropTypes.arrayOf(PropTypes.string),
             regularity: PropTypes.string.isRequired,
@@ -37,6 +38,7 @@ class Map extends React.Component {
     static isFiltersEqual(a, b) {
         return a.type === b.type
             && Map.isArraysSame(a.service, b.service)
+            && Map.isArraysSame(a.segment, b.segment)
             && Map.isArraysSame(a.product, b.product)
             && Map.isArraysSame(a.feature, b.feature)
             && Map.isArraysSame(a.technology, b.technology)

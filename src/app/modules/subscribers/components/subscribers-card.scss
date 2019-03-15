@@ -1,0 +1,124 @@
+.subscribersCard {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+
+  & > .head {
+    flex-shrink: 0;
+    display: flex;
+    color: white;
+    font-size: 14px;
+    justify-content: space-between;
+    line-height: 35px;
+
+    & > .subscriber {
+      & > .info {
+        margin-left: 30px;
+
+        & > span + span {
+          margin-left: 20px;
+          padding-left: 20px;
+          border-left: 1px solid;
+        }
+      }
+    }
+
+    .kqi-range {
+      margin-left: 20px;
+    }
+  }
+
+  & > .body {
+    background-color: #063d5c;
+    margin: 13px -10px 0 -25px;
+    padding: 8px 10px 25px 25px;
+    flex-grow: 1;
+
+    & > .content {
+      margin-top: 17px;
+      overflow: auto;
+    }
+  }
+
+  .white-btn-group {
+    & .btn {
+      background: transparent;
+      color: white;
+      font-size: 12px;
+
+      &.active {
+        background: white;
+        color: #02486e;
+      }
+    }
+  }
+
+  .blue-btn-group {
+    & .btn {
+      background: transparent;
+      color: #02486e;
+      font-size: 12px;
+      border-color: #02486e;
+
+      &:not(:disabled):not(.disabled):active,
+      &:not(:disabled):not(.disabled).active {
+        background: #02486e;
+        color: white;
+        border-color: #02486e;
+      }
+    }
+  }
+}
+
+.white-modal {
+  & > .modal-content {
+    background-color: white;
+
+    & > .modal-header {
+      background-color: #f0f0f0;
+      border-top: none;
+      border-bottom: 1px solid #c5c5c5;
+      padding: 12px 20px;
+
+      & > h5 {
+        font-size: 16px;
+        font-weight: bold;
+        color: rgba(0, 0, 0, 0.7);
+      }
+
+      & > button.close {
+        width: 10px;
+        height: 10px;
+        position: relative;
+        opacity: 1;
+        & > span {
+          visibility: hidden;
+        }
+        &::before,
+        &::after {
+          display: block;
+          content: '';
+          width: 2px;
+          height: 160%;
+          position: absolute;
+          left: 0;
+          background-color: #02486e;
+        }
+        &::before {
+          top: 0;
+          transform: rotate(-45deg);
+          transform-origin: left top;
+        }
+        &::after {
+          bottom: 0;
+          transform: rotate(45deg);
+          transform-origin: left bottom;
+        }
+      }
+    }
+
+    & > .modal-body {
+      padding: 0;
+    }
+  }
+}

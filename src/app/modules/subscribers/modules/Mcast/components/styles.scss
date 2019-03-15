@@ -1,0 +1,35 @@
+@import '../../../../../scss/vars';
+
+.mcastControls {
+	display: inline-flex;
+	align-items: center;
+	.btn-group {
+		margin-right: 30px;
+	}
+	.mcastFilter {
+		display: flex;
+		margin-right: 30px;
+		.fieldWrapper {
+			margin-top: 0;
+			&:not(:first-child) {
+				margin-left: 10px;
+			}
+			.fieldInput {
+				background-color: transparent;
+			}
+		}
+	}
+	.mcastMacDropdown {
+		display: flex;
+		color: $dark-blue;
+		align-items: center;
+		> span {
+			font-size: 14;
+			margin-right: 10;
+		}
+	}
+}
+
+.graphWrapper {
+	padding: 16px 26px;
+}

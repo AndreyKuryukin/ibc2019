@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="49" height="49" viewBox="0 0 49 49">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#004066" d="M1 48h47V1H1z"/>
+        <path stroke="#BABABA" stroke-width=".5" d="M1 48h47V1H1z"/>
+        <path stroke="#BABABA" stroke-width=".5" d="M38 18.773L31.94 14v2.913H13v3.72h18.94v2.912z"/>
+        <path fill="#BABABA" d="M38 18.773L31.94 14v2.913H13v3.72h18.94v2.912zM11 29.773l6.06 4.772v-2.912H36v-3.72H17.06V25z"/>
+        <path stroke="#BABABA" stroke-width=".5" d="M11 29.773l6.06 4.772v-2.912H36v-3.72H17.06V25z"/>
+    </g>
+</svg>

@@ -1,0 +1,29 @@
+module.exports = [{
+    "nls": "343020060649",
+    "san": "ААААAA",
+    "region_id": 300002,
+    "post_code": "610050",
+    "region": "",
+    "locality": "",
+    "street": "",
+    "house": "",
+    "timestamp": 1548878102885,
+    "gid": "14181933",
+    "service_id": "4376719358",
+    "sqm_mrf_id": 9,
+    "affilate_id": "VLG.KRV"
+}, {
+    "nls": "343020062864",
+    "san": "ААAAВВ",
+    "region_id": 300002,
+    "post_code": "610050",
+    "region": "",
+    "locality": "",
+    "street": "",
+    "house": "",
+    "timestamp": 1548878202885,
+    "gid": "14181933",
+    "service_id": "4376719359",
+    "sqm_mrf_id": 9,
+    "affilate_id": "VLG.KRV"
+}];

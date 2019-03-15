@@ -194,6 +194,13 @@
   @include iconBuilder(40px, 40px, 'menu/workspace-active.svg');
 }
 
+.menu-icon-subscribers {
+  @include iconBuilder(40px, 40px, 'menu/subscribers.svg');
+}
+.menu-icon-subscribers-active {
+  @include iconBuilder(40px, 40px, 'menu/subscribers-active.svg');
+}
+
 .logout-icon {
   @include iconBuilder(15px, 15px, 'common/logout.svg');
 }

@@ -1,0 +1,58 @@
+.topology {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0 10px;
+}
+
+.topology-node {
+  display: flex;
+  flex-wrap: nowrap;
+  position: relative;
+
+  & + & {
+    margin-top: 10px;
+  }
+
+  & > .info {
+    padding-right: 30px;
+    color: #02486E;
+    line-height: 2em;
+    width: 160px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & > .icon {
+      display: block;
+      max-width: 80px;
+      height: 45px;
+    }
+    & > .text {
+
+      & > .name {
+        font-size: 12px;
+        white-space: nowrap;
+      }
+      & > .kqi {
+        font-size: 16px;
+        white-space: nowrap;
+      }
+    }
+
+  }
+
+  & > .children {
+
+  }
+
+  & > .arrow {
+    position: absolute;
+    top: 22px;
+    right: 100%;
+  }
+}
+
+.topologyKqiLoader {
+  display: inline-block;
+  transform: translate(0, -6px);
+}

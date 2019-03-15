@@ -1,0 +1,36 @@
+.alerts-chart {
+  color: #02486E;
+  font-size: 14px;
+  width: 100%;
+
+  & > .head {
+    display: flex;
+    justify-content: space-between;
+
+    & > .legend {
+      display: flex;
+      align-items: center;
+
+      & > .item {
+        display: flex;
+        align-items: center;
+
+        & + .item {
+          margin-left: 16px;
+        }
+
+        & > .icon {
+          width: 9px;
+          height: 9px;
+          margin-right: 6px;
+        }
+        & > .name {
+
+        }
+      }
+    }
+  }
+  & > .body {
+    margin-top: 30px;
+  }
+}

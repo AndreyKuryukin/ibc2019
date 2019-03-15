@@ -16,6 +16,7 @@ const INTERCEPT = process.argv.indexOf('--intercept') !== -1;
 
 
 const PORT = process.env.PORT || 8088;
+console.log(`PORT: ${PORT}`);
 
 const USER_NAME = process.env.USER_NAME || 'User';
 const PASSWORD = process.env.PASSWORD || 'User';
@@ -46,6 +47,8 @@ const plugins = [
     './common',
     './dashboard',
     './notifications',
+    './subscribers',
+    './subscribers',
 ];
 
 app.use((req, res, next) => {

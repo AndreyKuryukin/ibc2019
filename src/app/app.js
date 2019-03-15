@@ -13,10 +13,14 @@ import rootReducer from './reducers';
 import Notifications from './components/Notification';
 import App from './containers';
 
+
 moment.locale('ru');
 momentLocalizer();
 
-const store = createStore(rootReducer);
+const store = createStore(
+    rootReducer,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
 
 const renderRootComponent = () => {
     ReactDOM.render(

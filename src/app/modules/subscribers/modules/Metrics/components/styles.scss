@@ -1,0 +1,30 @@
+@import '../../../../../scss/vars';
+
+.subscriberMetricsResultsViewer {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  > .graphMetricsHeader {
+    display: flex;
+    padding: 16px;
+    > .graphMetricsTitle {
+      font-size: 18px;
+      font-weight: bold;
+      color: $dark-blue;
+    }
+    > .graphMetricsLegend {
+      display: flex;
+      flex-grow: 1;
+      justify-content: center;
+      > span:not(:last-child) {
+        margin-right: 15px;
+      }
+    }
+  }
+  > .kqiResultsViewerGraphContainer {
+    display: flex;
+    height: 300px;
+    background: $white;
+  }
+}
+

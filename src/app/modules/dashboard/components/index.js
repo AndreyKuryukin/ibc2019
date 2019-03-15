@@ -68,7 +68,10 @@ class Dashboard extends React.PureComponent {
     };
 
     onFiltersButtonClick = (isFiltersExpanded) => this.setState({ isFiltersExpanded });
-    onFilterChange = (filter) => this.setState({ filter });
+
+    onFilterChange = (filter) => {
+        this.setState({ filter });
+    };
 
     mapAggregatedToTabs() {
         const { aggregated } = this.props;

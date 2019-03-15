@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="39" viewBox="0 -16 80 39">
+    <g fill="none" fill-rule="evenodd">
+        <path fill="#004066" stroke="#BABABA" stroke-width=".5" d="M1 22h78V1H1z"/>
+        <path stroke="#BABABA" d="M35.97 7.5H28.5v5.09h2.119v1.925h3.234V12.59h2.118V7.5z"/>
+        <path fill="#BABABA" d="M69.993 12.188l.007-.013h-.007V7H46v5.26L48.46 15h19.194z"/>
+        <g stroke="#BABABA">
+            <path d="M19 11a4 4 0 1 1-8 0 4 4 0 0 1 8 0zM12 8l5.5 5.5M12.5 13.5L18 8"/>
+        </g>
+    </g>
+</svg>
