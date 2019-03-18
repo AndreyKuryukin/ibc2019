@@ -200,6 +200,7 @@ class Provider extends React.Component {
             mac: device.mac_address,
             ip: device.device_details ? device.device_details.stb_ip : '-',
             name: device.terminal_name,
+            router: device.router,
             vendor: device.device_details ? device.device_details.manufacturer : '-',
             model: device.device_details ? device.device_details.stb_model : '-',
             version: device.device_details ? device.device_details.fw_version : '-',

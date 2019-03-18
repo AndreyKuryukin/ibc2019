@@ -263,4 +263,4 @@ module.exports = {
         "type": "GROUP_AGGREGATION",
         "object_type": "STB"
     }]
-}
+};

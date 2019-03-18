@@ -8,6 +8,7 @@ import TopologyComponent from "../components/index";
 import { ICONS } from "../components/Icon";
 import rest from "../../../../../rest/index";
 import { selectRange } from "../../../reducers/kqi/range";
+import * as _ from "lodash";
 
 
 class SubscriberTopology extends React.Component {
@@ -55,42 +56,41 @@ class SubscriberTopology extends React.Component {
         });
     };
 
-    getNodes() {
-        if (this.props.topologyDevices === null) return null;
-        const { kgs, threshold } = this.state;
-        const enrichTopologyDevice = (node, type) => {
-            const result = { ...node };
+    enrichTopologyDevice = (node, type) => {
+        const result = { ...node };
+        const { threshold } = this.state;
+        const device = this.props.topologyDevices.find(device => device.sqm_device_type === type);
+        if (device === undefined) {
+            result.disabled = true;
+        }
+        const kqi = device !== undefined ? this.props.devicesKQI[device.id] : undefined;
+        if (kqi !== undefined) {
+            result.kqi = {
+                current: kqi.current ? kqi.current.common : undefined,
+                previous: kqi.previous ? kqi.previous.common : undefined,
+            }
+        }
+        if (threshold) {
+            result.threshold = threshold
+        }
+        return result;
+    };
 
-            const device = this.props.topologyDevices.find(device => device.sqm_device_type === type);
-            if (device === undefined) {
-                result.disabled = true;
-            }
-            const kqi = device !== undefined ? this.props.devicesKQI[device.id] : undefined;
-            if (kqi !== undefined) {
-                result.kqi = {
-                    current: kqi.current ? kqi.current.common : undefined,
-                    previous: kqi.previous ? kqi.previous.common : undefined,
-                }
-            }
-            if (threshold) {
-                result.threshold = threshold
-            }
-            return result;
-        };
-
-        const access = enrichTopologyDevice({
+    enrichTopology = (routers) => {
+        const { kgs } = this.state;
+        const access = this.enrichTopologyDevice({
             id: 'access',
             icon: ICONS.ACCESS,
             name: 'Оборудование доступа',
-            children: [],
+            children: routers,
         }, 'ACC');
-        const commutator = enrichTopologyDevice({
+        const commutator = this.enrichTopologyDevice({
             id: 'commutator',
             icon: ICONS.COMMUTATOR,
             name: 'Коммутатор агрегации',
             children: [access],
         }, 'AGG');
-        const peRouter = enrichTopologyDevice({
+        const peRouter = this.enrichTopologyDevice({
             id: 'pe-router',
             icon: ICONS.RE_ROUTER,
             name: 'PE-роутер',
@@ -102,28 +102,40 @@ class SubscriberTopology extends React.Component {
             name: 'Магистральная сеть',
             children: [peRouter],
         };
-        const base = {
+        return {
             id: 'base',
             kgs,
             icon: ICONS.BASE,
             name: 'Головная станция',
             children: [network],
         };
+    };
 
-        let root = base;
-        let parent = access;
+    getNodes() {
 
-        const router = {
-            id: 'router',
+        if (_.isEmpty(this.props.topologyDevices)) return null;
+
+        const defaultRouter = {
+            id: 'cpe',
             icon: ICONS.ROUTER,
             name: 'CPE',
             children: [],
         };
-        parent.children.push(router);
-        parent = router;
 
-        if (this.props.subscriberDevices !== null) {
-            for (const sDevice of this.props.subscriberDevices) {
+        const routers = this.props.topologyDevices
+            .filter(dev => dev.sqm_device_type === 'CPE')
+            .map(cpe => this.enrichTopologyDevice({
+                id: `cpe-${cpe.id}`,
+                icon: ICONS.ROUTER,
+                device_id: cpe.id,
+                name: 'CPE',
+                children: [],
+            }, 'CPE'))
+        ;
+
+        if (!_.isEmpty(this.props.subscriberDevices)) {
+            this.props.subscriberDevices.forEach((sDevice) => {
+
                 const kqi = (this.props.stbsKQI !== null && this.props.stbsKQI[sDevice.mac]) || {
                     current: null,
                     previous: null,
@@ -139,12 +151,20 @@ class SubscriberTopology extends React.Component {
                     },
                     children: [],
                 };
-
-                parent.children.push(device);
-            }
+                const headDevice = _.find(routers, { device_id: sDevice.router });
+                if (!headDevice) {
+                    defaultRouter.children.push(device)
+                } else {
+                    headDevice.children.push(device);
+                }
+            });
         }
-
-        return root;
+        if (!_.isEmpty(defaultRouter.children)) {
+            routers.push(defaultRouter)
+        }
+        const result = this.enrichTopology(routers);
+        debugger;
+        return result
     }
 
     render() {

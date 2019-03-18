@@ -2,16 +2,17 @@ const _ = require("lodash");
 
 const subscribers = require('./suscribers');
 const topology = require('./topology');
-const metrics =  require('./metrics');
-const thresholds =  require('./thresholds');
-const kgs =  require('./kgs');
-const macs =  require('./macs');
-const devices =  require('./devices');
-const alerts =  require('./alerts');
-const mcast =  require('./mcast');
-const neighbors =  require('./neighbors');
-const graph =  require('./graph');
-const aggregated =  require('./aggregated');
+const metrics = require('./metrics');
+const thresholds = require('./thresholds');
+const kgs = require('./kgs');
+const macs = require('./macs');
+const devices = require('./devices');
+const alerts = require('./alerts');
+const mcast = require('./mcast');
+const neighbors = require('./neighbors');
+const graph = require('./graph');
+const aggregated = require('./aggregated');
+const stbData = require('./stbData');
 
 module.exports = (app) => {
     app.get('/api/v1/subscribers', (req, res) => {
@@ -53,15 +54,19 @@ module.exports = (app) => {
     });
 
     app.post('/api/v1/subscribers/alerts', (req, res) => {
-        const devices = _.get(req, 'query.devices');
-        res.send(alerts[devices]);
+        const devices = _.get(req, 'query.devices', '').split(',');
+        res.send(_.reduce(alerts, (result, alrts, mac) => {
+            if (mac === devices || _.find(devices, dev => dev === mac)) {
+                result = result.concat(alrts)
+            }
+            return result
+        }, []));
     });
 
     app.get('/kqi/v1/online/kabs/mcast', (req, res) => {
         const { query } = req;
         res.send(mcast);
     });
-
 
     app.get('/kqi/v1/online/kabs/neighbors', (req, res) => {
         const { query } = req;
@@ -76,6 +81,23 @@ module.exports = (app) => {
     app.get('/api/v1/subscribers/stb/aggregated', (req, res) => {
         const { query } = req;
         res.send(aggregated);
+    });
+
+    app.get('/kqi/v1/online/kabs/macs/graph', (req, res) => {
+        const { query } = req;
+        const queryMacs = _.get(query, 'macs');
+        if (_.isArray(queryMacs)) {
+            res.send(graph.filter(data => queryMacs.includes(data.id)));
+        } else if (queryMacs) {
+            res.send([_.find(graph, { id: queryMacs })]);
+        }
+    });
+
+    app.get('/api/v1/subscribers/stb/data', (req, res) => {
+        const { query } = req;
+
+        res.send(stbData);
+
     });
 
 };
