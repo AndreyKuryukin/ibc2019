@@ -1,6 +1,6 @@
 module.exports = [{
     "nls": "343020060649",
-    "san": "ААААAA",
+    "san": "AAAAAA",
     "region_id": 300002,
     "post_code": "610050",
     "region": "",
@@ -14,7 +14,7 @@ module.exports = [{
     "affilate_id": "VLG.KRV"
 }, {
     "nls": "343020062864",
-    "san": "ААAAВВ",
+    "san": "AAAABB",
     "region_id": 300002,
     "post_code": "610050",
     "region": "",

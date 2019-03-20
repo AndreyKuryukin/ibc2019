@@ -96,7 +96,7 @@ module.exports = (app) => {
     app.get('/api/v1/dashboard/dynamic/kab', (req, res) => {
         const remaped = _.reduce(dynamicKAB, (result, data, key) => {
             result[key] = data.map(reading => {
-                return { ...reading, date_time: moment(reading.date_time).add(6, 'months').toISOString() }
+                return { ...reading, date_time: moment(reading.date_time).add(6, 'months').add(3, 'weeks').toISOString() }
             });
             return result;
         }, {});

@@ -49,7 +49,7 @@ module.exports = {
         "channel_switching_time": "NaN",
         "load_time": "NaN",
         "epg": 0.0,
-        "date_time": "2019-03-14T08:00:00"
+        "date_time": "2019-03-14T10:00:00"
     }, {
         "id": "001B23324A56",
         "common": 80.0,
@@ -59,6 +59,6 @@ module.exports = {
         "channel_switching_time": "NaN",
         "load_time": "NaN",
         "epg": 0.0,
-        "date_time": "2019-03-14T08:00:00"
+        "date_time": "2019-03-14T10:00:00"
     }]
 };

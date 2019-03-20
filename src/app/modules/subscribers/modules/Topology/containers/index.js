@@ -163,7 +163,6 @@ class SubscriberTopology extends React.Component {
             routers.push(defaultRouter)
         }
         const result = this.enrichTopology(routers);
-        debugger;
         return result
     }
 

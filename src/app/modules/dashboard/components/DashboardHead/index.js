@@ -104,7 +104,7 @@ class DashboardHead extends React.Component {
                     {/*value={this.props.regularity}*/}
                     {/*options={this.getRegularityOptions()}*/}
                 {/*/>*/}
-                <ReactstrapButtonGroup>
+                {this.props.viewMode === VIEW_MODE.MAP && <ReactstrapButtonGroup>
                     <Button
                         itemId="dashboard_filter_button"
                         color={this.props.isFiltersExpanded ? 'primary' : 'secondary'}
@@ -114,8 +114,8 @@ class DashboardHead extends React.Component {
                         onClick={this.onFiltersButtonClick}
                         aria-expanded={this.props.isFiltersExpanded}
                     >{ls('FILTERS', 'Фильтры')}</Button>
-                </ReactstrapButtonGroup>
-                <Collapse
+                </ReactstrapButtonGroup>}
+                {this.props.viewMode === VIEW_MODE.MAP && <Collapse
                     className={styles.filtersCollapse}
                     isOpen={this.props.isFiltersExpanded}
                 >
@@ -125,7 +125,7 @@ class DashboardHead extends React.Component {
                         values={this.props.filterValues}
                         onChange={this.props.onFilterChange}
                     />
-                </Collapse>
+                </Collapse>}
             </div>
         );
     }

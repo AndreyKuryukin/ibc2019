@@ -16,24 +16,24 @@ const reports = [{
             notify_users: ['ADMIN'],
             reports: [{
                 id: '7',
-                name: 'BASIC_OTT_REPORT_DAILY_12092018',
-                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_12092018.xlsx',
-                create_start: '2018-09-12T00:00:40.434',
-                create_end: '2018-09-12T00:00:50.434',
+                name: 'BASIC_OTT_REPORT_DAILY_04052019',
+                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_04052019.xlsx',
+                create_start: '2019-04-05T00:00:40.434',
+                create_end: '2019-04-05T00:00:50.434',
                 state: 'SUCCESS'
             }, {
                 id: '8',
-                name: 'BASIC_OTT_REPORT_DAILY_13092018',
-                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_13092018.xlsx',
-                create_start: '2018-09-13T00:00:40.434',
-                create_end: '2018-09-13T00:00:50.434',
+                name: 'BASIC_OTT_REPORT_DAILY_04062019',
+                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_04062019.xlsx',
+                create_start: '2019-04-06T00:00:40.434',
+                create_end: '2019-04-06T00:00:50.434',
                 state: 'SUCCESS'
             }, {
                 id: '9',
-                name: 'BASIC_OTT_REPORT_DAILY_14092018',
-                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_14092018.xlsx',
-                create_start: '2018-09-14T00:00:40.434',
-                create_end: '2018-09-14T00:00:50.434',
+                name: 'BASIC_OTT_REPORT_DAILY_04072019',
+                file_path: '/api/v1/files/BASIC_OTT_REPORT_DAILY_04072019.xlsx',
+                create_start: '2019-04-07T00:00:40.434',
+                create_end: '2019-04-07T00:00:50.434',
                 state: 'SUCCESS'
             }]
         }]
@@ -53,24 +53,24 @@ const reports = [{
             notify_users: ['ALL USERS'],
             reports: [{
                 id: 'a7',
-                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_12092018',
-                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_12092018.xlsx',
-                create_start: '2018-09-12T00:00:40.434',
-                create_end: '2018-09-12T00:00:50.434',
+                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_04052019',
+                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_04052019.xlsx',
+                create_start: '2019-04-05T00:00:40.434',
+                create_end: '2019-04-05T00:00:50.434',
                 state: 'SUCCESS'
             }, {
                 id: 'a8',
-                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_13092018',
-                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_13092018.xlsx',
-                create_start: '2018-09-13T00:00:40.434',
-                create_end: '2018-09-13T00:00:50.434',
+                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_04062019',
+                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_04062019.xlsx',
+                create_start: '2019-04-06T00:00:40.434',
+                create_end: '2019-04-06T00:00:50.434',
                 state: 'SUCCESS'
             }, {
                 id: 'a9',
-                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_14092018',
-                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_14092018.xlsx',
-                create_start: '2018-09-14T00:00:40.434',
-                create_end: '2018-09-14T00:00:50.434',
+                name: 'TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_04072019',
+                file_path: '/api/v1/files/TOP_SUBSCRIBERS_WITH_DEGRADATION_DAILY_04072019.xlsx',
+                create_start: '2019-04-07T00:00:40.434',
+                create_end: '2019-04-07T00:00:50.434',
                 state: 'SUCCESS'
             }]
         }]

@@ -58,4 +58,4 @@ module.exports = [{ "AVG": 1816.0, "MIN": 1816, "MAX": 1816, "LAST": 0, "name": 
     "MAX": 0,
     "LAST": 0,
     "name": "appLoadTime"
-}]
+}];

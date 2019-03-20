@@ -1,8 +1,1055 @@
-module.exports = [{
-    "id": "E4277126BF0B",
-    "value": [{
-        "id": "1CBBA80D03E3",
-        "common": 80.0,
+const moment = require('moment');
+
+
+const actualize = (value, index) => {
+    value.date_time = moment().startOf('day').subtract(index, 'hours').startOf('hour').toISOString();
+    return value
+};
+
+const replaceMac = (mac) => (value) => ({...value, id: mac});
+
+const decreaseKab = (decrement) => (value) => ({...value, common: value.common - decrement});
+
+module.exports = {
+    get 'E4277126BF0B'() {
+        return this._E4277126BF0B.map(actualize)
+    },
+    get '001B23324A56'() {
+        return this._001B23324A56.map(actualize)
+    },
+    get '0045F194AB12'() {
+        return this._0045F194AB12.map(actualize)
+    },
+
+    get 'DEFA4672A173'() {
+        return this._E4277126BF0B.map(actualize).map(replaceMac('DEFA4672A173')).map(decreaseKab(8.7))
+    },
+    get '2938749A3FD1'() {
+        return this._001B23324A56.map(actualize).map(replaceMac('2938749A3FD1')).map(decreaseKab(3.6))
+    },
+    get '000012853254'() {
+        return this._0045F194AB12.map(actualize).map(replaceMac('000012853254')).map(decreaseKab(1.2))
+    },
+
+
+    get '058392937475'() {
+        return this._E4277126BF0B.map(actualize).map(replaceMac('058392937475')).map(decreaseKab(0.5))
+    },
+    get 'DDEFFA45A832'() {
+        return this._001B23324A56.map(actualize).map(replaceMac('DDEFFA45A832')).map(decreaseKab(8.1))
+    },
+    get '113593799543'() {
+        return this._0045F194AB12.map(actualize).map(replaceMac('113593799543')).map(decreaseKab(4.1))
+    },
+
+    get '714973'() {
+        return this._714973.map(actualize)
+    },
+
+    "_714973": [{
+        "id": "714973",
+        "common": 85.676956,
+        "broadband_access": 85.05839,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-19T12:00:00"
+    }, {
+        "id": "714973",
+        "common": 68.96917,
+        "broadband_access": 60.87979,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 83.33333,
+        "load_time": "NaN",
+        "epg": 52.0,
+        "date_time": "2019-03-19T11:00:00"
+    }, {
+        "id": "714973",
+        "common": 72.72591,
+        "broadband_access": 63.164963,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 36.84211,
+        "date_time": "2019-03-19T10:00:00"
+    }, {
+        "id": "714973",
+        "common": 69.18753,
+        "broadband_access": 55.24913,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 45.454544,
+        "date_time": "2019-03-19T09:00:00"
+    }, {
+        "id": "714973",
+        "common": 67.65593,
+        "broadband_access": 58.45994,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 75.0,
+        "load_time": "NaN",
+        "epg": 47.826088,
+        "date_time": "2019-03-19T08:00:00"
+    }, {
+        "id": "714973",
+        "common": 95.62153,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 70.0,
+        "date_time": "2019-03-19T07:00:00"
+    }, {
+        "id": "714973",
+        "common": 81.47901,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 56.0,
+        "load_time": 0.0,
+        "epg": 86.04651,
+        "date_time": "2019-03-19T06:00:00"
+    }, {
+        "id": "714973",
+        "common": 85.09594,
+        "broadband_access": 96.73328,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 33.333332,
+        "load_time": "NaN",
+        "epg": 82.85715,
+        "date_time": "2019-03-19T05:00:00"
+    }, {
+        "id": "714973",
+        "common": 95.1417,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 68.42105,
+        "date_time": "2019-03-19T04:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-19T03:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-19T02:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-19T01:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-19T00:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-18T23:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-18T22:00:00"
+    }, {
+        "id": "714973",
+        "common": 91.00614,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 52.941177,
+        "load_time": "NaN",
+        "epg": 88.57143,
+        "date_time": "2019-03-18T21:00:00"
+    }, {
+        "id": "714973",
+        "common": 89.92504,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 38.636364,
+        "load_time": "NaN",
+        "epg": 93.37016,
+        "date_time": "2019-03-18T20:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.51256,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 50.0,
+        "load_time": "NaN",
+        "epg": 85.882355,
+        "date_time": "2019-03-18T19:00:00"
+    }, {
+        "id": "714973",
+        "common": 88.83881,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 34.615387,
+        "load_time": "NaN",
+        "epg": 87.09677,
+        "date_time": "2019-03-18T18:00:00"
+    }, {
+        "id": "714973",
+        "common": 89.014305,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 35.48387,
+        "load_time": "NaN",
+        "epg": 90.2439,
+        "date_time": "2019-03-18T17:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.18277,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 52.499996,
+        "load_time": "NaN",
+        "epg": 91.42857,
+        "date_time": "2019-03-18T16:00:00"
+    }, {
+        "id": "714973",
+        "common": 93.32918,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-18T15:00:00"
+    }, {
+        "id": "714973",
+        "common": 85.29841,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 33.333332,
+        "load_time": "NaN",
+        "epg": 55.555557,
+        "date_time": "2019-03-18T14:00:00"
+    }, {
+        "id": "714973",
+        "common": 93.34022,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-18T13:00:00"
+    }, {
+        "id": "714973",
+        "common": 88.17666,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 33.333332,
+        "load_time": "NaN",
+        "epg": 78.57143,
+        "date_time": "2019-03-18T12:00:00"
+    }, {
+        "id": "714973",
+        "common": 80.34695,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": 0.0,
+        "epg": 46.153843,
+        "date_time": "2019-03-18T11:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.60361,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 47.826088,
+        "date_time": "2019-03-18T10:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.21765,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 45.454544,
+        "date_time": "2019-03-18T09:00:00"
+    }, {
+        "id": "714973",
+        "common": 95.93376,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 72.093025,
+        "date_time": "2019-03-18T08:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.03705,
+        "broadband_access": 99.99145,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 75.0,
+        "load_time": "NaN",
+        "epg": 71.42857,
+        "date_time": "2019-03-18T07:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.547386,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 75.0,
+        "load_time": "NaN",
+        "epg": 62.7907,
+        "date_time": "2019-03-18T06:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-18T05:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.61539,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 52.0,
+        "date_time": "2019-03-18T04:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.30769,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-18T03:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.30769,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-18T02:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.61539,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 52.0,
+        "date_time": "2019-03-18T01:00:00"
+    }, {
+        "id": "714973",
+        "common": 91.80889,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 45.454544,
+        "date_time": "2019-03-18T00:00:00"
+    }, {
+        "id": "714973",
+        "common": 86.662224,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 0.0,
+        "date_time": "2019-03-17T23:00:00"
+    }, {
+        "id": "714973",
+        "common": 84.41742,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 67.10801,
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 0.0,
+        "date_time": "2019-03-17T22:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.18552,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 79.531105,
+        "channel_switching_time": 52.941177,
+        "load_time": "NaN",
+        "epg": 83.561646,
+        "date_time": "2019-03-17T21:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.57806,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 52.941177,
+        "load_time": "NaN",
+        "epg": 93.51351,
+        "date_time": "2019-03-17T20:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.73529,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 46.511627,
+        "load_time": "NaN",
+        "epg": 90.2439,
+        "date_time": "2019-03-17T19:00:00"
+    }, {
+        "id": "714973",
+        "common": 77.537056,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 44.186043,
+        "load_time": 0.0,
+        "epg": 87.755104,
+        "date_time": "2019-03-17T18:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.11972,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 53.846157,
+        "date_time": "2019-03-17T17:00:00"
+    }, {
+        "id": "714973",
+        "common": 91.57656,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 55.555557,
+        "load_time": "NaN",
+        "epg": 84.210526,
+        "date_time": "2019-03-17T16:00:00"
+    }, {
+        "id": "714973",
+        "common": 93.96577,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 52.0,
+        "date_time": "2019-03-17T15:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.7052,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 55.555557,
+        "load_time": "NaN",
+        "epg": 77.35849,
+        "date_time": "2019-03-17T14:00:00"
+    }, {
+        "id": "714973",
+        "common": 91.65773,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 52.380955,
+        "load_time": "NaN",
+        "epg": 85.71429,
+        "date_time": "2019-03-17T13:00:00"
+    }, {
+        "id": "714973",
+        "common": 93.97999,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 52.0,
+        "date_time": "2019-03-17T12:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.43609,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 55.555557,
+        "load_time": "NaN",
+        "epg": 86.04651,
+        "date_time": "2019-03-17T11:00:00"
+    }, {
+        "id": "714973",
+        "common": 91.98043,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 51.724136,
+        "load_time": "NaN",
+        "epg": 86.04651,
+        "date_time": "2019-03-17T10:00:00"
+    }, {
+        "id": "714973",
+        "common": 91.021935,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 43.24324,
+        "load_time": "NaN",
+        "epg": 88.2353,
+        "date_time": "2019-03-17T09:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.10076,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 85.71429,
+        "load_time": "NaN",
+        "epg": 72.093025,
+        "date_time": "2019-03-17T08:00:00"
+    }, {
+        "id": "714973",
+        "common": 81.66693,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 93.01702,
+        "channel_switching_time": 70.588234,
+        "load_time": 0.0,
+        "epg": 77.58621,
+        "date_time": "2019-03-17T07:00:00"
+    }, {
+        "id": "714973",
+        "common": 87.449394,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 50.0,
+        "load_time": "NaN",
+        "epg": 68.42105,
+        "date_time": "2019-03-17T06:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.72527,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 65.71429,
+        "date_time": "2019-03-17T05:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-17T04:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-17T03:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-17T02:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-17T01:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-17T00:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.871796,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T23:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T22:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.06518,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 46.428574,
+        "load_time": "NaN",
+        "epg": 88.99082,
+        "date_time": "2019-03-16T21:00:00"
+    }, {
+        "id": "714973",
+        "common": 80.84971,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 69.230774,
+        "date_time": "2019-03-16T20:00:00"
+    }, {
+        "id": "714973",
+        "common": 89.94641,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 89.22456,
+        "channel_switching_time": 44.444443,
+        "load_time": "NaN",
+        "epg": 88.11881,
+        "date_time": "2019-03-16T19:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.5016,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 41.26984,
+        "load_time": "NaN",
+        "epg": 93.10345,
+        "date_time": "2019-03-16T18:00:00"
+    }, {
+        "id": "714973",
+        "common": 87.261086,
+        "broadband_access": 96.99461,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 44.444443,
+        "load_time": "NaN",
+        "epg": 75.0,
+        "date_time": "2019-03-16T17:00:00"
+    }, {
+        "id": "714973",
+        "common": 93.77297,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-16T16:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.198494,
+        "broadband_access": 97.313675,
+        "vod": "NaN",
+        "pvr": 91.6439,
+        "channel_switching_time": 75.0,
+        "load_time": "NaN",
+        "epg": 68.42105,
+        "date_time": "2019-03-16T15:00:00"
+    }, {
+        "id": "714973",
+        "common": 95.41138,
+        "broadband_access": 98.249954,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 75.5102,
+        "date_time": "2019-03-16T14:00:00"
+    }, {
+        "id": "714973",
+        "common": 96.25739,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 75.5102,
+        "date_time": "2019-03-16T13:00:00"
+    }, {
+        "id": "714973",
+        "common": 88.75861,
+        "broadband_access": 100.0,
+        "vod": 100.0,
+        "pvr": 100.0,
+        "channel_switching_time": 30.952381,
+        "load_time": "NaN",
+        "epg": 88.34952,
+        "date_time": "2019-03-16T12:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.44135,
+        "broadband_access": 95.750984,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-16T11:00:00"
+    }, {
+        "id": "714973",
+        "common": 89.73259,
+        "broadband_access": 96.25172,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 75.0,
+        "load_time": "NaN",
+        "epg": 69.230774,
+        "date_time": "2019-03-16T10:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.025444,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 42.5,
+        "load_time": "NaN",
+        "epg": 91.366905,
+        "date_time": "2019-03-16T09:00:00"
+    }, {
+        "id": "714973",
+        "common": 94.27317,
+        "broadband_access": 100.0,
+        "vod": 100.0,
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 58.62069,
+        "date_time": "2019-03-16T08:00:00"
+    }, {
+        "id": "714973",
+        "common": 90.0314,
+        "broadband_access": 100.0,
+        "vod": 100.0,
+        "pvr": 100.0,
+        "channel_switching_time": 60.000004,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T07:00:00"
+    }, {
+        "id": "714973",
+        "common": 78.87082,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 66.666664,
+        "load_time": 0.0,
+        "epg": 57.575756,
+        "date_time": "2019-03-16T06:00:00"
+    }, {
+        "id": "714973",
+        "common": 84.06593,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 25.0,
+        "load_time": "NaN",
+        "epg": 71.42857,
+        "date_time": "2019-03-16T05:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T04:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T03:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T02:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T01:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.48718,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-16T00:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.78022,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 68.57143,
+        "date_time": "2019-03-15T23:00:00"
+    }, {
+        "id": "714973",
+        "common": 79.975105,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-15T22:00:00"
+    }, {
+        "id": "714973",
+        "common": 80.487015,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-15T21:00:00"
+    }, {
+        "id": "714973",
+        "common": 80.16675,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 91.66667,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 65.71429,
+        "date_time": "2019-03-15T20:00:00"
+    }, {
+        "id": "714973",
+        "common": 87.25876,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 90.93702,
+        "channel_switching_time": 37.5,
+        "load_time": "NaN",
+        "epg": 74.46809,
+        "date_time": "2019-03-15T19:00:00"
+    }, {
+        "id": "714973",
+        "common": 87.64612,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 39.999996,
+        "load_time": "NaN",
+        "epg": 71.42857,
+        "date_time": "2019-03-15T18:00:00"
+    }, {
+        "id": "714973",
+        "common": 88.30166,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 50.0,
+        "load_time": "NaN",
+        "epg": 67.567566,
+        "date_time": "2019-03-15T17:00:00"
+    }, {
+        "id": "714973",
+        "common": 80.48854,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 66.666664,
+        "date_time": "2019-03-15T16:00:00"
+    }, {
+        "id": "714973",
+        "common": 95.343544,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 68.42105,
+        "date_time": "2019-03-15T15:00:00"
+    }, {
+        "id": "714973",
+        "common": 93.35185,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 53.846157,
+        "date_time": "2019-03-15T14:00:00"
+    }, {
+        "id": "714973",
+        "common": 78.669426,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 0.0,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-15T13:00:00"
+    }, {
+        "id": "714973",
+        "common": 83.24701,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 33.333332,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-15T12:00:00"
+    }, {
+        "id": "714973",
+        "common": 92.85743,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 100.0,
+        "load_time": "NaN",
+        "epg": 50.0,
+        "date_time": "2019-03-15T11:00:00"
+    }, {
+        "id": "714973",
+        "common": 83.742966,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": 100.0,
+        "channel_switching_time": 25.0,
+        "load_time": "NaN",
+        "epg": 68.75,
+        "date_time": "2019-03-15T10:00:00"
+    }, {
+        "id": "714973",
+        "common": 95.02262,
+        "broadband_access": 100.0,
+        "vod": "NaN",
+        "pvr": "NaN",
+        "channel_switching_time": "NaN",
+        "load_time": "NaN",
+        "epg": 67.64706,
+        "date_time": "2019-03-15T09:00:00"
+    }],
+    "_E4277126BF0B": [{
+        "id": "E4277126BF0B",
+        "common": 97.4,
         "broadband_access": 100.0,
         "vod": "NaN",
         "pvr": "NaN",
@@ -11,8 +1058,8 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-14T09:00:00"
     }, {
-        "id": "1CBBA80D03E3",
-        "common": 80.0,
+        "id": "E4277126BF0B",
+        "common": 97,
         "broadband_access": 100.0,
         "vod": "NaN",
         "pvr": "NaN",
@@ -21,7 +1068,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-14T08:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -31,7 +1078,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-14T07:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -41,7 +1088,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-14T05:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -51,7 +1098,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-13T17:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -61,7 +1108,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-13T05:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -71,7 +1118,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-13T03:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -81,7 +1128,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-13T02:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -91,7 +1138,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-12T23:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": "NaN",
         "broadband_access": "NaN",
         "vod": "NaN",
@@ -101,7 +1148,7 @@ module.exports = [{
         "epg": "NaN",
         "date_time": "2019-03-12T19:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -111,7 +1158,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-12T15:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -121,7 +1168,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-12T14:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -131,7 +1178,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-12T10:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -141,7 +1188,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-12T01:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -151,7 +1198,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-11T23:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -161,7 +1208,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-11T20:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -171,7 +1218,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-11T08:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -181,7 +1228,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-11T06:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -191,7 +1238,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-11T05:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -201,7 +1248,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-11T04:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -211,7 +1258,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-10T23:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -221,7 +1268,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-10T18:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 83.33333,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -231,7 +1278,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-10T13:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -241,7 +1288,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-10T10:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -251,7 +1298,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-10T09:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 83.33333,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -261,7 +1308,7 @@ module.exports = [{
         "epg": 0.0,
         "date_time": "2019-03-10T08:00:00"
     }, {
-        "id": "1CBBA80D03E3",
+        "id": "E4277126BF0B",
         "common": 80.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -270,12 +1317,10 @@ module.exports = [{
         "load_time": "NaN",
         "epg": 0.0,
         "date_time": "2019-03-10T02:00:00"
-    }]
-    }, {
-    "id": "0045F194AB12",
-    "value": [{
-        "id": "250638711",
-        "common": 100.0,
+    }],
+    "_0045F194AB12": [{
+        "id": "0045F194AB12",
+        "common": 99.0,
         "broadband_access": 100.0,
         "vod": "NaN",
         "pvr": "NaN",
@@ -284,8 +1329,8 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T12:00:00"
     }, {
-        "id": "250638711",
-        "common": 100.0,
+        "id": "0045F194AB12",
+        "common": 98.0,
         "broadband_access": 100.0,
         "vod": "NaN",
         "pvr": "NaN",
@@ -294,7 +1339,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.494675,
         "broadband_access": 84.03182,
         "vod": "NaN",
@@ -304,7 +1349,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.460686,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -314,7 +1359,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-14T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.28571,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -324,7 +1369,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-14T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 88.87024,
         "broadband_access": 90.123535,
         "vod": "NaN",
@@ -334,7 +1379,7 @@ module.exports = [{
         "epg": 72.72727,
         "date_time": "2019-03-14T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 92.00092,
         "broadband_access": 91.47174,
         "vod": "NaN",
@@ -344,7 +1389,7 @@ module.exports = [{
         "epg": 94.117645,
         "date_time": "2019-03-14T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 98.57143,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -354,7 +1399,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-14T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 96.666664,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -364,7 +1409,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-14T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 78.56779,
         "broadband_access": 71.4231,
         "vod": "NaN",
@@ -374,7 +1419,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-14T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 93.333336,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -384,7 +1429,7 @@ module.exports = [{
         "epg": 66.66667,
         "date_time": "2019-03-14T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 75.76761,
         "broadband_access": 88.65143,
         "vod": "NaN",
@@ -394,7 +1439,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.56865,
         "broadband_access": 93.73883,
         "vod": "NaN",
@@ -404,7 +1449,7 @@ module.exports = [{
         "epg": 62.5,
         "date_time": "2019-03-14T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 96.04298,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -414,7 +1459,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-13T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -424,7 +1469,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -434,7 +1479,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 90.88309,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -444,7 +1489,7 @@ module.exports = [{
         "epg": 94.44444,
         "date_time": "2019-03-13T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 97.94392,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -454,7 +1499,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-13T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 93.26163,
         "broadband_access": 93.77164,
         "vod": "NaN",
@@ -464,7 +1509,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 98.84705,
         "broadband_access": 99.14763,
         "vod": "NaN",
@@ -474,7 +1519,7 @@ module.exports = [{
         "epg": 96.42857,
         "date_time": "2019-03-13T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 95.99818,
         "broadband_access": 95.87227,
         "vod": "NaN",
@@ -484,7 +1529,7 @@ module.exports = [{
         "epg": 92.5,
         "date_time": "2019-03-13T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.43361,
         "broadband_access": 91.8647,
         "vod": "NaN",
@@ -494,7 +1539,7 @@ module.exports = [{
         "epg": 90.47619,
         "date_time": "2019-03-13T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 95.83333,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -504,7 +1549,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 90.701546,
         "broadband_access": 88.045395,
         "vod": "NaN",
@@ -514,7 +1559,7 @@ module.exports = [{
         "epg": 90.909096,
         "date_time": "2019-03-13T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 91.66667,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -524,7 +1569,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 80.14037,
         "broadband_access": 87.19652,
         "vod": "NaN",
@@ -534,7 +1579,7 @@ module.exports = [{
         "epg": 91.66667,
         "date_time": "2019-03-13T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 94.653206,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -544,7 +1589,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-13T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -554,7 +1599,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 94.44444,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -564,7 +1609,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 78.3391,
         "broadband_access": 80.00866,
         "vod": "NaN",
@@ -574,7 +1619,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-13T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 80.77669,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -584,7 +1629,7 @@ module.exports = [{
         "epg": 84.61539,
         "date_time": "2019-03-13T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 71.47463,
         "broadband_access": 83.41259,
         "vod": "NaN",
@@ -594,7 +1639,7 @@ module.exports = [{
         "epg": 57.14286,
         "date_time": "2019-03-13T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.91632,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -604,7 +1649,7 @@ module.exports = [{
         "epg": 93.333336,
         "date_time": "2019-03-13T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 94.44444,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -614,7 +1659,7 @@ module.exports = [{
         "epg": 66.66667,
         "date_time": "2019-03-13T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 83.780495,
         "broadband_access": 88.87583,
         "vod": "NaN",
@@ -624,7 +1669,7 @@ module.exports = [{
         "epg": 62.5,
         "date_time": "2019-03-13T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 95.2381,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -634,7 +1679,7 @@ module.exports = [{
         "epg": 71.42857,
         "date_time": "2019-03-13T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 81.25,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -644,7 +1689,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-13T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 95.902176,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -654,7 +1699,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-12T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.984695,
         "broadband_access": 87.480865,
         "vod": "NaN",
@@ -664,7 +1709,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 98.66035,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -674,7 +1719,7 @@ module.exports = [{
         "epg": 91.66667,
         "date_time": "2019-03-12T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 92.76991,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -684,7 +1729,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.45205,
         "broadband_access": 87.68465,
         "vod": "NaN",
@@ -694,7 +1739,7 @@ module.exports = [{
         "epg": 85.0,
         "date_time": "2019-03-12T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 99.27837,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -704,7 +1749,7 @@ module.exports = [{
         "epg": 95.652176,
         "date_time": "2019-03-12T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.01442,
         "broadband_access": 87.530426,
         "vod": "NaN",
@@ -714,7 +1759,7 @@ module.exports = [{
         "epg": 96.15385,
         "date_time": "2019-03-12T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 99.13171,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -724,7 +1769,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 92.464134,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -734,7 +1779,7 @@ module.exports = [{
         "epg": 91.30435,
         "date_time": "2019-03-12T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 82.69045,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -744,7 +1789,7 @@ module.exports = [{
         "epg": 94.73685,
         "date_time": "2019-03-12T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.37189,
         "broadband_access": 91.17688,
         "vod": "NaN",
@@ -754,7 +1799,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-12T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 80.738266,
         "broadband_access": 75.27407,
         "vod": "NaN",
@@ -764,7 +1809,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 97.61904,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -774,7 +1819,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-12T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 90.68992,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -784,7 +1829,7 @@ module.exports = [{
         "epg": 93.75,
         "date_time": "2019-03-12T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 80.29561,
         "broadband_access": 89.98886,
         "vod": "NaN",
@@ -794,7 +1839,7 @@ module.exports = [{
         "epg": 81.818184,
         "date_time": "2019-03-12T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -804,7 +1849,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 96.666664,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -814,7 +1859,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 96.666664,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -824,7 +1869,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-12T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -834,7 +1879,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 98.57143,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -844,7 +1889,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-12T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 74.98924,
         "broadband_access": 91.65053,
         "vod": "NaN",
@@ -854,7 +1899,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-12T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 86.48454,
         "broadband_access": 86.6771,
         "vod": "NaN",
@@ -864,7 +1909,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-12T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.007385,
         "broadband_access": 91.67589,
         "vod": "NaN",
@@ -874,7 +1919,7 @@ module.exports = [{
         "epg": 58.333332,
         "date_time": "2019-03-12T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 96.07868,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -884,7 +1929,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-12T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.25695,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -894,7 +1939,7 @@ module.exports = [{
         "epg": 71.42857,
         "date_time": "2019-03-11T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 83.35022,
         "broadband_access": 83.35445,
         "vod": "NaN",
@@ -904,7 +1949,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-11T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -914,7 +1959,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 90.58793,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -924,7 +1969,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-11T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 82.19824,
         "broadband_access": 85.47304,
         "vod": "NaN",
@@ -934,7 +1979,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 94.44485,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -944,7 +1989,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 86.01507,
         "broadband_access": 89.77933,
         "vod": "NaN",
@@ -954,7 +1999,7 @@ module.exports = [{
         "epg": 96.969696,
         "date_time": "2019-03-11T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -964,7 +2009,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 86.972534,
         "broadband_access": 90.10793,
         "vod": "NaN",
@@ -974,7 +2019,7 @@ module.exports = [{
         "epg": 94.73685,
         "date_time": "2019-03-11T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 86.69292,
         "broadband_access": 93.500916,
         "vod": "NaN",
@@ -984,7 +2029,7 @@ module.exports = [{
         "epg": 96.15385,
         "date_time": "2019-03-11T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.142426,
         "broadband_access": 77.71364,
         "vod": "NaN",
@@ -994,7 +2039,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.83991,
         "broadband_access": 90.31542,
         "vod": "NaN",
@@ -1004,7 +2049,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1014,7 +2059,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1024,7 +2069,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 91.35007,
         "broadband_access": 86.89599,
         "vod": "NaN",
@@ -1034,7 +2079,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 91.4513,
         "broadband_access": 90.92609,
         "vod": "NaN",
@@ -1044,7 +2089,7 @@ module.exports = [{
         "epg": 84.61539,
         "date_time": "2019-03-11T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 98.89891,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1054,7 +2099,7 @@ module.exports = [{
         "epg": 93.333336,
         "date_time": "2019-03-11T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.18134,
         "broadband_access": 90.24533,
         "vod": "NaN",
@@ -1064,7 +2109,7 @@ module.exports = [{
         "epg": 86.666664,
         "date_time": "2019-03-11T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.056465,
         "broadband_access": 89.35393,
         "vod": "NaN",
@@ -1074,7 +2119,7 @@ module.exports = [{
         "epg": 76.92308,
         "date_time": "2019-03-11T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.55556,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1084,7 +2129,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-11T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 91.66667,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1094,7 +2139,7 @@ module.exports = [{
         "epg": 50.0,
         "date_time": "2019-03-11T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 90.51747,
         "broadband_access": 88.90121,
         "vod": "NaN",
@@ -1104,7 +2149,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-11T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 84.663,
         "broadband_access": 83.32875,
         "vod": "NaN",
@@ -1114,7 +2159,7 @@ module.exports = [{
         "epg": 90.0,
         "date_time": "2019-03-11T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.208664,
         "broadband_access": 85.67749,
         "vod": "NaN",
@@ -1124,7 +2169,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-11T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.697945,
         "broadband_access": 85.693855,
         "vod": "NaN",
@@ -1134,7 +2179,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-10T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 83.61235,
         "broadband_access": 81.78817,
         "vod": "NaN",
@@ -1144,7 +2189,7 @@ module.exports = [{
         "epg": 90.909096,
         "date_time": "2019-03-10T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 96.06812,
         "broadband_access": 95.060715,
         "vod": "NaN",
@@ -1154,7 +2199,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 93.849205,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1164,7 +2209,7 @@ module.exports = [{
         "epg": 96.42857,
         "date_time": "2019-03-10T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1174,7 +2219,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 84.92283,
         "broadband_access": 86.116905,
         "vod": "NaN",
@@ -1184,7 +2229,7 @@ module.exports = [{
         "epg": 92.59259,
         "date_time": "2019-03-10T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 93.85058,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1194,7 +2239,7 @@ module.exports = [{
         "epg": 93.10345,
         "date_time": "2019-03-10T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 90.49314,
         "broadband_access": 90.8806,
         "vod": "NaN",
@@ -1204,7 +2249,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 83.33333,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1214,7 +2259,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 89.80872,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1224,7 +2269,7 @@ module.exports = [{
         "epg": 88.46153,
         "date_time": "2019-03-10T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 95.16154,
         "broadband_access": 94.212875,
         "vod": "NaN",
@@ -1234,7 +2279,7 @@ module.exports = [{
         "epg": 94.117645,
         "date_time": "2019-03-10T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 87.83127,
         "broadband_access": 84.003586,
         "vod": "NaN",
@@ -1244,7 +2289,7 @@ module.exports = [{
         "epg": 90.0,
         "date_time": "2019-03-10T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 99.36546,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1254,7 +2299,7 @@ module.exports = [{
         "epg": 96.15385,
         "date_time": "2019-03-10T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 85.62259,
         "broadband_access": 93.70772,
         "vod": "NaN",
@@ -1264,7 +2309,7 @@ module.exports = [{
         "epg": 88.0,
         "date_time": "2019-03-10T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "0045F194AB12",
         "common": 98.14815,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1273,11 +2318,9 @@ module.exports = [{
         "load_time": "NaN",
         "epg": 88.88889,
         "date_time": "2019-03-10T09:00:00"
-    }]
-}, {
-    "id": "001B23324A56",
-    "value": [{
-        "id": "250638711",
+    }],
+    "_001B23324A56": [{
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1287,7 +2330,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1297,7 +2340,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.494675,
         "broadband_access": 84.03182,
         "vod": "NaN",
@@ -1307,7 +2350,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.460686,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1317,7 +2360,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-14T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.28571,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1327,7 +2370,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-14T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 88.87024,
         "broadband_access": 90.123535,
         "vod": "NaN",
@@ -1337,7 +2380,7 @@ module.exports = [{
         "epg": 72.72727,
         "date_time": "2019-03-14T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 92.00092,
         "broadband_access": 91.47174,
         "vod": "NaN",
@@ -1347,7 +2390,7 @@ module.exports = [{
         "epg": 94.117645,
         "date_time": "2019-03-14T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 98.57143,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1357,7 +2400,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-14T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 96.666664,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1367,7 +2410,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-14T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 78.56779,
         "broadband_access": 71.4231,
         "vod": "NaN",
@@ -1377,7 +2420,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-14T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 93.333336,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1387,7 +2430,7 @@ module.exports = [{
         "epg": 66.66667,
         "date_time": "2019-03-14T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 75.76761,
         "broadband_access": 88.65143,
         "vod": "NaN",
@@ -1397,7 +2440,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-14T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.56865,
         "broadband_access": 93.73883,
         "vod": "NaN",
@@ -1407,7 +2450,7 @@ module.exports = [{
         "epg": 62.5,
         "date_time": "2019-03-14T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 96.04298,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1417,7 +2460,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-13T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1427,7 +2470,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1437,7 +2480,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 90.88309,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1447,7 +2490,7 @@ module.exports = [{
         "epg": 94.44444,
         "date_time": "2019-03-13T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 97.94392,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1457,7 +2500,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-13T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 93.26163,
         "broadband_access": 93.77164,
         "vod": "NaN",
@@ -1467,7 +2510,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 98.84705,
         "broadband_access": 99.14763,
         "vod": "NaN",
@@ -1477,7 +2520,7 @@ module.exports = [{
         "epg": 96.42857,
         "date_time": "2019-03-13T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 95.99818,
         "broadband_access": 95.87227,
         "vod": "NaN",
@@ -1487,7 +2530,7 @@ module.exports = [{
         "epg": 92.5,
         "date_time": "2019-03-13T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.43361,
         "broadband_access": 91.8647,
         "vod": "NaN",
@@ -1497,7 +2540,7 @@ module.exports = [{
         "epg": 90.47619,
         "date_time": "2019-03-13T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 95.83333,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1507,7 +2550,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 90.701546,
         "broadband_access": 88.045395,
         "vod": "NaN",
@@ -1517,7 +2560,7 @@ module.exports = [{
         "epg": 90.909096,
         "date_time": "2019-03-13T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 91.66667,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1527,7 +2570,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 80.14037,
         "broadband_access": 87.19652,
         "vod": "NaN",
@@ -1537,7 +2580,7 @@ module.exports = [{
         "epg": 91.66667,
         "date_time": "2019-03-13T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 94.653206,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1547,7 +2590,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-13T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1557,7 +2600,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 94.44444,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1567,7 +2610,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-13T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 78.3391,
         "broadband_access": 80.00866,
         "vod": "NaN",
@@ -1577,7 +2620,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-13T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 80.77669,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1587,7 +2630,7 @@ module.exports = [{
         "epg": 84.61539,
         "date_time": "2019-03-13T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 71.47463,
         "broadband_access": 83.41259,
         "vod": "NaN",
@@ -1597,7 +2640,7 @@ module.exports = [{
         "epg": 57.14286,
         "date_time": "2019-03-13T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.91632,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1607,7 +2650,7 @@ module.exports = [{
         "epg": 93.333336,
         "date_time": "2019-03-13T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 94.44444,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1617,7 +2660,7 @@ module.exports = [{
         "epg": 66.66667,
         "date_time": "2019-03-13T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 83.780495,
         "broadband_access": 88.87583,
         "vod": "NaN",
@@ -1627,7 +2670,7 @@ module.exports = [{
         "epg": 62.5,
         "date_time": "2019-03-13T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 95.2381,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1637,7 +2680,7 @@ module.exports = [{
         "epg": 71.42857,
         "date_time": "2019-03-13T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 81.25,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1647,7 +2690,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-13T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 95.902176,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1657,7 +2700,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-12T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.984695,
         "broadband_access": 87.480865,
         "vod": "NaN",
@@ -1667,7 +2710,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 98.66035,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1677,7 +2720,7 @@ module.exports = [{
         "epg": 91.66667,
         "date_time": "2019-03-12T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 92.76991,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1687,7 +2730,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.45205,
         "broadband_access": 87.68465,
         "vod": "NaN",
@@ -1697,7 +2740,7 @@ module.exports = [{
         "epg": 85.0,
         "date_time": "2019-03-12T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 99.27837,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1707,7 +2750,7 @@ module.exports = [{
         "epg": 95.652176,
         "date_time": "2019-03-12T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.01442,
         "broadband_access": 87.530426,
         "vod": "NaN",
@@ -1717,7 +2760,7 @@ module.exports = [{
         "epg": 96.15385,
         "date_time": "2019-03-12T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 99.13171,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1727,7 +2770,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 92.464134,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1737,7 +2780,7 @@ module.exports = [{
         "epg": 91.30435,
         "date_time": "2019-03-12T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 82.69045,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1747,7 +2790,7 @@ module.exports = [{
         "epg": 94.73685,
         "date_time": "2019-03-12T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.37189,
         "broadband_access": 91.17688,
         "vod": "NaN",
@@ -1757,7 +2800,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-12T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 80.738266,
         "broadband_access": 75.27407,
         "vod": "NaN",
@@ -1767,7 +2810,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 97.61904,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1777,7 +2820,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-12T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 90.68992,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1787,7 +2830,7 @@ module.exports = [{
         "epg": 93.75,
         "date_time": "2019-03-12T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 80.29561,
         "broadband_access": 89.98886,
         "vod": "NaN",
@@ -1797,7 +2840,7 @@ module.exports = [{
         "epg": 81.818184,
         "date_time": "2019-03-12T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1807,7 +2850,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 96.666664,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1817,7 +2860,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 96.666664,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1827,7 +2870,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-12T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1837,7 +2880,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-12T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 98.57143,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1847,7 +2890,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-12T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 74.98924,
         "broadband_access": 91.65053,
         "vod": "NaN",
@@ -1857,7 +2900,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-12T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 86.48454,
         "broadband_access": 86.6771,
         "vod": "NaN",
@@ -1867,7 +2910,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-12T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.007385,
         "broadband_access": 91.67589,
         "vod": "NaN",
@@ -1877,7 +2920,7 @@ module.exports = [{
         "epg": 58.333332,
         "date_time": "2019-03-12T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 96.07868,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1887,7 +2930,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-12T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.25695,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1897,7 +2940,7 @@ module.exports = [{
         "epg": 71.42857,
         "date_time": "2019-03-11T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 83.35022,
         "broadband_access": 83.35445,
         "vod": "NaN",
@@ -1907,7 +2950,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-11T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1917,7 +2960,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 90.58793,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1927,7 +2970,7 @@ module.exports = [{
         "epg": 92.85714,
         "date_time": "2019-03-11T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 82.19824,
         "broadband_access": 85.47304,
         "vod": "NaN",
@@ -1937,7 +2980,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 94.44485,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1947,7 +2990,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 86.01507,
         "broadband_access": 89.77933,
         "vod": "NaN",
@@ -1957,7 +3000,7 @@ module.exports = [{
         "epg": 96.969696,
         "date_time": "2019-03-11T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -1967,7 +3010,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 86.972534,
         "broadband_access": 90.10793,
         "vod": "NaN",
@@ -1977,7 +3020,7 @@ module.exports = [{
         "epg": 94.73685,
         "date_time": "2019-03-11T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 86.69292,
         "broadband_access": 93.500916,
         "vod": "NaN",
@@ -1987,7 +3030,7 @@ module.exports = [{
         "epg": 96.15385,
         "date_time": "2019-03-11T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.142426,
         "broadband_access": 77.71364,
         "vod": "NaN",
@@ -1997,7 +3040,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.83991,
         "broadband_access": 90.31542,
         "vod": "NaN",
@@ -2007,7 +3050,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2017,7 +3060,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2027,7 +3070,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 91.35007,
         "broadband_access": 86.89599,
         "vod": "NaN",
@@ -2037,7 +3080,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-11T09:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 91.4513,
         "broadband_access": 90.92609,
         "vod": "NaN",
@@ -2047,7 +3090,7 @@ module.exports = [{
         "epg": 84.61539,
         "date_time": "2019-03-11T08:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 98.89891,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2057,7 +3100,7 @@ module.exports = [{
         "epg": 93.333336,
         "date_time": "2019-03-11T07:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.18134,
         "broadband_access": 90.24533,
         "vod": "NaN",
@@ -2067,7 +3110,7 @@ module.exports = [{
         "epg": 86.666664,
         "date_time": "2019-03-11T06:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.056465,
         "broadband_access": 89.35393,
         "vod": "NaN",
@@ -2077,7 +3120,7 @@ module.exports = [{
         "epg": 76.92308,
         "date_time": "2019-03-11T05:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.55556,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2087,7 +3130,7 @@ module.exports = [{
         "epg": 80.0,
         "date_time": "2019-03-11T04:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 91.66667,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2097,7 +3140,7 @@ module.exports = [{
         "epg": 50.0,
         "date_time": "2019-03-11T03:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 90.51747,
         "broadband_access": 88.90121,
         "vod": "NaN",
@@ -2107,7 +3150,7 @@ module.exports = [{
         "epg": 87.5,
         "date_time": "2019-03-11T02:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 84.663,
         "broadband_access": 83.32875,
         "vod": "NaN",
@@ -2117,7 +3160,7 @@ module.exports = [{
         "epg": 90.0,
         "date_time": "2019-03-11T01:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.208664,
         "broadband_access": 85.67749,
         "vod": "NaN",
@@ -2127,7 +3170,7 @@ module.exports = [{
         "epg": 83.33333,
         "date_time": "2019-03-11T00:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.697945,
         "broadband_access": 85.693855,
         "vod": "NaN",
@@ -2137,7 +3180,7 @@ module.exports = [{
         "epg": 85.71429,
         "date_time": "2019-03-10T23:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 83.61235,
         "broadband_access": 81.78817,
         "vod": "NaN",
@@ -2147,7 +3190,7 @@ module.exports = [{
         "epg": 90.909096,
         "date_time": "2019-03-10T22:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 96.06812,
         "broadband_access": 95.060715,
         "vod": "NaN",
@@ -2157,7 +3200,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T21:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 93.849205,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2167,7 +3210,7 @@ module.exports = [{
         "epg": 96.42857,
         "date_time": "2019-03-10T20:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 100.0,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2177,7 +3220,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T19:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 84.92283,
         "broadband_access": 86.116905,
         "vod": "NaN",
@@ -2187,7 +3230,7 @@ module.exports = [{
         "epg": 92.59259,
         "date_time": "2019-03-10T18:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 93.85058,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2197,7 +3240,7 @@ module.exports = [{
         "epg": 93.10345,
         "date_time": "2019-03-10T17:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 90.49314,
         "broadband_access": 90.8806,
         "vod": "NaN",
@@ -2207,7 +3250,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T16:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 83.33333,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2217,7 +3260,7 @@ module.exports = [{
         "epg": 100.0,
         "date_time": "2019-03-10T15:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 89.80872,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2227,7 +3270,7 @@ module.exports = [{
         "epg": 88.46153,
         "date_time": "2019-03-10T14:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 95.16154,
         "broadband_access": 94.212875,
         "vod": "NaN",
@@ -2237,7 +3280,7 @@ module.exports = [{
         "epg": 94.117645,
         "date_time": "2019-03-10T13:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 87.83127,
         "broadband_access": 84.003586,
         "vod": "NaN",
@@ -2247,7 +3290,7 @@ module.exports = [{
         "epg": 90.0,
         "date_time": "2019-03-10T12:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 99.36546,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2257,7 +3300,7 @@ module.exports = [{
         "epg": 96.15385,
         "date_time": "2019-03-10T11:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 85.62259,
         "broadband_access": 93.70772,
         "vod": "NaN",
@@ -2267,7 +3310,7 @@ module.exports = [{
         "epg": 88.0,
         "date_time": "2019-03-10T10:00:00"
     }, {
-        "id": "250638711",
+        "id": "001B23324A56",
         "common": 98.14815,
         "broadband_access": 100.0,
         "vod": "NaN",
@@ -2276,5 +3319,5 @@ module.exports = [{
         "load_time": "NaN",
         "epg": 88.88889,
         "date_time": "2019-03-10T09:00:00"
-    }]
-}];
+    }],
+};

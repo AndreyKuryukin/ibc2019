@@ -162,7 +162,7 @@ class App extends React.Component {
             },
             'SUBSCRIBERS': {
                 id: 'SUBSCRIBERS',
-                defaultTitle: 'Карточка клиента',
+                defaultTitle: 'Subscriber card',
                 link: '/subscribers',
                 path: '/subscribers/:subscriberId?/:page?/:id?',
                 component: Subscribers,

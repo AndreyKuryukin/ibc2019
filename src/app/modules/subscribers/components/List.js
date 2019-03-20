@@ -14,6 +14,7 @@ import {
 import { search as searchRequest } from '../rest';
 import { MRFPropType, RFPropType, selectMRFMap, selectRFMap } from '../../../reducers/common/location';
 import Preloader from '../../../components/Preloader';
+import ls from "i18n";
 
 const MRF_ID_PROPERTY = 'sqm_mrf_id';
 const RF_ID_PROPERTY = 'region_id';
@@ -22,7 +23,7 @@ const LOCALIZED_PROPERTIES = {
     sqm_mrf_id: 'МРФ',
     region_id: 'РФ',
     san: 'SAN',
-    nls: 'Л/С',
+    nls: ls('PERSONAL_ACCOUNT_NUMBER', 'Personal account number'),
 };
 
 class List extends React.PureComponent {

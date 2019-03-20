@@ -1,4 +1,6 @@
 {
+    "ALERTS": "Incidents",
+    "BY_SERVICES": "by services",
     "LOGIN_ERROR_FIELD": "Authorization error:",
     "PAGE_NOT_FOUND": "Page not found",
     "PRELOADER_DEFAULT_TEXT": "Loading",
@@ -161,6 +163,7 @@
     "ADD_ROLE_TITLE": "Add role",
     "BACK": "Back",
     "SERCH_PLACEHOLDER": "Search",
+    "SEARCH_BY": "Search by",
     "ROLES_REMOVE_CONFIRM_TITLE": "Confirm the action:",
     "OK": "OK",
     "WITH_SW_GROUPING": "Grouped by sw version",
@@ -469,11 +472,11 @@
     "DASHBOARD_KQI_FULL_NAME_KGS": "Head End",
     "DASHBOARD_KQI_FULL_NAME_KSPD": "Network",
     "DASHBOARD_BY_MRF_TITLE": " by MRD",
-
+    "NLS": "Personal account number",
     "ALARMS_GETTING_ERROR_TITLE_FIELD": "Error during loading alarms:",
     "ALARMS_GETTING_ERROR_MESSAGE_FIELD": "Alarms data is not received",
 
-    "DASHBOARD_PARAMETER_LETTER": "KQI",
+    "DASHBOARD_PARAMETER_LETTER": "K",
     "DASHBOARD_KAB_TYPE_INDEX": "sub",
     "DASHBOARD_KGS_TYPE_INDEX": "he",
     "DASHBOARD_KSPD_TYPE_INDEX": "net",

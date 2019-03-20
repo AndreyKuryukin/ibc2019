@@ -1,4 +1,4 @@
-module.exports = [{
+const data = [{
     "id": "3682887167",
     "value": [{
         "id": "3682887167",
@@ -3042,3 +3042,22 @@ module.exports = [{
         "date_time": "2019-03-10T00:00:00"
     }]
 }];
+
+
+const moment = require('moment');
+const graphByMacs = require('./graphByMacs');
+
+const actualize = (value, index) => {
+    value.date_time = moment().startOf('day').subtract(index, 'hours').startOf('hour').toISOString();
+    return value
+};
+
+const randomize = (weight) => (value, index) => {
+    return {...value, common: 100 - Math.sin(graphByMacs['714973'][index].common + (weight % 237427)) * 5 - 5}
+};
+
+module.exports = (() => {
+    return data.map(neighbour => {
+        return {...neighbour, value: neighbour.value.map(actualize).map(randomize(neighbour.id))}
+    })
+})();

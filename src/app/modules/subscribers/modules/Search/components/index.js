@@ -14,11 +14,11 @@ import * as _ from "lodash";
 import ls from "i18n";
 
 const localizeFilterOption = key => ({
-    [SEARCH_OPTIONS.ALL]: 'Всем полям',
+    [SEARCH_OPTIONS.ALL]: ls('ALL_FIELDS', 'All'),
     [SEARCH_OPTIONS.SERVICE_ID]: 'Service ID',
-    [SEARCH_OPTIONS.SAN]: 'SAN',
+    [SEARCH_OPTIONS.SAN]: 'Service Account Number',
     [SEARCH_OPTIONS.MAC]: 'MAC',
-    [SEARCH_OPTIONS.NLS]: 'Лицевой счёт',
+    [SEARCH_OPTIONS.NLS]: ls('NLS', 'Personal account number'),
 }[key]);
 
 class Search extends React.PureComponent {
@@ -103,10 +103,10 @@ class Search extends React.PureComponent {
                         color="primary"
                         className={styles.searchButton}
                         type="submit"
-                    >Найти</Button>
+                    >{ls('SEARCH', 'Search')}</Button>
                 </div>
                 <div className={styles.filterBlock}>
-                    <div>Искать по:</div>
+                    <div>{ls('SEARCH_BY', 'Искать по')}:</div>
                     {Object.values(SEARCH_OPTIONS).map(option => (
                         <Field
                             key={option}
