@@ -8,9 +8,9 @@ export const TYPE = {
     KQI: 'KQI',
 };
 const NAMES = {
-    [TYPE.KI]: 'КИ',
-    [TYPE.GP]: 'ГП',
-    [TYPE.KQI]: 'KQI',
+    [TYPE.KI]: 'Client incidends',
+    [TYPE.GP]: 'Group incidents',
+    [TYPE.KQI]: 'KQI incidents',
 };
 
 class TypeFilter extends React.Component {

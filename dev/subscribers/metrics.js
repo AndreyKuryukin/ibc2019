@@ -1,28 +1,8 @@
 module.exports = {
     "type": "STB",
     "parameters": [{
-        "name": "vidDataErrors",
-        "display_name": "Ошибки видео данных",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
         "name": "vidDecodeErrors",
-        "display_name": "Ошибки видео декодирования",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "audDataErrors",
-        "display_name": "Ошибки аудио данных",
+        "display_name": "Video decode errors",
         "display_name_translation_key": null,
         "unit": null,
         "unit_translation_key": null,
@@ -32,17 +12,7 @@ module.exports = {
         "dict_content_translation_keys": null
     }, {
         "name": "bufUnderruns",
-        "display_name": "Буфер underruns",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "bufOverruns",
-        "display_name": "Буфер overruns",
+        "display_name": "Buffer underruns",
         "display_name_translation_key": null,
         "unit": null,
         "unit_translation_key": null,
@@ -52,163 +22,7 @@ module.exports = {
         "dict_content_translation_keys": null
     }, {
         "name": "linkFaults",
-        "display_name": "linkFaults",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "mediaBitrate",
-        "display_name": "Битрейт медиапотока",
-        "display_name_translation_key": "SPY_METRIC_MEDIA_BITRATE",
-        "unit": "Кбит/с",
-        "unit_translation_key": "UNIT_KbPS",
-        "type": "int",
-        "double_decimal_places": 1,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "ifaceDeltaErrors",
-        "display_name": "ifaceDeltaErrors",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "ifaceEthMode",
-        "display_name": "Режим работы ethernet порта",
-        "display_name_translation_key": "SPY_METRIC_IFACE_ETH_MODE",
-        "unit": null,
-        "unit_translation_key": null,
-        "type": "dict",
-        "double_decimal_places": null,
-        "dict_content": {
-            "0": "неизвестно",
-            "1": "10 Мбит/с полудуплекс",
-            "2": "10 Мбит/с полный дуплекс",
-            "3": "100 Мбит/с полудуплекс",
-            "4": "100 Мбит/с полный дуплекс",
-            "5": "зарезервировано",
-            "6": "1Гбит/с полный дуплекс"
-        },
-        "dict_content_translation_keys": {
-            "0": "SPY_METRIC_IFACE_ETH_MODE_0",
-            "1": "SPY_METRIC_IFACE_ETH_MODE_1",
-            "2": "SPY_METRIC_IFACE_ETH_MODE_2",
-            "3": "SPY_METRIC_IFACE_ETH_MODE_3",
-            "4": "SPY_METRIC_IFACE_ETH_MODE_4",
-            "5": "SPY_METRIC_IFACE_ETH_MODE_5",
-            "6": "SPY_METRIC_IFACE_ETH_MODE_6"
-        }
-    }, {
-        "name": "hdmiStatus",
-        "display_name": "hdmiStatus",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "powerState",
-        "display_name": "powerState",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "bufferingEvents",
-        "display_name": "bufferingEvents",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "bufferingSecs",
-        "display_name": "bufferingSecs",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "wifiLevel",
-        "display_name": "wifiLevel",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "cpuTemp",
-        "display_name": "Температура процессора",
-        "display_name_translation_key": null,
-        "unit": "°С",
-        "unit_translation_key": "UNIT_°С",
-        "type": "int",
-        "double_decimal_places": 1,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "uptime",
-        "display_name": "uptime",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "userIdlePeriod",
-        "display_name": "userIdlePeriod",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "zapTime",
-        "display_name": "Время переключения",
-        "display_name_translation_key": null,
-        "unit": "сек.",
-        "unit_translation_key": "UNIT_сек.",
-        "type": "int",
-        "double_decimal_places": 1,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "systemLoadTime",
-        "display_name": "systemLoadTime",
-        "display_name_translation_key": null,
-        "unit": null,
-        "unit_translation_key": null,
-        "type": null,
-        "double_decimal_places": null,
-        "dict_content": null,
-        "dict_content_translation_keys": null
-    }, {
-        "name": "appLoadTime",
-        "display_name": "appLoadTime",
+        "display_name": "Link faults",
         "display_name_translation_key": null,
         "unit": null,
         "unit_translation_key": null,

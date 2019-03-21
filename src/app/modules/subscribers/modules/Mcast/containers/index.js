@@ -9,6 +9,7 @@ import { selectSubscriberMacs } from '../../Topology/reducers';
 class Mcast extends React.Component {
 	static propTypes = {
         macs: PropTypes.arrayOf(PropTypes.string).isRequired,
+        subscriberDevices: PropTypes.array,
 		range: PropTypes.oneOf(Object.values(RANGES)).isRequired,
         subscriber: PropTypes.object.isRequired,
 	};
@@ -83,6 +84,7 @@ class Mcast extends React.Component {
 		return (
 			<McastComponent
 				macs={this.props.macs}
+				subscriberDevices={this.props.subscriberDevices}
 				data={this.state.data}
 				mac={this.state.mac}
 				isLoading={this.state.isLoading}

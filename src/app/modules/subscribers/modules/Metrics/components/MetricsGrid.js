@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import TreeView from '../../../components/TreeView';
 import Graph from './Graph';
 import LoadingNode from "../../../components/TreeView/LoadingNode";
-import * as _ from "lodash";
+import _ from "lodash";
 import memoize from "memoizejs";
 import ls from "i18n";
 
@@ -204,23 +204,23 @@ class MetricsGrid extends React.Component {
                 itemRenderer={this.renderItem}
                 columns={[
                     {
-                        getTitle: () => 'Метрики',
+                        getTitle: () => 'Metric name',
                         name: 'name',
                         width: '40%',
                     }, {
-                        getTitle: () => 'Последнее значение',
+                        getTitle: () => 'Last value',
                         name: 'last',
                         width: '15%',
                     }, {
-                        getTitle: () => 'Минимальное',
+                        getTitle: () => 'Min. value',
                         name: 'min',
                         width: '15%',
                     }, {
-                        getTitle: () => 'Максимальное',
+                        getTitle: () => 'Max. value',
                         name: 'max',
                         width: '15%',
                     }, {
-                        getTitle: () => 'Среднее',
+                        getTitle: () => 'Average',
                         name: 'avg',
                         width: '15%',
                     },

@@ -115,9 +115,8 @@ module.exports = (app) => {
     });
 
     app.get('/api/v1/subscribers/stb/data', (req, res) => {
-        const {query} = req;
-        res.send(stbData);
-
+        const paramKey = _.get(req, 'query.paramKey');
+        res.send(stbData[paramKey]);
     });
 
     app.post('/api/v1/subscribers/alerts', (req, res) => {

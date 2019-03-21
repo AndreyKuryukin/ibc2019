@@ -44,19 +44,15 @@ class SubscriberInfoWidget extends React.Component {
                 value: this.getProperty('san', '-'),
             }, {
                 id: 'mrf',
-                name: ls('MRF', 'МРФ'),
-                value: (mrfId === null || this.props.mrfById[mrfId] === undefined) ? '-' : this.props.mrfById[mrfId].name,
-            }, {
-                id: 'rf',
-                name: ls('RF', 'РФ'),
-                value: (rfId === null || this.props.rfById[rfId] === undefined) ? '-' : this.props.rfById[rfId].name,
+                name: 'Region',
+                value: 9,
             }, {
                 id: 'technology',
-                name: ls('CONNECTION_TECH', 'Технология подключения'),
+                name: 'Connection technology',
                 value: this.props.technology || '',
             }, {
                 id: 'address',
-                name: 'Адрес МПУ',
+                name: 'Address',
                 value: [
                     this.getProperty('region'),
                     this.getProperty('locality'),

@@ -7,8 +7,8 @@ export const MODE = {
     GRID: 'grid',
 };
 const NAMES = {
-    [MODE.CHART]: 'График',
-    [MODE.GRID]: 'Таблица',
+    [MODE.CHART]: 'Chart',
+    [MODE.GRID]: 'Table',
 };
 
 class ModeSwitcher extends React.Component {

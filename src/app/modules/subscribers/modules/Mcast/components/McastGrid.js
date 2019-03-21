@@ -51,7 +51,7 @@ class McastGrid extends React.PureComponent {
                         name: 'content_type',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>{ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>{ls('DASHBOARD_KAB_TYPE_INDEX', 'аб')}</sub></span>,
+                        getTitle: () => <span>{ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>sub</sub></span>,
                         name: 'kab',
                         width: '20%',
                     }

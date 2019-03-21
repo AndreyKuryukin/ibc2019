@@ -64,7 +64,7 @@ module.exports = (app) => {
         }
     };
 
-    app.get('/api/v1/user/all', (req, res) => {
+    app.get('/api/v1/user', (req, res) => {
         res.send(_.values(usersById));
     });
 

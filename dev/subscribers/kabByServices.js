@@ -5,7 +5,10 @@ module.exports = {
     '4376719358': {
         "current": {
             "devices": [
-                accs['714973']['kabByServices'].current
+                accs['714973']['kabByServices'].current,
+                accs['714974']['kabByServices'].current,
+                accs['112233']['kabByServices'].current,
+                accs['112222']['kabByServices'].current,
             ],
             "stbs": [
                 stbs['E4277126BF0B']['kabByServices'].current,
@@ -15,7 +18,10 @@ module.exports = {
         },
         "previous": {
             "devices": [
-                accs['714973']['kabByServices'].previous
+                accs['714973']['kabByServices'].previous,
+                accs['714974']['kabByServices'].previous,
+                accs['112233']['kabByServices'].previous,
+                accs['112222']['kabByServices'].previous,
             ],
             "stbs": [
                 stbs['E4277126BF0B']['kabByServices'].previous,
@@ -27,7 +33,11 @@ module.exports = {
     '4376719359': {
         "current": {
             "devices": [
-                accs['714973']['kabByServices'].current
+                accs['714973']['kabByServices'].current,
+                accs['714975']['kabByServices'].current,
+                accs['714976']['kabByServices'].current,
+                accs['112233']['kabByServices'].current,
+                accs['112222']['kabByServices'].current,
             ],
             "stbs": [
                 stbs['DEFA4672A173']['kabByServices'].current,
@@ -41,7 +51,11 @@ module.exports = {
         },
         "previous": {
             "devices": [
-                accs['714973']['kabByServices'].previous
+                accs['714973']['kabByServices'].previous,
+                accs['714975']['kabByServices'].previous,
+                accs['714976']['kabByServices'].previous,
+                accs['112233']['kabByServices'].previous,
+                accs['112222']['kabByServices'].previous,
             ],
             "stbs": [
                 stbs['DEFA4672A173']['kabByServices'].previous,

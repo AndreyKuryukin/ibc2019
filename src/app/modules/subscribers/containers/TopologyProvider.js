@@ -213,6 +213,7 @@ class Provider extends React.Component {
 
         return this.props.topologyDevices.map(device => ({
             id: device.device_id.toString(),
+            mac: device.mac_address,
             type: device.device_type,
             ip: device.ip,
             name: device.device_name,
@@ -220,6 +221,8 @@ class Provider extends React.Component {
             model: device.device_model,
             timestamp: device.timestamp,
             sqm_device_type: device.sqm_device_type,
+            version: device.device_details ? device.device_details.fw_version : '-',
+            uptime: device.device_details ? device.device_details.uptime : null,
         }));
     }
 

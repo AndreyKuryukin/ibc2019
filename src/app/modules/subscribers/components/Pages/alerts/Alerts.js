@@ -140,8 +140,8 @@ class Alerts extends React.Component {
             KQI: '#377dc4',
         };
         const names = {
-            KI: 'КИ',
-            GP: 'ГП',
+            KI: 'Client incidends',
+            GP: 'Group policies',
             KQI: 'KQI',
         };
         const groupByPolicyGroup = {

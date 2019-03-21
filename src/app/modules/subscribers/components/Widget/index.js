@@ -26,7 +26,7 @@ class Widget extends React.Component {
                         {hasTitle && (
                             <span className={styles.title}>
                                 {title}
-                                {typeof detailsLink === 'string' && <Link to={detailsLink}>Подробнее</Link>}
+                                {typeof detailsLink === 'string' && <Link to={detailsLink}>Details</Link>}
                             </span>
                         )}
                         {controls && (

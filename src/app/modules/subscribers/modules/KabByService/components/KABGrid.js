@@ -137,35 +137,35 @@ class KABGrid extends React.Component {
                 isLoading={this.props.isTopologyLoading}
                 columns={[
                     {
-                        getTitle: () => 'Адрес (UID/MAC)',
+                        getTitle: () => 'Address (UID/MAC)',
                         name: 'mac',
                         width: '30%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> Общий</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> Common</span>,
                         name: 'kab',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> VOD</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> VOD</span>,
                         name: 'kabVOD',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> Live</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> Live</span>,
                         name: 'kabLive',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> Switch</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> Switch</span>,
                         name: 'kabSwitch',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> PVR</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> PVR</span>,
                         name: 'kabPVR',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> EPG</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> EPG</span>,
                         name: 'kabEPG',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub> Load</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> Load</span>,
                         name: 'kabLoad',
                         width: '10%',
                     },

@@ -106,7 +106,7 @@ class Graph extends React.PureComponent {
             },
             yAxis: {
                 title: {
-                    text: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Результат (%)'),
+                    text: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Common (%)'),
                 },
                 gridLineWidth: 0,
                 lineWidth: 1,
@@ -135,7 +135,7 @@ class Graph extends React.PureComponent {
     getSeries(data, key) {
         return [{
             key: key,
-            name: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Результат (%)'),
+            name: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Common (%)'),
             data: _.reduce(data, (series, value) => {
                 const { date_time, common } = value;
                 if (_.isNumber(common)) {
@@ -164,10 +164,10 @@ class Graph extends React.PureComponent {
             <div className={styles.subscriberDevicesResultsViewer}>
                 <div className={styles.graphTitle}>
                     <span>
-                        {ls('SUBSCRIBERS_KAB_BY_SERVICE_GRAPH_TITLE', 'Динамика')}
+                        {'Dynamics'}
                         {'\u00A0'}
-                        {ls('KQI_INDEX', 'К')}
-                        <sub>{ls('KQI_KAB_SUB', 'аб')}</sub>
+                        {'KQI'}
+                        <sub>sub</sub>
                     </span>
                 </div>
                 <div

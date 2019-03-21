@@ -90,7 +90,7 @@ class App extends React.Component {
             },
             'LANDING': {
                 id: 'DASHBOARD',
-                defaultTitle: 'Рабочий стол',
+                defaultTitle:  'Dashboard',
                 link: DASHBOARD_LANDING,
                 path: '/dashboard/:mode?/:regularity?/:mrfId?/:type?',
                 component: Dashboard,
@@ -120,7 +120,7 @@ class App extends React.Component {
             },
             'REPORTS': {
                 id: 'REPORTS',
-                defaultTitle: 'Отчётность',
+                defaultTitle: 'Reports',
                 link: '/reports',
                 path: '/reports/:action?',
                 component: Reports
@@ -162,7 +162,7 @@ class App extends React.Component {
             },
             'SUBSCRIBERS': {
                 id: 'SUBSCRIBERS',
-                defaultTitle: 'Subscriber card',
+                defaultTitle: ls('SUBSCRIBER_CARD', 'Subscriber card'),
                 link: '/subscribers',
                 path: '/subscribers/:subscriberId?/:page?/:id?',
                 component: Subscribers,

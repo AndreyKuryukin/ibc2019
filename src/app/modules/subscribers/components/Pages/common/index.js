@@ -39,7 +39,7 @@ class SubscriberCommon extends React.Component {
                     rfById={rfById}
                 />
                 <Widget
-                    title={ls('EQUIPMENT_STATUS', "Состояние оборудования")}
+                    title="Equipment condition"
                     detailsLink={this.props.buildLink({page: 'devices'})}
                 >
                     <DevicesGrid
@@ -48,7 +48,7 @@ class SubscriberCommon extends React.Component {
                     />
                 </Widget>
                 <Widget
-                    title={<span>К<sub>аб</sub> сводный</span>}
+                    title={<span>K<sub>sub</sub> consolidated</span>}
                     detailsLink={this.props.buildLink({page: 'kab_by_service'})}
                 >
                     <SubscriberKAB

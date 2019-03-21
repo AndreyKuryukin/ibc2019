@@ -16,7 +16,7 @@ const AccDevice = ({ accDevice }) => {
                 <div className={styles.title}>{ls('SUBSCRIBERS_ACC_DEVICE_TITLE', 'Оборудование доступа')}</div>
                 <div className={styles.kab}>
                     <span>
-                        {ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>{ls('DASHBOARD_KAB_TYPE_INDEX', 'аб') }</sub>:
+                        {ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>sub</sub>:
                     </span>
                     {' '}
                     {KABRenderer(currentKab, previousKab)}
@@ -24,15 +24,15 @@ const AccDevice = ({ accDevice }) => {
             </div>
             <div className={styles.accDeviceParams}>
                 <div className={styles.param}>
-                    <div className={styles.name}>Имя устройства:</div>
+                    <div className={styles.name}>Name:</div>
                     <div className={styles.value}>{accDevice ? accDevice.name : ''}</div>
                 </div>
                 <div className={styles.param}>
-                    <div className={styles.name}>Производитель:</div>
+                    <div className={styles.name}>Vendor:</div>
                     <div className={styles.value}>{accDevice ? accDevice.vendor : ''}</div>
                 </div>
                 <div className={styles.param}>
-                    <div className={styles.name}>Модель:</div>
+                    <div className={styles.name}>Model:</div>
                     <div className={styles.value}>{accDevice ? accDevice.model : ''}</div>
                 </div>
                 <div className={styles.param}>

@@ -1,21 +1,79 @@
 module.exports = {
+    '112222': {
+        "device_id": '112222',
+        "mac_address": "0DEFE67AD1BB",
+        "device_function": "",
+        "ip": "81.152.14.1",
+        "device_vendor": "Juniper",
+        "device_model": "JA-01",
+        "device_name": "Juniper",
+        "device_type": "",
+        "sqm_device_type": "PE",
+        "gid_building_address": "",
+        "lid_building_address": "",
+        "gid_region": "",
+        "lid_region": "",
+        "timestamp": 1552487321211000,
+        "device_details": {
+            "mac": "0DEFE67AD1BB",
+            "manufacturer": "Juniper",
+            "fw_version": "1.3.7",
+            "acc_device_id": 112222,
+            "agg_device_id": 112222,
+            "pe_device_id": null,
+            "timestamp": 1552462564749,
+            "uptime": 23445334,
+        }
+    },
+    '112233': {
+        "device_id": '112233',
+        "mac_address": "DFEA4893AAC5",
+        "device_function": "",
+        "ip": "10.54.0.1",
+        "device_vendor": "Huawei",
+        "device_model": "ZX-450",
+        "device_name": "Huawei ",
+        "device_type": "Eltex.LTE",
+        "sqm_device_type": "AGG",
+        "gid_building_address": "",
+        "lid_building_address": "",
+        "gid_region": "",
+        "lid_region": "",
+        "timestamp": 1552487321211000,
+        "device_details": {
+            "mac": "DFEA4893AAC5",
+            "manufacturer": "Huawei",
+            "fw_version": "12.1.5",
+            "timestamp": 1552462564749,
+            "uptime": 7334567,
+        }
+    },
     '714973': {
         "device_id": '714973',
+        "mac_address": "001183657493",
         "device_function": "",
         "ip": "10.54.26.23",
-        "device_vendor": "Eltex",
-        "device_model": "LTE",
-        "device_name": "3002-ge3002-307 AUTOACTIVATION#714973",
-        "device_type": "Eltex.LTE",
+        "device_vendor": "Cisco",
+        "device_model": "B423",
+        "device_name": "Cisco",
+        "device_type": "Cisco",
         "sqm_device_type": "ACC",
         "gid_building_address": "",
         "lid_building_address": "",
         "gid_region": "",
         "lid_region": "",
-        "timestamp": 1552487321211000
+        "timestamp": 1552487321211000,
+        "device_details": {
+            "mac": "001183657493",
+            "manufacturer": "Cisco",
+            "fw_version": "3.3.12",
+            "timestamp": 1552462564749,
+            "uptime": 545675,
+        }
     },
     '714974': {
         "device_id": '714974',
+        "mac_address": "A1B7FFDE46F7",
         "device_function": "",
         "ip": "10.54.26.25",
         "device_vendor": "Eltex",
@@ -27,10 +85,18 @@ module.exports = {
         "lid_building_address": "",
         "gid_region": "",
         "lid_region": "",
-        "timestamp": 1552487321211000
+        "timestamp": 1552487321211000,
+        "device_details": {
+            "mac": "A1B7FFDE46F7",
+            "manufacturer": "Eltex",
+            "fw_version": "0.12.8",
+            "timestamp": 1552462564749,
+            "uptime": 78954,
+        }
     },
     '714975': {
         "device_id": '714975',
+        "mac_address": "05B7F32E46A4",
         "device_function": "",
         "ip": "10.54.26.26",
         "device_vendor": "Eltex",
@@ -42,10 +108,18 @@ module.exports = {
         "lid_building_address": "",
         "gid_region": "",
         "lid_region": "",
-        "timestamp": 1552487321211000
+        "timestamp": 1552487321211000,
+        "device_details": {
+            "mac": "05B7F32E46A4",
+            "manufacturer": "Eltex",
+            "fw_version": "0.12.12",
+            "timestamp": 1552462564749,
+            "uptime": 766433,
+        }
     },
     '714976': {
         "device_id": '714976',
+        "mac_address": "100156733344",
         "device_function": "",
         "ip": "10.54.26.27",
         "device_vendor": "Eltex",
@@ -57,9 +131,15 @@ module.exports = {
         "lid_building_address": "",
         "gid_region": "",
         "lid_region": "",
-        "timestamp": 1552487321211000
+        "timestamp": 1552487321211000,
+        "device_details": {
+            "mac": "100156733344",
+            "manufacturer": "Eltex",
+            "fw_version": "0.12.8",
+            "timestamp": 1552462564749,
+            "uptime": 434367,
+        }
     },
-
 
 
     'E4277126BF0B': {
@@ -84,7 +164,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 34536,
             "tech": "GPON"
         }
     },
@@ -110,7 +190,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 67655,
             "tech": "LAN"
         }
     },
@@ -136,7 +216,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 67674,
             "tech": "WIFI"
         }
     },
@@ -164,7 +244,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 2234,
             "tech": "GPON"
         }
     },
@@ -190,7 +270,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 23445,
             "tech": "LAN"
         }
     },
@@ -216,7 +296,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 1564,
             "tech": "WIFI"
         }
     },
@@ -243,7 +323,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 23542,
             "tech": "GPON"
         }
     },
@@ -269,7 +349,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 65468,
             "tech": "LAN"
         }
     },
@@ -295,7 +375,7 @@ module.exports = {
             "agg_device_id": 714973,
             "pe_device_id": null,
             "timestamp": 1552462564749,
-            "uptime": 2565642,
+            "uptime": 1023,
             "tech": "WIFI"
         }
     }

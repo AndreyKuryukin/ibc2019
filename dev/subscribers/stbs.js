@@ -20,7 +20,8 @@ module.exports = {
             previous: graph['0045F194AB12'][1]
         },
         'details': details['0045F194AB12'],
-        'graph': graph['0045F194AB12']
+        'graph': graph['0045F194AB12'],
+        'mcast': mcast['0045F194AB12']
     },
     '001B23324A56': {
         "id": "001B23324A56",
@@ -31,7 +32,6 @@ module.exports = {
         'details': details['001B23324A56'],
         'graph': graph['001B23324A56']
     },
-
 
 
     'DEFA4672A173': {
@@ -52,7 +52,8 @@ module.exports = {
             previous: graph['2938749A3FD1'][1]
         },
         'details': details['2938749A3FD1'],
-        'graph': graph['2938749A3FD1']
+        'graph': graph['2938749A3FD1'],
+        'mcast': mcast['2938749A3FD1']
     },
 
     '000012853254': {
@@ -73,7 +74,9 @@ module.exports = {
             previous: graph['058392937475'][1]
         },
         'details': details['058392937475'],
-        'graph': graph['058392937475']
+        'graph': graph['058392937475'],
+        'mcast': mcast['058392937475']
+
     },
 
     'DDEFFA45A832': {
@@ -83,7 +86,8 @@ module.exports = {
             previous: graph['DDEFFA45A832'][1]
         },
         'details': details['DDEFFA45A832'],
-        'graph': graph['DDEFFA45A832']
+        'graph': graph['DDEFFA45A832'],
+        'mcast': mcast['DDEFFA45A832']
     },
 
     '113593799543': {

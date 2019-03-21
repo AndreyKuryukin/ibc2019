@@ -94,8 +94,6 @@ const plugIn = (app, plugins) => {
     })
 };
 
-
-
 if (PROXY_HOST) {
     const target = `http://${PROXY_HOST}:${PROXY_PORT}`;
     const config = {

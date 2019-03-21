@@ -2,15 +2,14 @@ import React from 'react';
 import _ from 'lodash';
 import moment from 'moment';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import TreeView from '../../../components/TreeView';
 import DeviceDetails from './DeviceDetails';
-import {selectDevicesKQILoading, selectDevicesKQIMap, selectSTBSKQIMap} from '../../../reducers/kqi/devices';
-import {KQIPropType} from '../../../containers/TopologyProvider';
-import {createKRenderer} from '../../../helpers';
-import {formatMAC} from '../../../util';
-import {selectIsTopologyLoading} from '../../../modules/Topology/reducers';
-import LoadingNode from "../../../components/TreeView/LoadingNode";
+import { selectDevicesKQILoading, selectDevicesKQIMap, selectSTBSKQIMap } from '../../../reducers/kqi/devices';
+import { KQIPropType } from '../../../containers/TopologyProvider';
+import { createKRenderer } from '../../../helpers';
+import { formatMAC } from '../../../util';
+import { selectIsTopologyLoading } from '../../../modules/Topology/reducers';
 import ls from "i18n";
 
 const KABRenderer = createKRenderer(95);
@@ -42,10 +41,10 @@ class DevicesGrid extends React.Component {
             previous: KQIPropType,
         })),
         kabData: PropTypes.arrayOf(PropTypes.shape({
-           id: PropTypes.string,
-           value:PropTypes.arrayOf(PropTypes.shape({
-               common: PropTypes.number
-           }))
+            id: PropTypes.string,
+            value: PropTypes.arrayOf(PropTypes.shape({
+                common: PropTypes.number
+            }))
         })),
         stbsKQI: PropTypes.objectOf(PropTypes.shape({
             current: KQIPropType,
@@ -92,6 +91,7 @@ class DevicesGrid extends React.Component {
                     kqi.previous !== null ? kqi.previous.common : undefined,
                 ];
                 item.ip = device.ip;
+                item.mac = formatMAC(device.mac || '');
                 delete item.disabled;
             } else {
                 item = {
@@ -102,7 +102,7 @@ class DevicesGrid extends React.Component {
                         kqi.current !== null ? kqi.current.common : undefined,
                         kqi.previous !== null ? kqi.previous.common : undefined,
                     ],
-                    mac: '-',
+                    mac: formatMAC(device.mac || ''),
                     ip: device.ip,
                 };
                 group.push(item);
@@ -117,8 +117,8 @@ class DevicesGrid extends React.Component {
                         name: device.name,
                         vendor: device.vendor,
                         model: device.model,
-                        version: '-',
-                        uptime: '-',
+                        version: device.version ,
+                        uptime: device.uptime ,
                     },
                 ];
             }
@@ -160,15 +160,15 @@ class DevicesGrid extends React.Component {
                 .flatten()
                 .value()
         );
-        data.push({
-            id: 'router',
-            itemType: 'device',
-            type: 'CPE',
-            mac: '-',
-            ip: '-',
-            kab: [],
-            disabled: true,
-        });
+        // data.push({
+        //     id: 'router',
+        //     itemType: 'device',
+        //     type: 'CPE',
+        //     mac: '-',
+        //     ip: '-',
+        //     kab: [],
+        //     disabled: true,
+        // });
 
         if (this.props.subscriberDevices !== null) {
             for (const device of this.props.subscriberDevices) {
@@ -180,7 +180,7 @@ class DevicesGrid extends React.Component {
                 const item = {
                     id: device.mac,
                     itemType: 'device',
-                    type: device.type,
+                    type: `${device.type} ${device.name}`,
                     kab: [
                         kqi.current !== null ? kqi.current.common : undefined,
                         kqi.previous !== null ? kqi.previous.common : undefined,
@@ -242,7 +242,7 @@ class DevicesGrid extends React.Component {
                         name: 'type',
                         width: '30%',
                     }, {
-                        getTitle: () => <span>К<sub>аб</sub></span>,
+                        getTitle: () => <span>КQI<sub>sub</sub></span>,
                         name: 'kab',
                         width: '20%',
                     }, {

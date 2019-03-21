@@ -18,9 +18,9 @@ import ls from "i18n";
 
 const MRF_ID_PROPERTY = 'sqm_mrf_id';
 const RF_ID_PROPERTY = 'region_id';
-const INFO_PROPERTIES = [MRF_ID_PROPERTY, RF_ID_PROPERTY, 'san', 'nls'];
+const INFO_PROPERTIES = [MRF_ID_PROPERTY, 'san', 'nls'];
 const LOCALIZED_PROPERTIES = {
-    sqm_mrf_id: 'МРФ',
+    sqm_mrf_id: 'Region',
     region_id: 'РФ',
     san: 'SAN',
     nls: ls('PERSONAL_ACCOUNT_NUMBER', 'Personal account number'),
@@ -114,7 +114,7 @@ class List extends React.PureComponent {
     renderItems(subscribers) {
         if (subscribers.length === 0) {
             return (
-                <p className={styles.notFound}>Абонент не найден!</p>
+                <p className={styles.notFound}>Nothing found!!!</p>
             );
         }
 

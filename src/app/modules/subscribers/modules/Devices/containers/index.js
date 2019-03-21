@@ -47,7 +47,7 @@ class SubscriberDevices extends React.Component {
     render() {
         const { kabData, kabDataLoading } = this.state;
         return (
-            <Widget title="Информация об оборудовании абонента">
+            <Widget title="Subscriber equipment">
                 <DevicesGrid
                     subscriberDevices={this.props.subscriberDevices}
                     topologyDevices={this.props.topologyDevices}

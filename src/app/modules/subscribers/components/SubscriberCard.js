@@ -53,7 +53,7 @@ class SubscriberCard extends React.Component {
             case 'kab_by_service':
                 return (
                     <Widget
-                        title={<span>К<sub>аб</sub> в проекциях на услуги</span>}
+                        title={<span>КQI<sub>sub</sub> by services</span>}
                     >
                         <SubscriberKAB
                             subscriber={this.props.subscriber}
@@ -83,7 +83,7 @@ class SubscriberCard extends React.Component {
                 return (
                     <Mcast
                         subscriber={this.props.subscriber}
-                    />
+                        subscriberDevices={this.props.subscriberDevices}                    />
                 );
             case 'topology':
                 return (
@@ -119,7 +119,7 @@ class SubscriberCard extends React.Component {
                         <div
                             id="kab_by_service"
                             link={buildLink({ page: 'kab_by_service' })}
-                            tabtitle={<span>K<sub>sub</sub> {ls('BY_SERVICES', 'по услугам')}</span>}
+                            tabtitle={<span>KQI<sub>sub</sub> {ls('BY_SERVICES', 'по услугам')}</span>}
                         />
                         <div
                             id="metrics"

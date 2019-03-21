@@ -45,6 +45,7 @@ export function selectParameters(state) {
     return r(state).parametersByName;
 }
 
+
 export default function(state = initialState, action) {
     switch (action.type) {
         case FETCH_METRICS: return {

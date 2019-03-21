@@ -147,7 +147,7 @@ class ChartWrapper extends React.PureComponent {
                                     className={styles.icon}
                                     style={{ background: '#ff0000' }}
                                 />
-                                <span>{ls('SUBSCRIBERS_MCAST_GRAPH_ALERTS_TITLE', 'Аварии')}</span>
+                                <span>{'Incidents'}</span>
                             </div>
                         </div>
                     </div>

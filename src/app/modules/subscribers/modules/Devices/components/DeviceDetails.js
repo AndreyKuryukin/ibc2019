@@ -57,22 +57,22 @@ class DeviceDetails extends React.Component {
     };
 
     render() {
-        const { item, kabDataLoading, periodUnit } = this.props;
+        const { item, kabDataLoading, periodUnit, disabled } = this.props;
         const type = _.get(item, 'device.type');
         const { data } = this.state;
         return (
             <div className={styles.deviceDetailsItem}>
                 <div className={styles.parameters}>
                     <div className={cn(styles.parameter, styles.name)}>
-                        <div className={styles.name}>Имя устройства:</div>
+                        <div className={styles.name}>Name:</div>
                         <div className={styles.value}>{item.name}</div>
                     </div>
                     <div className={cn(styles.parameter, styles.vendor)}>
-                        <div className={styles.name}>Производитель:</div>
+                        <div className={styles.name}>Vendor:</div>
                         <div className={styles.value}>{item.vendor}</div>
                     </div>
                     <div className={cn(styles.parameter, styles.model)}>
-                        <div className={styles.name}>Модель:</div>
+                        <div className={styles.name}>Model:</div>
                         <div className={styles.value}>{item.model}</div>
                     </div>
                     <div className={cn(styles.parameter, styles.version)}>

@@ -70,7 +70,7 @@ class ItemDetails extends React.Component {
                 </PopoverBody>
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>{ls('DASHBOARD_KAB_TYPE_INDEX', 'аб')}</sub></b> {KABRenderer(data.kab)}
+                        <b>{ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>sub</sub></b> {KABRenderer(data.kab)}
                     </span>
                 </PopoverBody>
             </Popover>

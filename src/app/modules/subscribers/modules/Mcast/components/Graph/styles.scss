@@ -30,6 +30,7 @@
     > .chart {
       width: auto;
       flex-grow: 1;
+      min-height: 0;
     }
     > .groupsColumn {
       display: flex;

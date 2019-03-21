@@ -348,6 +348,15 @@
     "SUBJECT_VIEW": "View",
     "SUBJECT_EDIT": "Edit",
 
+    "SUBSCRIBER_CARD": "Subscriber card",
+    "MENU_REPORTS_TITLE": "Reports",
+    "CLOSED_INCIDENTS": "Closed incidents",
+    "MENU_DASBOARD_TITLE": "Dashboard",
+
+    "SPY_METRIC_MEDIA_BITRATE": "Media stream bitrate",
+    "SPY_METRIC_IFACE_ETH_MODE": "Ethernet port mode",
+    "DEVICE_METRICS_WIDGET_TITLE": "Device metrics",
+    "AGG_TITLE": "Aggregation equipment",
     "ALARMS_STATUS_SUCCESS": "Success",
     "ALARMS_STATUS_FAILED": "Failed",
     "ALARMS_STATUS_BYZERROR": "Business error",
@@ -390,6 +399,8 @@
     "ALERTS_TAB_TITLE_GP": "Group Incidents",
     "ALERTS_TAB_TITLE_CI": "Client Incidents",
     "ALERTS_TAB_TITLE_KQI": "KQI",
+
+    "ALERTS_TAB": "Incidents",
 
     "ALERTS_TYPE_GROUP_AGGREGATION": "Group policy",
     "ALERTS_TYPE_SIMPLE": "Simple",

@@ -186,8 +186,8 @@ class Graph extends React.PureComponent {
                     <span>
                         {ls('SUBSCRIBERS_KAB_BY_SERVICE_GRAPH_TITLE', 'Динамика')}
                         {'\u00A0'}
-                        {ls('KQI_INDEX', 'К')}
-                        <sub>{ls('KQI_KAB_SUB', 'аб')}</sub>
+                        {'KQI'}
+                        <sub>sub</sub>
                     </span>
                 </div>
                 <div

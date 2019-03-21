@@ -4,6 +4,7 @@ import { Dropdown, DropdownItem, DropdownMenu, DropdownToggle } from 'reactstrap
 import Widget from '../../../components/Widget';
 import MetricsGrid from '../components/MetricsGrid';
 import MacSelector from '../../../components/Pages/alerts/MacSelector';
+import ls from "i18n";
 
 class SubscriberMetrics extends React.Component {
     static propTypes = {
@@ -58,7 +59,7 @@ class SubscriberMetrics extends React.Component {
     render() {
         return (
             <Widget
-                title="Метрики устройств"
+                title={ls('DEVICE_METRICS_WIDGET_TITLE', "Метрики устройств")}
                 controls={this.renderControls()}
             >
                 <MetricsGrid

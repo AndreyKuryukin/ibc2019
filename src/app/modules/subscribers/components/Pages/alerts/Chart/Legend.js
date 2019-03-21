@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import styles from './alerts-chart.scss';
 import {background} from './util';
+import ls from "i18n";
 
 class Legend extends React.Component {
     static propTypes = {
@@ -32,7 +33,7 @@ class Legend extends React.Component {
                         className={styles.icon}
                         style={{background: background('transparent', true)}}
                     />
-                    <span>Закрытые аварии</span>
+                    <span>{ls('CLOSED_INCIDENTS', 'Закрытые аварии')}</span>
                 </div>
             </div>
         );

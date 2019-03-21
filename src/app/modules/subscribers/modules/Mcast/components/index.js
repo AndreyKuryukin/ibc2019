@@ -16,6 +16,7 @@ class Mcast extends React.PureComponent {
 		isLoading: PropTypes.bool.isRequired,
 		mac: PropTypes.string,
         macs: PropTypes.array,
+        subscriberDevices: PropTypes.array,
 		data: PropTypes.array,
         onSelectMac: PropTypes.func,
 	};
@@ -23,6 +24,7 @@ class Mcast extends React.PureComponent {
 	static defaultProps = {
         mac: '',
         macs: [],
+        subscriberDevices: [],
 		data: [],
         onSelectMac: () => null,
 	};
@@ -82,6 +84,7 @@ class Mcast extends React.PureComponent {
 	        {/*</div>*/}
 	        <MacSelector
 				macList={this.props.macs}
+				subscriberDevices={this.props.subscriberDevices}
 				selectedMac={this.props.mac}
 				onMacSelect={this.props.onSelectMac}
 			/>
