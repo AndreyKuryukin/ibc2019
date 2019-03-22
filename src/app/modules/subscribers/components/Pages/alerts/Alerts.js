@@ -188,6 +188,7 @@ class Alerts extends React.Component {
                 macList={this.getMacList()}
                 selectedMac={selectedMac}
                 onMacSelect={this.props.onDeviceSelect}
+                subscriberDevices={this.props.subscriberDevices}
             />
         );
     };

@@ -61,6 +61,7 @@ class SubscriberCommon extends React.Component {
                     detailsLink={this.props.buildLink({page: 'alerts'})}
                     mac={this.props.mac}
                     buildLink={this.props.buildLink}
+                    subscriberDevices={this.props.subscriberDevices}
                 />
             </div>
         );

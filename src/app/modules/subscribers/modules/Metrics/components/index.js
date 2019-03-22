@@ -17,6 +17,13 @@ class SubscriberMetrics extends React.Component {
         fetchStbData: PropTypes.func,
         onSelectMac: PropTypes.func,
         range: PropTypes.string,
+        subscriberDevices: PropTypes.array,
+    };
+
+    static defaultProps = {
+        macs: [],
+        subscriberDevices: [],
+        onSelectMac: () => null,
     };
 
     state = {
@@ -52,6 +59,7 @@ class SubscriberMetrics extends React.Component {
                 macList={this.props.macs}
                 selectedMac={mac}
                 onMacSelect={this.selectMac}
+                subscriberDevices={this.props.subscriberDevices}
             />
         );
     }

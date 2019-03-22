@@ -42,7 +42,7 @@ class TopologyComponent extends React.Component {
     renderKab = (node, isKQILoading) => {
         return node.kqi !== undefined ? (
             <Fragment>
-                <span>К<sub>sub</sub></span> {(isKQILoading
+                <span>KQI<sub>sub</sub></span> {(isKQILoading
                     ? <LoadingNode small className={styles.topologyKqiLoader}/>
                     : this.getKRenderer(node, 'KAB')(node.kqi.current, node.kqi.previous)
             )}
@@ -54,7 +54,7 @@ class TopologyComponent extends React.Component {
 // <span>К<sub>гс</sub></span>
     renderKgs = (node, kgsLoading) => {
         return <Fragment>
-            <span>К<sub>гс</sub></span>
+            <span>KQI<sub>he</sub></span>
             {kgsLoading ? <LoadingNode small className={styles.topologyKqiLoader}/> :
                 node.kgs !== undefined ? this.getKRenderer(node, 'KGS')(_.get(node, 'kgs.current.0.kgs'), _.get(node, 'kgs.previous.0.kgs')) :
                     <span>&nbsp;</span>}

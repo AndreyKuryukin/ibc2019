@@ -14,29 +14,29 @@ module.exports = {
     '714974': {
         'id': '714974',
         'kabByServices': {
-            current: {...graph['714973'][0], id: '714974'},
-            previous: {...graph['714973'][1], id: '714974'},
+            current: {...graph['714974'][0], id: '714974'},
+            previous: {...graph['714974'][1], id: '714974'},
         },
         details: details['714974'],
-        graph: graph['714973']
+        graph: graph['714974']
     },
     '714975': {
         'id': '714975',
         'kabByServices': {
-            current: {...graph['714973'][0], id: '714975'},
-            previous: {...graph['714973'][1], id: '714976'},
+            current: {...graph['714975'][0], id: '714975'},
+            previous: {...graph['714975'][1], id: '714976'},
         },
         details: details['714975'],
-        graph: graph['714973']
+        graph: graph['714975']
     },
     '714976': {
         'id': '714976',
         'kabByServices': {
-            current: {...graph['714973'][0], id: '714976'},
-            previous: {...graph['714973'][1], id: '714976'},
+            current: {...graph['714976'][0], id: '714976'},
+            previous: {...graph['714976'][1], id: '714976'},
         },
         details: details['714976'],
-        graph: graph['714973']
+        graph: graph['714976']
     },
     '112233': {
         'id': '112233',
@@ -67,7 +67,7 @@ module.exports = {
         details: details['112233'],
     },
     '112222': {
-        'id': '714976',
+        'id': '112222',
         'kabByServices': {
             current: {
                 "id": "112222",

@@ -21,6 +21,18 @@ const decreaseKab = (decrement) => (value) => _.reduce(value, (result, val, key)
     return result;
 }, {});
 
+const randomize = (weight) => (value) => _.reduce(value, (result, val, key) => {
+    if (key === 'date_time' || key === 'id') {
+        result[key] = val;
+    } else if (_.isNumber(val)) {
+        const delta = 100 - val;
+        result[key] = val + delta * Math.sin(delta * weight) - weight;
+    } else {
+        result[key] = val;
+    }
+    return result;
+}, {});
+
 module.exports = {
     get 'E4277126BF0B'() {
         return this._E4277126BF0B.map(actualize)
@@ -55,6 +67,18 @@ module.exports = {
 
     get '714973'() {
         return this._714973.map(actualize)
+    },
+
+    get '714974'() {
+        return this._714973.map(actualize).map(replaceMac('714974')).map(randomize(0.5))
+    },
+
+    get '714975'() {
+        return this._714973.map(actualize).map(replaceMac('714975')).map(randomize(1))
+    },
+
+    get '714976'() {
+        return this._714973.map(actualize).map(replaceMac('714976')).map(randomize(1.1))
     },
 
     "_714973": [{

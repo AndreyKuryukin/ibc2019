@@ -47,6 +47,7 @@ class SubscriberCard extends React.Component {
                         alertId={this.props.id}
                         mac={this.props.mac}
                         buildLink={this.props.buildLink}
+                        subscriberDevices={this.props.subscriberDevices}
                         verbose
                     />
                 );
@@ -63,7 +64,12 @@ class SubscriberCard extends React.Component {
                     </Widget>
                 );
             case 'metrics':
-                return <SubscriberMetrics subscriber={this.props.subscriber}/>;
+                return (
+                    <SubscriberMetrics
+                        subscriber={this.props.subscriber}
+                        subscriberDevices={this.props.subscriberDevices}
+                    />
+                );
             case 'devices':
                 return (
                     <SubscriberDevices
@@ -83,7 +89,7 @@ class SubscriberCard extends React.Component {
                 return (
                     <Mcast
                         subscriber={this.props.subscriber}
-                        subscriberDevices={this.props.subscriberDevices}                    />
+                        subscriberDevices={this.props.subscriberDevices}/>
                 );
             case 'topology':
                 return (
@@ -109,12 +115,12 @@ class SubscriberCard extends React.Component {
                         <div
                             id="common"
                             link={buildLink({ page: 'common' })}
-                            tabtitle={ls('COMMON_TAB',"Общая информация")}
+                            tabtitle={ls('COMMON_TAB', "Общая информация")}
                         />
                         <div
                             id="alerts"
                             link={buildLink({ page: 'alerts' })}
-                            tabtitle={ls('ALERTS_TAB',"Аварии")}
+                            tabtitle={ls('ALERTS_TAB', "Аварии")}
                         />
                         <div
                             id="kab_by_service"

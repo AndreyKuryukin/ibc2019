@@ -3058,6 +3058,6 @@ const randomize = (weight) => (value, index) => {
 
 module.exports = (() => {
     return data.map(neighbour => {
-        return {...neighbour, value: neighbour.value.map(actualize).map(randomize(neighbour.id))}
+        return {...neighbour, value: graphByMacs['714973'].map(actualize).map(randomize(neighbour.id))}
     })
 })();

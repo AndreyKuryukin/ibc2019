@@ -90,6 +90,7 @@ class SubscriberAlerts extends React.Component {
                     onAlertSelect={this.props.verbose ? this.showAlertDetails : undefined}
                     onDeviceSelect={this.onDeviceSelect}
                     buildLink={this.props.buildLink}
+                    subscriberDevices={this.props.subscriberDevices}
                 />
                 {this.props.verbose && (
                     <AlertDetails

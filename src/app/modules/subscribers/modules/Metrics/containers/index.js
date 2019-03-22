@@ -105,7 +105,7 @@ class SubscriberMetrics extends React.Component {
     };
 
     render() {
-        const { macs, isLoading, hoursLimit, metrics, subscriber, range, parameters } = this.props;
+        const { macs, isLoading, hoursLimit, metrics, subscriber, range, parameters, subscriberDevices } = this.props;
         return (<SubscriberMetricsCmp
             macs={macs}
             hoursLimit={hoursLimit}
@@ -116,6 +116,7 @@ class SubscriberMetrics extends React.Component {
             subscriber={subscriber}
             fetchStbData={this.fetchStbData}
             onSelectMac={this.onSelectMac}
+            subscriberDevices={subscriberDevices}
         />);
     }
 }

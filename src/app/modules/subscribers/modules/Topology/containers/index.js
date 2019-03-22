@@ -81,32 +81,32 @@ class SubscriberTopology extends React.Component {
         const access = this.enrichTopologyDevice({
             id: 'access',
             icon: ICONS.ACCESS,
-            name: 'Оборудование доступа',
+            name: 'Access equipment',
             children: routers,
         }, 'ACC');
         const commutator = this.enrichTopologyDevice({
             id: 'commutator',
             icon: ICONS.COMMUTATOR,
-            name: 'Коммутатор агрегации',
+            name: 'Aggregation equipment',
             children: [access],
         }, 'AGG');
         const peRouter = this.enrichTopologyDevice({
             id: 'pe-router',
             icon: ICONS.RE_ROUTER,
-            name: 'PE-роутер',
+            name: 'PE-router',
             children: [commutator],
         }, 'PE');
         const network = {
             id: 'network',
             icon: ICONS.NETWORK,
-            name: 'Магистральная сеть',
+            name: 'Network',
             children: [peRouter],
         };
         return {
             id: 'base',
             kgs,
             icon: ICONS.BASE,
-            name: 'Головная станция',
+            name: 'Head end',
             children: [network],
         };
     };
