@@ -31,7 +31,7 @@ class KQI extends React.PureComponent {
             case 'KAB':
             case 'KGS':
             case 'KSPD':
-                return [ls('DASHBOARD_PARAMETER_LETTER', 'К'), ls(`DASHBOARD_${type}_TYPE_INDEX`, DEFAULT_INDEXES_BY_TYPE[type])];
+                return ['KQI', ls(`DASHBOARD_${type}_TYPE_INDEX`, DEFAULT_INDEXES_BY_TYPE[type])];
             default:
                 return [null, null];
         }

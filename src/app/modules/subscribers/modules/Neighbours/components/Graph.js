@@ -58,7 +58,7 @@ class NeighboursGraph extends React.PureComponent {
                 type: 'spline',
             },
             title: {
-                text: '<span style="color: #0f5276;">Динамика К<sub>sub</sub></span>',
+                text: '<span style="color: #0f5276;">Dynamics КQI<sub>sub</sub></span>',
                 align: 'left',
                 useHTML: true,
                 x: 10,

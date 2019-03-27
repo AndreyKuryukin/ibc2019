@@ -141,7 +141,7 @@ class KABGrid extends React.Component {
                         name: 'mac',
                         width: '30%',
                     }, {
-                        getTitle: () => <span>КQI<sub>sub</sub> Common</span>,
+                        getTitle: () => <span>КQI<sub>sub</sub> Overal</span>,
                         name: 'kab',
                         width: '10%',
                     }, {

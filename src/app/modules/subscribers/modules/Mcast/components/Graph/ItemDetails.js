@@ -57,15 +57,15 @@ class ItemDetails extends React.Component {
             >
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>Начало интервала:</b> {this.formatTime(data.startTime)}<br />
+                        <b>Interval start:</b> {this.formatTime(data.startTime)}<br />
                     </span>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>Конец интервала:</b> {this.formatTime(data.endTime)}
+                        <b>Interval end:</b> {this.formatTime(data.endTime)}
                     </span>
                 </PopoverBody>
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{ls('SUBSCRIBERS_MCAST_CHANNEL_NAME_COLUMN_TITLE', 'Название канала') + ':'}</b> {data.channel_name}
+                        <b>{'Channel name' + ':'}</b> {data.channel_name}
                     </span>
                 </PopoverBody>
                 <PopoverBody>

@@ -23,7 +23,6 @@ module.exports = (app) => {
                 san: '1231qwe3eds2',
                 mac: ['111111111111', '333CCCCCCCCC'],
                 nls: '666',
-                object: 'object',
             }, {
                 severity: "CRITICAL",
                 type: 'SIMPLE',
@@ -40,7 +39,6 @@ module.exports = (app) => {
                 san: '1231qwe3eds2',
                 mac: ['111111111111', '333CCCCCCCCC'],
                 nls: '666',
-                object: 'object',
             }],
             total: 2,
         });

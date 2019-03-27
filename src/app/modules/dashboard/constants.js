@@ -46,7 +46,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'segment',
-        title: 'SUBSCRIBER TYPE',
+        title: 'Subscriber type',
         editable: true,
         options: [
             {

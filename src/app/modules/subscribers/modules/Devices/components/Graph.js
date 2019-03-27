@@ -106,7 +106,7 @@ class Graph extends React.PureComponent {
             },
             yAxis: {
                 title: {
-                    text: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Common (%)'),
+                    text: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Overal (%)'),
                 },
                 gridLineWidth: 0,
                 lineWidth: 1,
@@ -135,7 +135,7 @@ class Graph extends React.PureComponent {
     getSeries(data, key) {
         return [{
             key: key,
-            name: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Common (%)'),
+            name: ls('SUBSCRIBERS_DEVICES_SERIES_NAME', 'Overal (%)'),
             data: _.reduce(data, (series, value) => {
                 const { date_time, common } = value;
                 if (_.isNumber(common)) {

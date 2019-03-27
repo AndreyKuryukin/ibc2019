@@ -43,7 +43,7 @@ class NeighboursGrid extends React.PureComponent {
                         name: 'id',
                         width: '50%',
                     }, {
-                        getTitle: () => <span>К<sub>sub</sub></span>,
+                        getTitle: () => <span>КQI<sub>sub</sub></span>,
                         name: 'currentKab',
                         width: '50%',
                     }

@@ -44,9 +44,9 @@ class ItemDetails extends React.Component {
 
     renderStatus(closed) {
         if (closed) {
-            return <span style={{color: 'green'}}>Закрыто</span>;
+            return <span style={{color: 'green'}}>Closed</span>;
         }
-        return <span style={{color: 'red'}}>Открыто</span>;
+        return <span style={{color: 'red'}}>Open</span>;
     }
 
     render() {
@@ -63,20 +63,20 @@ class ItemDetails extends React.Component {
             >
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{ls('ALERT_TYPE', 'Тип аварии')}:</b> {data.type} <Link to={this.props.link} className={styles['details-link']}>{ls('VERBOSE', 'Подробнее')}</Link>
+                        <b>{'Alert type'}:</b> {data.type} <Link to={this.props.link} className={styles['details-link']}>{'More'}</Link>
                     </span>
                 </PopoverBody>
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{ls('ALERT_RAISE_TIME', 'Время открытия')}:</b> {this.formatTime(data.startTime)}<br />
+                        <b>{'Raise time'}:</b> {this.formatTime(data.startTime)}<br />
                     </span>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{ls('ALERT_CEASE_TIME', 'Время закрытия')}:</b> {data.closed ? this.formatTime(data.endTime) : '-'}
+                        <b>{'Cease time'}:</b> {data.closed ? this.formatTime(data.endTime) : '-'}
                     </span>
                 </PopoverBody>
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>Статус:</b> {this.renderStatus(data.closed)}
+                        <b>{'Status'}:</b> {this.renderStatus(data.closed)}
                     </span>
                 </PopoverBody>
             </Popover>

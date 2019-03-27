@@ -16,6 +16,7 @@ const neighbors = require('./neighbors');
 const stbData = require('./stbData');
 
 const alerts = require('./alerts');
+const alertsDetails = require('./alertsDeatils');
 
 module.exports = (app) => {
     // OK
@@ -117,6 +118,11 @@ module.exports = (app) => {
     app.get('/api/v1/subscribers/stb/data', (req, res) => {
         const paramKey = _.get(req, 'query.paramKey');
         res.send(stbData[paramKey]);
+    });
+
+    app.get('/api/v1/alerts/:alertId', (req, res) => {
+        const paramKey = _.get(req, 'query.paramKey');
+        res.send(alertsDetails);
     });
 
     app.post('/api/v1/subscribers/alerts', (req, res) => {

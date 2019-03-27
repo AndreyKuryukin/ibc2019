@@ -141,8 +141,8 @@ class Alerts extends React.Component {
         };
         const names = {
             KI: 'Client incidends',
-            GP: 'Group policies',
-            KQI: 'KQI',
+            GP: 'Group incidents',
+            KQI: 'KQI incidents',
         };
         const groupByPolicyGroup = {
             [TYPE.KI]: 'KI',
@@ -152,13 +152,13 @@ class Alerts extends React.Component {
         const mac = this.getSelectedMac();
         const alerts = this.props.alerts
             .filter(this.filterByType)
-            .filter(alert => alert.type !== 'SIMPLE' || mac === null || alert.mac === mac)
+            .filter(alert => alert.mac === mac)
             .map(alert => ({
                 id: alert.id,
                 group: groupByPolicyGroup[alert.type],
                 closed: alert.closed,
                 startTime: convertUTC0ToLocal(alert.raise_time).valueOf(),
-                endTime: convertUTC0ToLocal(alert.raise_time).valueOf() + alert.duration,
+                endTime: alert.cease_time ? convertUTC0ToLocal(alert.cease_time).valueOf() : new Date().getTime(),
             }))
             .sort((a, b) => a.startTime - b.startTime);
 

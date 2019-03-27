@@ -1,0 +1,33 @@
+module.exports = {
+    "notification_text": "DEVICE_NAME: fttb2-kirov18-rsht-vld, DEVICE_IP: 10.52.170.168, AFFILIATE_ID: VLG.NNV",
+    "notified": [],
+    "attributes": {
+        "SUPPRESSION_TIMEOUT": "0",
+        "DEVICE_IP": "10.52.170.168",
+        "MRF_ID": "69",
+        "MAC": "['001A790CB9BC']",
+        "POLICY_NAME": "TEST",
+        "DEVICE_ID": "216213384",
+        "CHECK_COUNT": "1",
+        "DEVICE_TYPE": "ACC",
+        "POLICY_TYPE": "SMART_SPY_ACC_DEVICE",
+        "POLICY_OBJECT_TYPE": "STB",
+        "AGG_DEVICE_ID": "422970851",
+        "STATE": "CEASE",
+        "PE_DEVICE_ID": "422970851",
+        "POLICY_ID": "432118345211314179",
+        "SUPPRESSION_STATUS": "SENT",
+        "MRF_KEY": "vlg",
+        "REGION_ID": "300001",
+        "POLICY_TEXT_TEMPLATE": "DEVICE_NAME: ${DEVICE_NAME}, DEVICE_IP: ${DEVICE_IP}, AFFILIATE_ID: ${AFFILIATE_ID}",
+        "MRF_NAME": "REGION9"
+    },
+    "id": "46fd270d-0bb8-3658-ba8c-639acf2eb821",
+    "duration": 780000,
+    "mrf": "69",
+    "rf": "300001",
+    "closed": true,
+    "object": "216213384:69",
+    "raise_time": "2019-03-13T02:55:26.775",
+    "policy_name": "TEST"
+};

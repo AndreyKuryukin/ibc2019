@@ -1,15 +1,61 @@
+const moment = require('moment');
+
+const randomize = (values, index) => {
+    const metrics = Object.keys(values);
+    const {AVG, MIN, MAX} = values;
+    return metrics.reduce((result, name, i) => {
+        const multiplier = (AVG + MIN + MAX) / (index % (i + 1) + 5);
+        result[name] = values[name] + Number((multiplier * Math.abs(Math.sin(index + i + values[name]))).toFixed(1));
+        return result;
+    }, {})
+};
+
+
 module.exports = {
-    vidDecodeErrors: {
+    get vidDecodeErrors() {
+        const count = 52;
+        const result = {};
+        const baseValues = Object.values(this._vidDecodeErrors);
+        for (let i = 0; i < count; i++) {
+            const date = moment().subtract(i, 'hours').toISOString();
+            const values = randomize(baseValues[i % 8], i);
+            result[date] = values
+        }
+        return result
+    },
+    get bufUnderruns() {
+        const count = 75;
+        const result = {};
+        const baseValues = Object.values(this._bufUnderruns);
+        for (let i = 0; i < count; i++) {
+            const date = moment().subtract(i, 'hours').toISOString();
+            const values = randomize(baseValues[i % 8], i);
+            result[date] = values
+        }
+        return result
+    },
+    get linkFaults() {
+        const count = 29;
+        const result = {};
+        const baseValues = Object.values(this._linkFaults);
+        for (let i = 0; i < count; i++) {
+            const date = moment().subtract(i, 'hours').toISOString();
+            const values = randomize(baseValues[i % 8], i);
+            result[date] = values
+        }
+        return result
+    },
+    _vidDecodeErrors: {
         "2019-04-05T10:41:45Z": { "AVG": 1.5, "MIN": 1, "MAX": 2 },
         "2019-04-05T11:35:06Z": { "AVG": 2, "MIN": 1, "MAX": 3 },
-        "2019-04-05T12:07:29Z": { "AVG": 5.5, "MIN": 1, "MAX": 10 },
+        "2019-04-05T12:07:29Z": { "AVG": 4, "MIN": 1, "MAX": 6 },
         "2019-04-05T13:15:00Z": { "AVG": 4, "MIN": 3, "MAX": 4 },
-        "2019-04-05T14:22:11Z": { "AVG": 8, "MIN": 3, "MAX": 12},
+        "2019-04-05T14:22:11Z": { "AVG": 5, "MIN": 3, "MAX": 7},
         "2019-04-05T15:43:59Z": { "AVG": 2, "MIN": 0, "MAX": 4 },
         "2019-04-05T16:50:59Z": { "AVG": 2, "MIN": 0, "MAX": 4 },
         "2019-04-05T17:47:59Z": { "AVG": 2, "MIN": 0, "MAX": 4 },
     },
-    bufUnderruns: {
+    _bufUnderruns: {
        "2019-04-05T10:41:45Z": { "AVG": 1329.0, "MIN": 1329, "MAX": 1329 },
        "2019-04-05T11:35:06Z": { "AVG": 165, "MIN": 165, "MAX": 165 },
        "2019-04-05T12:07:29Z": { "AVG": 2394, "MIN": 2394, "MAX": 2394 },
@@ -19,7 +65,7 @@ module.exports = {
        "2019-04-05T16:50:59Z": { "AVG": 732, "MIN": 870, "MAX": 870 },
        "2019-04-05T17:47:59Z": { "AVG": 1367, "MIN": 870, "MAX": 870 },
     },
-    linkFaults: {
+    _linkFaults: {
         "2019-04-05T10:41:45Z": { "AVG": 3, "MIN": 0, "MAX": 6 },
         "2019-04-05T11:35:06Z": { "AVG": 7.5, "MIN": 4, "MAX": 14 },
         "2019-04-05T12:07:29Z": { "AVG": 8, "MIN": 3, "MAX": 10 },
