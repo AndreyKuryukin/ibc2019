@@ -22,7 +22,7 @@ const weights = {
         "VIP": 3,
         "OTHER": 1,
         "BASE": 1,
-        "PRIMIUM": -1
+        "PREMIUM": -1
     },
     service: {
         "HUAWEI": 1,

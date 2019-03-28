@@ -2,7 +2,7 @@ module.exports = {
     "type": "STB",
     "parameters": [{
         "name": "vidDecodeErrors",
-        "display_name": "Video decode errors",
+        "display_name": "Video decoder errors",
         "display_name_translation_key": null,
         "unit": null,
         "unit_translation_key": null,

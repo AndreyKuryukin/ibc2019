@@ -95,7 +95,7 @@ class Search extends React.PureComponent {
                     <ClearableInput
                         className={styles.searchInput}
                         value={searchText}
-                        placeholder={ls('SUBSCRIBER_CARD_SEARCH_PLACEHOLDER', 'Найти клиента')}
+                        placeholder={'Enter subscriber’s info'}
                         maxLength={60}
                         onChange={this.onTextChange}
                     />

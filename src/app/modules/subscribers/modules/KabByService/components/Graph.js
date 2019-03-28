@@ -184,10 +184,12 @@ class Graph extends React.PureComponent {
         return (<div>
                 <div className={styles.graphTitle}>
                     <span>
-                        {ls('SUBSCRIBERS_KAB_BY_SERVICE_GRAPH_TITLE', 'Динамика')}
-                        {'\u00A0'}
+                        {/*{ls('SUBSCRIBERS_KAB_BY_SERVICE_GRAPH_TITLE', 'Динамика')}*/}
+                        {/*{'\u00A0'}*/}
                         {'KQI'}
                         <sub>sub</sub>
+                        {'\u00A0'}
+                        {'History'}
                     </span>
                 </div>
                 <div

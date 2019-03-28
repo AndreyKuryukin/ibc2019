@@ -114,7 +114,7 @@ class Alerts extends React.Component {
             .filter(this.filterByType)
             .map(alert => ({
                 id: alert.id,
-                status: alert.closed ? 'Закрытая' : 'Открытая',
+                status: alert.closed ? 'Closed' : 'Open',
                 policy: alert.policy_name,
                 outerStatus: '-',
                 startDate: moment(convertUTC0ToLocal(alert.raise_time).valueOf()).format('HH:mm DD.MM.YYYY'),
@@ -140,7 +140,7 @@ class Alerts extends React.Component {
             KQI: '#377dc4',
         };
         const names = {
-            KI: 'Client incidends',
+            KI: 'Client incidents',
             GP: 'Group incidents',
             KQI: 'KQI incidents',
         };
@@ -242,15 +242,15 @@ class Alerts extends React.Component {
                         name: 'policy',
                         width: '10%',
                     }, {
-                        getTitle: () => ls('CRM_STATUS', 'Статус отправки во внешнюю систему'),
+                        getTitle: () => 'Sent to the external system',
                         name: 'outerStatus',
                         width: '20%',
                     }, {
-                        getTitle: () => ls('RAISE_TIME', 'Время и дата возникновения'),
+                        getTitle: () => 'Occurred',
                         name: 'startDate',
                         width: '15%',
                     }, {
-                        getTitle: () => ls('CEASE_TIME', 'Время и дата закрытия'),
+                        getTitle: () => 'Cleared',
                         name: 'endDate',
                         width: '15%',
                     },

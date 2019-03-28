@@ -196,7 +196,7 @@ class Graph extends React.PureComponent {
         return (
             <div className={styles.subscriberMetricsResultsViewer}>
                 <div className={styles.graphMetricsHeader}>
-                    <span className={styles.graphMetricsTitle}>{ls('SUBSCRIBERS_METRICS_GRAPH_TITLE', 'Динамика изменений')}</span>
+                    {/*<span className={styles.graphMetricsTitle}>{}</span>*/}
                     {legendDict && (
                         <div className={styles.graphMetricsLegend}>
                             {Object.keys(legendDict).map(key => (

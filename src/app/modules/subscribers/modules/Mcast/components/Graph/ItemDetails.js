@@ -70,7 +70,7 @@ class ItemDetails extends React.Component {
                 </PopoverBody>
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>sub</sub></b> {KABRenderer(data.kab)}
+                        <b>{'KQI'}<sub>sub</sub></b> {KABRenderer(data.kab)}
                     </span>
                 </PopoverBody>
             </Popover>

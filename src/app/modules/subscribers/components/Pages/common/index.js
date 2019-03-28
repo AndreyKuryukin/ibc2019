@@ -48,7 +48,7 @@ class SubscriberCommon extends React.Component {
                     />
                 </Widget>
                 <Widget
-                    title={<span>K<sub>sub</sub> consolidated</span>}
+                    title={<span>KQI<sub>sub</sub> consolidated</span>}
                     detailsLink={this.props.buildLink({page: 'kab_by_service'})}
                 >
                     <SubscriberKAB

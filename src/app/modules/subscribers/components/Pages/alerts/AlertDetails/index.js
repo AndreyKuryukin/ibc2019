@@ -107,33 +107,33 @@ class AlertDetails extends React.Component {
                 className={styles['white-modal']}
             >
                 <ModalHeader toggle={this.props.onClose}>
-                    Детальная информация аварии {this.props.id}
+                    Incident details {this.props.id}
                 </ModalHeader>
                 <ModalBody>
                     <table className={detailsStyles['alert-details']}>
                         <tbody>
                             <tr>
-                                <td>{ls('RAISE_TIME_LABEL','Время возникновения')}:</td>
+                                <td>{'Occurred'}:</td>
                                 <td>{this.getStartDate()}</td>
                             </tr>
                             <tr>
-                                <td>{ls('POLICY_NAME_LABEL','Название политики')}:</td>
+                                <td>{'Policy'}:</td>
                                 <td>{this.getPolicyName()}</td>
                             </tr>
                             <tr>
-                                <td>{ls('DURATION_LABEL','Длительность')}:</td>
+                                <td>{'Duration'}:</td>
                                 <td>{this.getDuration()}</td>
                             </tr>
                             <tr>
-                                <td>{ls('MESSAGE_LABEL','Текст сообщения')}:</td>
+                                <td>{'Message'}:</td>
                                 <td>{this.getMessageText()}</td>
                             </tr>
                             <tr>
-                                <td>{ls('NOTIFICATIONS_LABEL','Выполненные нотификации')}:</td>
+                                <td>{'Notifications sent'}:</td>
                                 <td>{this.getNotificationTypes()}</td>
                             </tr>
                             <tr>
-                                <td>{ls('ALERTS_ATTRIBUTES', 'Атрибуты аварии')}:</td>
+                                <td>{'Attributes'}:</td>
                                 <td>
                                     <textarea
                                         readOnly

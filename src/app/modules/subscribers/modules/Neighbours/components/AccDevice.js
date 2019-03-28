@@ -16,7 +16,7 @@ const AccDevice = ({ accDevice }) => {
                 <div className={styles.title}>{ls('SUBSCRIBERS_ACC_DEVICE_TITLE', 'Оборудование доступа')}</div>
                 <div className={styles.kab}>
                     <span>
-                        {ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>sub</sub>:
+                        {'KQI'}<sub>sub</sub>:
                     </span>
                     {' '}
                     {KABRenderer(currentKab, previousKab)}

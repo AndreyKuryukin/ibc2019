@@ -68,10 +68,10 @@ class ItemDetails extends React.Component {
                 </PopoverBody>
                 <PopoverBody>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{'Raise time'}:</b> {this.formatTime(data.startTime)}<br />
+                        <b>{'Occurred'}:</b> {this.formatTime(data.startTime)}<br />
                     </span>
                     <span style={{whiteSpace: 'nowrap'}}>
-                        <b>{'Cease time'}:</b> {data.closed ? this.formatTime(data.endTime) : '-'}
+                        <b>{'Cleared'}:</b> {data.closed ? this.formatTime(data.endTime) : '-'}
                     </span>
                 </PopoverBody>
                 <PopoverBody>

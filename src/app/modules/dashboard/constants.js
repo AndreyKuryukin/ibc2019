@@ -46,7 +46,7 @@ export const FILTERS = [
         ],
     }, {
         id: 'segment',
-        title: 'Subscriber type',
+        title: 'Subscribers Type',
         editable: true,
         options: [
             {
@@ -55,8 +55,8 @@ export const FILTERS = [
                 enabled: true,
             },
             {
-                value: 'PRIMIUM',
-                label: 'PRIMIUM',
+                value: 'PREMIUM',
+                label: 'PREMIUM',
             },
             {
                 value: 'BASE',

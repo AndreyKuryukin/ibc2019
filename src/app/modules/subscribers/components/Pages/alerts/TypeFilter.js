@@ -8,7 +8,7 @@ export const TYPE = {
     KQI: 'KQI',
 };
 const NAMES = {
-    [TYPE.KI]: 'Client incidends',
+    [TYPE.KI]: 'Client incidents',
     [TYPE.GP]: 'Group incidents',
     [TYPE.KQI]: 'KQI incidents',
 };

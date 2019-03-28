@@ -25,7 +25,7 @@ class McastGrid extends React.PureComponent {
 
     renderCell = (value, item, columnKey) => {
         if (columnKey === 'kab') return KABRenderer(value, value);
-    }
+    };
 
     render() {
 		return (
@@ -39,11 +39,11 @@ class McastGrid extends React.PureComponent {
                         name: 'interval',
                         width: '30%',
                     }, {
-                        getTitle: () => ls('SUBSCRIBERS_MCAST_MCASTIP_COLUMN_TITLE', 'Mcast IP'),
+                        getTitle: () => 'Multicast IP',
                         name: 'mcastIp',
                         width: '15%',
                     }, {
-                        getTitle: () => ls('SUBSCRIBERS_MCAST_CHANNEL_NAME_COLUMN_TITLE', 'Название канала'),
+                        getTitle: () => 'Channel name',
                         name: 'channel_name',
                         width: '25%',
                     }, {
@@ -51,7 +51,7 @@ class McastGrid extends React.PureComponent {
                         name: 'content_type',
                         width: '10%',
                     }, {
-                        getTitle: () => <span>{ls('DASHBOARD_PARAMETER_LETTER', 'К')}<sub>sub</sub></span>,
+                        getTitle: () => <span>{'KQI'}<sub>sub</sub></span>,
                         name: 'kab',
                         width: '20%',
                     }

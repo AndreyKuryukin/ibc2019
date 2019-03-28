@@ -79,10 +79,10 @@ class Drilldown extends React.Component {
                         getTitle: () => <span>{'KQI'}<sub>{'sub'}</sub></span>,
                         name: 'ksub',
                     }, {
-                        getTitle: () => <span>{'KQI'}<sub>{'khe'}</sub></span>,
+                        getTitle: () => <span>{'KQI'}<sub>{'he'}</sub></span>,
                         name: 'khe',
                     }, {
-                        getTitle: () => <span>{'KQI'}<sub>{'knet'}</sub></span>,
+                        getTitle: () => <span>{'KQI'}<sub>{'net'}</sub></span>,
                         name: 'knet',
                     },
                 ]}
