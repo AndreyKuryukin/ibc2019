@@ -1,8 +1,13 @@
-module.exports = {
+const moment = require("moment");
+const _ = require("lodash");
+
+const alertDetails = require('./alertsDeatils');
+
+const alerts = {
     '714974': [{
         "id": "454756745-3e75-454-a175-5676347457",
-        "raise_time": "2019-03-21T11:31:56.675",
-        "cease_time": "2019-03-21T11:38:56.675",
+        "raise_time": "2019-03-21T11:21:56.675",
+        "cease_time": "2019-03-21T11:28:56.675",
         "duration": 121113693,
         "policy_name": "TEST",
         "policy_id": "432118345211314179",
@@ -16,7 +21,7 @@ module.exports = {
         "object_type": "STB"
     }, {
         "id": "a255470e-d85a-3ed6-94e0-d1e6fa3ba7db",
-        "raise_time": "2019-03-21T11:31:56.675",
+        "raise_time": "2019-03-21T11:47:56.675",
         "duration": 1620000,
         "policy_name": "TEST.GP",
         "policy_id": "411500054459613185",
@@ -76,7 +81,7 @@ module.exports = {
         "mac": "DEFA4672A173",
         "type": "GROUP_AGGREGATION",
         "object_type": "STB"
-    },{
+    }, {
         "id": "34645645-4565-3d03-a175-029840293840",
         "raise_time": "2019-03-20T18:37:56.675",
         "cease_time": "2019-03-20T19:00:34.675",
@@ -91,7 +96,7 @@ module.exports = {
         "mac": "DEFA4672A173",
         "type": "SIMPLE",
         "object_type": "STB"
-    },{
+    }, {
         "id": "abfc493493-34577-66653-6766-690253",
         "raise_time": "2019-03-20T22:11:21.675",
         "cease_time": "2019-03-20T22:19:32.675",
@@ -318,3 +323,63 @@ module.exports = {
         "object_type": "STB"
     }]
 };
+
+const actualize = (alert) => {
+    const duration = (moment(alert.cease_time || moment()).unix() - moment(alert.raise_time).unix()) * 1000;
+    const raise_time_delta = (moment(alert.raise_time).unix() - moment(alert.raise_time).startOf('hour').unix()) * 1000;
+    const raise_time = moment(moment().subtract(1, 'hour').unix() * 1000 + raise_time_delta).toISOString();
+    const beta_cease_time = moment(raise_time).unix() * 1000 + duration;
+    const cease_time = moment(moment(beta_cease_time).isAfter(moment()) ? moment().subtract(1, 'minute') : beta_cease_time).toISOString();
+    return { ...alert, raise_time, ...(alert.cease_time ? { cease_time } : {}) }
+};
+
+const enrichAlert = (alert) => {
+    const attributes = {
+        "SUPPRESSION_TIMEOUT": "0",
+        "DEVICE_IP": "10.52.170.168",
+        "MAC": `${alert.mac}`,
+        "POLICY_NAME": `${alert.policy_name}`,
+        "DEVICE_ID": "216213384",
+        "CHECK_COUNT": "1",
+        "DEVICE_TYPE": "ACC",
+        "POLICY_TYPE": "SMART_SPY_ACC_DEVICE",
+        "POLICY_OBJECT_TYPE": `${alert.object_type}`,
+        "AGG_DEVICE_ID": "422970851",
+        "STATE": alert.cease_time ? 'CEASE' : 'RAISE',
+        "PE_DEVICE_ID": "422970851",
+        "POLICY_ID": "432118345211314179",
+        "SUPPRESSION_STATUS": "SENT",
+        "REGION_ID": "9",
+        "POLICY_TEXT_TEMPLATE": "DEVICE_NAME: ${DEVICE_NAME}, DEVICE_IP: ${DEVICE_IP}, AFFILIATE_ID: ${AFFILIATE_ID}",
+        "MRF_NAME": "REGION9"
+    };
+    return {
+        ...alert,
+        attributes, 'notification_text': `Policy "${alert.policy_name}" incident accured on ${alert.mac}`,
+        notified: [{
+            type: 'SMS',
+            status: 'SUCCESS'
+        }, {
+            type: 'EMAIL',
+            status: 'SUCCESS'
+        }]
+    }
+};
+
+const alertsById = () => _.reduce(alerts, (result, alerts, mac) => ({
+    ...result,
+    ...alerts.reduce((res, alert) => {
+        res[alert.id] = enrichAlert(alert);
+        return res
+    }, {})
+}), {});
+
+module.exports = Object.keys(alerts).reduce((result, mac) => {
+    return {
+        ...result, get [mac]() {
+            return alerts[mac].map(actualize)
+        }
+    }
+}, {
+    alertsById: alertsById()
+});

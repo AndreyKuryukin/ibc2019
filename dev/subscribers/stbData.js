@@ -7,8 +7,26 @@ const randomize = (values, index) => {
     if (MAX === AVG && AVG === MIN && MAX === MIN) {
         return values;
     }
+
+
     return metrics.reduce((result, name, i) => {
-        result[name] = values[name] + Number((multiplier * Math.abs(Math.sin((index + i) / (index - i + 3) + values[name] / (multiplier + 1)))).toFixed(1));
+        let operator = v => v;
+        switch ((index + i) % 3) {
+            case 0: {
+                operator = Math.sin;
+                break;
+            }
+            case 2: {
+                operator = Math.cos;
+                break;
+            }
+            case 3: {
+                operator = v => Math.sin(Math.cos(v));
+                break;
+            }
+
+        }
+        result[name] = values[name] + Number((0.5 * multiplier * Math.abs(operator(Math.cos((MAX) * index / (3 * multiplier + 1 + i))))).toFixed(1));
         return result;
     }, {})
 };
@@ -21,7 +39,7 @@ module.exports = {
         const baseValues = Object.values(this._vidDecodeErrors);
         for (let i = 0; i < count; i++) {
             const date = moment().subtract(i * 3, 'hours').toISOString();
-            const values = randomize(baseValues[i % 8], i);
+            const values = randomize((i % 16) <= 8 ? baseValues[i % 8] : baseValues[7 - (i % 8)], i);
             result[date] = values
         }
         return result

@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const moment = require("moment");
 
 const subscribers = require('./suscribers');
 const stbs = require('./stbs');
@@ -121,18 +122,20 @@ module.exports = (app) => {
     });
 
     app.get('/api/v1/alerts/:alertId', (req, res) => {
-        const paramKey = _.get(req, 'query.paramKey');
-        res.send(alertsDetails);
+        const alertId = _.get(req, 'params.alertId', '');
+        const alert = alerts.alertsById[alertId];
+        res.send(alert);
     });
 
     app.post('/api/v1/subscribers/alerts', (req, res) => {
         const devices = _.get(req, 'query.devices', '').split(',');
-        res.send(_.reduce(alerts, (result, alrts, mac) => {
+        const subscriberAlerts = _.reduce(alerts, (result, alrts, mac) => {
             if (mac === devices || _.find(devices, dev => dev === mac)) {
                 result = result.concat(alrts)
             }
             return result
-        }, []));
+        }, []);
+        res.send(subscriberAlerts);
     });
 
 };
