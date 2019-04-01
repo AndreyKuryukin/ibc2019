@@ -144,7 +144,7 @@ class Menu extends React.Component {
         return <div className={classNames(styles.sideMenu, className)}>
             {_.isArray(menuItems) && menuItems.map((item, index) => this.renderTile(item, index, feature))}
             <div className={classNames(styles.appVersion)}>
-                {'SQM v.1.2.1.1'}
+                {'Vision Analytics v.1.2.1.1'}
             </div>
         </div>
     }

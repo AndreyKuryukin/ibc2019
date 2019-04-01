@@ -72,7 +72,7 @@ class Login extends React.PureComponent {
                 </div>
                 <div className={styles.formContainer}>
                     <div className={styles.sqmLabel}>
-                        {'SQM B2C'}
+                        {'Vision Analytics'}
                     </div>
                     <Preloader
                         active={this.props.loading}

@@ -126,7 +126,7 @@ const alerts = {
         "type": "GROUP_AGGREGATION",
         "object_type": "STB"
     }, {
-        "id": "a255470e-d85a-3ed6-94e0-d1e6fa3ba7db",
+        "id": "a255470e-d85a-3ed6-94e0-237dfbc839",
         "raise_time": "2019-03-21T11:31:56.675",
         "cease_time": "2019-03-21T11:48:56.675",
         "duration": 1620000,
@@ -330,7 +330,11 @@ const actualize = (alert) => {
     const raise_time = moment(moment().subtract(1, 'hour').unix() * 1000 + raise_time_delta).toISOString();
     const beta_cease_time = moment(raise_time).unix() * 1000 + duration;
     const cease_time = moment(moment(beta_cease_time).isAfter(moment()) ? moment().subtract(1, 'minute') : beta_cease_time).toISOString();
-    return { ...alert, raise_time, ...(alert.cease_time ? { cease_time } : {}) }
+    alert.raise_time = raise_time;
+    if (alert.cease_time) {
+        alert.cease_time = cease_time;
+    }
+    return alert;
 };
 
 const enrichAlert = (alert) => {
@@ -353,17 +357,16 @@ const enrichAlert = (alert) => {
         "POLICY_TEXT_TEMPLATE": "DEVICE_NAME: ${DEVICE_NAME}, DEVICE_IP: ${DEVICE_IP}, AFFILIATE_ID: ${AFFILIATE_ID}",
         "MRF_NAME": "REGION9"
     };
-    return {
-        ...alert,
-        attributes, 'notification_text': `Policy "${alert.policy_name}" incident accured on ${alert.mac}`,
-        notified: [{
-            type: 'SMS',
-            status: 'SUCCESS'
-        }, {
-            type: 'EMAIL',
-            status: 'SUCCESS'
-        }]
-    }
+    alert.attributes = attributes;
+    alert['notification_text'] = `Policy "${alert.policy_name}" incident accured on ${alert.mac}`;
+    alert.notified = [{
+        type: 'SMS',
+        status: 'SUCCESS'
+    }, {
+        type: 'EMAIL',
+        status: 'SUCCESS'
+    }];
+    return alert
 };
 
 const alertsById = () => _.reduce(alerts, (result, alerts, mac) => ({
@@ -376,7 +379,8 @@ const alertsById = () => _.reduce(alerts, (result, alerts, mac) => ({
 
 module.exports = Object.keys(alerts).reduce((result, mac) => {
     return {
-        ...result, get [mac]() {
+        ...result,
+        get [mac]() {
             return alerts[mac].map(actualize)
         }
     }

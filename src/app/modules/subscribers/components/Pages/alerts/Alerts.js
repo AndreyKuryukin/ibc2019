@@ -109,9 +109,19 @@ class Alerts extends React.Component {
         }
     };
 
+    actualize = (alert) => {
+        const delta = moment().startOf('hour').unix() - moment(alert.raise_time).startOf('hour').unix();
+        alert.raise_time = moment(alert.raise_time).unix() + delta;
+        if (alert.cease_time) {
+            alert.cease_time = moment(alert.cease_time).unix() + delta;
+        }
+        return alert
+    };
+
     getTableData() {
         return this.props.alerts
             .filter(this.filterByType)
+            .map(this.actualize)
             .map(alert => ({
                 id: alert.id,
                 status: alert.closed ? 'Closed' : 'Open',

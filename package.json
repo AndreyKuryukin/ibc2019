@@ -6,7 +6,7 @@
   "scripts": {
     "test": "jest --config=./jest.config.json",
     "dev": "concurrently --kill-others \"cross-env NODE_ENV=development webpack --watch\" \"cross-env nodemon dev/server.js  --intercept\"",
-    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env node --inspect dev/server.js --intercept\"",
+    "dev-proxy": "concurrently --kill-others \"cross-env NODE_ENV=development webpack  --watch\" \"cross-env nodemon --inspect dev/server.js --intercept\"",
     "build": "cross-env NODE_ENV=production LINT=true node ./node_modules/webpack/bin/webpack.js --config ./webpack.config.js --bail",
     "prod-proxy": "concurrently --kill-others \"cross-env NODE_ENV=production webpack --bail\" \"cross-env PROXY_HOST=192.168.10.6 PROXY_PORT=8088 nodemon dev/server.js --intercept\"",
     "proxy": "cross-env PROXY_HOST=3.86.115.139 PROXY_PORT=8088 nodemon --inspect dev/server.js --intercept",
