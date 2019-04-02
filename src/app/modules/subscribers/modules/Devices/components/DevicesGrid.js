@@ -177,10 +177,12 @@ class DevicesGrid extends React.Component {
                     previous: null,
                 };
 
+                let type = device.name === 'SML-482' ? 'STB ' : '';
+
                 const item = {
                     id: device.mac,
                     itemType: 'device',
-                    type: `${device.type} ${device.name}`,
+                    type: `${type}${device.name}`,
                     kab: [
                         kqi.current !== null ? kqi.current.common : undefined,
                         kqi.previous !== null ? kqi.previous.common : undefined,

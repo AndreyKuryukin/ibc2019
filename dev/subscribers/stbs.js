@@ -30,7 +30,8 @@ module.exports = {
             previous: graph['001B23324A56'][1]
         },
         'details': details['001B23324A56'],
-        'graph': graph['001B23324A56']
+        'graph': graph['001B23324A56'],
+        'mcast': mcast['001B23324A56']
     },
 
 
@@ -63,7 +64,8 @@ module.exports = {
             previous: graph['000012853254'][1]
         },
         'details': details['000012853254'],
-        'graph': graph['000012853254']
+        'graph': graph['000012853254'],
+        'mcast': mcast['000012853254']
     },
 
 
@@ -97,6 +99,7 @@ module.exports = {
             previous: graph['113593799543'][1]
         },
         'details': details['113593799543'],
-        'graph': graph['113593799543']
+        'graph': graph['113593799543'],
+        'mcast': mcast['113593799543']
     }
 };

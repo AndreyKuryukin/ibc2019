@@ -13,6 +13,9 @@ import rootReducer from './reducers';
 import Notifications from './components/Notification';
 import App from './containers';
 
+((preloader) => {
+    preloader.parentElement.removeChild(preloader)
+})(document.getElementById('start_preloader'));
 
 moment.locale('ru');
 momentLocalizer();

@@ -1,0 +1,118 @@
+.chart {
+  position: relative;
+  width: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+
+  & > .axis {
+    border-color: rgba(0, 0, 0, 0.2);
+    position: absolute;
+    left: 0;
+    bottom: 0;
+
+    &.vertical {
+      border-left-width: 1px;
+      border-left-style: solid;
+      top: 0;
+    }
+    &.horizontal {
+      border-bottom-width: 1px;
+      border-bottom-style: solid;
+      right: 0;
+    }
+  }
+
+  & > .plot {
+    pointer-events: none;
+    user-select: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    justify-content: space-between;
+
+    & > .line {
+      width: 0;
+      height: 100%;
+      position: relative;
+
+      &::before {
+        content: '';
+        display: block;
+        border-left: 1px solid rgba(0, 0, 0, 0.05);
+        position: absolute;
+        top: 0;
+        bottom: 0;
+      }
+      &.transparent::before {
+        border-left-color: transparent;
+      }
+      &.bordered::before {
+        border-left-color: #082545;
+      }
+
+      & > .caption {
+        position: absolute;
+        bottom: -22px;
+        width: 100px;
+        margin-left: -50px;
+        text-align: center;
+        font-size: 12px;
+        color: rgba(0, 0, 0, 0.5);
+      }
+
+      &:first-child {
+        & > .caption {
+          width: auto;
+          left: 0;
+          margin-left: 0;
+        }
+      }
+      &:last-child {
+        & > .caption {
+          width: auto;
+          right: 0;
+          margin-left: 0;
+        }
+      }
+
+      & > .name {
+        top: 0;
+        left: 0;
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        transform-origin: left center;
+        font-size: 12px;
+        margin-left: -6px;
+        white-space: nowrap;
+        color: rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+
+  & > .alerts {
+    height: 100%;
+    flex-grow: 1;
+    display: flex;
+    padding-top: 0;
+    flex-direction: column-reverse;
+    justify-content: flex-start;
+    overflow: hidden;
+
+    & > .group {
+      position: relative;
+      height: 23px;
+      width: 100%;
+
+      & .item {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        min-width: 1px;
+      }
+    }
+  }
+}

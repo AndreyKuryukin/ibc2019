@@ -26,9 +26,9 @@ const randomize = (weight) => (value) => _.reduce(value, (result, val, key) => {
         result[key] = val;
     } else if (_.isNumber(val)) {
         const delta = 100 - val;
-        result[key] = val + delta * Math.sin(delta * weight) - weight;
+        result[key] = Math.abs(val + delta * Math.sin(delta * weight) - weight);
     } else {
-        result[key] = val;
+        result[key] = Math.abs(val);
     }
     return result;
 }, {});

@@ -108,9 +108,6 @@ module.exports = (app) => {
         res.send(neighbors);
     });
 
-
-
-    // ??????????????????
     app.get('/api/v1/subscribers/stb/aggregated', (req, res) => {
         const {query} = req;
         res.send(aggregated);

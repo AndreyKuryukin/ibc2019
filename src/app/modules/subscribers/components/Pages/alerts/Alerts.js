@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
+import { connect } from 'react-redux';
 import moment from 'moment';
 import isEqual from 'lodash/isEqual';
 import TreeView from '../../TreeView';
@@ -12,7 +12,11 @@ import {
     selectIsAlertsLoading,
     selectRangeDates,
 } from '../../../reducers/pages/alerts';
-import {selectIsTopologyLoading, selectSubscriberMacs, selectTopologyDevices} from '../../../modules/Topology/reducers';
+import {
+    selectIsTopologyLoading,
+    selectSubscriberMacs,
+    selectTopologyDevices
+} from '../../../modules/Topology/reducers';
 import Chart from './Chart';
 import {MODE} from './ModeSwitcher';
 import filterStyles from './ip-filter.scss';
@@ -67,6 +71,7 @@ class Alerts extends React.Component {
     componentDidMount() {
         this.fetchAlerts();
     }
+
     componentWillReceiveProps(nextProps) {
         if (
             this.props.subscriber !== nextProps.subscriber
@@ -81,7 +86,7 @@ class Alerts extends React.Component {
     filterByType = alert => this.props.type === null || alert.type === this.props.type;
 
     fetchAlerts = async (props = this.props) => {
-        const {subscriber, startDate, endDate} = props;
+        const { subscriber, startDate, endDate } = props;
         const devices = this.getDeviceIds(props);
 
         if (startDate === null || devices.length === 0) return;
@@ -110,12 +115,18 @@ class Alerts extends React.Component {
     };
 
     actualize = (alert) => {
-        const delta = moment().startOf('hour').unix() - moment(alert.raise_time).startOf('hour').unix();
-        alert.raise_time = moment(alert.raise_time).unix() + delta;
+        const duration = (moment(alert.cease_time || moment()).unix() - moment(alert.raise_time).unix()) * 1000;
+        const raise_time_delta = (moment(alert.raise_time).unix() - moment(alert.raise_time).startOf('hour').unix()) * 1000;
+        const raise_time = moment(moment().subtract(1, 'hour').unix() * 1000 + raise_time_delta).toISOString();
+        const beta_cease_time = moment(raise_time).unix() * 1000 + duration;
+        const cease_time = moment(moment(beta_cease_time).isAfter(moment()) ? moment().subtract(1, 'minute') : beta_cease_time).toISOString();
+
+        const result = { ...alert };
+        result.raise_time = raise_time;
         if (alert.cease_time) {
-            alert.cease_time = moment(alert.cease_time).unix() + delta;
+            result.cease_time = cease_time;
         }
-        return alert
+        return result;
     };
 
     getTableData() {
@@ -163,6 +174,7 @@ class Alerts extends React.Component {
         const alerts = this.props.alerts
             .filter(this.filterByType)
             .filter(alert => alert.mac === mac)
+            .map(this.actualize)
             .map(alert => ({
                 id: alert.id,
                 group: groupByPolicyGroup[alert.type],
@@ -219,7 +231,7 @@ class Alerts extends React.Component {
     render() {
         if (this.props.mode === MODE.CHART) {
             return (
-                <div style={{padding: '16px 26px'}}>
+                <div style={{ padding: '16px 26px' }}>
                     <Preloader active={this.props.isLoading}>
                         <Chart
                             data={this.getChartData()}
@@ -272,7 +284,7 @@ class Alerts extends React.Component {
 }
 
 const mapStateToProps = state => {
-    const {startDate, endDate} = selectRangeDates(state);
+    const { startDate, endDate } = selectRangeDates(state);
 
     return {
         startDate,

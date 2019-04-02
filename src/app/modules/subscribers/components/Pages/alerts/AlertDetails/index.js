@@ -1,14 +1,33 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
-import {connect} from 'react-redux';
-import {Modal, ModalBody, ModalHeader} from 'reactstrap';
+import { connect } from 'react-redux';
+import { Modal, ModalBody, ModalHeader } from 'reactstrap';
 import styles from '../../../subscribers-card.scss';
-import {alert} from '../../../../rest';
+import { alert } from '../../../../rest';
 import detailsStyles from './alert-details.scss';
-import {selectAlert} from '../../../../reducers/pages/alerts';
-import {convertUTC0ToLocal} from '../../../../../../util/date';
-import ls from "i18n";
+import { selectAlert } from '../../../../reducers/pages/alerts';
+import { convertUTC0ToLocal } from '../../../../../../util/date';
+
+
+const actualize = (alert) => {
+    if (alert) {
+        const duration = (moment(alert.cease_time || moment()).unix() - moment(alert.raise_time).unix()) * 1000;
+        const raise_time_delta = (moment(alert.raise_time).unix() - moment(alert.raise_time).startOf('hour').unix()) * 1000;
+        const raise_time = moment(moment().subtract(1, 'hour').unix() * 1000 + raise_time_delta).toISOString();
+        const beta_cease_time = moment(raise_time).unix() * 1000 + duration;
+        const cease_time = moment(moment(beta_cease_time).isAfter(moment()) ? moment().subtract(1, 'minute') : beta_cease_time).toISOString();
+
+        const result = { ...alert };
+        result.raise_time = raise_time;
+        if (alert.cease_time) {
+            result.cease_time = cease_time;
+        }
+        return result;
+    }
+    return alert
+};
+
 
 class AlertDetails extends React.Component {
     static propTypes = {
@@ -30,6 +49,7 @@ class AlertDetails extends React.Component {
     componentDidMount() {
         this.fetchDetails(this.props.id);
     }
+
     componentWillReceiveProps(nextProps) {
         if (this.props.id !== nextProps.id) {
             this.fetchDetails(nextProps.id);
@@ -51,7 +71,7 @@ class AlertDetails extends React.Component {
 
         if (request === this.lastRequest) {
             this.setState({
-                alert: result,
+                alert: actualize(result),
             });
         }
     };
@@ -61,10 +81,12 @@ class AlertDetails extends React.Component {
 
         return convertUTC0ToLocal(this.props.alert.raise_time).format('HH:mm DD.MM.YYYY');
     }
+
     getPolicyName() {
         if (this.state.alert === null) return '-';
         return this.state.alert.policy_name;
     }
+
     getDuration() {
         if (this.props.alert === null || typeof this.props.alert.duration !== 'number') return '-';
 
@@ -76,10 +98,12 @@ class AlertDetails extends React.Component {
 
         return `${days}d ${hours}:${minutes}:${seconds}`;
     }
+
     getMessageText() {
         if (this.state.alert === null) return '-';
         return this.state.alert.notification_text;
     }
+
     getNotificationTypes() {
         if (this.state.alert === null) return '-';
 
@@ -91,6 +115,7 @@ class AlertDetails extends React.Component {
             >{notified.type}</span>
         ));
     }
+
     getAttributes() {
         if (this.state.alert === null) return '-';
 
@@ -112,36 +137,36 @@ class AlertDetails extends React.Component {
                 <ModalBody>
                     <table className={detailsStyles['alert-details']}>
                         <tbody>
-                            <tr>
-                                <td>{'Occurred'}:</td>
-                                <td>{this.getStartDate()}</td>
-                            </tr>
-                            <tr>
-                                <td>{'Policy'}:</td>
-                                <td>{this.getPolicyName()}</td>
-                            </tr>
-                            <tr>
-                                <td>{'Duration'}:</td>
-                                <td>{this.getDuration()}</td>
-                            </tr>
-                            <tr>
-                                <td>{'Message'}:</td>
-                                <td>{this.getMessageText()}</td>
-                            </tr>
-                            <tr>
-                                <td>{'Notifications sent'}:</td>
-                                <td>{this.getNotificationTypes()}</td>
-                            </tr>
-                            <tr>
-                                <td>{'Attributes'}:</td>
-                                <td>
+                        <tr>
+                            <td>{'Occurred'}:</td>
+                            <td>{this.getStartDate()}</td>
+                        </tr>
+                        <tr>
+                            <td>{'Policy'}:</td>
+                            <td>{this.getPolicyName()}</td>
+                        </tr>
+                        <tr>
+                            <td>{'Duration'}:</td>
+                            <td>{this.getDuration()}</td>
+                        </tr>
+                        <tr>
+                            <td>{'Message'}:</td>
+                            <td>{this.getMessageText()}</td>
+                        </tr>
+                        <tr>
+                            <td>{'Notifications sent'}:</td>
+                            <td>{this.getNotificationTypes()}</td>
+                        </tr>
+                        <tr>
+                            <td>{'Attributes'}:</td>
+                            <td>
                                     <textarea
                                         readOnly
                                         value={this.getAttributes()}
                                         rows={15}
                                     />
-                                </td>
-                            </tr>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </ModalBody>
@@ -151,7 +176,7 @@ class AlertDetails extends React.Component {
 }
 
 const mapStateToProps = (state, props) => ({
-    alert: selectAlert(state, {id: props.id}),
+    alert: actualize(selectAlert(state, { id: props.id })),
 });
 
 export default connect(mapStateToProps)(AlertDetails);

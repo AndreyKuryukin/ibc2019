@@ -1,19 +1,23 @@
+const stbData = require('./stbData');
+
+const vidDecodeErrors = stbData.vidDecodeErrors;
+const bufUnderruns = stbData.bufUnderruns;
+const linkFaults = stbData.linkFaults;
+
+const lastVidDecodeErrors = vidDecodeErrors[Object.keys(vidDecodeErrors)[0]];
+const lastBufUnderruns = bufUnderruns[Object.keys(bufUnderruns)[0]];
+const lastLinkFaults = linkFaults[Object.keys(linkFaults)[0]];
+
 module.exports = [{
-    "AVG": 1510.0,
-    "MIN": 1510,
-    "MAX": 1510,
-    "LAST": 0,
+    ...lastVidDecodeErrors,
+    "LAST": lastVidDecodeErrors.AVG,
     "name": "vidDecodeErrors"
 }, {
-    "AVG": 898.0,
-    "MIN": 898,
-    "MAX": 898,
-    "LAST": 0,
+    ...lastBufUnderruns,
+    "LAST": lastBufUnderruns.AVG,
     "name": "bufUnderruns"
 }, {
-    "AVG": 10281.0,
-    "MIN": 10281,
-    "MAX": 10281,
-    "LAST": 0,
+    ...lastLinkFaults,
+    "LAST": lastLinkFaults.AVG,
     "name": "linkFaults"
 }];

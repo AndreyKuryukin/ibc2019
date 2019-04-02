@@ -434,5 +434,88 @@ module.exports = {
         "channel_name": "Channel 5",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
-    }]
+    }],
+    '001B23324A56': [{
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-22T08:15:15.933Z",
+        "end_date": "2019-03-22T14:21:27.38Z",
+        "channel_name": "Channel 5",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-14T14:22:15.933Z",
+        "end_date": "2019-03-14T23:21:27.38Z",
+        "channel_name": "Channel 4",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-15T07:15:15.933Z",
+        "end_date": "2019-03-15T14:21:27.38Z",
+        "channel_name": "Channel 5",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }],
+    '113593799543': [{
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-20T07:15:15.933Z",
+        "end_date": "2019-03-20T14:21:27.38Z",
+        "channel_name": "Channel 2",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-21T08:15:15.933Z",
+        "end_date": "2019-03-21T14:21:27.38Z",
+        "channel_name": "Channel 1",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-19T14:22:15.933Z",
+        "end_date": "2019-03-19T23:21:27.38Z",
+        "channel_name": "Channel 7",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }],
+    '000012853254': [{
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-20T07:15:15.933Z",
+        "end_date": "2019-03-20T14:21:27.38Z",
+        "channel_name": "Channel 1",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-20T15:15:15.933Z",
+        "end_date": "2019-03-20T17:21:27.38Z",
+        "channel_name": "Channel 3",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-20T17:22:15.933Z",
+        "end_date": "2019-03-20T19:21:27.38Z",
+        "channel_name": "Channel 7",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }, {
+        "kab": 100.0,
+        "content_type": "VOD",
+        "start_date": "2019-03-20T19:22:15.933Z",
+        "end_date": "2019-03-20T22:21:27.38Z",
+        "channel_name": "Channel 2",
+        "player_url": "igmp://233.96.36.17:5000",
+        "err_intervals": []
+    }],
 };

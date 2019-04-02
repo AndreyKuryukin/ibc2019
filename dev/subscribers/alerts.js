@@ -324,16 +324,19 @@ const alerts = {
     }]
 };
 
-const actualize = (alert) => {
-    const duration = (moment(alert.cease_time || moment()).unix() - moment(alert.raise_time).unix()) * 1000;
-    const raise_time_delta = (moment(alert.raise_time).unix() - moment(alert.raise_time).startOf('hour').unix()) * 1000;
-    const raise_time = moment(moment().subtract(1, 'hour').unix() * 1000 + raise_time_delta).toISOString();
-    const beta_cease_time = moment(raise_time).unix() * 1000 + duration;
-    const cease_time = moment(moment(beta_cease_time).isAfter(moment()) ? moment().subtract(1, 'minute') : beta_cease_time).toISOString();
-    alert.raise_time = raise_time;
-    if (alert.cease_time) {
-        alert.cease_time = cease_time;
-    }
+const actualize = (alertCopy) => (alert, i) => {
+    // const duration = (moment(alert.cease_time || moment()).unix() - moment(alert.raise_time).unix()) * 1000;
+    // const raise_time_delta = (moment(alert.raise_time).unix() - moment(alert.raise_time).startOf('hour').unix()) * 1000;
+    // const raise_time = moment(moment().subtract(1, 'hour').unix() * 1000 + raise_time_delta).toISOString();
+    // const beta_cease_time = moment(raise_time).unix() * 1000 + duration;
+    // const cease_time = moment(moment(beta_cease_time).isAfter(moment()) ? moment().subtract(1, 'minute') : beta_cease_time).toISOString();
+    //
+    // const result = alertCopy[i];
+    // result.raise_time = raise_time;
+    // if (alert.cease_time) {
+    //     result.cease_time = cease_time;
+    // }
+    // return result;
     return alert;
 };
 
@@ -369,7 +372,9 @@ const enrichAlert = (alert) => {
     return alert
 };
 
-const alertsById = () => _.reduce(alerts, (result, alerts, mac) => ({
+let alertsCopy = _.cloneDeep(alerts);
+
+const alertsById = (data) => _.reduce(data, (result, alerts) => ({
     ...result,
     ...alerts.reduce((res, alert) => {
         res[alert.id] = enrichAlert(alert);
@@ -381,9 +386,9 @@ module.exports = Object.keys(alerts).reduce((result, mac) => {
     return {
         ...result,
         get [mac]() {
-            return alerts[mac].map(actualize)
+            return alerts[mac].map(actualize(alertsCopy[mac]))
         }
     }
 }, {
-    alertsById: alertsById()
+    alertsById: alertsById(alertsCopy)
 });

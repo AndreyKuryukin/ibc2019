@@ -4,8 +4,6 @@ import moment from 'moment';
 import chart from './chart.scss';
 import Item from './Item';
 import cn from 'classnames';
-import { selectRangeDates } from "../../../../reducers/pages/alerts";
-import { connect } from "react-redux";
 
 const HOUR = 60 * 60 * 1000;
 const DAY = HOUR * 24;
@@ -38,35 +36,31 @@ class Chart extends React.PureComponent {
     };
 
     getRange() {
-        // const { from, to } = this.props;
-        // const duration = to - from;
-        //
-        // let start;
-        // let end;
-        //
-        // if (duration <= HOUR) {
-        //     start = moment(from).minutes(Math.ceil(moment(from).minutes() / 5) * 5).valueOf();
-        //     end = moment(start).add(1, 'hour').valueOf();
-        // } else if (duration <= DAY) {
-        //     start = moment(from).startOf('hour').valueOf();
-        //     end = moment(start).add(25, 'hour').valueOf();
-        // } else if (duration <= WEEK) {
-        //     start = moment(from).startOf('day').valueOf();
-        //     end = moment(to).startOf('day').add(1, 'day').valueOf();
-        // } else {
-        //     start = moment(from).startOf('day').valueOf();
-        //     end = moment(to).startOf('day').add(1, 'day').valueOf();
-        // }
-        //
-        // return {
-        //     from: start,
-        //     to: end,
-        // };
+        const { from, to } = this.props;
+        const duration = to - from;
+
+        let start;
+        let end;
+
+        if (duration <= HOUR) {
+            start = moment(from).minutes(Math.ceil(moment(from).minutes() / 5) * 5).valueOf();
+            end = moment(start).add(1, 'hour').valueOf();
+        } else if (duration <= DAY) {
+            start = moment(from).startOf('hour').valueOf();
+            end = moment(start).add(25, 'hour').valueOf();
+        } else if (duration <= WEEK) {
+            start = moment(from).startOf('day').valueOf();
+            end = moment(to).startOf('day').add(1, 'day').valueOf();
+        } else {
+            start = moment(from).startOf('day').valueOf();
+            end = moment(to).startOf('day').add(1, 'day').valueOf();
+        }
 
         return {
-            from: moment().startOf('minute').add(1, 'minute').subtract(1, 'hour').valueOf(),
-            to: moment().startOf('minute').add(1, 'minute').valueOf(),
-        }
+            from: start,
+            to: end,
+        };
+
     }
 
     getGroups() {
@@ -215,12 +209,5 @@ class Chart extends React.PureComponent {
     }
 }
 
-const mapStateToProps = (state) => {
-    const { startDate: from, endDate: to } = selectRangeDates(state);
-    return {
-        from,
-        to
-    }
-};
 
-export default connect(mapStateToProps)(Chart);
+export default Chart;
