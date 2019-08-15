@@ -70,7 +70,7 @@ class Prealoder extends React.PureComponent {
                                       className='st18' opacity='.15' fill='#fff' />
                             </g>
                         </svg>
-                        <div>{text || ls('PRELOADER_DEFAULT_TEXT', 'Загрузка')}</div>
+                        <div>{'Loading'}</div>
                     </div>
                 </div>
                 {children}

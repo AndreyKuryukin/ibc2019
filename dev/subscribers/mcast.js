@@ -17,7 +17,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-13T16:15:15.933Z",
         "end_date": "2019-03-13T21:21:27.38Z",
-        "channel_name": "Channel 2",
+        "channel_name": "Movie 34",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -73,7 +73,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-13T20:25:15.933Z",
         "end_date": "2019-03-13T21:21:27.38Z",
-        "channel_name": "Channel 12",
+        "channel_name": "Movie 33",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -142,7 +142,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-24T07:15:15.933Z",
         "end_date": "2019-03-24T17:21:27.38Z",
-        "channel_name": "Channel 8",
+        "channel_name": "Movie 17",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": [{
             auto: null,
@@ -213,7 +213,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-24T07:15:15.933Z",
         "end_date": "2019-03-24T17:21:27.38Z",
-        "channel_name": "Channel 8",
+        "channel_name": "Movie 18",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": [{
             auto: null,
@@ -255,7 +255,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-13T16:15:15.933Z",
         "end_date": "2019-03-13T21:21:27.38Z",
-        "channel_name": "Channel 2",
+        "channel_name": "Movie 16",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -297,7 +297,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-24T07:15:15.933Z",
         "end_date": "2019-03-24T17:21:27.38Z",
-        "channel_name": "Channel 8",
+        "channel_name": "Movie 30",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": [{
             auto: null,
@@ -355,7 +355,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-15T16:15:15.933Z",
         "end_date": "2019-03-15T21:21:27.38Z",
-        "channel_name": "Channel 2",
+        "channel_name": "Movie 4",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -371,7 +371,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-20T07:15:15.933Z",
         "end_date": "2019-03-20T17:21:27.38Z",
-        "channel_name": "Channel 8",
+        "channel_name": "Movie 15",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": [{
             auto: null,
@@ -440,7 +440,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-22T08:15:15.933Z",
         "end_date": "2019-03-22T14:21:27.38Z",
-        "channel_name": "Channel 5",
+        "channel_name": "Movie 51",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -448,7 +448,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-14T14:22:15.933Z",
         "end_date": "2019-03-14T23:21:27.38Z",
-        "channel_name": "Channel 4",
+        "channel_name": "Channel 24",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -456,7 +456,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-15T07:15:15.933Z",
         "end_date": "2019-03-15T14:21:27.38Z",
-        "channel_name": "Channel 5",
+        "channel_name": "Movie 28",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }],
@@ -465,7 +465,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-20T07:15:15.933Z",
         "end_date": "2019-03-20T14:21:27.38Z",
-        "channel_name": "Channel 2",
+        "channel_name": "Movie 1",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -473,7 +473,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-21T08:15:15.933Z",
         "end_date": "2019-03-21T14:21:27.38Z",
-        "channel_name": "Channel 1",
+        "channel_name": "Movie 21",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -481,7 +481,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-19T14:22:15.933Z",
         "end_date": "2019-03-19T23:21:27.38Z",
-        "channel_name": "Channel 7",
+        "channel_name": "Movie 39",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }],
@@ -490,7 +490,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-20T07:15:15.933Z",
         "end_date": "2019-03-20T14:21:27.38Z",
-        "channel_name": "Channel 1",
+        "channel_name": "Movie 2",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -498,7 +498,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-20T15:15:15.933Z",
         "end_date": "2019-03-20T17:21:27.38Z",
-        "channel_name": "Channel 3",
+        "channel_name": "Movie 11",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -506,7 +506,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-20T17:22:15.933Z",
         "end_date": "2019-03-20T19:21:27.38Z",
-        "channel_name": "Channel 7",
+        "channel_name": "Movie 5",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }, {
@@ -514,7 +514,7 @@ module.exports = {
         "content_type": "VOD",
         "start_date": "2019-03-20T19:22:15.933Z",
         "end_date": "2019-03-20T22:21:27.38Z",
-        "channel_name": "Channel 2",
+        "channel_name": "Movie 43",
         "player_url": "igmp://233.96.36.17:5000",
         "err_intervals": []
     }],

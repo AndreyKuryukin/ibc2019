@@ -63,9 +63,9 @@ class DevicesGrid extends React.Component {
         const data = [];
 
         const nameByType = {
-            PE: ls('PE_ROUTER_TITLE', 'PE-роутер'),
-            AGG: ls('AGG_TITLE', 'Коммутатор агрегации'),
-            ACC: ls('ACC_TITLE', 'Оборудование доступа'),
+            PE: 'PE-router',
+            AGG: 'Aggregation equipment',
+            ACC: 'Access equipment',
         };
 
         const devicesByType = (this.props.topologyDevices || []).reduce((result, device) => {
@@ -240,7 +240,7 @@ class DevicesGrid extends React.Component {
                 isLoading={this.props.isTopologyLoading}
                 columns={[
                     {
-                        getTitle: () => ls('DEVICE_TYPE', 'Тип устройства'),
+                        getTitle: () => 'Device type',
                         name: 'type',
                         width: '30%',
                     }, {
@@ -248,11 +248,11 @@ class DevicesGrid extends React.Component {
                         name: 'kab',
                         width: '20%',
                     }, {
-                        getTitle: () => ls('MAC_ADDRESS_TITLE', 'MAC адрес'),
+                        getTitle: () => 'MAC address',
                         name: 'mac',
                         width: '25%',
                     }, {
-                        getTitle: () => ls('IP_ADDRESS_TITLE', 'IP адрес'),
+                        getTitle: () => 'IP address',
                         name: 'ip',
                         width: '25%',
                     },

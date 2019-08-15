@@ -2,12 +2,8 @@
 
 .dashboardHead {
   display: flex;
-  justify-content: stretch;
+  justify-content: space-between;
   flex-wrap: wrap;
-
-  & > .modeSwitcher {
-    flex-grow: 1;
-  }
 
   & > .locationDropdownLabel {
     display: flex;

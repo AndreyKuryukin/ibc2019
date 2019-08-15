@@ -125,7 +125,7 @@ class Graph extends React.PureComponent {
             },
             yAxis: {
                 title: {
-                    text: ls('KQI_PROJECTION_RESULT_TITLE', 'Результат') + ' (%)',
+                    text: '%',
                 },
                 gridLineWidth: 0,
                 lineWidth: 1,
