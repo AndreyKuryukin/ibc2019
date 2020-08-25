@@ -79,7 +79,7 @@
     "classnames": "^2.2.5",
     "cssnano": "^3.10.0",
     "fifo-array": "^0.1.2",
-    "highcharts": "^6.1.0",
+    "highcharts": "^8.2.0",
     "history": "^4.7.2",
     "immutable": "^3.8.2",
     "lodash": "^4.17.5",
